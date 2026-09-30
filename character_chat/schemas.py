@@ -50,7 +50,8 @@ class CharacterSpec(BaseModel):
     display_name: str = ""
     description: str = ""
     avatar_url: str | None = None
-    tts_voice_id: str = Field(default="", max_length=160, description="Voice identifier for browser demo or a future TTS model")
+    tts_voice_id: str = Field(default="", max_length=160, description="Voice identifier for TTS playback")
+    tts_gender: Literal["male", "female", "unspecified"] = "unspecified"
     tts_emotion_enabled: bool = True
     preset_type: str | None = None
     category: Literal["utility","entertainment"] = "utility"

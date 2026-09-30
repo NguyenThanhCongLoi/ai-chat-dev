@@ -918,9 +918,9 @@ modal volume get character-chat-data /character_chat.sqlite .\backups\character_
 
 ### Phát giọng nói Role Play qua gateway
 
-Trong CMS → **Cấu hình AI**, thêm model TTS với `API base` là `https://gateway.avibi.ai/v1`, model ID từ trang model trên Avibi và API key tương ứng. Ở **Phân công model**, gán model đó cho **Phát giọng nói Role Play**. Quay lại cấu hình model để điền **Mã giọng TTS mặc định**. Trong **Nhân vật**, có thể đặt mã giọng riêng cho từng nhân vật; để trống sẽ dùng mã mặc định. Sau đó bấm **Nghe** ở câu trả lời nhân vật.
+Với [Avibi Voice API](https://api-voice-uat.vbeelabs.ai/docs), trong CMS → **Cấu hình AI**, thêm model TTS với `API base` là `https://api-voice-uat.vbeelabs.ai/v1`, model ID TTS có trong `GET /v1/models` và API key Vbee tương ứng. Ở **Phân công model**, gán model đó cho **Phát giọng nói Role Play**. Key có thể gắn riêng vào model hoặc API base này; không dùng nhầm key của gateway LLM. Trong **Nhân vật**, danh sách voice lấy từ `GET /api/v1/voices`. Để trống mã giọng thì hệ thống tự chọn voice cùng giới tính, ưu tiên tiếng Việt. Có thể chọn giọng riêng và giới tính giọng cho từng nhân vật hệ thống hoặc public. Sau đó bấm **Nghe** ở câu trả lời nhân vật.
 
-Backend gọi endpoint OpenAI compatible `POST {API base}/audio/speech`, lấy lời thoại từ tin nhắn đã lưu và trả audio cho client. API key chỉ nằm ở backend. Các hành động trong `*...*` hoặc `**...**` không được đọc. Request chỉ dùng `model`, `input`, `voice`, `response_format` để tương thích ví dụ TTS của Avibi; ảnh biểu cảm trong chat vẫn hoạt động riêng.
+Backend gọi endpoint OpenAI compatible `POST {API base}/audio/speech`, lấy lời thoại từ tin nhắn đã lưu và trả audio cho client. API key chỉ nằm ở backend. Các hành động trong `*...*` hoặc `**...**` không được đọc. Request dùng `model`, `input`, `voice`, `response_format`; ảnh biểu cảm trong chat vẫn hoạt động riêng. Nếu tên/mô tả nhân vật không đủ xác định nam hay nữ, hãy chọn **Giới tính giọng** trong CMS để tránh phát giọng sai.
 
 
 - Demo identity chưa phải auth thật; cần email/OAuth, session/JWT và authorization.

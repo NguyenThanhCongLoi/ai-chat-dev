@@ -88,6 +88,7 @@ type AdminCharacter = {
     scenario: string;
     initial_greeting: string;
     tts_voice_id?: string;
+    tts_gender?: "male" | "female" | "unspecified";
     tts_emotion_enabled?: boolean;
     identity: { role: string };
     goals: string[];
@@ -254,6 +255,20 @@ function renderDashboard() {
       .join("") || '<div class="empty">Chưa có hoạt động.</div>'
   }</div></section></div>`;
 }
+async function loadVbeeVoices() {
+  const status = document.querySelector<HTMLElement>("#tts-voice-status");
+  const list = document.querySelector<HTMLDataListElement>("#tts-voice-options");
+  if (!status || !list) return;
+  try {
+    const result = await request<{ voices: { id: string; name: string; gender: string; language: string }[] }>("/v1/admin/tts/voices");
+    if (!list.isConnected) return;
+    list.innerHTML = result.voices.map((voice) => `<option value="${esc(voice.id)}" label="${esc(voice.name)} · ${voice.gender === "male" ? "Nam" : voice.gender === "female" ? "Nữ" : "Khác"} · ${esc(voice.language)}"></option>`).join("");
+    status.textContent = `Đã tải ${result.voices.length} giọng Vbee. Để trống mã giọng để hệ thống tự chọn theo giới tính.`;
+  } catch {
+    if (status.isConnected) status.textContent = "Danh sách giọng Vbee sẽ hiện sau khi cấu hình model và API key TTS trong CMS.";
+  }
+}
+
 function renderContent() {
   if (!overview) return;
   document.querySelector("#content")!.innerHTML =
@@ -273,8 +288,10 @@ function renderContent() {
         "",
       )}</select></label><label class="field full" id="home-section-field">Vị trí trên trang chủ<select id="character-home-section"><option value="auto">Hiện trong Nhân vật hệ thống</option><option value="hidden">Ẩn khỏi trang chủ</option></select><span class="hint">Chỉ áp dụng cho nhân vật hệ thống do admin quản lý.</span></label><label class="field">Tên<input id="character-name"/></label><label class="field">Vai trò<input id="character-role"/></label><label class="field full">Mô tả<textarea id="character-description"></textarea></label><label class="field full">System prompt riêng<textarea class="largePrompt" id="character-system-prompt"></textarea></label><label class="field full">Scenario<textarea id="character-scenario"></textarea></label><label class="field full">Lời chào đầu tiên<textarea id="character-greeting"></textarea></label><label class="field full">Thay Ảnh nhân vật<input type="file" id="character-avatar-file" accept="image/png,image/jpeg,image/webp,image/gif"/><span class="hint">Để trống nếu muốn giữ ảnh hiện tại.</span></label><label class="field">Goals, mỗi dòng một mục<textarea id="character-goals"></textarea></label><label class="field">Behavior rules, mỗi dòng một mục<textarea id="character-rules"></textarea></label></div><div class="editorActions"><span class="toast" id="character-status">Chọn nhân vật để chỉnh sửa</span><button class="btn" id="save-character">Lưu nhân vật</button></div></section><section class="panel wide"><div class="panelHead"><div><h2>Cuộc trò chuyện</h2><p>Thống kê nội dung theo phòng</p></div></div><div class="table"><div class="row head"><span>Tên phòng</span><span>Số thành viên</span><span>Tin nhắn</span><span>Trạng thái</span></div>${overview.rooms.map((x) => `<div class="row"><strong>${esc(x.name)}</strong><span>${x.members} nhân vật</span><span>${x.messages}</span><span class="pill">Hoạt động</span></div>`).join("") || '<div class="empty">Chưa có phòng chat.</div>'}</div></section><section class="panel wide"><div class="panelHead"><div><h2>Tài liệu người dùng</h2><p>Kiểm tra trạng thái ingestion và moderation</p></div></div><div class="table"><div class="row head"><span>Tên file</span><span>ID</span><span>Trạng thái</span><span>Kết quả</span></div>${overview.documents.map((x) => `<div class="row"><strong>${esc(x.filename)}</strong><span>${esc(x.id.slice(0, 12))}…</span><span>${esc(x.status)}</span><span class="pill">${x.status === "failed" ? "Cần xem" : "Bình thường"}</span></div>`).join("") || '<div class="empty">Chưa có tài liệu.</div>'}</div></section></div>`;
   document.querySelector("#save-character")?.insertAdjacentHTML("beforebegin", '<button class="btn secondary" id="backfill-system-expressions" type="button">Tạo ảnh biểu cảm còn thiếu</button>');
-  document.querySelector("#character-greeting")?.closest("label")?.insertAdjacentHTML("afterend", '<label class="field">Mã giọng TTS<input id="character-tts-voice" maxlength="160" placeholder="Để trống để dùng giọng mặc định của model"/><small>Mã voice của gateway dành riêng cho nhân vật này.</small></label>');
-  document.querySelector("#new-character-greeting")?.closest("label")?.insertAdjacentHTML("afterend", '<label class="field">Mã giọng TTS<input id="new-character-tts-voice" maxlength="160" placeholder="Để trống để dùng giọng mặc định"/></label>');
+  document.querySelector("#character-greeting")?.closest("label")?.insertAdjacentHTML("afterend", '<label class="field">Giới tính giọng<select id="character-tts-gender"><option value="unspecified">Tự nhận diện</option><option value="male">Nam</option><option value="female">Nữ</option></select><small>Dùng để tự chọn voice Vbee. Chọn rõ nếu nhân vật public chưa nhận diện đúng.</small></label><label class="field">Giọng TTS<input id="character-tts-voice" list="tts-voice-options" maxlength="160" placeholder="Tự chọn theo giới tính"/><small>Để trống để tự chọn voice Vbee; nhập mã để dùng giọng riêng.</small></label>');
+  document.querySelector("#new-character-greeting")?.closest("label")?.insertAdjacentHTML("afterend", '<label class="field">Giới tính giọng<select id="new-character-tts-gender"><option value="unspecified">Tự nhận diện</option><option value="male">Nam</option><option value="female">Nữ</option></select></label><label class="field">Giọng TTS<input id="new-character-tts-voice" list="tts-voice-options" maxlength="160" placeholder="Tự chọn theo giới tính"/></label>');
+  document.querySelector("#content")?.insertAdjacentHTML("beforeend", '<datalist id="tts-voice-options"></datalist><p id="tts-voice-status" class="hint"></p>');
+  void loadVbeeVoices();
   document.querySelector<HTMLButtonElement>("#backfill-system-expressions")?.addEventListener("click", async (event) => {
     const button = event.currentTarget as HTMLButtonElement;
     button.disabled = true;
@@ -309,6 +326,7 @@ function fillCharacter() {
     "character-scenario": item.spec.scenario,
     "character-greeting": item.spec.initial_greeting,
     "character-tts-voice": item.spec.tts_voice_id || "",
+    "character-tts-gender": item.spec.tts_gender || "unspecified",
     "character-goals": item.spec.goals.join("\n"),
     "character-rules": item.spec.behavior_rules.join("\n"),
   };
@@ -420,6 +438,7 @@ async function saveCharacter() {
         scenario: value("character-scenario"),
         initial_greeting: value("character-greeting"),
         tts_voice_id: value("character-tts-voice").trim(),
+        tts_gender: value("character-tts-gender"),
         goals: value("character-goals")
           .split("\n")
           .map((x) => x.trim())
@@ -531,6 +550,7 @@ async function createAdminCharacter() {
         system_prompt: value("new-character-prompt"),
         initial_greeting: value("new-character-greeting"),
         tts_voice_id: value("new-character-tts-voice").trim(),
+        tts_gender: value("new-character-tts-gender"),
       }),
     });
     const avatar = document.querySelector<HTMLInputElement>(

@@ -25,6 +25,7 @@ from . import engine as character_engine
 from .prompts import MODERATION_SYSTEM_PROMPT, EMOTION_DETECTION_SYSTEM_PROMPT
 from .assistant_prompts import ASSISTANT_PROMPTS, ASSISTANT_SUGGESTION_PROMPT
 from .assistant_pipeline import retrieve_room_context, task_guardrail
+from .voice import is_vbee_voice_base, vbee_voice_url, normalize_voices, character_voice_gender, select_voice
 from cryptography.fernet import Fernet, InvalidToken
 
 SETTING_DEFAULTS={
@@ -2475,6 +2476,34 @@ def character_memories(character_id:str,db:DBSession=Depends(db_session),user:st
     owned(db,Character,character_id,user)
     return [memory_out(x) for x in db.query(Memory).filter_by(user_id=user,character_id=character_id).all()]
 
+_vbee_voice_cache={}
+
+async def vbee_voices(api_base:str,api_key:str):
+    cache_key=(api_base,hashlib.sha256(api_key.encode()).hexdigest())
+    cached=_vbee_voice_cache.get(cache_key)
+    if cached and time.monotonic()-cached[0]<600:return cached[1]
+    try:
+        async with httpx.AsyncClient(timeout=httpx.Timeout(12,connect=5),follow_redirects=False) as client:
+            response=await client.get(vbee_voice_url(api_base),headers={"Authorization":"Bearer "+api_key})
+            if response.status_code==401:raise HTTPException(502,"API key Vbee không hợp lệ; kiểm tra key của model TTS trong CMS")
+            if response.status_code>=400:raise HTTPException(502,f"Không tải được danh sách giọng Vbee (HTTP {response.status_code})")
+            voices=normalize_voices(response.json())
+    except httpx.TimeoutException:raise HTTPException(504,"Vbee phản hồi quá lâu khi tải danh sách giọng")
+    except httpx.RequestError as exc:raise HTTPException(502,f"Không kết nối được Vbee: {type(exc).__name__}")
+    except ValueError:raise HTTPException(502,"Vbee trả về danh sách giọng không hợp lệ")
+    _vbee_voice_cache[cache_key]=(time.monotonic(),voices)
+    return voices
+
+@app.get("/v1/admin/tts/voices")
+async def admin_tts_voices(_:None=Depends(docs_auth),db:DBSession=Depends(db_session)):
+    assigned=next((item for item in db.query(ModelConfig).filter_by(enabled=1).all() if "tts" in model_profile(db,item).get("purposes",[])),None)
+    if not assigned:raise HTTPException(503,"Hãy phân công model TTS trong CMS trước")
+    api_base=normalized_api_base(assigned.api_base)
+    if not is_vbee_voice_base(api_base):raise HTTPException(400,"Danh sách giọng chỉ hỗ trợ API base Vbee")
+    api_key=credential_for_model(db,assigned)
+    if not api_key:raise HTTPException(503,"Hãy cấu hình API key Vbee cho model TTS trong CMS")
+    return {"model":assigned.model_id,"voices":await vbee_voices(api_base,api_key)}
+
 @app.post("/v1/roleplay/messages/{message_id}/speech")
 async def roleplay_message_speech(message_id:str,db:DBSession=Depends(db_session),user:str=Depends(current_user)):
     message=db.get(Message,message_id)
@@ -2485,16 +2514,24 @@ async def roleplay_message_speech(message_id:str,db:DBSession=Depends(db_session
     assigned=next((item for item in db.query(ModelConfig).filter_by(enabled=1).all() if "tts" in model_profile(db,item).get("purposes",[])),None)
     if not assigned:raise HTTPException(503,"Chưa phân công model TTS trong CMS")
     profile=model_profile(db,assigned)
-    voice=(spec(character).tts_voice_id or str(profile.get("tts_default_voice") or "")).strip()
-    if not voice:raise HTTPException(503,"Chưa chọn mã giọng cho nhân vật hoặc model TTS trong CMS")
+    character_spec=spec(character)
     api_key=credential_for_model(db,assigned)
     if not api_key:raise HTTPException(503,"Model TTS chưa có API key cho API base này")
+    api_base=normalized_api_base(assigned.api_base)
+    voice=character_spec.tts_voice_id.strip()
+    if not voice and is_vbee_voice_base(api_base):
+        gender=character_voice_gender(character_spec)
+        if gender=="unspecified":raise HTTPException(503,"Hãy chọn giới tính giọng hoặc mã giọng TTS cho nhân vật trong CMS")
+        voices=await vbee_voices(api_base,api_key)
+        voice=select_voice(voices,gender,character_spec.speech.preferred_language)
+        if not voice:raise HTTPException(503,f"Vbee chưa có giọng {('nam' if gender=='male' else 'nữ')} khả dụng")
+    if not voice:voice=str(profile.get("tts_default_voice") or "").strip()
+    if not voice:raise HTTPException(503,"Chưa chọn mã giọng cho nhân vật hoặc model TTS trong CMS")
     dialogue=re.sub(r"\*\*[^*\n]+\*\*|\*[^*\n]+\*"," ",message.text or "")
     dialogue=re.sub(r"\s+"," ",dialogue).strip()
     if not dialogue:raise HTTPException(422,"Câu trả lời không có lời thoại để đọc")
     if len(dialogue)>4000:raise HTTPException(413,"Câu trả lời quá dài để đọc trong một lần")
     payload={"model":assigned.model_id,"input":dialogue,"voice":voice,"response_format":"mp3"}
-    api_base=normalized_api_base(assigned.api_base)
     db.close()
     try:
         async with httpx.AsyncClient(timeout=httpx.Timeout(45,connect=8),follow_redirects=False) as client:
@@ -2751,6 +2788,7 @@ def admin_create_preset(data:dict,_:None=Depends(docs_auth),db:DBSession=Depends
         system_prompt=str(data.get("system_prompt") or "").strip(),
         initial_greeting=str(data.get("initial_greeting") or "").strip(),
         tts_voice_id=str(data.get("tts_voice_id") or "").strip(),
+        tts_gender=str(data.get("tts_gender") or "unspecified"),
         tts_emotion_enabled=bool(data.get("tts_emotion_enabled",True)),
         identity={"role":role},
         support={"primary_role":role if role in {"study","work","health","lifestyle","companion"} else "companion","strengths":[role] if role in {"study","work","health","lifestyle","companion"} else ["companion"],"introduction":str(data.get("description") or "").strip() or f"Đồng hành cùng {name}."},
@@ -2830,7 +2868,7 @@ def admin_preset_home_section(preset_type:str,data:dict,_:None=Depends(docs_auth
 def admin_update_preset(preset_type:str,changes:dict,_:None=Depends(docs_auth),db:DBSession=Depends(db_session)):
     template=next((item for item in effective_presets(db) if item.preset_type==preset_type),None)
     if not template:raise HTTPException(404,"Preset not found")
-    allowed={"name","display_name","description","identity","personality","speech","support","system_prompt","scenario","initial_greeting","sample_dialogues","goals","behavior_rules","persona_knowledge","tts_voice_id","tts_emotion_enabled"}
+    allowed={"name","display_name","description","identity","personality","speech","support","system_prompt","scenario","initial_greeting","sample_dialogues","goals","behavior_rules","persona_knowledge","tts_voice_id","tts_gender","tts_emotion_enabled"}
     unknown=set(changes)-allowed
     if unknown:raise HTTPException(400,"Unsupported preset fields: "+", ".join(sorted(unknown)))
     data=template.model_dump();data.update(changes)
@@ -2853,7 +2891,7 @@ def admin_update_preset(preset_type:str,changes:dict,_:None=Depends(docs_auth),d
 def admin_update_character(character_id:str,changes:dict,_:None=Depends(docs_auth),db:DBSession=Depends(db_session)):
     row=db.get(Character,character_id)
     if not row:raise HTTPException(404,"Character not found")
-    allowed={"name","display_name","description","identity","personality","speech","support","system_prompt","scenario","initial_greeting","sample_dialogues","goals","behavior_rules","persona_knowledge","tts_voice_id","tts_emotion_enabled"}
+    allowed={"name","display_name","description","identity","personality","speech","support","system_prompt","scenario","initial_greeting","sample_dialogues","goals","behavior_rules","persona_knowledge","tts_voice_id","tts_gender","tts_emotion_enabled"}
     unknown=set(changes)-allowed
     if unknown:raise HTTPException(400,"Unsupported character fields: "+", ".join(sorted(unknown)))
     data=spec(row).model_dump()
