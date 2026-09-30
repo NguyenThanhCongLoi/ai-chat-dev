@@ -1,0 +1,53 @@
+import {createRequire} from 'node:module';
+const require=createRequire(import.meta.url);
+const {chromium}=require('D:/Chatbot/ai-box/frontend/node_modules/playwright');
+const base='https://nguyenthanhcongloi332004--character-chat-web.modal.run';
+const user='ui-expression-sync-'+Date.now();
+let headers={'Content-Type':'application/json'};
+let characterId='';
+let browser;
+try {
+  const accountResponse=await fetch(base+'/v1/auth/register',{method:'POST',headers,body:JSON.stringify({username:user,password:'sync-test-password',display_name:'Expression Sync Audit'})});
+  if(!accountResponse.ok) throw new Error(await accountResponse.text());
+  const account=await accountResponse.json();
+  headers={Authorization:'Bearer '+account.token,'Content-Type':'application/json'};
+  const presets=await (await fetch(base+'/v1/presets')).json();
+  const miaResponse=await fetch(base+'/v1/characters',{method:'POST',headers,body:JSON.stringify(presets.characters.find(x=>x.name==='Mia'))});
+  if(!miaResponse.ok) throw new Error(await miaResponse.text());
+  const mia=await miaResponse.json();characterId=mia.id;
+  const roomResponse=await fetch(base+'/v1/rooms',{method:'POST',headers,body:JSON.stringify({name:'Kiểm tra đồng bộ ảnh',character_ids:[mia.id]})});
+  if(!roomResponse.ok) throw new Error(await roomResponse.text());
+  const room=await roomResponse.json();
+  browser=await chromium.launch({channel:'msedge',headless:true});
+  const page=await browser.newPage();
+  await page.addInitScript(value=>localStorage.setItem('auth_token',value),account.token);
+  await page.goto(base+'/role-play-ai',{waitUntil:'domcontentloaded',timeout:60000});
+  await page.getByRole('button',{name:room.name}).first().click();
+  await page.locator('.emotionPortrait').waitFor({state:'visible',timeout:30000});
+  const characterMessages=page.locator('.messageBlock:not(.mineBlock) .bubble');
+  const before=await characterMessages.count();
+  let delayedRequestStarted=false;
+  await page.route('**/expression/**',async route=>{
+    delayedRequestStarted=true;
+    await new Promise(resolve=>setTimeout(resolve,2500));
+    await route.continue();
+  });
+  await page.locator('.composer textarea').fill('Tôi đang rất buồn và cần được an ủi.');
+  await page.locator('.composer button').last().click();
+  await page.locator('.typingBubble').waitFor({state:'visible',timeout:3000});
+  const deadline=Date.now()+120000;
+  while(!delayedRequestStarted && Date.now()<deadline) await new Promise(resolve=>setTimeout(resolve,100));
+  if(!delayedRequestStarted) throw new Error('AI response did not request an expression image');
+  await new Promise(resolve=>setTimeout(resolve,600));
+  const during=await characterMessages.count();
+  const typingDuring=await page.locator('.typingBubble').isVisible();
+  if(during!==before || !typingDuring) throw new Error(JSON.stringify({before,during,typingDuring}));
+  while(await characterMessages.count()===before && Date.now()<deadline) await new Promise(resolve=>setTimeout(resolve,100));
+  const after=await characterMessages.count();
+  const typingAfter=await page.locator('.typingBubble').isVisible().catch(()=>false);
+  if(after!==before+1 || typingAfter) throw new Error(JSON.stringify({before,after,typingAfter}));
+  console.log(JSON.stringify({before,during,after,typingDuring,typingAfter,synchronized:true}));
+} finally {
+  if(browser) await browser.close();
+  if(characterId) await fetch(base+'/v1/characters/'+characterId,{method:'DELETE',headers}).catch(()=>{});
+}

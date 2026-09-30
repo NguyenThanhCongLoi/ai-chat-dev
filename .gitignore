@@ -1,0 +1,13 @@
+__pycache__/
+.pytest_cache/
+*.egg-info/
+data/
+.env
+.docs-credentials
+secrets.vault.json
+backups/
+frontend/node_modules/
+frontend/dist/
+.tmp_db_check/
+.diagnostics/
+reports/
