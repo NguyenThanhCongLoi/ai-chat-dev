@@ -43,6 +43,10 @@ class SupportProfile(BaseModel):
     method: str = "Listen first, then offer one small useful next step when appropriate."
     proactive_style: str = "gentle"
 
+class CharacterVoiceLanguage(BaseModel):
+    enabled: bool = False
+    voice_id: str = Field(default="", max_length=160)
+
 class CharacterSpec(BaseModel):
     model_config = ConfigDict(extra="forbid")
     id: str = Field(default_factory=uid)
@@ -51,6 +55,14 @@ class CharacterSpec(BaseModel):
     description: str = ""
     avatar_url: str | None = None
     tts_voice_id: str = Field(default="", max_length=160, description="Voice identifier for TTS playback")
+    tts_languages: dict[str, CharacterVoiceLanguage] = Field(default_factory=dict)
+    tts_voice_mode: Literal["shared","separate"] = "shared"
+    tts_voice_source: Literal["auto","clone","catalog"] = "auto"
+    tts_voice_source_vi: Literal["auto","clone","catalog"] = "auto"
+    tts_voice_source_en: Literal["auto","clone","catalog"] = "auto"
+    tts_voice_vi: str = Field(default="", max_length=160)
+    tts_voice_en: str = Field(default="", max_length=160)
+    tts_volume: float = Field(default=0.8, ge=0, le=2)
     tts_gender: Literal["male", "female", "unspecified"] = "unspecified"
     tts_emotion_enabled: bool = True
     preset_type: str | None = None
@@ -83,6 +95,8 @@ class MessageIn(BaseModel):
     speaker_mode: str = "auto"
 
 class RoomIn(BaseModel):
+    topic: str = Field(default="",max_length=500)
+    is_public: bool = False
     name: str = ""
     character_ids: list[str] = Field(min_length=1, max_length=6)
 

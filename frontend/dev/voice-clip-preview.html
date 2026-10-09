@@ -1,0 +1,4 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{font:16px system-ui;max-width:760px;margin:30px auto}.field{display:grid;gap:8px;margin:14px 0}label{display:grid;gap:5px}input,textarea,button,select{padding:8px}fieldset{padding:20px}audio{display:block}</style></head><body>
+<label><select id="character-tts-gender"><option value="female">Nữ</option></select></label>
+<input id="character-tts-voice"><button id="save-character">Lưu</button>
+<script type="module">import {bindVoiceClone} from "/src/admin/voiceClone.ts";bindVoiceClone(()=>({id:"demo",spec:{name:"Mia"}}),()=>{},async()=>{});</script></body></html>

@@ -14,13 +14,20 @@ PRESET_GENDERS = {
 }
 
 
-def is_vbee_voice_base(api_base: str) -> bool:
-    host = (urlsplit(api_base).hostname or "").lower()
-    return host == "api-voice-uat.vbeelabs.ai" or host.endswith(".vbeelabs.ai")
+def voice_connect_timeout(default: float, request_timeout: float) -> float:
+    """Use the shared gateway setting while retaining Voice's existing defaults."""
+    from .timeouts import gateway_connect_timeout
+    return gateway_connect_timeout(default, request_timeout)
 
 
 def vbee_voice_url(api_base: str) -> str:
     return api_base.rstrip("/").removesuffix("/v1") + "/api/v1/voices"
+
+
+def speech_api_base(api_base: str) -> str:
+    """Accept a service origin as well as an OpenAI-compatible /v1 base."""
+    base = api_base.rstrip("/")
+    return base + "/v1" if not urlsplit(base).path else base
 
 
 def normalize_voices(payload) -> list[dict[str, str]]:
@@ -67,10 +74,16 @@ def character_voice_gender(character) -> str:
     return "unspecified"
 
 
-def select_voice(voices: list[dict[str, str]], gender: str, preferred_language: str = "vi") -> str:
-    choices = [voice for voice in voices if voice["gender"] == gender]
-    if not choices:
-        return ""
-    language = (preferred_language or "vi").lower()
-    choices.sort(key=lambda voice: (not voice["language"].lower().startswith(language), voice["id"]))
+def select_voice(voices: list[dict[str, str]], gender: str, preferred_language: str = "vi", strict_language: bool = False) -> str:
+    language=(preferred_language or "vi").split("-",1)[0].lower()
+    aliases={"vi":("vi","vietnamese","vietnam","tiếng việt"),"en":("en","english")}
+    def matches(voice):
+        value=voice.get("language","").lower()
+        return any(value.startswith(alias) for alias in aliases.get(language,(language,)))
+    localized=[voice for voice in voices if matches(voice)]
+    choices=localized if strict_language else localized or voices
+    if not choices:return ""
+    # Unknown gender still gets a real catalog voice. Prefer language before
+    # gender, and preserve gender when the matching catalog offers it.
+    choices=sorted(choices,key=lambda voice:(gender in ("male","female") and voice["gender"]!=gender,voice["id"]))
     return choices[0]["id"]

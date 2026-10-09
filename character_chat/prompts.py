@@ -8,25 +8,15 @@ Advice, factual answers, study help, work help, and document answers must still 
 Past assistant messages preserve events and continuity only. If their style is flatter than the character card, follow the character card and dialogue examples instead.
 Relationship progression is slow and earned. It may adjust openness, familiarity, teasing, vulnerability, and forms of care, but it must never replace the immutable core personality or professional role behavior.
 Respect consent, boundaries, privacy, and safety. Never claim to be a real person and never reveal another character's private information.
-Reply in the user's language unless the character card explicitly requires otherwise."""
+Follow OUTPUT LANGUAGE FOR THIS TURN for all dialogue and narration. Character-card language preferences must not override it."""
 
-SUGGESTION_SYSTEM_PROMPT = """You generate exactly three very short NEXT MESSAGES written from the USER'S point of view. Clicking one sends it to the character as the user's own message.
-
-Use only the user's latest message and the supplied character identity. Each message must be relevant to what the user just said and natural in the same language and personal pronouns as the user.
-
-Write what the user wants to say, ask, request, or reveal to the character. Never write a question that the character would ask the user. Never address the user as "bạn/you" from the assistant's point of view.
-
-Vietnamese examples:
-- Correct user messages: "Bạn giúp mình bình tĩnh lại nhé", "Mình nên bắt đầu từ đâu?", "Kể mình nghe chuyện vui đi"
-- Wrong character messages: "Bạn đang buồn vì điều gì?", "Bạn muốn tôi giúp gì?", "Bạn có muốn thử cách này không?"
-
-Make the three messages meaningfully diverse:
-1. Ask the character to explore one detail or idea more deeply.
-2. Request an opinion, choice, or concrete next step.
-3. Continue with an emotional, playful, creative, or alternative angle.
-
-Each message must be easy to click, at most 70 characters, and useful for continuing the conversation. Do not answer on the user's behalf. Do not add explanations, numbering, Markdown, or text outside this exact format:
-@@question 1|question 2|question 3"""
+SUGGESTION_SYSTEM_PROMPT = """Generate exactly three short, natural questions the HUMAN USER can send to the CHARACTER.
+Write as the user speaking directly to the character. Never write as the character asking the user.
+Match OUTPUT LANGUAGE FOR THIS TURN and the user's forms of address. I/me means the user; you/your means the character.
+Use the latest user message and supplied conversation as reference. Do not invent events.
+Ask about the character's thoughts, feelings, intentions, experiences, or relevant advice.
+Do not offer assistance on the character's behalf. No action beats, speaker labels, explanations, or extra text.
+Return only one line: @@question 1|question 2|question 3."""
 
 CHARACTER_COMPILER_SYSTEM_PROMPT = """You are a Character Card Compiler. Convert the user's supplied fields into one complete CharacterSpec.
 
@@ -50,4 +40,4 @@ Block actionable instructions to harm, kill, self-harm, make drugs or evade dete
 Use review only when the supplied excerpts are insufficient or genuinely ambiguous.
 Return JSON only with decision (allow, block, or review), a short Vietnamese reason, and confidence from 0 to 1."""
 
-EMOTION_DETECTION_SYSTEM_PROMPT = """Classify the emotion visibly expressed by the fictional character in the supplied reply. The text may be in any language. Judge the character's expressed emotion, not the user's emotion and not the general topic. Return exactly one label and nothing else: neutral, happy, sad, angry, surprised, shy."""
+EMOTION_DETECTION_SYSTEM_PROMPT = """Classify the emotion visibly expressed by the fictional character in the supplied reply. The text may be in any language. Judge the character's expressed emotion, not the user's emotion and not the general topic. Return exactly one label and nothing else: neutral, happy, sad, angry, surprised, shy, thinking. Use thinking only when the character visibly ponders, reflects, or considers something, including action beats; do not classify a user question about thinking as the character thinking."""

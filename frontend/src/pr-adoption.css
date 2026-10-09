@@ -1,0 +1,36 @@
+/* Adopt the PR #1 platform shell while retaining the existing workspace routes. */
+.platformWorkspace{grid-template-rows:minmax(0,1fr);background:var(--surface)}
+.platformWorkspaceSidebar,.platformWorkspaceContent,.platformWorkspaceContent iframe,.platformWorkspaceLoading{grid-row:1;height:100%;min-height:0}
+.platformWorkspaceSidebar{background:var(--surface-2)}
+.platformWorkspaceBrand span{background:var(--ink)}
+.assistantPrototypeHome .assistantTasks button>.asSpecArt{display:block;width:100%;height:auto;flex:none;padding:0;overflow:visible}
+.assistantPrototypeHome .assistantTasks button>.asSpecArt .modeIllustration{width:100%;height:auto;aspect-ratio:16/7}
+.assistantPrototypeHome .assistantTasks button>.asSpecArt .asSpecAvatar{bottom:-18px}
+.assistantPrototypeHome .assistantTasks button>span:nth-child(2){display:flex;flex:1;flex-direction:column;align-items:flex-start;padding-top:27px;text-align:left}
+.assistantPrototypeHome .assistantWelcome>.modeAvatar{display:block;flex:0 0 52px;line-height:0}
+.assistantPrototypeHome .assistantWelcome>.modeAvatar .personaFace{border-radius:50%}
+:root[data-app="roleplay"] .platformWorkspaceNavIcon{color:var(--accent)}
+.myCharacterCard{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));align-content:start;column-gap:8px!important}
+.myCharacterCard>:not(button){grid-column:1/-1}
+.myCharacterCard>button{width:100%;min-width:0;margin:0;align-self:end}
+.myCharacterCard>.deleteCharacter{grid-column:1/-1}
+@media(max-width:760px){.platformWorkspace,.platformWorkspaceCollapsed{grid-template-rows:64px minmax(0,1fr)}.platformWorkspaceSidebar{grid-row:1;height:64px}.platformWorkspaceContent,.platformWorkspaceLoading{grid-row:2;height:100%}}
+:root[data-app="roleplay"] .collectionTabs button.active,
+:root[data-app="roleplay"] .characterCreateActions button:first-child,
+:root[data-app="roleplay"] .myCharacterCard>button:first-of-type{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+:root[data-app="roleplay"] .collectionTabs button span{background:var(--accent-soft);color:var(--accent)}
+:root[data-app="roleplay"] .myCharacterCard>.deleteCharacter{background:transparent;border-color:var(--line-2);color:var(--bad)}
+/* Keep the login mascots' illustrated palette independent of theme tokens. */
+.loginScene--dark .loginOwl .owlBody{stroke:#38271f;stroke-width:2.5}
+.loginScene--dark .loginOwl .owlTuft{fill:#9a6541;stroke:#38271f}
+.loginScene--dark .loginOwl .owlBelly{fill:#eadbc0;stroke:#85694e}
+.loginScene--dark .loginOwl .owlFeathers{stroke:#a48869}
+.loginScene--dark .loginOwl .owlMask{fill:#f0e2c9;stroke:#684b37}
+.loginScene--dark .loginOwl .owlBrow{stroke:#60412e}
+.loginScene--dark .loginOwl .owlEyeRing{fill:#fff3ce;stroke:#5b3d2b}
+.loginScene--dark .loginOwl .owlPupil{fill:#171e25}
+.loginScene--dark .loginOwl .owlGlint{fill:#fffdf4}
+.loginScene--dark .loginOwl .owlLid{stroke:#6b4934}
+.loginScene--dark .loginOwl .owlBeak{fill:#457b88;stroke:#2f4a52}
+.loginScene--dark .loginOwl .owlFeet{stroke:#b89663}
+.loginScene--dark .loginOwl .owlWing{fill:#84583d;stroke:#38271f}

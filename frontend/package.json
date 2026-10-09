@@ -1,1 +1,28 @@
-{"name":"character-chat-web","version":"0.1.0","private":true,"type":"module","scripts":{"dev":"vite --host 0.0.0.0","build":"tsc --noEmit && vite build"},"dependencies":{"react":"^19.1.0","react-dom":"^19.1.0"},"devDependencies":{"@types/react":"^19.1.0","@types/react-dom":"^19.1.0","typescript":"^5.8.0","vite":"^6.3.0"}}
+{
+  "name": "character-chat-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "tsc --noEmit && vite build",
+    "mock": "node dev/mock-api.mjs",
+    "prebuild": "node scripts/ui-locales.cjs --build",
+    "i18n:update": "node scripts/ui-locales.cjs --update",
+    "i18n:check": "node scripts/ui-locales.cjs --check",
+    "i18n:rewrite": "node scripts/ui-locales.cjs --rewrite"
+  },
+  "dependencies": {
+    "@flaticon/flaticon-uicons": "^3.3.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "typescript": "^5.8.0",
+    "vite": "^6.3.0"
+  }
+}

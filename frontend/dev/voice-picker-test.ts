@@ -1,0 +1,1 @@
+import * as settings from "../src/admin/voiceSettings"; import * as sources from "../src/admin/voiceSources"; import * as clone from "../src/admin/voiceClone"; Object.assign(window,{voiceTest:{...settings,...sources,...clone}});

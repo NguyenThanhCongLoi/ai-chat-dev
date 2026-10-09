@@ -25,6 +25,7 @@ Character Chat là demo SaaS companion AI và roleplay nhân vật. Backend dùn
 15. [API và debug](#15-api-và-debug)
 16. [Xử lý lỗi thường gặp](#16-xử-lý-lỗi-thường-gặp)
 17. [Giới hạn trước khi thành SaaS thật](#17-giới-hạn-trước-khi-thành-saas-thật)
+18. [Tự chỉnh voice tự phát và suggest trong code](#18-tự-chỉnh-voice-tự-phát-và-suggest-trong-code)
 
 ## 1. Khởi động nhanh
 
@@ -559,6 +560,12 @@ Tất cả lệnh dưới đây chạy bằng PowerShell tại `D:\ai_chat_char`
 | `modal app logs character-chat --tail 200` | Xem 200 log gần nhất                           | Không                |
 | `modal app logs character-chat -f`         | Theo dõi log; `Ctrl+C` để dừng                 | Không                |
 
+Kiểm tra riêng kết nối HTTPS từ một container Modal tới gateway (chỉ gọi `GET /v1/models` không kèm API key, không sinh token): `python -m modal run tests/modal_gateway_probe.py --url https://gateway.avibi.ai/v1/models --samples 20`. HTTP 401 là kết quả bình thường của phép đo không có key; xem `ConnectTimeout` và thời gian từng lần để phát hiện lỗi kết nối chập chờn.
+
+Role Play: `GATEWAY_CONNECT_TIMEOUT_SECONDS` đặt thời gian chờ kết nối HTTPS tới gateway ở lần thử đầu (giây, mặc định `3`, tối đa `30`, đồng thời không vượt thời gian chờ gateway của model trong CMS). Nếu lần đầu bị `ConnectTimeout`, ứng dụng thử lại một lần với tối đa `3` giây kết nối rồi mới chuyển model dự phòng. Biến này được đọc trong web container Modal; có thể thêm vào Modal Secret `character-chat-llm` đang gắn với web function và triển khai lại. Ví dụ đặt `8` nghĩa là lần đầu chờ tối đa 8 giây, lần thử lại tối đa 3 giây. `gateway_read_timeout_seconds` trong CMS điều khiển thời gian chờ phản hồi sau khi kết nối.
+
+Voice dùng cùng biến `GATEWAY_CONNECT_TIMEOUT_SECONDS` cho kết nối tới API TTS và danh sách giọng. Nếu không đặt biến, giới hạn kết nối lượt đầu giữ nguyên: `8` giây khi tạo audio, `5` giây khi tải danh sách giọng; cả hai thử lại một lần với tối đa `3` giây khi gặp `ConnectTimeout`. Timeout đọc audio vẫn là `30` giây, danh sách giọng là `12` giây; `ReadTimeout` không tự gửi lại yêu cầu tạo audio.
+
 ### Secret
 
 | Lệnh                                                                         | Tác dụng                           |
@@ -918,9 +925,15 @@ modal volume get character-chat-data /character_chat.sqlite .\backups\character_
 
 ### Phát giọng nói Role Play qua gateway
 
+API TTS OpenAI compatible tại một domain khác cũng dùng được nếu có `POST /v1/audio/speech` và `GET /api/v1/voices`: nhập API base dạng `https://domain.example/v1` (backend cũng chấp nhận domain gốc và tự thêm `/v1` khi gọi speech), chọn đúng model ID của chính API đó và lưu API key riêng cho model hoặc đúng API base. Domain tunnel `trycloudflare.com` có thể thay đổi khi tunnel khởi động lại; lúc đó cần cập nhật API base và key tương ứng trong CMS. Danh sách giọng được lấy từ API đang phân công TTS, không phụ thuộc tên domain Vbee.
+
 Với [Avibi Voice API](https://api-voice-uat.vbeelabs.ai/docs), trong CMS → **Cấu hình AI**, thêm model TTS với `API base` là `https://api-voice-uat.vbeelabs.ai/v1`, model ID TTS có trong `GET /v1/models` và API key Vbee tương ứng. Ở **Phân công model**, gán model đó cho **Phát giọng nói Role Play**. Key có thể gắn riêng vào model hoặc API base này; không dùng nhầm key của gateway LLM. Trong **Nhân vật**, danh sách voice lấy từ `GET /api/v1/voices`. Để trống mã giọng thì hệ thống tự chọn voice cùng giới tính, ưu tiên tiếng Việt. Có thể chọn giọng riêng và giới tính giọng cho từng nhân vật hệ thống hoặc public. Sau đó bấm **Nghe** ở câu trả lời nhân vật.
 
 Backend gọi endpoint OpenAI compatible `POST {API base}/audio/speech`, lấy lời thoại từ tin nhắn đã lưu và trả audio cho client. API key chỉ nằm ở backend. Các hành động trong `*...*` hoặc `**...**` không được đọc. Request dùng `model`, `input`, `voice`, `response_format`; ảnh biểu cảm trong chat vẫn hoạt động riêng. Nếu tên/mô tả nhân vật không đủ xác định nam hay nữ, hãy chọn **Giới tính giọng** trong CMS để tránh phát giọng sai.
+
+Role Play hiện mặc định tự phát voice cho lời chào và các câu trả lời mới. Với phản hồi incremental có tiếng Việt/Anh được hỗ trợ, audio được chuẩn bị/phát qua SSE PCM trong khi text vẫn đang sinh; câu chính không phải chờ tạo MP3 hoàn tất. Phòng nhiều nhân vật phát voice lần lượt qua hàng đợi, không chồng các giọng thoại. Các phần audio và WAV hoàn tất được lưu/cache để tái sử dụng. Lịch sử cũ không tự đọc lại toàn bộ khi mở phòng; câu chào có luồng tự phát riêng. Nút **Nghe** vẫn dùng để nghe lại/dừng. Nếu trình duyệt chặn autoplay, có thể cần tương tác hoặc bấm Nghe một lần. Khi thay model, voice hoặc nội dung, chữ ký cấu hình làm cache cũ không còn hợp lệ. Xem [mục 18](#18-tự-chỉnh-voice-tự-phát-và-suggest-trong-code) để tự chỉnh.
+
+CMS → **Log voice** ghi mỗi lần tạo audio thành công hoặc lỗi, model, mã giọng, kích thước audio và độ trễ gọi gateway. Mỗi lần trình duyệt bắt đầu phát cũng được ghi là một lượt **Nghe**, gồm phát tự động hay thủ công và thời gian từ lúc yêu cầu phát đến khi bắt đầu phát. Lượt Nghe không có nghĩa là người dùng đã nghe hết audio. Bộ lọc cho phép xem từng loại sự kiện, trạng thái và tìm theo user, nhân vật, model hoặc lỗi.
 
 
 - Demo identity chưa phải auth thật; cần email/OAuth, session/JWT và authorization.
@@ -934,3 +947,329 @@ Backend gọi endpoint OpenAI compatible `POST {API base}/audio/speech`, lấy l
 - Các kỹ thuật học từ hệ sinh thái roleplay được triển khai lại bằng code riêng; không sao chép trực tiếp mã AGPL.
 
 > Không lưu tên đăng nhập hoặc mật khẩu production trong repository. Tạo và quản lý tài khoản admin tại CMS → **Truy cập**; lưu bí mật trong password manager hoặc Modal Secret.
+
+
+## 18. Tự chỉnh voice tự phát và suggest trong code
+
+Cập nhật ngày **08/10/2026**. Phần này hướng dẫn chỉnh hành vi người dùng của **Role Play**. `frontend/src/admin.ts` quản lý màn CMS; việc tự phát giọng và hàng đợi thực tế nằm trong `RolePlayApp.tsx`.
+
+### 18.1. Các file cần sửa
+
+| File | Chức năng |
+| --- | --- |
+| [RolePlayApp.tsx](frontend/src/roleplay/RolePlayApp.tsx) | Gửi chat, nhận SSE, chuẩn bị voice, tự phát, hàng đợi, sinh lại và câu chào. |
+| [backgroundSpeech.ts](frontend/src/roleplay/backgroundSpeech.ts) | Tải/giữ audio, phát phần đã nhận và theo dõi stream đang chạy; tái sử dụng job. |
+| [streamSpeech.ts](frontend/src/roleplay/streamSpeech.ts) | PCM player, AudioContext, nối chunk, gain và dừng audio. |
+| [voicePreferences.ts](frontend/src/roleplay/voicePreferences.ts) | `canSpeak()`: điều kiện nội dung được phép phát voice. |
+| [prompts.py](character_chat/prompts.py) | Prompt suggest mặc định `SUGGESTION_SYSTEM_PROMPT`. |
+| [engine.py](character_chat/engine.py) | `suggestion_prompt()`, bắt buộc vai user, parse và lọc/finalize suggest. |
+
+Tìm theo tên hàm thay vì số dòng vì số dòng sẽ thay đổi khi thêm code.
+
+### 18.2. Voice tự phát hiện hoạt động thế nào?
+
+1. Khi mở phòng hoặc bấm gửi, client kích hoạt PCM player trong tương tác của user.
+2. Delta đủ điều kiện có speech_incremental, speech_supported và ID tin nhắn ổn định sẽ gọi prepareRoleplaySpeech(spoken, true).
+3. Hàm này vừa chuẩn bị/cache audio vừa đưa tin nhắn vào hàng đợi tự phát. Không thêm lệnh queue riêng tại các nhánh phản hồi.
+4. Player đọc chunk PCM đã nhận và tiếp tục theo stream mới, không chờ hết văn bản.
+5. Câu cuối hoặc câu sinh lại cũng gọi prepareRoleplaySpeech; autoSpeechStarted tránh phát trùng nhánh incremental.
+6. Khi mở lại phòng, các lời chào của nhân vật trước tin nhắn user đầu tiên được chuẩn bị và xếp hàng theo thứ tự.
+
+Ngôn ngữ lời thoại và công tắc CMS quyết định khả năng đọc; ngôn ngữ giao diện không quyết định voice. Nội dung bị ngắt không tự phát. Trình duyệt vẫn có thể yêu cầu user tương tác để cho phép âm thanh.
+
+### 18.3. Chuyển về chỉ chuẩn bị voice, user bấm Nghe
+
+Trong RolePlayApp.tsx, đổi các lời gọi thành:
+
+```tsx
+prepareRoleplaySpeech(spoken, true, false);
+prepareRoleplaySpeech(payload as Message, false, false);
+prepareRoleplaySpeech(replacement, false, false);
+```
+
+Tham số thứ ba false giữ tải/cache audio và tắt tự phát ở nhánh đó. Nút Nghe dùng lại audio đã có. Muốn tắt lời chào tự phát, bỏ vòng queueRoleplaySpeech(greeting.id) trong effect openingGreeting; phần chuẩn bị lời chào đã truyền false.
+
+### 18.4. Chỉ tự phát sau khi text đã xong
+
+Bỏ nhánh bắt đầu voice trong delta; giữ prepareRoleplaySpeech ở character_message và nhánh sinh lại. Backend vẫn có thể tạo/cache audio incremental sớm. Mỗi tin nhắn dùng lại job audio, không gọi generation riêng để bật tự phát.
+
+### 18.5. Phòng nhiều nhân vật phải phát lần lượt
+
+Hai hàm chính trong `RolePlayApp.tsx`:
+
+```tsx
+function playNextQueuedSpeech() {
+  const next = speechQueueRef.current.shift();
+  if (next) void startRoleplayAudio(next, true);
+}
+
+function queueRoleplaySpeech(messageId: string) {
+  speechQueueRef.current.push(messageId);
+  if (
+    !speechAbortRef.current &&
+    !speechAudioRef.current &&
+    !speechStreamRef.current
+  )
+    playNextQueuedSpeech();
+}
+```
+
+- `push` thêm cuối hàng đợi; `shift` lấy câu đầu tiên.
+- Khi stream audio phát xong hoặc `audio.onended`, code gọi:
+  `stopRoleplayAudio(false)` rồi `playNextQueuedSpeech()`.
+- `false` giữ lại các câu còn trong hàng đợi.
+- Voice lỗi có nhánh dọn player và chuyển sang câu tiếp theo.
+- User gửi lượt mới, rời phòng hoặc chủ động dừng có thể xóa hàng đợi để không đọc câu cũ.
+
+**Không gọi `startRoleplayAudio()` trực tiếp cho mọi nhân vật cùng lúc** nếu muốn giữ phát lần lượt. Thứ tự là thứ tự phản hồi đủ điều kiện được xếp vào hàng đợi. Audio có thể được chuẩn bị song song, nhưng giọng thoại chỉ có một player đang phát.
+
+Nhạc nền, clip phản ứng và sound hành động là các lớp âm thanh riêng; hàng đợi này chỉ quản lý **giọng đọc lời thoại**.
+
+### 18.6. Chỉnh prompt suggest từ phía user
+
+Mở `character_chat/prompts.py`, tìm `SUGGESTION_SYSTEM_PROMPT`. Ví dụ prompt ngắn:
+
+```text
+Generate exactly three short questions the user can send to the character.
+Write from the user's perspective, in the user's language.
+Ask the character about their thoughts, feelings, story, or advice.
+Do not write questions spoken by the character to the user.
+Return only: @@question 1|question 2|question 3.
+```
+
+Ví dụ đúng — user hỏi nhân vật:
+
+- “Bạn đang nghĩ gì?”
+- “Kể mình nghe thêm về chuyện đó nhé.”
+- “Theo bạn mình nên làm gì tiếp?”
+
+Ví dụ sai vai — nhân vật cung cấp dịch vụ/hỏi ngược user:
+
+- “Bạn muốn tôi giúp gì?”
+- “How can I help you?”
+- “Would you like me to explain?”
+
+CMS có thể ghi đè prompt mặc định bằng `ADMIN_SUGGESTION_INSTRUCTION`. Vì vậy chỉnh `prompts.py` chưa chắc thay được toàn bộ nội dung prompt đang sử dụng khi CMS đã có prompt riêng.
+
+### 18.7. Chỉ dẫn bắt buộc và bộ lọc suggest
+
+Trong `character_chat/engine.py`:
+
+1. **`suggestion_prompt()`**:
+   - System message đầu dùng prompt CMS hoặc mặc định.
+   - System message kế tiếp có `REQUIRED SPEAKER: the human USER`.
+   - Mỗi option được gửi nguyên văn như tin nhắn user đến nhân vật.
+   - `you/bạn` chỉ nhân vật; `I/mình` chỉ user.
+   - Chỉ dẫn này vẫn được thêm khi dùng prompt CMS.
+
+2. **`character_viewpoint_suggestion(item)`**:
+   - Nhận diện các mẫu rõ ràng sai vai, chẳng hạn “Bạn muốn tôi giúp…” hoặc “How can I help you”.
+   - Muốn thêm mẫu nhận diện, chỉnh regex tại đây.
+   - Tránh chặn mọi câu có `bạn/you`: “Bạn đang nghĩ gì?” là câu user hỏi nhân vật hợp lệ.
+
+3. **`finalize_suggestions()`**:
+   - Giữ các option hợp lệ, lọc mẫu sai vai/placeholder.
+   - Kiểm tra ngôn ngữ; bổ sung slot thiếu bằng gợi ý local.
+   - Cho phép option trùng nhau theo hành vi hiện tại.
+   - Không gửi thêm một lượt LLM chỉ để sửa sai vai.
+
+Prompt cùng regex giảm lỗi nhưng không chứng minh mọi câu trong mọi ngôn ngữ đều được phân loại đúng. Khi gặp câu sai mới, thêm case kiểm thử trước khi mở rộng bộ lọc để không loại nhầm câu user hợp lệ.
+
+### 18.8. Kiểm tra sau khi chỉnh
+
+Chạy từ thư mục gốc để kiểm tra bộ xử lý suggest:
+
+```powershell
+cd D:\ai_chat_char
+python -m pytest tests/test_suggestion_parser.py -q
+```
+
+Kiểm tra tái sử dụng audio stream:
+
+```powershell
+cd D:\ai_chat_char\frontend
+node --test scripts/background-speech.test.cjs
+```
+
+Sau deploy, kiểm tra thực tế:
+
+- Câu trả lời mới tự phát; mỗi message chỉ tự phát một lần.
+- Phòng hai nhân vật: giọng thứ hai đợi giọng thứ nhất kết thúc.
+- Bấm Nghe lại sử dụng audio đã có.
+- Sinh lại câu trả lời: câu thay thế phát theo lựa chọn autoplay.
+- Rời phòng/gửi lượt mới: không tiếp tục đọc câu cũ.
+- Nội dung ngoài vi/en: không ép phát.
+- Bấm suggest: tin nhắn gửi đúng vai user hỏi/gửi cho nhân vật.
+
+### 18.9. Build UI và deploy
+
+Build tại **`D:\ai_chat_char\frontend`**:
+
+```powershell
+cd D:\ai_chat_char\frontend
+npm.cmd run build
+```
+
+Nếu terminal không nhận Node/npm, thêm đường dẫn Node đang có trên máy:
+
+```powershell
+$env:PATH='D:\Chatbot\.tools\node-v24.21.0-win-x64;' + $env:PATH
+npm.cmd run build
+```
+
+Kết quả nằm trong `frontend\dist`. Sau đó deploy từ **thư mục gốc**:
+
+```powershell
+cd D:\ai_chat_char
+python -m modal deploy modal_app.py
+```
+
+`modal_app.py` có bước build frontend khi có Node/npm; build thủ công giúp kiểm tra trước khi deploy. Chỉ sửa Python vẫn cần deploy backend để bản đang chạy nhận thay đổi. Sửa README không cần build/deploy.
+
+Khi deploy thành công, mở web và nhấn `Ctrl + F5` để nạp frontend mới. Không đưa API key vào biến `VITE_*` hoặc commit key trong code.
+
+Tài liệu chi tiết: [Voice incremental và cache](docs/ROLEPLAY_BACKGROUND_VOICE.md), [Suggestion event riêng](docs/SUGGESTION_STREAMING.md).
+
+
+### 18.10. Mặc định tự phát ở mọi nhánh voice Role Play
+
+Hàm prepareRoleplaySpeech(message, incremental = false, autoplay = true) hiện
+mặc định chuẩn bị audio rồi đưa vào hàng đợi tự phát. Áp dụng cho text incremental,
+câu trả lời hoàn tất, câu sinh lại và lời chào khi vào/đổi ngôn ngữ phòng.
+Lời chào phòng nhóm lấy từng nhân vật trước tin nhắn user đầu tiên và phát lần
+lượt; không tự đọc các phản hồi cũ trong lịch sử.
+
+Câu chào có guard phòng/phiên riêng: chuẩn bị với autoplay=false, rồi xếp hàng
+khi guard còn hợp lệ. Vì vậy muốn tự sửa để tắt autoplay, chỉnh tham số/hành vi
+mặc định của prepareRoleplaySpeech và nhánh queue lời chào. Hướng dẫn bỏ các lệnh
+queue ở nhánh delta/final/sinh lại phía trên mô tả cấu trúc trước khi gom chung;
+hiện các nhánh này chỉ gọi prepareRoleplaySpeech.
+
+Không bỏ canSpeak(): voice vẫn chỉ phát nội dung Việt/Anh có giọng phù hợp.
+Nút Nghe dùng nghe lại/dừng; không phải điều kiện bắt buộc cho phản hồi mới.
+CMS preview vẫn phát khi admin chọn nghe thử, không tự phát cả thư viện âm thanh.
+
+### 18.11. Bật / tắt voice theo ngôn ngữ của từng nhân vật
+
+Trong CMS → Nhân vật → Sửa → **Khả năng nói theo ngôn ngữ**:
+
+- Tiếng Việt (vi) và tiếng Anh (en) mặc định bật; dùng giọng chung hoặc giọng riêng đang được gán.
+- Ngôn ngữ khác mặc định tắt. Gán **Voice ID** được dịch vụ TTS thực sự hỗ trợ, rồi bật công tắc tương ứng và lưu.
+- Cấu hình lưu trong CharacterSpec.tts_languages, không phụ thuộc ngôn ngữ giao diện.
+- Khi tắt một ngôn ngữ, server từ chối tạo/phát voice cho nội dung đó, client không hiện nút Nghe. Hội thoại có nhiều tiếng chỉ đọc khi tất cả tiếng trong lời thoại được bật và cấu hình.
+- Cấu hình mới tham gia khóa cache voice; bản audio của cấu hình cũ không được dùng cho cấu hình mới.
+- Phản hồi được hỗ trợ mặc định tự phát qua prepareRoleplaySpeech(message, incremental, autoplay = true). Muốn chuẩn bị audio mà chưa phát: truyền false vào tham số thứ ba. Các câu trong phòng nhóm vào hàng đợi và phát lần lượt.
+- Công tắc này không bổ sung khả năng mới cho API TTS. Nhà cung cấp cần hỗ trợ ngôn ngữ và Voice ID bạn gán.
+
+### Âm lượng nhạc nền phía user
+
+Ở trang chủ và trong phòng chat, bấm phần **Âm lượng nhạc** để mở thanh kéo 0–100%; bấm biểu tượng loa để bật/tắt nhạc. Mức âm lượng được lưu trên trình duyệt và dùng lại giữa trang chủ và phòng chat, không bị âm lượng CMS ghi đè. Khi nhân vật đọc lời thoại, nhạc tự hạ xuống và trở lại mức user chọn sau khi đọc xong. CMS quản lý upload, xóa và chọn danh sách bài phát; thanh chỉnh âm lượng nhạc trong CMS đã được bỏ.
+
+### Kiểm duyệt ngay khi tạo/sửa nhân vật
+
+- CMS phải phân công model có tác vụ moderation và API key hợp lệ. Mọi nội dung nhân vật được model đọc nguyên văn, bao gồm nhiều ngôn ngữ và nội dung pha trộn.
+- Các luồng tạo trực tiếp, AI tạo, mirror, từ tài liệu, clone và tạo/sửa trong CMS đều kiểm tra trước khi lưu. Luồng AI kiểm tra đầu vào trước khi compile và toàn bộ nhân vật sau khi compile.
+- Chặn nhân vật chính trị, tôn giáo và nội dung tình dục/khiêu dâm; chặn nội dung tình dục/gợi dục liên quan người dưới 18. Nhân vật dưới 18 không có nội dung tình dục được phép.
+- Model xét ngữ cảnh; không chặn chỉ vì từ khóa về tuổi, giới tính, tên người hoặc nội dung sức khỏe trung tính.
+- Không có hàng chờ duyệt. Khi model không xác định được, lỗi hoặc chưa được cấu hình, trả lỗi thử lại; không lưu nhân vật và không gắn nhãn vi phạm chắc chắn.
+- Chỉnh voice hoặc âm lượng mà không thay đổi nội dung nhân vật không gọi lại kiểm duyệt.
+- Phần này áp dụng cho tạo/sửa nhân vật. Các điểm kiểm duyệt chat hiện có được giữ riêng.
+- Đây là phân loại bằng model; cần theo dõi trường hợp nhận diện nhầm trong vận hành, không có bảo đảm tuyệt đối.
+
+### Giọng văn UI khi bản địa hóa
+
+Quy tắc chung ở docs/UI_LOCALIZATION_STYLE.md được dùng cho dịch UI khi build và dịch UI trên server. Câu chờ, lời chào và trạng thái trống có thể thân thiện, vui nhẹ; nút bấm, lỗi, thanh toán, kiểm duyệt và xác nhận xóa phải rõ ràng. Thành ngữ Việt được viết lại tự nhiên ở từng tiếng, không dịch từng chữ.
+
+Các câu chờ dùng bản đã lưu, không gọi AI lúc user chờ. Việc đổi quy tắc dịch không tự ghi đè toàn bộ bản dịch cũ: các câu đã rà soát được cập nhật trực tiếp trong locale pack, còn chuỗi mới được dịch theo quy tắc mới. Quy tắc này không đổi tính cách hoặc giọng văn nội dung nhân vật.
+
+### Viết lại toàn bộ bản dịch UI qua Avibi
+
+Chạy trong `D:\ai_chat_char\frontend`, bằng PowerShell:
+
+```powershell
+$env:UI_I18N_API_KEY = Read-Host "Avibi API key" -MaskInput
+npm.cmd run i18n:rewrite
+npm.cmd run i18n:check
+npm.cmd run build
+Remove-Item Env:UI_I18N_API_KEY
+```
+
+Nếu Windows PowerShell 5 không hỗ trợ `-MaskInput`, dùng cách nhập ẩn:
+
+```powershell
+$translationSecret = Read-Host "Avibi API key" -AsSecureString
+$env:UI_I18N_API_KEY = [System.Net.NetworkCredential]::new("", $translationSecret).Password
+```
+
+`i18n:rewrite` viết lại tất cả chuỗi trong catalog và các nhãn còn lưu trong locale pack, cho en/zh/ja/ko/my/km theo `docs/UI_LOCALIZATION_STYLE.md`. Tiếng Việt là nội dung nguồn. Tên riêng, biến và ý nghĩa chức năng phải được giữ; nội dung nhân vật không nằm trong bước này.
+
+Công cụ sao lưu bản cũ vào `backups/ui-locales/`, kiểm tra trường ngôn ngữ và placeholders trước khi lưu. Chạy lại cùng lệnh để tiếp tục các trường chưa viết lại thành công; không gọi lại API cho những trường đã hoàn tất. Thay đổi quy tắc văn phong sẽ tạo một lượt viết lại mới. `i18n:update` vẫn chỉ bổ sung phần thiếu. Chỉ deploy sau khi kiểm tra và build thành công. Kiểm tra tự động không thay thế rà soát chất lượng diễn đạt bởi người bản ngữ.
+
+### Chat nhóm, Logchat và suggest
+- Mỗi nhân vật sinh một lượt riêng theo danh tính, vai trò và phong cách của mình; lời nhân vật khác là dữ liệu tham khảo, không phải lời của người đang trả lời.
+- Chỉ người nói cuối cùng trong lượt chat nhóm có một bộ 3 suggest từ phía user. UI xếp chúng thành một hàng; mobile có thể cuộn ngang.
+- Suggest chạy song song với câu trả lời. Sau khi stream câu trả lời kết thúc, hệ thống chờ thêm tối đa 2,5 giây; nếu hết thời gian thì dùng gợi ý dự phòng. Thời hạn gọi model vẫn được bảo vệ riêng bởi SUGGESTION_BUDGET_SECONDS.
+- Logchat có phòng, ID lượt user, ID câu trả lời, nhân vật, nội dung và loại tác vụ; mỗi câu trả lời là một dòng. Snapshot giữ danh sách nhân vật và người nói kể cả khi xóa phòng. Lỗi không còn tự gán cho nhân vật đầu tiên của phòng nhóm.
+
+
+### Điều phối chat nhóm và voice
+
+- Phòng có 2–6 nhân vật mặc định chọn 1 người phù hợp; thỉnh thoảng chọn 2 người có góc nhìn khác nhau. Bộ điều phối chạy local, không gọi LLM chọn người nói.
+- Gọi @Tên nhân vật để chọn người nói; câu hỏi tiếp như “Tại sao?” giữ người vừa trả lời. Gọi hai tên hoặc yêu cầu “cả hai” để có hai người; yêu cầu “cả nhóm / everyone” cho toàn bộ nhóm trả lời lần lượt.
+- Hai người có thể bổ sung hoặc trao đổi: A đưa góc nhìn và hỏi B; B đọc ngữ cảnh vừa sinh, trả lời rồi hướng lại về user. Mỗi người chỉ viết lời của mình. Trao đổi nối tiếp vẫn mất thời gian sinh thêm câu trả lời của B.
+- Giữa các lần tự chọn hai người có ít nhất 3 lượt đơn. Lựa chọn rõ ràng của user được ưu tiên.
+- Bộ chấm điểm bản đầu dùng vector từ local, nhóm chủ đề đa ngôn ngữ, tính cách và lịch sử lượt nói; chưa dùng embedding neural hay mô hình ML được huấn luyện. Từ khóa và hồ sơ không đầy đủ có thể làm chọn sai người.
+- Sửa quy tắc, điểm và chỉ dẫn tương tác tại character_chat/group_routing.py. Hồ sơ được cache; lịch sử và quyết định lấy riêng theo phòng. Log response lưu group_routing trong conversation_snapshot (người nói, kiểu, điểm, lý do, thời gian).
+- Voice trong nhóm chỉ phát khi user bấm Nghe, kể cả câu chào, trả lời stream và tạo lại câu trả lời. Voice vẫn được chuẩn bị/cache. Phòng đơn tiếp tục tự phát. Quy tắc chung: shouldAutoplaySpeech trong frontend/src/roleplay/voicePreferences.ts; kiểm tra ở hàng đợi và đầu hàm phát trong RolePlayApp.tsx.
+- Âm phản ứng, âm hành động và nhạc nền vẫn dùng các điều khiển riêng. Ba câu gợi ý ở nhân vật cuối cùng của lượt nhóm vẫn giữ nguyên.
+
+
+### Phát nhạc nền liên tục
+- useBackgroundMusic tải trước bài tiếp theo qua MusicTrackCache. Giữ tối đa 2 bài trong RAM, mỗi bài tối đa 24 MB; bài lớn hơn dùng streaming gốc. Tải trước thất bại cũng quay về URL streaming.
+- Khi rời player, hủy tải và giải phóng blob URL. Thanh âm lượng/GainNode vẫn dùng cho iPhone.
+- Trạng thái bật/tắt workspace lấy từ aria-hidden của iframe; lớp UI phủ lên trang không tự dừng nhạc. Trình duyệt/OS vẫn có thể giới hạn âm thanh khi chạy nền.
+- Prewarm âm phản ứng chỉ bắt đầu từ 1 nhân vật gần đây; tối đa 2 clip đồng thời mỗi nhân vật. Âm hành động tải tối đa 2 file đồng thời.
+- GET/HEAD file nhạc, clip phản ứng và âm hành động không ghi từng audit event; request danh sách/cấu hình và thao tác CMS vẫn giữ log.
+
+
+### Nguồn nhân vật khi tạo phòng
+- Nguồn Hệ thống giữ danh sách preset đang hiển thị dù đã thêm chúng vào bộ sưu tập; dùng lại ID bản sao sở hữu để tránh tạo trùng.
+- Phòng công khai có thể chứa bản sao hệ thống nguyên bản, không yêu cầu public riêng bản sao đó. Nhân vật tự tạo vẫn phải public trước.
+- Backend đối chiếu toàn bộ nội dung với preset canonical; marker creation_type/preset_type không đủ để bỏ kiểm tra public. Bản sao có nội dung/ảnh riêng hoặc override CMS không được tự công khai.
+- Người khác mở phòng công khai nhận một phòng riêng và bản sao nhân vật của họ. Lịch sử tin nhắn của chủ phòng không được chia sẻ.
+
+
+### Giảm tải logchat và đồng bộ workspace
+- Snapshot log và danh sách nhân vật chỉ truy vấn timestamp avatar để tạo URL phiên bản; không đọc/hash toàn bộ image BLOB. Log vẫn lưu đúng speaker, phòng, lượt user và roster.
+- GET /v1/characters chỉ cập nhật preset và commit khi nội dung/name thực sự đổi.
+- Parent workspace gom history-updated trong 250 ms và chỉ tải lịch sử của app gửi sự kiện; cập nhật Assistant không kéo lại toàn bộ nhân vật Roleplay.
+- Mốc chờ suggest 2.5 giây sau answer_done vẫn giữ nguyên; không đổi số câu gợi ý hoặc phân vai.
+
+
+### Tải CMS và phát nhạc khi đường truyền chậm
+
+- CMS chỉ tải nhật ký hoạt động, log voice, dữ liệu Database, danh mục trang chủ và cấu hình trợ lý khi mở mục đó. Trang tổng quan không tải các bảng và log đang ẩn.
+- Logchat lọc tin nhắn đã có log ngay trong SQL và đọc lịch sử cũ theo lô, tránh một truy vấn kiểm tra cho từng câu trả lời.
+- Nhạc chuyển sang bản đã tải trong RAM nếu có; nếu chưa có thì phát URL trực tiếp, không chờ tải trọn bài đến 60 giây. Đường truyền chậm vẫn có thể khiến bài phát trực tiếp bị buffer.
+- Xoá phòng từ thanh lịch sử workspace coi HTTP 404 là phòng đã không còn tồn tại và loại mục cũ khỏi giao diện. Các lỗi khác vẫn được báo.
+- Mốc client_first_chunk_ms tính từ khi user gửi, còn gateway_first_chunk_ms tính từ lúc gọi gateway. Trong nhóm, client còn chờ các nhân vật trước; không lấy chênh lệch hai mốc làm thời gian mạng chính xác.
+- Kiểm tra local: python scripts/check_cms_loading.py; python -m pytest tests/test_chat_log_cost.py -q; trong frontend chạy node --test scripts/music-track-cache.test.cjs và npm run build.
+
+
+### Kiểm duyệt khi tạo và tái sử dụng nhân vật
+
+- Nội dung nhân vật mới (user tự tạo, tạo từ truyện, tạo bằng AI hoặc admin tạo mới trong CMS) và chỉnh sửa nội dung vẫn được kiểm duyệt.
+- Thêm nhân vật hệ thống từ danh mục hoặc sao chép nhân vật cộng đồng public không gọi lại kiểm duyệt tạo nhân vật. Backend lấy nội dung gốc từ server; dữ liệu sửa trong payload client không thay thế mẫu hệ thống.
+- Mở phòng nhóm public dùng lại cùng luồng danh mục, không kiểm duyệt lại từng bản sao.
+- Đánh dấu creation_type=preset không đủ để bỏ kiểm duyệt: backend phải tìm thấy nguồn hệ thống hợp lệ. Nhân vật private không được clone qua API public.
+- Lỗi character_policy_unavailable (503) là dịch vụ kiểm duyệt thiếu cấu hình, không kết nối được hoặc trả kết quả không hợp lệ; khác với quyết định chặn nội dung.
+
+
+### Chủ đề phòng nhóm và context suggest ngắn
+
+- Khi tạo nhóm, có thể điền chủ đề tuỳ chọn (tối đa 500 ký tự). Chủ đề được lưu cùng phòng và giữ khi user mở bản sao phòng public.
+- Nếu không nhập chủ đề, tên nhóm có ý nghĩa được dùng làm cảm hứng nhẹ. Tên tự động ghép từ tên nhân vật hoặc tên chung như Group/Nhóm không ép chủ đề; cuộc trò chuyện diễn ra tự nhiên.
+- Chủ đề và tên phòng chỉ là dữ liệu tham khảo. Tin user mới nhất, ngôn ngữ user và danh tính riêng của từng nhân vật vẫn được ưu tiên. Không gọi thêm LLM để nhận diện chủ đề.
+- Chat đơn và nhóm cùng dùng suggest context ngắn: 4 tin gần nhất, mỗi tin khoảng 240 ký tự; tin user hiện tại khoảng 600 ký tự; mô tả nhân vật 240 ký tự; 3 câu gợi ý cũ, mỗi câu tối đa 120 ký tự. Phần đầu/cuối tin dài được giữ để bảo toàn cách xưng hô.
+- Nhãn HUMAN_USER/CHARACTER và chỉ dẫn ngôi nói được giữ. Rút context giúp giảm nhiễu; không bảo đảm model không bao giờ sai ngôi.
+- Voice tự phát vẫn bật cho phòng có đúng một nhân vật và ngôn ngữ được hỗ trợ. Phòng nhóm không tự phát voice.

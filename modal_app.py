@@ -47,12 +47,18 @@ llm_secret=modal.Secret.from_name("character-chat-llm")
 moderation_secret=modal.Secret.from_name("character-chat-moderation")
 docs_secret=modal.Secret.from_name("character-chat-docs")
 api_image=modal.Image.debian_slim(python_version="3.12").pip_install("fastapi>=0.115","uvicorn>=0.30","sqlalchemy>=2","pydantic>=2","python-multipart>=0.0.9","httpx>=0.27","pillow>=10.4","pymupdf>=1.24","python-docx>=1.1","python-pptx>=1.0","openpyxl>=3.1","cryptography>=43","modal>=1.5,<2").add_local_dir("character_chat",remote_path="/root/character_chat").add_local_dir("frontend/dist",remote_path="/root/frontend/dist").add_local_dir("image",remote_path="/root/image")
+api_image=api_image.add_local_file(str(PROJECT_DIR/"docs"/"UI_LOCALIZATION_STYLE.md"),remote_path="/root/docs/UI_LOCALIZATION_STYLE.md")
+if (PROJECT_DIR/"music_backgr"/"mp3").is_dir():
+    api_image=api_image.add_local_dir(str(PROJECT_DIR/"music_backgr"/"mp3"),remote_path="/root/music_backgr/mp3")
+if (PROJECT_DIR/"sound_effect").is_dir():
+    api_image=api_image.add_local_dir(str(PROJECT_DIR/"sound_effect"),remote_path="/root/sound_effect",ignore=["*.zip"])
 avatar_image=modal.Image.debian_slim(python_version="3.12").pip_install("pillow>=10.4","rembg[cpu]>=2.0.67","httpx>=0.27","modal>=1.5,<2").add_local_dir("character_chat",remote_path="/root/character_chat")
 
 @app.function(image=api_image,cpu=1,memory=1024,timeout=300,scaledown_window=120,max_containers=10,secrets=[llm_secret])
 def assistant_worker(messages:list,model:str,api_base:str,api_key:str,temperature:float=.35,max_tokens:int=1000,thinking_mode:str="default",reasoning_effort:str="default",request_timeout:float=12):
     """Independent inference worker for AI Assistant traffic."""
     import httpx
+    from character_chat.timeouts import gateway_connect_timeout
     payload={"model":model,"messages":messages}
     if "gpt-5" in model:payload["max_completion_tokens"]=max_tokens
     else:payload.update({"temperature":temperature,"max_tokens":max_tokens})
@@ -60,7 +66,7 @@ def assistant_worker(messages:list,model:str,api_base:str,api_key:str,temperatur
     if thinking_mode!="disabled" and reasoning_effort in ("low","high","max"):payload["reasoning_effort"]=reasoning_effort
     # Do not let an upstream keep the whole fallback chain blocked for minutes.
     # Bound each provider attempt so configured fallbacks remain useful.
-    request_timeout=max(4,min(float(request_timeout),45));connect_timeout=min(8,request_timeout)
+    request_timeout=max(4,min(float(request_timeout),45));connect_timeout=gateway_connect_timeout(8,request_timeout)
     timeout=httpx.Timeout(timeout=request_timeout,connect=connect_timeout,read=request_timeout,write=10,pool=5)
     global _assistant_http_client
     try:client=_assistant_http_client
@@ -82,6 +88,7 @@ def assistant_worker(messages:list,model:str,api_base:str,api_key:str,temperatur
 def assistant_stream_worker(messages:list,model:str,api_base:str,api_key:str,temperature:float=.35,max_tokens:int=1000,thinking_mode:str="default",reasoning_effort:str="default",request_timeout:float=14):
     """Yield visible answer text from an OpenAI-compatible SSE stream."""
     import json,httpx
+    from character_chat.timeouts import gateway_connect_timeout
     payload={"model":model,"messages":messages,"stream":True}
     if "gpt-5" in model:payload["max_completion_tokens"]=max_tokens
     else:payload.update({"temperature":temperature,"max_tokens":max_tokens})
@@ -91,7 +98,7 @@ def assistant_stream_worker(messages:list,model:str,api_base:str,api_key:str,tem
     # ``read`` is also the maximum silence between SSE chunks. If the gateway
     # accepts a request but never starts (or stops) streaming, fail quickly so
     # the web process can immediately advance to the configured fallback.
-    request_timeout=max(.1,min(float(request_timeout),45));timeout=httpx.Timeout(timeout=request_timeout,connect=min(8,request_timeout),read=request_timeout,write=min(10,request_timeout),pool=min(5,request_timeout))
+    request_timeout=max(.1,min(float(request_timeout),45));timeout=httpx.Timeout(timeout=request_timeout,connect=gateway_connect_timeout(8,request_timeout),read=request_timeout,write=min(10,request_timeout),pool=min(5,request_timeout))
     global _assistant_stream_http_client
     try:client=_assistant_stream_http_client
     except NameError:
@@ -228,7 +235,7 @@ def optimize_assistant_images():
 
 # SQLite on a Modal Volume must have a single writer/view. Request concurrency
 # remains high inside this container through @modal.concurrent below.
-@app.function(image=api_image,cpu=.5,volumes={"/data":volume},secrets=[llm_secret,moderation_secret,docs_secret],timeout=600,scaledown_window=120,max_containers=1,env={"DATA_DIR":"/data","DEMO_AUTH_ENABLED":"false","LLM_PROVIDER":"api","LLM_API_BASE":"https://gateway.avibi.ai/v1","LLM_MODEL":"openai/gpt-4.1-mini","LLM_FALLBACK_MODEL":"","MODERATION_MODEL":"","OPENAI_MODERATION_API_BASE":"https://api.openai.com/v1","FRONTEND_DIST":"/root/frontend/dist","CHARACTER_IMAGE_DIR":"/root/image","AVATAR_MODAL_FUNCTION":"process_avatar","BUILD_VERSION":BUILD_VERSION})
+@app.function(image=api_image,cpu=1,volumes={"/data":volume},secrets=[llm_secret,moderation_secret,docs_secret],timeout=600,scaledown_window=120,min_containers=1,max_containers=1,env={"DATA_DIR":"/data","DEMO_AUTH_ENABLED":"false","LLM_PROVIDER":"api","LLM_API_BASE":"https://gateway.avibi.ai/v1","LLM_MODEL":"openai/gpt-4.1-mini","LLM_FALLBACK_MODEL":"","MODERATION_MODEL":"","OPENAI_MODERATION_API_BASE":"https://api.openai.com/v1","FRONTEND_DIST":"/root/frontend/dist","CHARACTER_IMAGE_DIR":"/root/image","AVATAR_MODAL_FUNCTION":"process_avatar","BUILD_VERSION":BUILD_VERSION})
 @modal.concurrent(max_inputs=20,target_inputs=12)
 @modal.asgi_app()
 def web():

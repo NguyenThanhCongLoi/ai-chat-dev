@@ -1,0 +1,7 @@
+<!doctype html><html data-theme="dark" data-app="admin"><head><meta charset="utf-8"><link rel="stylesheet" href="/src/admin-styles.css"><style>body{padding:24px}main{max-width:850px;margin:auto}.field{display:grid;gap:8px;margin:12px 0}.voiceSavedSample{margin:12px 0}</style></head><body><main><h2>Giọng nói nhân vật</h2><section><label class="field">Giọng TTS<input id="character-tts-voice"></label><label class="field">Giới tính giọng<select id="character-tts-gender"><option value="female">Nữ</option></select></label></section><section hidden><label><input id="new-character-tts-voice"></label><label><select id="new-character-tts-gender"></select></label></section><button id="save-character">Lưu nhân vật</button></main><script type="module">
+import{bindVoiceSettings,fillVoiceSettings}from"/src/admin/voiceSettings.ts";
+import{bindVoiceClone,refreshVoiceClone}from"/src/admin/voiceClone.ts";
+let item={id:"mia",spec:{name:"Mia",tts_voice_mode:"separate",tts_voice_en:"en-id",tts_voice_vi:""}};
+bindVoiceSettings();bindVoiceClone(()=>item,value=>item=value,async()=>{});
+fillVoiceSettings(item.spec);refreshVoiceClone();
+</script></body></html>

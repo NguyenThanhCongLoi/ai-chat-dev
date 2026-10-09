@@ -7,7 +7,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 from character_chat.db import Base, AppSetting, Character, CharacterExpressionAsset, CharacterKnowledge, CharacterReflection, Document, DocumentChunk, Memory, Message, ModelConfig, MoodObservation, RelationshipEvent, Room, RoomDocument, RoomStoryState, User
-from character_chat.main import app, db_session, deduplicate_expression_assets, expression_source_id, register_expression_identity, reply_expression, admin_prompt_addon, effective_project_prompt, model_out
+from character_chat.main import app, db_session, deduplicate_expression_assets, expression_source_id, register_expression_identity, reply_expression, admin_prompt_addon, effective_project_prompt, model_out, admin_characters
 from character_chat.schemas import CharacterSpec, Personality, MirrorIn, TurnAnalysis, uid
 from character_chat.presets import presets
 from character_chat.retrieval import chunks, allowed, retrieve_memories, retrieve_knowledge, room_document_manifest, store_memory
@@ -257,6 +257,123 @@ def test_assistant_primary_and_fallback_prompts_remain_independent_on_one_model(
         assert saved["assistant_health_instruction"]=="PRIMARY HEALTH"
         assert saved["assistant_health_fallback_instruction"]=="FALLBACK HEALTH"
 
+def test_single_character_room_reuses_history_until_deleted(monkeypatch):
+    import character_chat.main as main
+    monkeypatch.setattr(main,"localized_greeting",lambda *args,**kwargs:"Hello")
+    async def skip_speech(*args,**kwargs):
+        return None
+    monkeypatch.setattr(main,"prepare_message_speech",skip_speech)
+    username="single_room_"+uid()[:12]
+    registered=client.post("/v1/auth/register",json={"username":username,"password":"secret1","display_name":"Single Room"})
+    assert registered.status_code==200,registered.text
+    headers={"Authorization":"Bearer "+registered.json()["token"]}
+    ids=[]
+    for name in ("First","Second"):
+        spec=CharacterSpec(name=name,description="A test character",system_prompt="Stay in character.",initial_greeting="Hello")
+        response=client.post("/v1/characters",headers=headers,json=spec.model_dump(mode="json"))
+        assert response.status_code==200,response.text
+        ids.append(response.json()["id"])
+    payload={"name":"Chat with First","character_ids":[ids[0]]}
+    first=client.post("/v1/rooms",headers=headers,json=payload)
+    assert first.status_code==200,first.text
+    reused=client.post("/v1/rooms",headers=headers,json=payload)
+    assert reused.status_code==200,reused.text
+    assert reused.json()["id"]==first.json()["id"]
+    assert first.json()["created"] is True and reused.json()["created"] is False
+    group=client.post("/v1/rooms",headers=headers,json={"name":"Group","character_ids":ids})
+    assert group.status_code==200,group.text
+    assert group.json()["id"]!=first.json()["id"]
+    assert client.delete(f'/v1/rooms/{first.json()["id"]}',headers=headers).status_code==200
+    replacement=client.post("/v1/rooms",headers=headers,json=payload)
+    assert replacement.status_code==200,replacement.text
+    assert replacement.json()["id"]!=first.json()["id"]
+    assert replacement.json()["created"] is True
+
+
+def test_same_model_id_can_use_distinct_gateways(monkeypatch):
+    import character_chat.main as main
+    monkeypatch.setenv("DOCS_USERNAME","backend")
+    monkeypatch.setenv("DOCS_PASSWORD","strong-password")
+    auth=("backend","strong-password")
+    model_id="shared/model-"+uid()[:10]
+    bases=("https://gateway-one.example/v1","https://gateway-two.example/v1")
+    created=[]
+    for index,base in enumerate(bases):
+        response=client.post("/v1/admin/models",auth=auth,json={
+            "name":f"Shared {index}","provider":"Test","model_id":model_id,
+            "api_base":base,"api_key":f"secret-{index}",
+        })
+        assert response.status_code==200,response.text
+        created.append(response.json())
+    duplicate=client.post("/v1/admin/models",auth=auth,json={
+        "name":"Duplicate","provider":"Test","model_id":model_id,
+        "api_base":bases[0]+"/",
+    })
+    assert duplicate.status_code==409
+    moved=client.patch(f'/v1/admin/models/{created[1]["id"]}',auth=auth,json={"api_base":bases[0]})
+    assert moved.status_code==409
+    assert main.llm.model_wire_ids[created[0]["id"]]==model_id
+    assert main.llm.model_wire_ids[created[1]["id"]]==model_id
+    calls=[]
+    class GatewayResponse:
+        is_error=False
+        def json(self):
+            return {"choices":[{"finish_reason":"stop","message":{"content":"ok"}}]}
+    class GatewayClient:
+        def post(self,url,headers,json,timeout):
+            calls.append((url,headers["Authorization"],json["model"]))
+            return GatewayResponse()
+    monkeypatch.setattr(main.llm,"_clients",{base:GatewayClient() for base in bases})
+    for item in created:
+        assert main.llm._request([{"role":"user","content":"hi"}],.2,30,item["id"])=="ok"
+    assert calls==[
+        (bases[0]+"/chat/completions","Bearer secret-0",model_id),
+        (bases[1]+"/chat/completions","Bearer secret-1",model_id),
+    ]
+    class FailingGatewayClient:
+        def post(self,url,headers,json,timeout):
+            calls.append((url,headers["Authorization"],json["model"]))
+            raise RuntimeError("first gateway unavailable")
+    calls.clear()
+    monkeypatch.setattr(main.llm,"_clients",{bases[0]:FailingGatewayClient(),bases[1]:GatewayClient()})
+    monkeypatch.setattr(main.llm,"model",created[0]["id"])
+    monkeypatch.setattr(main.llm,"fallback_model",created[1]["id"])
+    monkeypatch.setattr(main.llm,"fallback_model_2","")
+    answer,meta=main.llm.chat_with_meta([{"role":"user","content":"hi"}])
+    assert answer=="ok" and meta["fallback_used"] is True
+    assert meta["actual_model_config_id"]==created[1]["id"]
+    assert meta["primary_model_config_id"]==created[0]["id"]
+    log_user,log_room=uid(),uid()
+    with Session() as db:
+        db.add(User(id=log_user))
+        db.add(Room(id=log_room,user_id=log_user,name="Model display test"))
+        db.flush()
+        main.save_ai_request_log(db,log_user,log_room,None,None,"roleplay","response",meta,10,output_text="ok")
+        db.commit()
+    logs=client.get("/v1/admin/chat-logs?product=roleplay",auth=auth).json()["rows"]
+    saved=next(row for row in logs if row["room"]=="Model display test")
+    assert saved["primary_model_config_id"]==created[0]["id"]
+    assert saved["actual_model_config_id"]==created[1]["id"]
+    assert saved["primary_model_name"]=="Shared 0"
+    assert saved["actual_model_name"]=="Shared 1"
+    assert saved["primary_api_base"]==bases[0]
+    assert saved["actual_api_base"]==bases[1]
+    with Session() as db:
+        for item in created:
+            row=db.get(ModelConfig,item["id"])
+            row.name="Renamed after the chat"
+            row.api_base="https://new-gateway.example/v1"
+        db.commit()
+    persisted=next(row for row in client.get("/v1/admin/chat-logs?product=roleplay",auth=auth).json()["rows"] if row["room"]=="Model display test")
+    assert persisted["primary_model_name"]=="Shared 0"
+    assert persisted["actual_model_name"]=="Shared 1"
+    assert persisted["primary_api_base"]==bases[0]
+    assert persisted["actual_api_base"]==bases[1]
+    assert [item[0] for item in calls]==[
+        bases[0]+"/chat/completions",bases[1]+"/chat/completions"
+    ]
+
+
 def test_assistant_rooms_are_isolated_from_roleplay_and_can_be_deleted():
     auth=client.post('/v1/auth/register',json={"username":"assistant_isolation","password":"secret1","display_name":"Assistant Test"})
     assert auth.status_code==200,auth.text
@@ -269,6 +386,37 @@ def test_assistant_rooms_are_isolated_from_roleplay_and_can_be_deleted():
     deleted=client.delete(f'/v1/assistant/chats/{assistant_id}',headers=headers)
     assert deleted.status_code==200 and deleted.json()["deleted"] is True
     assert client.get(f'/v1/assistant/chats/{assistant_id}/messages',headers=headers).status_code==404
+
+def test_assistant_sessions_stay_in_their_task_channel_and_keep_users_separate():
+    username="task_sessions_"+uid()[:12]
+    first=client.post('/v1/auth/register',json={"username":username,"password":"secret1","display_name":"Task Sessions"})
+    assert first.status_code==200,first.text
+    first_headers={"Authorization":"Bearer "+first.json()["token"]}
+    second=client.post('/v1/auth/register',json={"username":username+"_other","password":"secret1","display_name":"Other User"})
+    assert second.status_code==200,second.text
+    second_headers={"Authorization":"Bearer "+second.json()["token"]}
+    def create(headers,mode):
+        response=client.post('/v1/assistant/chats',headers=headers,json={"mode":mode})
+        assert response.status_code==200,response.text
+        return response.json()["id"]
+    health_one=create(first_headers,"assistant_health")
+    with Session() as db:
+        db.add(Message(id=uid(),room_id=health_one,sender_type="user",text="Help me understand this lesson"))
+        db.commit()
+    health_two=create(first_headers,"assistant_health")
+    general=create(first_headers,"assistant_general")
+    general_two=create(first_headers,"assistant_general")
+    assert health_two==health_one
+    assert general_two!=general
+    assert create(second_headers,"assistant_health")!=health_one
+    rooms=client.get('/v1/assistant/chats',headers=first_headers).json()
+    assert {item["id"] for item in rooms}=={health_one,general,general_two}
+    assert [item["mode"] for item in rooms].count("assistant_health")==1
+    assert next(item for item in rooms if item["id"]==health_one)["title"]=="Help me understand this lesson"
+    assert client.delete(f'/v1/assistant/chats/{health_one}',headers=first_headers).status_code==200
+    assert {item["id"] for item in client.get('/v1/assistant/chats',headers=first_headers).json()}=={general,general_two}
+    assert create(first_headers,"assistant_health")!=health_one
+
 
 def test_accounts_public_characters_and_social_features():
     first=client.post('/v1/auth/register',json={"username":"creator_demo","password":"secret1","display_name":"Creator Demo"})
@@ -304,6 +452,12 @@ def test_accounts_public_characters_and_social_features():
     cloned=client.post(f'/v1/public/characters/{character_id}/clone',headers=second_headers,json={})
     assert cloned.status_code==200
     clone_id=cloned.json()["id"]
+    cloned_again=client.post(f'/v1/public/characters/{character_id}/clone',headers=second_headers,json={})
+    assert cloned_again.status_code==200 and cloned_again.json()["id"]==clone_id
+    with Session() as db:
+        cms_characters=admin_characters(None,db)["user_characters"]
+    assert len([item for item in cms_characters if item["id"]==character_id])==1
+    assert not any(item["id"]==clone_id for item in cms_characters)
     # Reactions on a personal copy belong to the same public character family.
     # The same user changes their reaction instead of increasing the total.
     clone_reaction=client.put(f'/v1/characters/{clone_id}/reaction',headers=second_headers,json={"reaction":"😂"})
@@ -318,6 +472,8 @@ def test_accounts_public_characters_and_social_features():
     with Session() as db:
         legacy_link=db.get(AppSetting,"character_clone_source:"+clone_id)
         if legacy_link:db.delete(legacy_link);db.commit()
+        legacy_cms=admin_characters(None,db)["user_characters"]
+    assert len([item for item in legacy_cms if item["id"] in (character_id,clone_id)])==1
     refreshed=client.get('/v1/public/characters?q=Nami').json()[0]
     assert refreshed["rating"]==5 and refreshed["usage_count"]==1 and refreshed["creator"]["followers"]==1
     deleted=client.delete(f'/v1/characters/{character_id}',headers=first_headers)
@@ -442,8 +598,10 @@ def test_support_mode():
     assert support_mode("Tôi muốn xây thói quen dọn phòng") == "lifestyle"
     assert support_mode("Hôm nay bạn thế nào?") == "companion"
     assert parse_suggestions("@@Nói tiếp đi|Giúp mình với|Đổi chủ đề nhé")==["Nói tiếp đi","Giúp mình với","Đổi chủ đề nhé"]
-    assert parse_suggestions("@@Bạn muốn tôi giúp gì?|Bạn đang buồn vì sao?|Bạn có muốn thử không?")==[]
+    assert parse_suggestions("@@Bạn muốn tôi giúp gì?|Bạn đang buồn vì sao?|Bạn có muốn thử không?")==["Bạn muốn tôi giúp gì?","Bạn đang buồn vì sao?","Bạn có muốn thử không?"]
     assert parse_suggestions("không đúng định dạng")==[]
+    assert parse_suggestions("@@question 1|question 2|question 3")==[]
+    assert parse_suggestions("@@Mình muốn kể thêm|Bạn nghĩ sao?|@@question 3")==["Mình muốn kể thêm","Bạn nghĩ sao?"]
     assert parse_suggestions('1. Em đang sợ điều gì?\n2. Kể anh nghe thêm nhé\n3. Mình nói thật với nhau đi')==["Em đang sợ điều gì?","Kể anh nghe thêm nhé","Mình nói thật với nhau đi"]
     assert parse_suggestions('["Em đang sợ điều gì?","Kể anh nghe thêm nhé","Mình nói thật với nhau đi"]')==["Em đang sợ điều gì?","Kể anh nghe thêm nhé","Mình nói thật với nhau đi"]
     suggestion_messages=suggestion_prompt([{"role":"system","content":"persona"}],presets()[0],"Tôi đang mệt")
@@ -475,7 +633,7 @@ def test_suggestions_follow_vietnamese_chat_even_if_profile_or_model_uses_englis
     final,meta=finalize_suggestions([],message,"vi",{"actual_model":"test-model","fallback_used":False})
     assert final==suggestions
     assert meta["actual_model"]=="local_static" and meta["fallback_used"] is True
-    assert "unsupported format" in meta["fallback_reason"]
+    assert "0 usable suggestions" in meta["fallback_reason"]
 
 def test_roleplay_does_not_accept_reply_cut_off_at_token_limit():
     model=LLM();model.api_key="test";model.model="primary";model.fallback_model="backup"
@@ -554,6 +712,21 @@ def test_roleplay_gateway_wait_is_per_model_and_preserves_fallback(monkeypatch):
     model.chat_with_meta([{"role":"user","content":"hello"}],profile_mode="short",gateway_timeout_cap_seconds=8)
     assert calls==[("slow-gateway",8),("fast-gateway",8)]
 
+def test_roleplay_retries_interrupted_gateway_connection_before_fallback(monkeypatch):
+    import httpx
+    monkeypatch.setenv("GATEWAY_CONNECT_TIMEOUT_SECONDS","8")
+    model=LLM();model.api_key="test";model.model="primary";model.fallback_model="backup"
+    calls=[]
+    class GatewayClient:
+        def post(self,url,headers,json,timeout):
+            calls.append((json["model"],timeout.connect))
+            if len(calls)==1:raise httpx.ConnectTimeout("connection stalled")
+            return httpx.Response(200,json={"choices":[{"finish_reason":"stop","message":{"content":"primary answer"}}]})
+    model._clients[model.url]=GatewayClient()
+    answer,meta=model.chat_with_meta([{"role":"user","content":"hello"}])
+    assert answer=="primary answer" and meta["fallback_used"] is False
+    assert calls==[("primary",8),("primary",3)]
+
 def test_assistant_history_keeps_partial_reply_warning():
     headers={"X-Demo-User-Id":"partial-history-user"}
     created=client.post("/v1/assistant/chats",json={"mode":"assistant_general"},headers=headers)
@@ -593,6 +766,11 @@ def test_api_crud_and_rooms(monkeypatch):
         return "Chào bạn! Hôm nay thế nào?"
     monkeypatch.setattr(main.llm,"chat",fake_chat)
     monkeypatch.setattr(main.llm,"chat_with_meta",lambda messages,*args,**kwargs:(fake_chat(messages,*args,**kwargs),{"primary_model":"test/primary","fallback_model":"test/fallback","fallback_used":False}))
+    def fake_stream_roleplay_answer(messages,*args,**kwargs):
+        generated_prompts.append(messages)
+        yield "delta", "Hello from the character"
+        yield "complete", {"primary_model":"test/primary","fallback_model":"test/fallback","fallback_used":False,"actual_model":"test/primary","finish_status":"complete"}
+    monkeypatch.setattr(main,"stream_roleplay_answer",fake_stream_roleplay_answer)
     headers={"X-Demo-User-Id":"test-api"}
     assert client.get("/health").status_code==200
     monkeypatch.setenv("DOCS_USERNAME","backend")
@@ -627,7 +805,7 @@ def test_api_crud_and_rooms(monkeypatch):
     assert len(client.get("/v1/characters",headers=headers).json())==2
     single=client.post("/v1/rooms",json={"character_ids":[mia["id"]]},headers=headers).json()
     second_single=client.post("/v1/rooms",json={"character_ids":[mia["id"]]},headers=headers).json()
-    assert second_single["id"]!=single["id"]
+    assert second_single["id"]==single["id"]
     group=client.post("/v1/rooms",json={"character_ids":[mia["id"],leo["id"]]},headers=headers).json()
     owned_characters=client.get('/v1/characters',headers=headers).json()
     assert next(item for item in owned_characters if item["id"]==mia["id"])["usage_count"]==1
@@ -666,7 +844,7 @@ def test_api_crud_and_rooms(monkeypatch):
         body="".join(streamed.iter_text())
     assert body.index("event: user_message")<body.index("event: typing")<body.index("event: character_message")
     assert body.count("event: typing")==2 and body.count("event: character_message")==2
-    assert body.count("event: suggestions")==0 and body.count("suggestions_raw")==2 and "@@" in body
+    assert body.count("event: suggestions")==2 and body.count("event: answer_done")==1 and "suggestions_raw" not in body
     conversation_prompts=[prompt for prompt in generated_prompts if "NON-NEGOTIABLE CHARACTER VOICE LOCK" in json.dumps(prompt,ensure_ascii=False)]
     mia_prompt=json.dumps(conversation_prompts[-2],ensure_ascii=False)
     leo_prompt=json.dumps(conversation_prompts[-1],ensure_ascii=False)
@@ -681,7 +859,7 @@ def test_api_crud_and_rooms(monkeypatch):
     cms=client.get('/v1/admin/overview',auth=("backend","strong-password"))
     assert cms.status_code==200
     cms=cms.json()
-    assert cms["stats"]["characters"]>=2 and cms["stats"]["rooms"]>=3
+    assert cms["stats"]["characters"]>=2 and cms["stats"]["rooms"]>=2
     assert cms["stats"]["messages"]>=1 and cms["ai_activity"]
     conversations=client.get('/v1/admin/conversations?product=roleplay',auth=("backend","strong-password"))
     assert conversations.status_code==200 and conversations.json()
@@ -694,6 +872,8 @@ def test_api_crud_and_rooms(monkeypatch):
     assert chat_logs.status_code==200
     log_data=chat_logs.json();assert {"log_status","user_message","model_response","primary_model","fallback_model","fallback_used","actual_model","latency_ms","error"}.issubset(log_data["columns"])
     assert any(row["user_message"] and row["model_response"] and row["primary_model"]=="test/primary" and row["log_status"]=="Đã ghi đầy đủ" for row in log_data["rows"])
+    assert {"user", "user_id", "character_id", "character_name", "character_avatar_url", "assistant_mode"}.issubset(log_data["columns"])
+    assert any(row["user"] and row["user_id"] and row["character_id"]==mia["id"] and row["character_name"] for row in log_data["rows"])
     settings=client.put('/v1/admin/settings',auth=("backend","strong-password"),json={"llm_model":"openai/gpt-4.1-mini","response_instruction":"Keep replies focused."})
     assert settings.status_code==200 and settings.json()["response_instruction"]=="Keep replies focused."
     admin_settings=client.get('/v1/admin/settings',auth=("backend","strong-password")).json()
@@ -730,6 +910,35 @@ def test_api_crud_and_rooms(monkeypatch):
     assert client.delete(f'/v1/rooms/{single["id"]}',headers=headers).status_code==200
     assert client.get(f'/v1/rooms/{single["id"]}',headers=headers).status_code==404
 
+def test_password_change_revokes_other_sessions(monkeypatch):
+    import character_chat.main as main
+    monkeypatch.setattr(main,"Session",Session)
+    registered=client.post("/v1/auth/register",json={"username":"session_revoke_test","password":"old-secret"})
+    assert registered.status_code==200
+    first=registered.json()["token"]
+    second=client.post("/v1/auth/login",json={"username":"session_revoke_test","password":"old-secret"}).json()["token"]
+    headers={"Authorization":"Bearer "+second}
+    changed=client.patch("/v1/auth/me",headers=headers,json={"current_password":"old-secret","new_password":"new-secret"})
+    assert changed.status_code==200
+    assert client.get("/v1/auth/me",headers=headers).status_code==200
+    assert client.get("/v1/auth/me",headers={"Authorization":"Bearer "+first}).status_code==401
+
+
+def test_translation_releases_transaction_before_inference(monkeypatch):
+    import hashlib
+    import character_chat.main as main
+    monkeypatch.setattr(main.llm,"model","test-translator")
+    key="translation:en:"+hashlib.sha256("Chào bạn".encode()).hexdigest()
+    with Session() as db:
+        db.add(AppSetting(key=key,value="Chào bạn"));db.commit()
+        def translate(*args,**kwargs):
+            assert not db.in_transaction()
+            return '["translated"]'
+        monkeypatch.setattr(main.llm,"chat",translate)
+        result=main.translate_interface_content({"language":"en","texts":["Chào bạn"]},db,"test")
+        assert result["translations"]==["translated"]
+
+
 def test_user_action_audit_records_login_usage_and_errors(monkeypatch):
     import character_chat.main as main
     monkeypatch.setattr(main,"Session",Session)
@@ -749,3 +958,235 @@ def test_user_action_audit_records_login_usage_and_errors(monkeypatch):
     login_rows=[row for row in data["rows"] if row["action"]=="login"]
     assert any(row["status"]=="success" and row["user_id"] for row in login_rows)
     assert any(row["status"]=="error" and row["status_code"]==401 and row["error"] for row in login_rows)
+
+@pytest.mark.parametrize("product,sender,task", [("roleplay","character","response"),("assistant","assistant","assistant_general")])
+def test_client_first_chunk_timing_is_owned_and_write_once(product,sender,task):
+    from character_chat.models import AIRequestLog
+    user="timing-"+product
+    room_id=user+"-room"
+    message_id=user+"-reply"
+    with Session() as db:
+        db.add(User(id=user))
+        db.add(Room(id=room_id,user_id=user,name="Timing"))
+        db.add(Message(id=message_id,room_id=room_id,sender_type=sender,text="Reply"))
+        for label in (task,"suggestion","regenerate"):
+            db.add(AIRequestLog(id=user+"-"+label,user_id=user,room_id=room_id,response_message_id=message_id,product=product,task=label))
+        db.commit()
+    url=f"/v1/messages/{message_id}/timing"
+    assert client.post(url,headers={"X-Demo-User-Id":"timing-other"},json={"client_first_chunk_ms":321}).status_code==404
+    headers={"X-Demo-User-Id":user}
+    for invalid in (-1,True,"321",3600001):
+        assert client.post(url,headers=headers,json={"client_first_chunk_ms":invalid}).status_code==422
+    assert client.post(url,headers=headers,json={"client_first_chunk_ms":321}).status_code==200
+    assert client.post(url,headers=headers,json={"client_first_chunk_ms":999}).status_code==200
+    with Session() as db:
+        assert db.get(AIRequestLog,user+"-"+task).client_first_chunk_ms==321
+        assert db.get(AIRequestLog,user+"-suggestion").client_first_chunk_ms is None
+        assert db.get(AIRequestLog,user+"-regenerate").client_first_chunk_ms is None
+
+
+def test_suggestion_client_latency_is_separate_owned_and_write_once():
+    from character_chat.models import AIRequestLog
+    user="suggest-timing-user";reply="suggest-timing-reply"
+    with Session() as db:
+        db.add(User(id=user));db.add(Room(id="suggest-timing-room",user_id=user,name="Timing"))
+        db.add(Message(id=reply,room_id="suggest-timing-room",sender_type="assistant",text="Reply"))
+        for task in ("assistant_general","suggestion"):
+            db.add(AIRequestLog(id="suggest-timing-"+task,user_id=user,room_id="suggest-timing-room",response_message_id=reply,product="assistant",task=task))
+        db.commit()
+    url=f"/v1/messages/{reply}/timing";headers={"X-Demo-User-Id":user}
+    assert client.post(url,headers={"X-Demo-User-Id":"other"},json={"client_suggestion_ms":520}).status_code==404
+    assert client.post(url,headers=headers,json={"client_first_chunk_ms":310,"client_suggestion_ms":520}).status_code==200
+    assert client.post(url,headers=headers,json={"client_suggestion_ms":999}).status_code==200
+    for value in (-1,True,"5",3600001):
+        assert client.post(url,headers=headers,json={"client_suggestion_ms":value}).status_code==422
+    with Session() as db:
+        response=db.get(AIRequestLog,"suggest-timing-assistant_general")
+        suggestion=db.get(AIRequestLog,"suggest-timing-suggestion")
+        assert response.client_first_chunk_ms==310 and response.client_suggestion_ms is None
+        assert suggestion.client_suggestion_ms==520 and suggestion.client_first_chunk_ms is None
+
+@pytest.mark.parametrize("pick", [False,True])
+@pytest.mark.parametrize("transport", ["direct","modal"])
+def test_assistant_cms_permission_and_each_selected_model_parameters(monkeypatch,pick,transport):
+    monkeypatch.setenv("CHAT_TRANSPORT",transport)
+    import modal
+    import character_chat.main as main
+    isolated=create_engine("sqlite://",connect_args={"check_same_thread":False},poolclass=StaticPool)
+    Base.metadata.create_all(isolated);Local=sessionmaker(isolated,expire_on_commit=False)
+    calls=[]
+    class Call:
+        def get(self,timeout):return "Answer"
+    class Worker:
+        def spawn(self,*args):calls.append(args);return Call()
+    monkeypatch.setattr(modal.Function,"from_name",lambda *args:Worker())
+    def complete(*args):calls.append(args);return "Answer"
+    monkeypatch.setattr(main,"direct_completion",complete)
+    monkeypatch.setattr(main,"model_circuit_remaining",lambda model:0)
+    monkeypatch.setattr(main,"credential_for_model",lambda db,item:"test-key")
+    monkeypatch.setattr(main,"record_model_success",lambda model:None)
+    with Local() as db:
+        primary=ModelConfig(id="task-main",name="Task",provider="test",model_id="same-wire",api_base="https://task.invalid")
+        chosen=ModelConfig(id="user-pick",name="Chosen",provider="test",model_id="same-wire",api_base="https://chosen.invalid")
+        db.add_all([primary,chosen])
+        db.add(AppSetting(key="model_profile:task-main",value=json.dumps({"purposes":["assistant_health"],"temperature":0.2,"max_tokens":333})))
+        db.add(AppSetting(key="model_profile:user-pick",value=json.dumps({"purposes":[],"temperature":0.9,"max_tokens":777})))
+        db.commit()
+        main.admin_save_assistant_profile("assistant_health",{"user_pick":pick},db=db)
+        assert main.assistant_profiles_config(db)["items"]["assistant_health"]["user_pick"] is pick
+        available=main.assistant_client_models("assistant_health",user="test",db=db)
+        assert bool(available) is pick
+        preferred=main.assistant_preferred_model(db,"assistant_health","user-pick")
+        assert preferred==("user-pick" if pick else "")
+        answer,meta=main.run_assistant_model_chain(db,[primary,chosen],"assistant_health","prompt",[],"",preferred_model_id=preferred)
+        assert answer=="Answer"
+        assert calls[0][2]==("https://chosen.invalid" if pick else "https://task.invalid")
+        assert calls[0][4:6]==((0.9,777) if pick else (0.2,333))
+        assert meta["actual_model_config_id"]==("user-pick" if pick else "task-main")
+        # Permission is per task, not global or inherited from another assistant.
+        assert main.assistant_preferred_model(db,"assistant_general","user-pick")==""
+
+
+@pytest.mark.parametrize("product",["assistant","roleplay"])
+def test_chat_logs_survive_user_deleting_chat_including_legacy(monkeypatch,product):
+    import character_chat.main as main
+    from character_chat.models import AIRequestLog, RoomMember, MessageSuggestion
+    monkeypatch.setenv("DOCS_USERNAME","backend")
+    monkeypatch.setenv("DOCS_PASSWORD","strong-password")
+    user="archive-"+product;room_id=user+"-room";character_id=user+"-character"
+    question_id=user+"-question";reply_id=user+"-reply";legacy_id=user+"-legacy"
+    with Session() as db:
+        db.add(User(id=user))
+        db.add(Room(id=room_id,user_id=user,name="assistant:assistant_health:Archive" if product=="assistant" else "Archive RP"))
+        db.add(Character(id=character_id,user_id=user,name="Archive Character",spec=CharacterSpec(name="Archive Character").model_dump_json()))
+        if product=="roleplay":db.add(RoomMember(id=user+"-member",room_id=room_id,character_id=character_id))
+        db.add(Message(id=question_id,room_id=room_id,sender_type="user",text=user+" unique question",created_at="2026-10-03T01:00:00+00:00"))
+        for message_id,output,stamp in ((reply_id,"Original answer","01:00:01"),(legacy_id,"Legacy answer","01:00:02")):
+            db.add(Message(id=message_id,room_id=room_id,sender_type="assistant" if product=="assistant" else "character",character_id=character_id if product=="roleplay" else None,text=output,created_at=f"2026-10-03T{stamp}+00:00"))
+        db.flush()
+        # A new structured log snapshots at write time.
+        main.save_ai_request_log(db,user,room_id,question_id,reply_id,product,"assistant_health" if product=="assistant" else "response",
+            {"primary_model":"same-wire","actual_model":"same-wire","server_prepare_ms":10,"gateway_headers_ms":20,"gateway_first_chunk_ms":50},123,output_text="Original answer")
+        saved=db.query(AIRequestLog).filter_by(response_message_id=reply_id).first()
+        saved.primary_model_name="Old display name";saved.primary_api_base="https://old-gateway.invalid"
+        saved.client_first_chunk_ms=80
+        # Older structured records may still depend on live suggestions/messages.
+        db.add(MessageSuggestion(id=user+"-suggestion-text",message_id=reply_id,text="Retained suggestion",position=0))
+        db.add(AIRequestLog(id=user+"-suggestion-log",user_id=user,room_id=room_id,user_message_id=question_id,response_message_id=reply_id,product=product,task="suggestion",latency_ms=60))
+        db.commit()
+    headers={"X-Demo-User-Id":user}
+    path=f"/v1/assistant/chats/{room_id}" if product=="assistant" else f"/v1/rooms/{room_id}"
+    assert client.delete(path,headers={"X-Demo-User-Id":"archive-intruder"}).status_code==404
+    assert client.delete(path,headers=headers).status_code==200
+    assert client.delete(path,headers=headers).status_code==404
+    with Session() as db:
+        assert db.get(Room,room_id) is None
+        assert not db.query(Message).filter_by(room_id=room_id).all()
+        assert db.query(AIRequestLog).filter_by(room_id=room_id).count()==3
+        # Historical rows are permanent snapshots even after character removal/rename.
+        character=db.get(Character,character_id);character.name="Changed name";db.commit()
+    result=client.get("/v1/admin/chat-logs",params={"q":user+" unique question","product":product},auth=("backend","strong-password"))
+    assert result.status_code==200,result.text
+    rows=result.json()["rows"]
+    assert len(rows)==3
+    assert {row["model_response"] for row in rows}=={"Original answer","Retained suggestion","Legacy answer"}
+    assert all(row["user_message"]==user+" unique question" and row["user"]==user for row in rows)
+    if product=="roleplay":assert all(row["character_name"]=="Archive Character" for row in rows)
+    else:assert all(row["assistant_mode"]=="assistant_health" for row in rows)
+    response=next(row for row in rows if row["model_response"]=="Original answer")
+    assert response["primary_model_name"]=="Old display name"
+    assert response["primary_api_base"]=="https://old-gateway.invalid"
+    assert response["latency_ms"]==123 and response["client_first_chunk_ms"]==80
+    assert response["server_prepare_ms"]==10 and response["gateway_headers_ms"]==20 and response["gateway_first_chunk_ms"]==50
+    legacy=next(row for row in rows if row["model_response"]=="Legacy answer")
+    assert legacy["log_status"]=="Log cũ · chưa ghi metadata"
+
+
+def test_chat_log_csv_exports_all_filtered_rows_archived_and_legacy(monkeypatch):
+    import csv
+    from character_chat.models import AIRequestLog
+    import character_chat.main as main
+    monkeypatch.setenv("DOCS_USERNAME","backend")
+    monkeypatch.setenv("DOCS_PASSWORD","strong-password")
+    user="csv-export-user";room_id="csv-export-room";auth=("backend","strong-password")
+    with Session() as db:
+        db.add(User(id=user))
+        db.add(Room(id=room_id,user_id=user,name="assistant:assistant_general:csv-unique"))
+        db.add(Message(id="csv-question",room_id=room_id,sender_type="user",text='=1+1\nTiếng Việt, "dấu nháy"',created_at="2026-10-03T01:00:00+00:00"))
+        db.add(Message(id="csv-reply",room_id=room_id,sender_type="assistant",text="Câu trả lời",created_at="2026-10-03T01:00:01+00:00"))
+        db.flush()
+        main.save_ai_request_log(db,user,room_id,"csv-question","csv-reply","assistant","assistant_general",{},321,output_text="Câu trả lời")
+        log=db.query(AIRequestLog).filter_by(response_message_id="csv-reply").first()
+        log.actual_api_base="https://csv-gateway.invalid";log.actual_model_name="Tên admin đặt"
+        log.created_at="2026-10-03T01:00:01+00:00"
+        log.client_first_chunk_ms=123
+        snapshot=log.conversation_snapshot
+        db.add_all([AIRequestLog(id=f"csv-bulk-{i}",user_id=user,room_id=room_id,product="assistant",task="suggestion",
+            conversation_snapshot=snapshot,actual_api_base="https://csv-gateway.invalid",output_text="Gợi ý "+str(i),
+            created_at="2026-10-03T01:00:01+00:00") for i in range(1001)])
+        db.add(AIRequestLog(id="csv-other-gateway",user_id=user,room_id=room_id,product="assistant",task="response",
+            conversation_snapshot=snapshot,actual_api_base="https://other.invalid",output_text="Other gateway"))
+        db.commit()
+        main.purge_room_record(db,db.get(Room,room_id));db.commit()
+        # Still-live legacy rows must be included for an unfiltered gateway export.
+        db.add(Room(id="csv-legacy-room",user_id=user,name="assistant:assistant_general:csv-unique legacy"))
+        db.add(Message(id="csv-legacy-reply",room_id="csv-legacy-room",sender_type="assistant",text="Legacy CSV"))
+        db.commit()
+    url="/v1/admin/chat-logs.csv"
+    assert client.get(url).status_code==401
+    exported=client.get(url,params={"q":"csv-unique","product":"assistant","gateway":"https://csv-gateway.invalid"},auth=auth)
+    assert exported.status_code==200,exported.text
+    assert exported.content.startswith(b"\xef\xbb\xbf")
+    assert "attachment;" in exported.headers["content-disposition"]
+    assert exported.headers["cache-control"]=="no-store"
+    rows=list(csv.DictReader(io.StringIO(exported.content.decode("utf-8-sig"))))
+    assert len(rows)==1002  # Entire archive, beyond both UI and API page limits.
+    response=next(row for row in rows if row["model_response"]=="Câu trả lời")
+    assert response["created_at_vn"]=="2026-10-03T08:00:01+07:00"
+    assert response["user_message"] == "'" + '=1+1\nTiếng Việt, "dấu nháy"'
+    assert response["actual_model_name"]=="Tên admin đặt"
+    assert response["runtime_ms"]=="321" and response["client_first_chunk_ms"]=="123"
+    all_rows=list(csv.DictReader(io.StringIO(client.get(url,params={"q":"csv-unique","product":"assistant"},auth=auth).content.decode("utf-8-sig"))))
+    assert len(all_rows)==1004
+    assert any(row["model_response"]=="Legacy CSV" for row in all_rows)
+    empty=client.get(url,params={"q":"csv-unique","product":"roleplay"},auth=auth)
+    assert list(csv.DictReader(io.StringIO(empty.content.decode("utf-8-sig"))))==[]
+
+
+def test_csv_export_count_and_vietnam_day_boundaries(monkeypatch):
+    import csv
+    from character_chat.models import AIRequestLog
+    monkeypatch.setenv("DOCS_USERNAME","backend")
+    monkeypatch.setenv("DOCS_PASSWORD","strong-password")
+    user="csv-range-user";room_id="csv-range-room";auth=("backend","strong-password")
+    with Session() as db:
+        db.add(User(id=user));db.add(Room(id=room_id,user_id=user,name="csv-range-unique"))
+        snapshot=json.dumps({"room":"csv-range-unique","user":user,"user_message":"Question"})
+        for name,stamp in (
+            ("before","2026-10-01T16:59:59+00:00"),
+            ("first","2026-10-01T17:00:00+00:00"),
+            ("middle","2026-10-02T00:00:00+00:00"),
+            ("last","2026-10-02T16:59:59+00:00"),
+            ("after","2026-10-02T17:00:00+00:00"),
+        ):
+            db.add(AIRequestLog(id="csv-range-"+name,user_id=user,room_id=room_id,product="roleplay",task="response",
+                conversation_snapshot=snapshot,output_text=name,created_at=stamp))
+        db.add(Message(id="csv-range-legacy",room_id=room_id,sender_type="character",text="legacy",created_at="2026-10-02T16:58:00+00:00"))
+        db.commit()
+    url="/v1/admin/chat-logs.csv"
+    def download(**params):
+        result=client.get(url,params={"q":"csv-range-unique",**params},auth=auth)
+        assert result.status_code==200,result.text
+        return list(csv.DictReader(io.StringIO(result.content.decode("utf-8-sig"))))
+    selected=download(start_date="2026-10-02",end_date="2026-10-02")
+    assert [row["model_response"] for row in selected]==["last","legacy","middle","first"]
+    assert all(row["created_at_vn"].startswith("2026-10-02") for row in selected)
+    newest=download(start_date="2026-10-02",end_date="2026-10-02",max_rows=2)
+    assert [row["model_response"] for row in newest]==["last","legacy"]
+    assert download(max_rows=1)[0]["model_response"]=="after"
+    assert len(download(start_date="2026-10-02"))==5
+    assert len(download(end_date="2026-10-02"))==5
+    for params in ({"max_rows":0},{"max_rows":-1},{"max_rows":"1.5"},
+                   {"start_date":"2026-10-03","end_date":"2026-10-02"},
+                   {"start_date":"2026-02-30"}):
+        assert client.get(url,params=params,auth=auth).status_code==422

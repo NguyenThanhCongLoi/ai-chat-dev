@@ -1,0 +1,56 @@
+.assistantApp .asMsg.assistant .assistantMarkdown {
+  min-width: 0;
+  max-width: 100%;
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+.assistantMarkdown > :first-child { margin-top: 0; }
+.assistantMarkdown > :last-child { margin-bottom: 0; }
+.assistantMarkdown p { margin: 0 0 12px; }
+.assistantMarkdown h1, .assistantMarkdown h2, .assistantMarkdown h3,
+.assistantMarkdown h4, .assistantMarkdown h5, .assistantMarkdown h6 {
+  margin: 20px 0 8px;
+  color: var(--ink);
+  font-weight: 700;
+  line-height: 1.35;
+}
+.assistantMarkdown h1 { font-size: 1.5em; }
+.assistantMarkdown h2 { font-size: 1.3em; }
+.assistantMarkdown h3 { font-size: 1.15em; }
+.assistantMarkdown h4, .assistantMarkdown h5, .assistantMarkdown h6 { font-size: 1em; }
+.assistantMarkdown strong { font-weight: 700; }
+.assistantMarkdown ul, .assistantMarkdown ol { margin: 6px 0 14px; padding-left: 24px; }
+.assistantMarkdown ul { list-style: disc; }
+.assistantMarkdown ol { list-style: decimal; }
+.assistantMarkdown li { padding-left: 2px; margin: 3px 0; }
+.assistantMarkdown li > p { margin: 0; }
+.assistantMarkdown .assistantMarkdownTableScroll {
+  max-width: 100%;
+  margin: 12px 0 16px;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.assistantMarkdown table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.assistantMarkdown th, .assistantMarkdown td {
+  min-width: 90px;
+  padding: 9px 11px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+.assistantMarkdown th { font-weight: 700; background: var(--surface-2); }
+.assistantMarkdown tr:last-child td { border-bottom: 0; }
+.assistantMarkdown th:last-child, .assistantMarkdown td:last-child { border-right: 0; }
+.assistantMarkdown a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+.assistantMarkdown code { padding: 1px 5px; border-radius: 4px; background: var(--surface-2); font-family: var(--f-mono); font-size: .9em; }
+.assistantMarkdown pre { max-width: 100%; padding: 12px; overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); }
+.assistantMarkdown pre code { padding: 0; background: none; }
+.assistantMarkdown blockquote { margin: 12px 0; padding: 3px 0 3px 12px; border-left: 3px solid var(--accent); color: var(--muted); }
+.assistantMarkdown hr { border: 0; border-top: 1px solid var(--line); margin: 18px 0; }
+@media (max-width: 700px) {
+  .assistantMarkdown th, .assistantMarkdown td { min-width: 110px; padding: 8px; }
+}

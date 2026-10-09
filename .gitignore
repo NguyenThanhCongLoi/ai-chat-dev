@@ -11,3 +11,20 @@ frontend/dist/
 .tmp_db_check/
 .diagnostics/
 reports/
+
+# Licensed audio: keep local for Modal packaging, not in the public source repo.
+music_backgr/mp3/
+
+# Local reaction model/download caches (D drive).
+.reaction-cache/
+
+
+# Local dev data and verification outputs.
+data-dev/
+artifacts/
+*.log
+
+# Original music files cannot be redistributed under the supplied license.
+music_backgr/wav/
+# Source archive is local only; runtime uses extracted clips.
+sound_effect/*.zip

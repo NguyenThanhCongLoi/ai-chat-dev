@@ -1,18 +1,15 @@
-import json, os, re, time
+from .group_topic import group_context, context_from_messages, CONTEXT_PREFIX
+import json, re, time  # time remains available for gateway compatibility/test hooks.
 from datetime import datetime, timezone
-import httpx
 from .schemas import CharacterSpec, DiscoveryCandidate
 from .retrieval import similarity, retrieve_memories, retrieve_knowledge, room_document_manifest
-from .db import Character, Message, Relationship, RoomMember, RoomStoryState, StyleExample, CharacterState, DailyTask, MoodObservation, CharacterReflection, RelationshipEvent, PromptTrace, now
+from .db import Character, Message, Relationship, RoomMember, RoomStoryState, UserProfile, StyleExample, CharacterState, DailyTask, MoodObservation, CharacterReflection, RelationshipEvent, PromptTrace, now
 from .prompts import RESPONSE_SYSTEM_PROMPT, SUGGESTION_SYSTEM_PROMPT, CHARACTER_COMPILER_SYSTEM_PROMPT, CHARACTER_SOURCE_CONDENSER_PROMPT
 
 ADMIN_RESPONSE_INSTRUCTION=""
 ADMIN_SUGGESTION_INSTRUCTION=""
 ADMIN_COMPILER_INSTRUCTION=""
-_UNSET_MODEL=object()
-
-class TokenLimitError(RuntimeError):
-    """The gateway returned a truncated completion."""
+from .gateway import LLM, TokenLimitError, _within_deadline, llm
 
 def condense_character_source(source:str,threshold:int=6000)->str:
     """Map-reduce long character source with the LLM before compilation."""
@@ -27,125 +24,7 @@ def condense_character_source(source:str,threshold:int=6000)->str:
         combined=llm.chat([{"role":"system","content":CHARACTER_SOURCE_CONDENSER_PROMPT},{"role":"user","content":"Merge these partial briefs into one non-repetitive source brief. Preserve contradictions and evidence across parts.\n\n"+combined}],temperature=.1,max_tokens=1400)
     return combined.strip()
 
-class LLM:
-    def __init__(self):
-        self.url=os.getenv("LLM_API_BASE","https://gateway.avibi.ai/v1").rstrip("/")
-        self.model=os.getenv("LLM_MODEL","openai/gpt-4.1-mini")
-        self.fallback_model=os.getenv("LLM_FALLBACK_MODEL","")
-        self.fallback_model_2=""
-        self.default_temperature=.75
-        self.short_temperature=.65
-        self.default_max_tokens=350
-        self.short_max_tokens=180
-        self.api_key=(os.getenv("AIMP_API_KEY") or os.getenv("LLM_API_KEY") or os.getenv("OPENAI_API_KEY") or "").strip()
-        self.model_api_keys={}
-        self.model_api_bases={}
-        self.model_thinking_modes={}
-        self.model_reasoning_efforts={}
-        self.model_generation={}
-        self.model_gateway_timeouts={}
-        self.purpose_models={}
-        self.fallback_instruction=""
-        self._clients={}
-    def _request(self,messages,temperature,max_tokens,model,timeout_seconds=None):
-        api_key=self.model_api_keys.get(model,self.api_key)
-        api_base=self.model_api_bases.get(model,self.url)
-        if not api_key:raise RuntimeError(f"Chưa cấu hình API key cho {api_base}")
-        headers={"Content-Type":"application/json","Authorization":"Bearer "+api_key}
-        payload={"model":model,"messages":messages}
-        if "gpt-5" in model:
-            payload["max_completion_tokens"]=max_tokens
-        else:
-            payload.update({"temperature":temperature,"max_tokens":max_tokens})
-        thinking=self.model_thinking_modes.get(model,"default")
-        effort=self.model_reasoning_efforts.get(model,"default")
-        if thinking in ("enabled","disabled"):payload["thinking"]={"type":thinking}
-        if thinking!="disabled" and effort in ("low","high","max"):payload["reasoning_effort"]=effort
-        client=self._clients.get(api_base)
-        timeout_seconds=max(.1,min(float(timeout_seconds or 12),45))
-        timeout=httpx.Timeout(timeout_seconds,connect=min(8,timeout_seconds),read=timeout_seconds,write=min(10,timeout_seconds),pool=min(5,timeout_seconds))
-        if client is None:
-            client=httpx.Client(timeout=timeout,limits=httpx.Limits(max_connections=30,max_keepalive_connections=15,keepalive_expiry=120))
-            self._clients[api_base]=client
-        response=None
-        response=client.post(api_base.rstrip("/")+"/chat/completions",headers=headers,json=payload,timeout=timeout)
-        if response is None:raise RuntimeError("Dịch vụ LLM không trả response")
-        if response.is_error:
-            try:detail=response.json().get("error",{}).get("message") or response.text
-            except Exception:detail=response.text
-            error=RuntimeError(f"Dịch vụ LLM trả lỗi {response.status_code}: {str(detail)[:500]}")
-            error.status_code=response.status_code
-            raise error
-        choice=response.json()["choices"][0]
-        if choice.get("finish_reason") in ("length","max_tokens"):
-            raise TokenLimitError(f"Model stopped at the token limit ({max_tokens} tokens) before completing its reply")
-        content=choice["message"].get("content")
-        if isinstance(content,list):content="".join(part.get("text","") for part in content if isinstance(part,dict))
-        if not isinstance(content,str) or not content.strip():raise RuntimeError("Model returned an empty response")
-        return content.strip()
-    def chat_with_meta(self,messages,temperature=.7,max_tokens=350,model=_UNSET_MODEL,fallback_model=_UNSET_MODEL,fallback_model_2=_UNSET_MODEL,profile_mode=None,gateway_timeout_cap_seconds=None):
-        selected=self.model if model is _UNSET_MODEL else model
-        first=self.fallback_model if fallback_model is _UNSET_MODEL else fallback_model
-        second=self.fallback_model_2 if fallback_model_2 is _UNSET_MODEL else fallback_model_2
-        if not selected:raise RuntimeError("No primary model is assigned to this task in CMS.")
-        fallback_messages=([{"role":"system","content":self.fallback_instruction},*messages] if model is _UNSET_MODEL and self.fallback_instruction.strip() else messages)
-        candidates=list(dict.fromkeys(value for value in (selected,first,second) if value))
-        configured_waits=[max(4,min(45,float(self.model_gateway_timeouts.get(candidate,12)),float(gateway_timeout_cap_seconds or 45))) for candidate in candidates]
-        fallback_reserve=12 if len(candidates)>1 else 0
-        budget=max(8,min(90,float(os.getenv("LLM_FALLBACK_BUDGET_SECONDS","28"))),max(configured_waits)+fallback_reserve)
-        started=time.monotonic();errors=[]
-        for index,candidate in enumerate(candidates):
-            remaining=budget-(time.monotonic()-started)
-            if remaining<=0:errors.append("total fallback budget exhausted");break
-            try:
-                configured=self.model_generation.get(candidate,{}) if profile_mode in ("normal","short") else {}
-                prefix="short_" if profile_mode=="short" else ""
-                candidate_temperature=float(configured.get(prefix+"temperature",temperature))
-                candidate_tokens=max(1,int(configured.get(prefix+"max_tokens",max_tokens)))
-                candidate_messages=messages if index==0 else fallback_messages
-                gateway_wait=max(4,min(45,float(self.model_gateway_timeouts.get(candidate,12)),float(gateway_timeout_cap_seconds or 45)))
-                answer=self._request(candidate_messages,candidate_temperature,candidate_tokens,candidate,min(gateway_wait,remaining))
-                return answer,{"primary_model":selected,"fallback_model":first or "","fallback_model_2":second or "","fallback_used":index>0,"fallback_level":index,"fallback_reason":" | ".join(errors),"actual_model":candidate}
-            except Exception as exc:
-                status=getattr(exc,"status_code",0)
-                retryable=isinstance(exc,(httpx.TransportError,RuntimeError,ValueError)) and (not status or status in (408,409,425,429,500,502,503,504))
-                if not retryable:raise
-                errors.append(f"{candidate}: {type(exc).__name__}: {str(exc)[:400]}")
-        raise RuntimeError("; ".join(errors) or "No configured model available")
 
-    def chat(self,messages,temperature=.7,max_tokens=350,model=_UNSET_MODEL,fallback_model=_UNSET_MODEL,fallback_model_2=_UNSET_MODEL):
-        return self.chat_with_meta(messages,temperature,max_tokens,model,fallback_model,fallback_model_2)[0]
-
-    def json(self,messages,schema,model=None,max_tokens=2500):
-        prompt={"role":"system","content":"Return ONLY valid JSON matching this schema: "+json.dumps(schema.model_json_schema(),ensure_ascii=False)}
-        last_error=None
-        for attempt in range(3):
-            timeout_seconds=self.model_gateway_timeouts.get(model,12) if model else None
-            raw=self._request([prompt,*messages],.1,max_tokens,model,timeout_seconds=timeout_seconds) if model else self.chat([prompt,*messages],temperature=.1,max_tokens=max_tokens)
-            try:
-                cleaned=re.sub(r"^```(?:json)?\s*|\s*```$","",raw.strip(),flags=re.I)
-                try:
-                    data=json.loads(cleaned)
-                except json.JSONDecodeError:
-                    # Some compatible gateways/models wrap a valid object in
-                    # prose or Markdown. Decode the first complete JSON object.
-                    decoder=json.JSONDecoder()
-                    data=None
-                    for start,char in enumerate(cleaned):
-                        if char!="{":continue
-                        try:
-                            data,_=decoder.raw_decode(cleaned[start:])
-                            break
-                        except json.JSONDecodeError:
-                            continue
-                    if data is None:raise
-                return schema.model_validate(data)
-            except Exception as exc:
-                last_error=exc
-                messages=[*messages,{"role":"assistant","content":raw},{"role":"user","content":f"Return a corrected, complete JSON object only. Fix this validation error: {exc}"}]
-        raise ValueError(f"LLM returned invalid structured JSON after 3 attempts: {last_error}")
-
-llm=LLM()
 
 def room_story_events(db,room_id,recent_ids):
     """Keep a bounded, speaker-attributed record of turns outside the live chat window."""
@@ -178,59 +57,110 @@ def repeated_roleplay_reply(answer,previous):
         if current_sentences and old_sentences and len(current_sentences[-1])>=24 and current_sentences[-1]==old_sentences[-1]:return True
     return False
 
-def refresh_repeated_roleplay_reply(answer,prompt,previous,temperature,max_tokens,profile_mode):
-    if not repeated_roleplay_reply(answer,previous):return answer,None
-    reminder="The draft repeats this character's recent reply or closing hook. Respond to the latest user message with a fresh, character-consistent detail or action. Do not speak or decide for the user. Keep established facts unchanged. Return only the revised character reply."
-    try:
-        revised,meta=llm.chat_with_meta([*prompt,{"role":"system","content":reminder},{"role":"assistant","content":answer},{"role":"user","content":"Revise the draft once."}],temperature,max_tokens,profile_mode=profile_mode)
-        if revised.strip() and not repeated_roleplay_reply(revised,previous):return revised,meta
-    except Exception:pass
-    return answer,None
-
 def format_roleplay_reply(answer):
     """Put a leading bold action beat on its own line before spoken dialogue."""
-    text=str(answer or "").replace("\r\n","\n").replace("\r","\n").strip()
+    text=str(answer or "").replace("\r\n","\n").replace("\r","\n")
+    text=text.replace("\\r\\n","\n").replace("\\n","\n").replace("\\r","\n")
+    text=re.sub(r"(?m)^[ \t]*\*[ \t]*(?:\n|$)","",text).strip()
+    text=re.sub(r"(?m)^([ \t]*)\*([^*\n]{1,240})\*(?=[ \t]|\n|$)",r"\1**\2**",text)
     return re.sub(r"(?m)^([ \t]*\*\*[^*\n]{1,240}\*\*)[ \t]+(?=\S)",r"\1\n",text)
 
 def suggestion_prompt(messages,character,user_message,previous=None):
     recent=[]
-    for item in (messages or [])[-8:]:
-        if not isinstance(item,dict) or item.get("role") not in ("user","assistant"):continue
+    dialogue=[item for item in messages or [] if isinstance(item,dict) and item.get("role") in ("user","assistant")]
+    for item in dialogue[-4:]:
         content=item.get("content")
-        if isinstance(content,str) and content.strip():recent.append({"role":item["role"],"content":content[-500:]})
-    context={"user_message":user_message,"character_name":character.name,"character_role":character.identity.role,"character_description":character.description,"recent_dialogue":recent,"previous_suggestions":list(previous or [])[-3:]}
+        if isinstance(content,str) and content.strip():
+            recent.append({"speaker":"HUMAN_USER" if item["role"]=="user" else "CHARACTER",
+                           "speaker_name":"user" if item["role"]=="user" else character.name,
+                           "text":content[:120]+" … "+content[-120:] if len(content)>240 else content})
+    language=detect_message_language(user_message,"unknown")
+    if language=="unknown":
+        for item in reversed(recent):
+            if item["speaker"]=="HUMAN_USER":
+                language=detect_message_language(item["text"],"unknown")
+                if language!="unknown":break
+    if language=="unknown":language=character.speech.preferred_language or "vi"
+    name=TURN_LANGUAGE_NAMES.get(language,language)
+    context={"latest_user_message":user_message if len(user_message)<=600 else user_message[:300]+" … "+user_message[-300:],"suggestion_sender":"HUMAN_USER",
+             "suggestion_recipient":character.name,"output_language":language,
+             "generation_request":"Compose HUMAN_USER's next questions to CHARACTER. Do not answer latest_user_message.",
+             "character_name":character.name,"character_description":character.description[:240],
+             "character_role":character.identity.role[:120],"character_support":{"primary_role":character.support.primary_role,"strengths":character.support.strengths[:3]},
+             "recent_dialogue":recent,"previous_suggestions":[str(item)[:120] for item in list(previous or [])[-3:]]}
+    if group:=context_from_messages(messages):context["group_room_context"]={"topic":group.get("topic",""),"room_name":group.get("room_name","")}
     system=ADMIN_SUGGESTION_INSTRUCTION.strip() or SUGGESTION_SYSTEM_PROMPT
-    return [{"role":"system","content":system},{"role":"user","content":json.dumps(context,ensure_ascii=False)}]
+    lock=("REQUIRED SPEAKER: the human USER speaking directly to "+character.name+". "
+          "You are composing buttons that send the HUMAN_USER's next message, not roleplaying the CHARACTER. "
+          f"OUTPUT LANGUAGE FOR THIS TURN: {name} ({language}). All three questions must use this language only. "
+          "Generate exactly three short questions the user can ask the character. "
+          "If group_room_context supplies a topic or meaningful room name, use it as light inspiration only when relevant; follow the latest user message first. "
+          "In every question, I/me/my refers to HUMAN_USER; you/your refers to CHARACTER. "
+          "For Vietnamese, preserve the user's relationship and address terms: if the user calls themselves em and the character anh, "
+          "write user questions such as 'Anh đang nghĩ gì?' or 'Em nên làm gì tiếp?', never reverse anh/em. "
+          "Conversely, if HUMAN_USER calls themselves anh and addresses CHARACTER as em, "
+          "the suggested message must call CHARACTER em and HUMAN_USER anh: "
+          "'Em thích nghe anh kể chuyện gì nhất mỗi ngày?' 'Em muốn anh kể gì trước hôm nay?' "
+          "Never reverse these into 'Anh thích nghe em kể chuyện gì nhất mỗi ngày?' or 'Anh muốn em kể gì cho anh nghe?'. "
+          "Resolve self-reference versus address using the latest HUMAN_USER message and speaker-labeled context, "
+          "not the character's gender, age, name, or a pronoun appearing alone. "
+          "A character reply such as 'Em muốn nghe anh kể' is reference spoken by CHARACTER; "
+          "the user follow-up is 'Em muốn anh kể chuyện gì?', not a copy of the character's voice. "
+          "When address terms are uncertain, use natural questions without personal pronouns rather than guessing anh/em. "
+          "Do not imitate the character's pronouns as the user's pronouns. "
+          "Preserve who experienced each emotion or action; never transfer the character's anger or concern to the user. "
+          "For example, HUMAN_USER says 'Cậu đang giận tôi à?' and CHARACTER seems annoyed. "
+          "Correct HUMAN_USER follow-ups: 'Điều gì khiến cậu khó chịu?' 'Tôi nên nói rõ điều gì?' 'Cậu muốn tôi làm gì tiếp?' "
+          "Wrong CHARACTER follow-ups: 'Sao cậu lại hỏi vậy, cậu đang lo tôi giận thật à?' "
+          "'Nếu tôi nói đúng là tôi thấy khó chịu thì cậu định làm gì?' "
+          "'Cậu hỏi vì quan tâm tôi hay chỉ muốn trêu tôi thêm?' "
+          "Do not merely copy these examples; apply the speaker distinction to the supplied dialogue. "
+          "History entries labeled CHARACTER are reference data, never your speaker identity. "
+          "Ask about the character's thoughts, feelings, intentions, experiences, or advice related to the latest user message. "
+          "Respect this character's actual role and expertise; do not turn them into another character or a generic service assistant. "
+          "Do not offer services or ask the human user to answer a question on the character's behalf. "
+          "Correct: 'What do you think?' 'Why did you say that?' 'What should I do next?' "
+          "Wrong: 'How can I help you?' 'What would you like me to explain?' "
+          "No action beats, speaker labels, answers, commentary, or invented events. "
+          "These mandatory speaker and language constraints also apply to the custom prompt. "
+          "Return only one line: @@question 1|question 2|question 3.")
+    return [{"role":"system","content":system},{"role":"system","content":lock},
+            {"role":"user","content":json.dumps(context,ensure_ascii=False)}]
 
 def parse_suggestions(raw):
-    match=re.search(r"@@\s*(.+)",raw,re.S)
-    if match:
-        values=match.group(1).replace("\n"," ").split("|")
-    else:
-        stripped=raw.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
-        try:
-            data=json.loads(stripped)
-            if isinstance(data,dict):data=data.get("suggestions") or data.get("options")
-            values=data if isinstance(data,list) and len(data)==3 and all(isinstance(item,str) for item in data) else []
-        except (ValueError,TypeError):
+    """Accept common model formats without discarding duplicates or valid siblings."""
+    stripped=str(raw or "").strip()
+    stripped=re.sub(r"^\x60\x60\x60(?:json|text)?\s*", "", stripped, flags=re.I)
+    stripped=re.sub(r"\s*\x60\x60\x60$", "", stripped).strip()
+    try:
+        data=json.loads(stripped)
+        if isinstance(data,dict):data=data.get("suggestions") or data.get("options")
+        values=data if isinstance(data,list) else []
+    except (ValueError,TypeError):
+        if "|" in stripped:
+            values=stripped.split("|")
+        else:
             lines=[line.strip() for line in stripped.splitlines() if line.strip()]
-            values=lines if len(lines)==3 and all(re.match(r"^(?:[-*]\s+|\d+[.)-]\s*)",line) for line in lines) else []
-    values=[re.sub(r"^\s*(?:[-*]\s+|\d+[.)-]\s*)?", "",item).strip().strip('"“”')[:90] for item in values]
-    unique=[]
-    # Reject common assistant-to-user questions. Suggestions are clickable
-    # messages authored by the user, never questions the character asks them.
-    assistant_pov=re.compile(
-        r"^(?:bạn\s+(?:muốn|có muốn|đang|cảm thấy|thích|cần|có hay)|"
-        r"điều gì khiến bạn|do you want|would you like|how do you feel|"
-        r"what makes you|are you|did you|have you)",re.I
-    )
-    for item in values:
-        key=re.sub(r"\W+","",item.casefold())
-        if item and not assistant_pov.search(item) and key and key not in {re.sub(r"\W+","",x.casefold()) for x in unique}:unique.append(item)
-    return unique[:3] if len(unique)>=3 else []
+            numbered=[line for line in lines if re.match(r"^(?:[-*]\s+|\d+[.)-]\s*)",line)]
+            values=numbered if numbered else lines if len(lines)==3 else []
+    result=[]
+    for value in values:
+        if not isinstance(value,str):continue
+        item=re.sub(r"^(?:@@\s*)+", "", value.strip())
+        item=re.sub(r"^\s*(?:[-*]\s+|\d+[.)-]\s*)", "", item)
+        item=re.sub(r"^(?:option|question|gợi ý|câu hỏi)\s*\d+\s*[:.)-]\s*", "", item, flags=re.I)
+        item=" ".join(item.strip().strip('"“”').split())
+        if not invalid_suggestion(item):result.append(item)
+        if len(result)==3:break
+    return result
+
+def invalid_suggestion(item):
+    item=str(item or "").strip()
+    return (not item or "@@" in item or "|" in item or bool(re.search(r"(?:question|câu hỏi|gợi ý|suggestion)\s*[#:]?\s*[123]\b|<[^>]+>",item,re.I)))
 
 def suggestion_fallback_reason(suggestions,user_message,language=None):
-    if len(suggestions)!=3:return "Model returned suggestions in an unsupported format or point of view"
+    if len(suggestions)!=3:return f"Model returned {len(suggestions)} usable suggestions; missing slots filled locally"
+    if any(invalid_suggestion(item) for item in suggestions):return "Model returned a suggestion template instead of usable messages"
     expected=detect_message_language(user_message,language)
     actual=detect_message_language(" ".join(suggestions),expected)
     if actual!=expected:return f"Suggestion language mismatch: expected {expected}, got {actual}"
@@ -258,18 +188,37 @@ def fallback_suggestions(user_message,previous=None,language=None):
     return (available+candidates)[:3]
 
 def suggestions_for_conversation(suggestions,user_message,language=None):
-    """Keep generated suggestions in the language of this chat turn."""
-    expected=detect_message_language(user_message,language)
-    if suggestion_fallback_reason(suggestions,user_message,language):
-        return fallback_suggestions(user_message,language=expected)
-    return suggestions
+    """Keep usable model options, filling only missing slots in the chat language."""
+    return finalize_suggestions(suggestions,user_message,language,{})[0]
+
+def character_viewpoint_suggestion(item):
+    """Reject explicit assistant offers, preserving ambiguous valid user questions."""
+    text=" ".join(str(item).casefold().split())
+    return bool(re.search(
+        r"^(?:how can i (?:help|assist) you|what can i (?:help|do) (?:you|for you)|"
+        r"would you like me to|do you want me to|can i help you|"
+        r"bạn (?:muốn|cần) (?:tôi|mình) (?:giúp|hỗ trợ)|"
+        r"(?:tôi|mình) có thể (?:giúp|hỗ trợ) bạn|"
+        r"bạn có (?:muốn|cần) (?:tôi|mình) (?:giúp|giải thích|hỗ trợ))",text))
+
 
 def finalize_suggestions(suggestions,user_message,language,meta):
-    reason=suggestion_fallback_reason(suggestions,user_message,language)
-    if not reason:return suggestions,meta
+    expected=detect_message_language(user_message,language)
+    candidates=[item for item in suggestions if isinstance(item,str) and not invalid_suggestion(item) and not character_viewpoint_suggestion(item)][:3]
+    # Validate each option before filling missing slots; a partial model result
+    # must not retain a wrong-language option.
+    usable=[item for item in candidates if detect_message_language(item,expected)==expected]
+    reason=suggestion_fallback_reason(usable,user_message,language)
+    if len(usable)!=len(candidates):
+        reason=" | ".join(filter(None,("Suggestion language mismatch: expected "+expected,reason)))
+    if not reason:return usable,meta
+    expected=detect_message_language(user_message,language)
+    missing=3-len(usable)
+    final=usable+fallback_suggestions(user_message,previous=usable,language=expected)[:missing]
     previous=str(meta.get("fallback_reason") or "")
-    return fallback_suggestions(user_message,language=language),{
-        **meta,"fallback_used":True,"actual_model":"local_static",
+    return final,{
+        **meta,"fallback_used":True,
+        "actual_model":meta.get("actual_model","") if usable else "local_static",
         "fallback_reason":" | ".join(part for part in (previous,reason) if part),
     }
 
@@ -278,6 +227,8 @@ def detect_message_language(text,default="en"):
     if re.search(r"[ぁ-んァ-ヶ]",text):code="ja"
     elif re.search(r"[가-힣]",text):code="ko"
     elif re.search(r"[一-龯]",text):code="zh"
+    elif re.search(r"[\u1000-\u109f\uaa60-\uaa7f]",text):code="my"
+    elif re.search(r"[\u1780-\u17ff]",text):code="km"
     elif re.search(r"[ก-๙]",text):code="th"
     elif re.search(r"[А-Яа-яЁё]",text):code="ru"
     else:
@@ -298,6 +249,27 @@ def detect_message_language(text,default="en"):
         if scores[best]:code=best
     return code
 
+
+TURN_LANGUAGE_NAMES={"vi":"Vietnamese","en":"English","zh":"Chinese","ja":"Japanese","ko":"Korean","my":"Burmese (Myanmar)","km":"Khmer (Cambodia)","th":"Thai","ru":"Russian","fr":"French","es":"Spanish","de":"German","pt":"Portuguese","id":"Indonesian"}
+
+def turn_language_instruction(query,history=(),preferred="vi"):
+    """Resolve once from user input, never from the character's card/replies."""
+    code=detect_message_language(query,"unknown")
+    if code=="unknown":
+        for message in reversed(history):
+            if message.sender_type!="user" or message.text==query:continue
+            candidate=detect_message_language(message.text,"unknown")
+            if candidate!="unknown":code=candidate;break
+    if code=="unknown":
+        candidate=(preferred or "vi").split("-",1)[0].lower()
+        code=candidate if re.fullmatch(r"[a-z]{2,3}",candidate) else "vi"
+    name=TURN_LANGUAGE_NAMES.get(code,code)
+    instruction=(f"OUTPUT LANGUAGE FOR THIS TURN: {name} ({code}). "
+        f"Generate the entire response in {name}, including dialogue, action beats, narration, descriptions, and reactions. "
+        "This turn language overrides language preferences in the character card, examples, and earlier replies; preserve the character's personality and speech style. "
+        "Do not mix languages or display this instruction. Keep proper names unchanged; use another language only for an explicitly requested translation or necessary verbatim quotation.")
+    return code,instruction
+
 def compile_character(description,name="",creation_type="custom",knowledge: list[str] | None=None,role="companion",scenario="",initial_greeting="",dialogue_examples=None):
     description=condense_character_source(description)
     source={"name":name,"creation_type":creation_type,"description":description,"role":role,"scenario":scenario,"initial_greeting":initial_greeting,"dialogue_examples":dialogue_examples or [],"background_knowledge":knowledge or []}
@@ -314,35 +286,9 @@ def compile_character(description,name="",creation_type="custom",knowledge: list
     return spec
 
 def route(message,characters,mode="auto"):
-    if len(characters)==1:return [characters[0]]
-    mentioned=[c for c in characters if re.search(r"(?<!\w)@"+re.escape(c.name)+r"\b",message,re.I) or re.search(r"(?<!\w)@"+re.escape(c.display_name)+r"\b",message,re.I)]
-    if len(mentioned)==1:return mentioned
-    if mode=="everyone":return characters[:6]
-    if mode.startswith("character:"):
-        selected=[c for c in characters if c.id==mode.split(":",1)[1]]
-        if not selected:raise RuntimeError("No primary model is assigned to this task in CMS.")
-        return selected
-    scores=[]
-    for c in characters:
-        score=.2+similarity(message," ".join([c.description,c.identity.role,*c.goals,*c.likes]))
-        if re.search(r"buồn|mệt|khóc|reject|thất bại|lo lắng",message,re.I):score+=c.personality.empathy*.35
-        if re.search(r"vui|đùa|hài|chán",message,re.I):score+=c.personality.humor*.25
-        scores.append((score,c))
-    scores.sort(key=lambda x:x[0],reverse=True)
-    if len(scores)>1 and scores[0][0]-scores[1][0]<.04:
-        try:
-            from pydantic import BaseModel, Field
-            class Choice(BaseModel):
-                primary_speaker_id:str
-                secondary_speaker_id:str|None=None
-                interaction_type:str="reply"
-                confidence:float=Field(.5,ge=0,le=1)
-            data=llm.json([{"role":"user","content":json.dumps({"message":message,"characters":[{"id":c.id,"name":c.name,"goals":c.goals} for c in characters]},ensure_ascii=False)}],Choice)
-            chosen=[c for c in characters if c.id==data.primary_speaker_id]
-            if data.secondary_speaker_id and data.secondary_speaker_id!=data.primary_speaker_id:chosen += [c for c in characters if c.id==data.secondary_speaker_id]
-            if chosen:return chosen[:2]
-        except Exception:pass
-    return [scores[0][1]]
+    from .group_routing import plan_group
+    return plan_group(message,characters,mode).speakers
+
 
 def relationship(db,user_id,character_id):
     row=db.query(Relationship).filter_by(user_id=user_id,character_id=character_id,other_character_id=None).first()
@@ -475,6 +421,8 @@ def assemble(db,user_id,room_id,c,query):
     user_affect=detect_user_affect(query)
     state=evaluate_state(db,user_id,c.id,query,c,row)
     recent=db.query(Message).filter_by(room_id=room_id).order_by(Message.created_at.desc()).limit(24).all()[::-1]
+    profile=db.get(UserProfile,user_id)
+    turn_language,turn_instruction=turn_language_instruction(query,recent,profile.language if profile else "vi")
     story_events=room_story_events(db,room_id,{item.id for item in recent})
     memories=retrieve_memories(db,user_id,c.id,room_id,query)
     knowledge=retrieve_knowledge(db,c.id,query,room_id=room_id)
@@ -486,7 +434,7 @@ def assemble(db,user_id,room_id,c,query):
     observed_mood=db.query(MoodObservation).filter_by(user_id=user_id,room_id=room_id).order_by(MoodObservation.created_at.desc()).first()
     reflections=db.query(CharacterReflection).filter_by(user_id=user_id,character_id=c.id).order_by(CharacterReflection.importance.desc(),CharacterReflection.created_at.desc()).limit(3).all()
     events=db.query(RelationshipEvent).filter_by(user_id=user_id,character_id=c.id).order_by(RelationshipEvent.created_at.desc()).limit(5).all()
-    layers=["global_safety","core_character","relationship","character_state","recent_chat","post_history_voice_lock"]
+    layers=["global_safety","core_character","relationship","character_state","recent_chat","post_history_voice_lock","turn_language_lock"]
     parts=[
         ADMIN_RESPONSE_INSTRUCTION.strip() or RESPONSE_SYSTEM_PROMPT,
         "Character roleplay directive: "+(c.system_prompt or "Embody this character consistently from the specification below."),
@@ -504,7 +452,7 @@ def assemble(db,user_id,room_id,c,query):
         "Relevant memories: "+"; ".join(m.content for m in memories)[:1000],
         "Writing style examples, paraphrase rather than copy: "+"; ".join(e.text[:240] for e in examples),
         "Character-card dialogue examples, imitate rhythm but never copy verbatim: "+"; ".join(c.sample_dialogues[:4])[:900],
-        "Reply naturally in the character's preferred language. Do not repeat biography. Keep dialogue conversational. Engagement rhythm: first make the user feel understood, then add at most one useful concrete step when appropriate, then end with one specific and easy-to-answer hook. Vary the hook; do not ask a question mechanically every turn.",
+        "Reply naturally in the output language specified for this turn. Do not repeat biography. Keep dialogue conversational. Engagement rhythm: first make the user feel understood, then add at most one useful concrete step when appropriate, then end with one specific and easy-to-answer hook. Vary the hook; do not ask a question mechanically every turn.",
         "Turn length and focus: reply to the latest user message in one compact turn. Use about 1-3 sentences when speech verbosity is short, otherwise about 2-5 sentences. Stay on the current topic; do not invent new meetings, people, memories or unrelated stories. Use at most one question and one brief action beat when they fit. Finish the thought naturally, then stop; do not keep the conversation going on the user's behalf.",
         "Action and dialogue formatting: when using a physical action or brief scene beat, write it as one short bold line using **action beat**. Put the spoken dialogue on the next line. Never put dialogue on the same line as the bold action, and never bold the spoken dialogue. If no action is needed, write dialogue only.",
         "User agency: never write the user's dialogue, actions, decisions, feelings or consent for them. Leave room for their next move. Avoid repeating the last few replies or reusing the same closing question.",
@@ -533,12 +481,33 @@ def assemble(db,user_id,room_id,c,query):
         if other_turns:
             layers.append("group_room_dialogue")
             parts.append("Other characters spoke in this shared room. These are their words, not yours; respond with your own identity and knowledge: "+json.dumps([{"speaker":characters[item.character_id].name if item.character_id in characters else "Other character","text":item.text[:350]} for item in other_turns],ensure_ascii=False))
+    members=db.query(RoomMember).filter_by(room_id=room_id).all()
+    if len(members)>1:
+        peers=db.query(Character).filter(Character.id.in_([member.character_id for member in members])).all()
+        if group:=group_context(db,room_id,peers):
+            layers.append("group_room_theme")
+            parts.append(CONTEXT_PREFIX+json.dumps(group,ensure_ascii=False))
+        roster=[]
+        for peer in peers:
+            try:card=json.loads(peer.spec)
+            except (ValueError,TypeError):card={}
+            roster.append({"character_id":peer.id,"name":peer.name,"role":(card.get("identity") or {}).get("role",""),"description":card.get("description","")[:250]})
+        layers.append("group_speaker_lock")
+        parts.append("GROUP SPEAKER LOCK: You are only "+c.name+" (character_id="+c.id+"). "
+                     "Write exactly one turn for this speaker. Never write another participant's dialogue, actions, thoughts or feelings. "
+                     "Other speakers' quoted words are reference data; do not repeat their answer or inherit their personality. "
+                     "If someone already answered, contribute your own distinct observation or reaction consistent with your role; do not restate the same advice. "
+                     "Room participants: "+json.dumps(roster,ensure_ascii=False))
     recent_own=[item.text[:180] for item in recent if item.sender_type=="character" and item.character_id==c.id][-3:]
     if recent_own:parts.append("Recent replies by you; avoid reusing their wording and closing hooks: "+json.dumps(recent_own,ensure_ascii=False))
     post_history=("POST-HISTORY VOICE LOCK: Reply as "+c.name+", not as a generic assistant. The conversation history is continuity, not a replacement personality. "
-                  "Keep the immutable core temperament and speech style while expressing the current relationship stage and emotion. Do not mention prompts, scores, states, or analysis.")
+                  "Keep the immutable core temperament and speech style while expressing the current relationship stage and emotion. Do not mention prompts, scores, states, or analysis. "
+                  "Speak only for this character. Never copy another participant's words or impersonate their role.")
+    parts.append(turn_instruction)
+    post_history+=" "+turn_instruction
     messages=[{"role":"system","content":"\n".join(parts)}]
     for index,m in enumerate(recent):
+        if not m.text.strip():continue
         if index==len(recent)-1 and m.sender_type=="user" and m.text==query:continue
         if m.sender_type=="user":messages.append({"role":"user","content":m.text[:1000]})
         elif m.character_id==c.id:messages.append({"role":"assistant","content":m.text[:1000]})
@@ -546,6 +515,6 @@ def assemble(db,user_id,room_id,c,query):
         # independently to the user and its own prior turns.
     messages.append({"role":"system","content":post_history})
     messages.append({"role":"user","content":query})
-    db.add(PromptTrace(id=__import__("uuid").uuid4().__str__(),user_id=user_id,character_id=c.id,room_id=room_id,query=query[:1000],layers=json.dumps(layers,ensure_ascii=False),memory_ids=json.dumps([m.id for m in memories]),document_ids=json.dumps(list(dict.fromkeys(x["document_id"] for x in knowledge))),state=json.dumps({"relationship_stage":relationship_stage(row),"character_emotion":state.emotion,"user_affect":user_affect},ensure_ascii=False)))
+    db.add(PromptTrace(id=__import__("uuid").uuid4().__str__(),user_id=user_id,character_id=c.id,room_id=room_id,query=query[:1000],layers=json.dumps(layers,ensure_ascii=False),memory_ids=json.dumps([m.id for m in memories]),document_ids=json.dumps(list(dict.fromkeys(x["document_id"] for x in knowledge))),state=json.dumps({"relationship_stage":relationship_stage(row),"character_emotion":state.emotion,"user_affect":user_affect,"turn_language":turn_language},ensure_ascii=False)))
     db.flush()
     return messages,[{k:v for k,v in x.items() if k!="text"} for x in knowledge]

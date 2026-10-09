@@ -1,0 +1,2106 @@
+[
+  {
+    "source": "· Trên 6000 ký tự: AI sẽ tóm tắt có cấu trúc trước khi tạo",
+    "en": ""
+  },
+  {
+    "source": "(tối đa 6). Muốn trò chuyện riêng với 1 nhân vật, bấm",
+    "en": ""
+  },
+  {
+    "source": "{name} đang nhập...",
+    "en": "{name} is typing..."
+  },
+  {
+    "source": "↻ Trả lời khác",
+    "en": "↻ Alternative reply"
+  },
+  {
+    "source": "＋ Cuộc trò chuyện mới",
+    "en": "＋ New chat"
+  },
+  {
+    "source": "＋ Tạo nhân vật",
+    "en": ""
+  },
+  {
+    "source": "＋ Tạo nhân vật mới",
+    "en": "＋ Create new character"
+  },
+  {
+    "source": "＋ Tạo phòng chat",
+    "en": ""
+  },
+  {
+    "source": "⌂ Trang chủ",
+    "en": ""
+  },
+  {
+    "source": "⌕ Cộng đồng",
+    "en": ""
+  },
+  {
+    "source": "■ Dừng",
+    "en": ""
+  },
+  {
+    "source": "◉ Nhân vật",
+    "en": ""
+  },
+  {
+    "source": "◌ Đang tạo",
+    "en": ""
+  },
+  {
+    "source": "☀ Sáng",
+    "en": ""
+  },
+  {
+    "source": "☺ Nhân vật của tôi",
+    "en": ""
+  },
+  {
+    "source": "☾ Tối",
+    "en": ""
+  },
+  {
+    "source": "✦ Trợ lý",
+    "en": ""
+  },
+  {
+    "source": "AI",
+    "en": ""
+  },
+  {
+    "source": "AI Role Play →",
+    "en": ""
+  },
+  {
+    "source": "AI sẽ tham khảo nguồn công khai về nhân vật này; mô tả của bạn vẫn được ưu tiên.",
+    "en": ""
+  },
+  {
+    "source": "AI simulation",
+    "en": ""
+  },
+  {
+    "source": "Audio stream quá lớn.",
+    "en": ""
+  },
+  {
+    "source": "Avatar",
+    "en": "Avatar"
+  },
+  {
+    "source": "Avibi Platform",
+    "en": ""
+  },
+  {
+    "source": "Âm lượng nhạc",
+    "en": ""
+  },
+  {
+    "source": "Bài khó đã xuất hiện à? Tuyệt, cho mình xem thử — ta sẽ chia nhỏ nó đến khi đáp án hết đường trốn!",
+    "en": "A tough problem has appeared? Great, show me — we'll break it down until the answer has nowhere left to hide!"
+  },
+  {
+    "source": "Bài khó đến đâu, hiểu đúng là đi tiếp được.",
+    "en": "No problem is too hard once the path becomes clear."
+  },
+  {
+    "source": "Bạn",
+    "en": "You"
+  },
+  {
+    "source": "Bạn chưa có cuộc trò chuyện nào.",
+    "en": "No conversations yet."
+  },
+  {
+    "source": "Bạn chưa có nhân vật nào. Thêm từ tab Nhân vật hệ thống hoặc mở Sáng tạo nhân vật.",
+    "en": ""
+  },
+  {
+    "source": "Bạn có thể chỉnh sửa, ghim hoặc xóa ký ức.",
+    "en": "You can edit, pin or delete memories."
+  },
+  {
+    "source": "Bạn có thể gửi câu hỏi hoặc đính kèm tệp để bắt đầu.",
+    "en": "Send a question or attach a file to get started."
+  },
+  {
+    "source": "Bạn không có quyền thực hiện thao tác này.",
+    "en": "You do not have permission to perform this action."
+  },
+  {
+    "source": "Bạn muốn bắt đầu với gì?",
+    "en": "What would you like to start with?"
+  },
+  {
+    "source": "Bắt đầu cuộc trò chuyện",
+    "en": "Start the conversation"
+  },
+  {
+    "source": "Bấm Chat để tiếp tục cuộc trò chuyện của từng tác vụ.",
+    "en": "Select Chat to continue each task's conversation."
+  },
+  {
+    "source": "Bật âm phản ứng",
+    "en": ""
+  },
+  {
+    "source": "Bật đèn để soi mật khẩu",
+    "en": ""
+  },
+  {
+    "source": "Bật đèn rồi đưa đến mật khẩu",
+    "en": ""
+  },
+  {
+    "source": "Bật để hệ thống nghiên cứu nhân vật và kết hợp với mô tả của bạn.",
+    "en": "Enable character research and combine it with your description."
+  },
+  {
+    "source": "Bật lại",
+    "en": "Resume"
+  },
+  {
+    "source": "Bật nhạc nền",
+    "en": ""
+  },
+  {
+    "source": "Biểu cảm từ cộng đồng",
+    "en": "Community reactions"
+  },
+  {
+    "source": "Bình thường",
+    "en": ""
+  },
+  {
+    "source": "Bỏ ghim",
+    "en": "Unpin"
+  },
+  {
+    "source": "Bộ ảnh biểu cảm tạo quá lâu. Vui lòng thử lại sau.",
+    "en": ""
+  },
+  {
+    "source": "Bộ lọc nhân vật",
+    "en": ""
+  },
+  {
+    "source": "Bối cảnh",
+    "en": "Scenario"
+  },
+  {
+    "source": "Bối cảnh trò chuyện",
+    "en": ""
+  },
+  {
+    "source": "bởi",
+    "en": "by"
+  },
+  {
+    "source": "Buồn",
+    "en": ""
+  },
+  {
+    "source": "Bước vào câu chuyện.",
+    "en": ""
+  },
+  {
+    "source": "Các bước",
+    "en": ""
+  },
+  {
+    "source": "Cài đặt",
+    "en": "Settings"
+  },
+  {
+    "source": "Cài đặt cá nhân",
+    "en": "Personal settings"
+  },
+  {
+    "source": "Cài đặt tài khoản",
+    "en": "Account settings"
+  },
+  {
+    "source": "Căng thẳng",
+    "en": ""
+  },
+  {
+    "source": "Câu đầu tiên nhân vật nói",
+    "en": ""
+  },
+  {
+    "source": "Câu đầu tiên nhân vật nói khi bắt đầu chat",
+    "en": "The character's first message when chat begins"
+  },
+  {
+    "source": "Câu trả lời bị gián đoạn",
+    "en": "The response was interrupted."
+  },
+  {
+    "source": "Câu trả lời bị gián đoạn. Hãy thử gửi lại.",
+    "en": ""
+  },
+  {
+    "source": "Chạm để cú mèo bay đi",
+    "en": ""
+  },
+  {
+    "source": "Chào",
+    "en": "Hi"
+  },
+  {
+    "source": "Chào bạn! Cứ đặt mớ suy nghĩ rối như tai nghe trong túi xuống đây, mình cùng bạn gỡ từng nút nhé.",
+    "en": "Hello! Drop those tangled thoughts here like earphones in a pocket, and we'll untie them one knot at a time."
+  },
+  {
+    "source": "Chào bạn! Mang câu hỏi tới đây, mình mang sự tò mò — cùng bắt đầu nhé!",
+    "en": "Hello! Bring the question, I'll bring the curiosity — let's begin!"
+  },
+  {
+    "source": "Chào người khám phá! Gửi câu hỏi, lá số hoặc trải bài sang đây; mình cùng bạn đọc những biểu tượng bằng một cái đầu tỉnh táo và trái tim vui vẻ nhé.",
+    "en": "Hello, explorer! Send your question, chart, or spread; we'll read the symbols with a clear head and a cheerful heart."
+  },
+  {
+    "source": "Chat",
+    "en": "Chat"
+  },
+  {
+    "source": "Chat Bot AI",
+    "en": "Chat Bot AI"
+  },
+  {
+    "source": "CHAT BOT AI",
+    "en": ""
+  },
+  {
+    "source": "Chat nhóm ·",
+    "en": ""
+  },
+  {
+    "source": "Chỉ dùng trong tác vụ",
+    "en": "Use only in this task"
+  },
+  {
+    "source": "Cho phép AI Assistant ghi nhớ điều bạn chủ động lưu",
+    "en": "Allow AI Assistant to use details you explicitly save"
+  },
+  {
+    "source": "Chọn & tạo",
+    "en": ""
+  },
+  {
+    "source": "Chọn các nhân vật muốn đưa vào cùng một cuộc trò chuyện.",
+    "en": "Choose characters for one conversation."
+  },
+  {
+    "source": "Chọn cách bắt đầu: dùng nhân vật có sẵn hoặc tạo một người hoàn toàn mới.",
+    "en": "Start with an existing character or create someone entirely new."
+  },
+  {
+    "source": "Chọn file .txt .md .pdf .docx .pptx",
+    "en": ""
+  },
+  {
+    "source": "Chọn file truyện hoặc nhập đường dẫn truyện trước.",
+    "en": ""
+  },
+  {
+    "source": "Chọn không gian của bạn",
+    "en": "Choose your space"
+  },
+  {
+    "source": "Chọn một người phù hợp với tâm trạng, học tập hoặc công việc của bạn.",
+    "en": "Choose someone for your mood, studies or work."
+  },
+  {
+    "source": "Chọn nhân vật",
+    "en": ""
+  },
+  {
+    "source": "Chọn nhân vật từ bộ sưu tập để tạo phòng chat.",
+    "en": ""
+  },
+  {
+    "source": "Chọn tối đa 8 tags",
+    "en": "Choose up to 8 tags"
+  },
+  {
+    "source": "Chọn truyện khác",
+    "en": ""
+  },
+  {
+    "source": "Chọn vai trò phù hợp",
+    "en": "Choose a suitable role"
+  },
+  {
+    "source": "Chờ chút nhé, mình đang chuẩn bị đây!",
+    "en": ""
+  },
+  {
+    "source": "Chủ đề (tuỳ chọn)",
+    "en": ""
+  },
+  {
+    "source": "Chunk PCM16 không hợp lệ.",
+    "en": ""
+  },
+  {
+    "source": "Chưa chọn nhân vật nào",
+    "en": ""
+  },
+  {
+    "source": "Chưa có âm phản ứng",
+    "en": ""
+  },
+  {
+    "source": "Chưa có điều gì được lưu.",
+    "en": "Nothing saved yet."
+  },
+  {
+    "source": "Chưa có giọng phù hợp cho",
+    "en": ""
+  },
+  {
+    "source": "Chưa có ký ức nào. Thêm điều bạn muốn",
+    "en": ""
+  },
+  {
+    "source": "Chưa có nhạc nền",
+    "en": ""
+  },
+  {
+    "source": "Chưa có nhắc nhở.",
+    "en": "No reminders yet."
+  },
+  {
+    "source": "Chưa có nhân vật public phù hợp.",
+    "en": "No matching public characters yet."
+  },
+  {
+    "source": "Chưa có tài khoản? Đăng ký",
+    "en": "No account yet? Sign up"
+  },
+  {
+    "source": "Chưa phân công model TTS trong CMS",
+    "en": ""
+  },
+  {
+    "source": "Chưa phân công model TTS trong CMS.",
+    "en": ""
+  },
+  {
+    "source": "Chưa tự tìm thấy nhân vật. Hãy nhập tên nhân vật xuất hiện trong truyện.",
+    "en": ""
+  },
+  {
+    "source": "Cộng đồng",
+    "en": "Community"
+  },
+  {
+    "source": "CỘNG ĐỒNG",
+    "en": ""
+  },
+  {
+    "source": "Công khai",
+    "en": "Public"
+  },
+  {
+    "source": "Công khai nhân vật",
+    "en": "Make character public"
+  },
+  {
+    "source": "Công khai phòng chat",
+    "en": ""
+  },
+  {
+    "source": "Công việc",
+    "en": "Work"
+  },
+  {
+    "source": "Của tôi",
+    "en": ""
+  },
+  {
+    "source": "cuộc trò chuyện",
+    "en": "conversations"
+  },
+  {
+    "source": "Cuộc trò chuyện",
+    "en": "Conversations"
+  },
+  {
+    "source": "Cuộc trò chuyện mới",
+    "en": "New chat"
+  },
+  {
+    "source": "Dán link",
+    "en": ""
+  },
+  {
+    "source": "Demo",
+    "en": ""
+  },
+  {
+    "source": "Dịch vụ AI tạm thời không khả dụng.",
+    "en": "The AI service is temporarily unavailable."
+  },
+  {
+    "source": "Dịch vụ vừa được khởi động lại. Vui lòng gửi lại tin nhắn.",
+    "en": ""
+  },
+  {
+    "source": "Dữ liệu",
+    "en": ""
+  },
+  {
+    "source": "Dữ liệu đã tồn tại hoặc đang xung đột.",
+    "en": "The item already exists or conflicts with existing data."
+  },
+  {
+    "source": "Dữ liệu không hợp lệ. Vui lòng kiểm tra lại.",
+    "en": "Invalid data. Please check and try again."
+  },
+  {
+    "source": "Dừng",
+    "en": ""
+  },
+  {
+    "source": "Dừng phát",
+    "en": ""
+  },
+  {
+    "source": "Đã cập nhật ảnh đại diện",
+    "en": "Avatar updated"
+  },
+  {
+    "source": "Đã chọn",
+    "en": ""
+  },
+  {
+    "source": "Đã chọn {count} nhân vật",
+    "en": "{count} characters selected"
+  },
+  {
+    "source": "Đã có tài khoản? Đăng nhập",
+    "en": "Already have an account? Sign in"
+  },
+  {
+    "source": "Đã đánh giá {count} sao",
+    "en": "Rated {count} stars"
+  },
+  {
+    "source": "Đã đọc truyện. Chọn nhân vật muốn tạo.",
+    "en": ""
+  },
+  {
+    "source": "Đã đổi mật khẩu",
+    "en": "Password changed"
+  },
+  {
+    "source": "Đã đủ 8 tag",
+    "en": ""
+  },
+  {
+    "source": "Đã đủ tối đa 6 nhân vật.",
+    "en": ""
+  },
+  {
+    "source": "Đã ghim",
+    "en": ""
+  },
+  {
+    "source": "Đã gửi",
+    "en": ""
+  },
+  {
+    "source": "Đã lưu hồ sơ",
+    "en": "Profile saved"
+  },
+  {
+    "source": "Đã lưu ký ức",
+    "en": ""
+  },
+  {
+    "source": "Đã lưu tùy chọn",
+    "en": "Preferences saved"
+  },
+  {
+    "source": "Đã nhớ",
+    "en": ""
+  },
+  {
+    "source": "Đã sao chép",
+    "en": "Copied"
+  },
+  {
+    "source": "Đã tạo nhân vật từ truyện.",
+    "en": ""
+  },
+  {
+    "source": "Đã theo dõi người tạo",
+    "en": "Creator followed"
+  },
+  {
+    "source": "Đã thêm",
+    "en": ""
+  },
+  {
+    "source": "Đã xảy ra lỗi. Vui lòng thử lại.",
+    "en": "Something went wrong. Please try again."
+  },
+  {
+    "source": "Đang chuẩn bị tài nguyên...",
+    "en": "Preparing resources..."
+  },
+  {
+    "source": "Đang chuẩn bị toàn bộ giao diện và nội dung nhân vật.",
+    "en": "Preparing the complete interface and character content."
+  },
+  {
+    "source": "Đang gửi…",
+    "en": ""
+  },
+  {
+    "source": "Đang hoàn thiện nhân vật...",
+    "en": "Finishing your character..."
+  },
+  {
+    "source": "đang nhập...",
+    "en": "is typing..."
+  },
+  {
+    "source": "Đang suy nghĩ…",
+    "en": "Thinking…"
+  },
+  {
+    "source": "Đang tải ngôn ngữ...",
+    "en": "Loading language..."
+  },
+  {
+    "source": "Đang tải nhạc…",
+    "en": ""
+  },
+  {
+    "source": "Đang tải nhân vật, bộ ảnh biểu cảm và phòng trò chuyện.",
+    "en": "Loading the character, expression set and chat room."
+  },
+  {
+    "source": "Đang tải…",
+    "en": "Loading…"
+  },
+  {
+    "source": "Đang xây dựng tính cách, tạo chân dung chính diện và bộ ảnh biểu cảm.",
+    "en": "Building the personality, front portrait and expression set."
+  },
+  {
+    "source": "Đánh giá",
+    "en": ""
+  },
+  {
+    "source": "Đánh giá cao",
+    "en": "Top rated"
+  },
+  {
+    "source": "Đánh giá:",
+    "en": "Rate:"
+  },
+  {
+    "source": "Đau đầu thường xuyên do đâu?",
+    "en": ""
+  },
+  {
+    "source": "Đăng nhập",
+    "en": "Sign in"
+  },
+  {
+    "source": "Đăng nhập để bắt đầu.",
+    "en": "Sign in to get started."
+  },
+  {
+    "source": "Đăng nhập để tiếp tục các cuộc trò chuyện của bạn.",
+    "en": "Sign in to continue your conversations."
+  },
+  {
+    "source": "Đăng xuất",
+    "en": "Sign out"
+  },
+  {
+    "source": "Đặt riêng tư",
+    "en": ""
+  },
+  {
+    "source": "Đây là nhân vật trong phim hoặc hoạt hình?",
+    "en": "Is this a movie or animated character?"
+  },
+  {
+    "source": "Để trống để lấy cảm hứng từ tên nhóm hoặc trò chuyện tự nhiên.",
+    "en": ""
+  },
+  {
+    "source": "Để trống sẽ dùng tên gợi ý:",
+    "en": ""
+  },
+  {
+    "source": "Để ứng dụng mở để nhận nhắc. Có thể cấp quyền trình duyệt để hiện thông báo khi chuyển tab.",
+    "en": "Keep the app open for reminders. Allow browser notifications to see them while using another tab."
+  },
+  {
+    "source": "Đến giờ rồi",
+    "en": "It's time"
+  },
+  {
+    "source": "Đi đâu mà vội mà vàng đúng không.",
+    "en": ""
+  },
+  {
+    "source": "Đi đâu mà vội mà vàng đúng không...",
+    "en": "You can chat as soon as preparation is complete."
+  },
+  {
+    "source": "Đính kèm",
+    "en": "Attach"
+  },
+  {
+    "source": "Đọc Bát Tự minh họa",
+    "en": ""
+  },
+  {
+    "source": "Đọc dấu hiệu để hiểu mình, không để số phận viết thay.",
+    "en": "Read the signs to understand yourself, never to let fate write your story."
+  },
+  {
+    "source": "Đọc giúp chỉ số xét nghiệm",
+    "en": ""
+  },
+  {
+    "source": "Đọc truyện quá lâu. Hãy thử file TXT hoặc đường dẫn khác.",
+    "en": ""
+  },
+  {
+    "source": "Đóng",
+    "en": "Close"
+  },
+  {
+    "source": "Đóng lịch sử",
+    "en": "Close history"
+  },
+  {
+    "source": "Đổi ảnh",
+    "en": ""
+  },
+  {
+    "source": "Đổi mật khẩu",
+    "en": "Change password"
+  },
+  {
+    "source": "Đồng hành",
+    "en": "Companion"
+  },
+  {
+    "source": "Emoji",
+    "en": ""
+  },
+  {
+    "source": "Enter để gửi · Shift+Enter xuống dòng",
+    "en": "Enter to send · Shift+Enter for a new line"
+  },
+  {
+    "source": "File truyện",
+    "en": ""
+  },
+  {
+    "source": "Gateway không trả về âm thanh.",
+    "en": ""
+  },
+  {
+    "source": "Gần đây",
+    "en": "Recent"
+  },
+  {
+    "source": "Ghi nhớ",
+    "en": "Memory"
+  },
+  {
+    "source": "Ghi nhớ & nhắc nhở",
+    "en": "Memory & reminders"
+  },
+  {
+    "source": "Ghi nhớ gắn với từng cuộc trò chuyện. Mở một cuộc trò chuyện để xem và thêm ghi nhớ.",
+    "en": "Memories belong to a conversation. Open one to view and add memories."
+  },
+  {
+    "source": "ghi nhớ ở ô phía trên.",
+    "en": ""
+  },
+  {
+    "source": "Ghim",
+    "en": "Pin"
+  },
+  {
+    "source": "Giải thích đạo hàm hàm hợp",
+    "en": ""
+  },
+  {
+    "source": "Giải thích một khái niệm khó",
+    "en": "Explain a tricky concept"
+  },
+  {
+    "source": "Giải thích từng bước từ tài liệu của bạn",
+    "en": "Step-by-step help with your materials"
+  },
+  {
+    "source": "Giải trí",
+    "en": "Entertainment"
+  },
+  {
+    "source": "Giảm chuyển động",
+    "en": "Reduce motion"
+  },
+  {
+    "source": "Giao diện",
+    "en": "Appearance"
+  },
+  {
+    "source": "Giao diện sẽ tự mở khi mọi nội dung đã sẵn sàng.",
+    "en": "The interface will open when all content is ready."
+  },
+  {
+    "source": "Giận",
+    "en": ""
+  },
+  {
+    "source": "Giới thiệu",
+    "en": "Bio"
+  },
+  {
+    "source": "Giới thiệu ngắn về bạn…",
+    "en": "A short introduction about you…"
+  },
+  {
+    "source": "Gõ rồi nhấn Enter",
+    "en": ""
+  },
+  {
+    "source": "Gói hiện tại",
+    "en": "Current plan"
+  },
+  {
+    "source": "Gỡ rối trong lòng, tìm lại nhịp của riêng bạn.",
+    "en": "Untangle your thoughts and find your own rhythm again."
+  },
+  {
+    "source": "Gợi ý thực đơn lành mạnh",
+    "en": ""
+  },
+  {
+    "source": "Gửi",
+    "en": "Send"
+  },
+  {
+    "source": "Gửi (Enter)",
+    "en": ""
+  },
+  {
+    "source": "Gửi →",
+    "en": "Send →"
+  },
+  {
+    "source": "Gửi Bát Tự, lá số hoặc trải bài minh họa để chiêm nghiệm",
+    "en": "Upload an illustrative chart or spread for reflection"
+  },
+  {
+    "source": "Gửi Bát Tự, lá số minh họa hoặc đặt câu hỏi để chiêm nghiệm…",
+    "en": "Upload an illustrative chart or ask a reflective question…"
+  },
+  {
+    "source": "Gửi file",
+    "en": "Attach file"
+  },
+  {
+    "source": "Hai người quen nhau thế nào, đang ở đâu, mối quan hệ hiện tại...",
+    "en": "How you met, where you are and your current relationship..."
+  },
+  {
+    "source": "Hạn chế animation trong giao diện.",
+    "en": "Limit animations in the interface."
+  },
+  {
+    "source": "Hãy phân tích nội dung trong tệp tôi vừa gửi.",
+    "en": ""
+  },
+  {
+    "source": "Hệ thống",
+    "en": ""
+  },
+  {
+    "source": "Hệ thống đang bận. Vui lòng thử lại sau.",
+    "en": "The service is busy. Please try again later."
+  },
+  {
+    "source": "Hệ thống đọc nội dung, tìm nhân vật trong truyện, rồi tạo tính cách và cách nói dựa trên các đoạn có nhân vật đó.",
+    "en": ""
+  },
+  {
+    "source": "Hệ thống gặp lỗi. Vui lòng thử lại.",
+    "en": "A system error occurred. Please try again."
+  },
+  {
+    "source": "Hiện mật khẩu",
+    "en": "Show passwords"
+  },
+  {
+    "source": "Hiển thị",
+    "en": ""
+  },
+  {
+    "source": "Hiểu cơ thể đúng hơn, chăm mình tốt hơn.",
+    "en": "Understand your body better, care for yourself better."
+  },
+  {
+    "source": "Hoàn tất",
+    "en": "Done"
+  },
+  {
+    "source": "hoặc",
+    "en": ""
+  },
+  {
+    "source": "Hoặc tự nhập tên nhân vật",
+    "en": ""
+  },
+  {
+    "source": "Học tập",
+    "en": "Homework"
+  },
+  {
+    "source": "Hỏi chủ đề mới",
+    "en": "New topic"
+  },
+  {
+    "source": "Hỏi đáp, tâm lý, sức khỏe, bài tập và Tarot",
+    "en": "Questions, wellbeing, health, homework and Tarot"
+  },
+  {
+    "source": "Hỏi đáp, tóm tắt tài liệu, lên kế hoạch hoặc viết nội dung. Bạn có thể gửi kèm file.",
+    "en": "Ask questions, summarise documents, plan or write. You can attach files."
+  },
+  {
+    "source": "Hỏi mình bất cứ điều gì",
+    "en": "Ask me anything"
+  },
+  {
+    "source": "Hỏi mình bất cứ điều gì…",
+    "en": "Ask me anything…"
+  },
+  {
+    "source": "Hồ sơ",
+    "en": "Profile"
+  },
+  {
+    "source": "Hồ sơ công khai",
+    "en": "Public profile"
+  },
+  {
+    "source": "Hồ sơ nhân vật",
+    "en": "Character profile"
+  },
+  {
+    "source": "Hỗ trợ bài tập",
+    "en": ""
+  },
+  {
+    "source": "Hỗ trợ học tập",
+    "en": "Homework support"
+  },
+  {
+    "source": "Hôm nay bạn cần ai đồng hành?",
+    "en": "Who would you like by your side today?"
+  },
+  {
+    "source": "hôm nay mình giúp gì?",
+    "en": "how can I help today?"
+  },
+  {
+    "source": "https://…",
+    "en": ""
+  },
+  {
+    "source": "Hủy",
+    "en": "Cancel"
+  },
+  {
+    "source": "ít nhất 2 nhân vật",
+    "en": ""
+  },
+  {
+    "source": "Ít nhất 6 ký tự",
+    "en": "At least 6 characters"
+  },
+  {
+    "source": "Kênh AI",
+    "en": "AI channels"
+  },
+  {
+    "source": "kết quả",
+    "en": ""
+  },
+  {
+    "source": "KHÁM PHÁ NHÂN VẬT",
+    "en": "DISCOVER CHARACTERS"
+  },
+  {
+    "source": "Khám phá nhân vật public",
+    "en": "Discover public characters"
+  },
+  {
+    "source": "Không cho phép nội dung tình dục liên quan người dưới 18 tuổi.",
+    "en": ""
+  },
+  {
+    "source": "Không có nhắc nhở nào sắp tới.",
+    "en": "No upcoming reminders."
+  },
+  {
+    "source": "Không có nhân vật hệ thống phù hợp.",
+    "en": ""
+  },
+  {
+    "source": "Không có nhân vật nào khớp bộ lọc.",
+    "en": ""
+  },
+  {
+    "source": "Không đọc được stream TTS.",
+    "en": ""
+  },
+  {
+    "source": "Không gian",
+    "en": "Workspace"
+  },
+  {
+    "source": "không hợp lệ",
+    "en": ""
+  },
+  {
+    "source": "Không kiểm tra được phiên đăng nhập. Hãy tải lại trang để thử lại.",
+    "en": ""
+  },
+  {
+    "source": "Không phát được tệp âm thanh TTS.",
+    "en": ""
+  },
+  {
+    "source": "Không tải được danh sách yêu thích.",
+    "en": ""
+  },
+  {
+    "source": "Không tải được lịch sử. Thử lại",
+    "en": ""
+  },
+  {
+    "source": "Không tải được nhạc nền",
+    "en": ""
+  },
+  {
+    "source": "Không thể đọc nội dung truyện.",
+    "en": ""
+  },
+  {
+    "source": "Không thể kết nối tới máy chủ.",
+    "en": ""
+  },
+  {
+    "source": "Không thể kiểm duyệt nhân vật lúc này. Vui lòng thử lại.",
+    "en": ""
+  },
+  {
+    "source": "Không thể tạo nhân vật có nội dung tình dục hoặc khiêu dâm.",
+    "en": ""
+  },
+  {
+    "source": "Không thể tạo nhân vật liên quan đến chính trị.",
+    "en": ""
+  },
+  {
+    "source": "Không thể tạo nhân vật liên quan đến tôn giáo.",
+    "en": ""
+  },
+  {
+    "source": "Không tìm thấy dữ liệu yêu cầu.",
+    "en": "The requested item was not found."
+  },
+  {
+    "source": "Không tìm thấy nhân vật.",
+    "en": ""
+  },
+  {
+    "source": "Khung chat sẽ tự mở sau khi mọi bước hoàn tất.",
+    "en": "The chat will open when every step is complete."
+  },
+  {
+    "source": "Kiểm tra bài văn của mình",
+    "en": ""
+  },
+  {
+    "source": "ký tự",
+    "en": ""
+  },
+  {
+    "source": "ký ức",
+    "en": ""
+  },
+  {
+    "source": "Ký ức",
+    "en": "Memories"
+  },
+  {
+    "source": "Ký ức ·",
+    "en": ""
+  },
+  {
+    "source": "Ký ức đã ghim",
+    "en": "Pinned memories"
+  },
+  {
+    "source": "Ký ức được ghim luôn được ưu tiên.",
+    "en": ""
+  },
+  {
+    "source": "Ký ức này chỉ dùng trong phòng nhóm hiện tại.",
+    "en": ""
+  },
+  {
+    "source": "Lá bài cho hôm nay",
+    "en": ""
+  },
+  {
+    "source": "Làm sao để ngủ ngon hơn?",
+    "en": ""
+  },
+  {
+    "source": "Language",
+    "en": ""
+  },
+  {
+    "source": "Lắng nghe và cùng bạn gỡ rối cảm xúc",
+    "en": "Support for thoughts and emotions"
+  },
+  {
+    "source": "Lần đầu lúc nào cũng lâu, chờ xíu nha.",
+    "en": "The first time always takes a little longer. Please wait a moment."
+  },
+  {
+    "source": "Lên kế hoạch tuần làm việc",
+    "en": "Plan my work week"
+  },
+  {
+    "source": "Lịch sử trò chuyện",
+    "en": "Chat history"
+  },
+  {
+    "source": "Linh hơi lạnh lúc đầu, hài hước khi thân, thích âm nhạc...",
+    "en": ""
+  },
+  {
+    "source": "Loại",
+    "en": ""
+  },
+  {
+    "source": "Loại nhân vật",
+    "en": ""
+  },
+  {
+    "source": "Lối sống",
+    "en": ""
+  },
+  {
+    "source": "Lỗi!",
+    "en": ""
+  },
+  {
+    "source": "Lời chào đầu tiên",
+    "en": "First greeting"
+  },
+  {
+    "source": "Lời giới thiệu",
+    "en": "Introduction"
+  },
+  {
+    "source": "lượt dùng",
+    "en": "uses"
+  },
+  {
+    "source": "Lượt dùng",
+    "en": ""
+  },
+  {
+    "source": "Lưu",
+    "en": "Save"
+  },
+  {
+    "source": "Lưu hồ sơ",
+    "en": "Save profile"
+  },
+  {
+    "source": "Lưu trí nhớ",
+    "en": "Save memory"
+  },
+  {
+    "source": "Lưu vào trí nhớ",
+    "en": "Save to memory"
+  },
+  {
+    "source": "Máy chủ trả về dữ liệu không hợp lệ. Vui lòng thử lại.",
+    "en": ""
+  },
+  {
+    "source": "Mật khẩu",
+    "en": "Password"
+  },
+  {
+    "source": "Mật khẩu hiện tại",
+    "en": "Current password"
+  },
+  {
+    "source": "Mật khẩu mới",
+    "en": "New password"
+  },
+  {
+    "source": "Mình đang thấy áp lực",
+    "en": ""
+  },
+  {
+    "source": "Mình muốn tâm sự một chút",
+    "en": ""
+  },
+  {
+    "source": "Model",
+    "en": "Model"
+  },
+  {
+    "source": "Model của trợ lý",
+    "en": ""
+  },
+  {
+    "source": "Model TTS chưa có khóa API trong CMS.",
+    "en": ""
+  },
+  {
+    "source": "Mọi người",
+    "en": "Everyone"
+  },
+  {
+    "source": "Mô tả",
+    "en": ""
+  },
+  {
+    "source": "Mô tả tính cách",
+    "en": ""
+  },
+  {
+    "source": "Mô tả tính cách hoặc cốt truyện",
+    "en": "Personality or story description"
+  },
+  {
+    "source": "Mỗi dòng một câu, tối đa 8",
+    "en": ""
+  },
+  {
+    "source": "Mỗi nhân vật có tính cách, giọng nói và mục tiêu riêng.",
+    "en": "Each character has a distinct personality, voice and goals."
+  },
+  {
+    "source": "Một câu hỏi mở ra thêm một khả năng.",
+    "en": "One question can open a new possibility."
+  },
+  {
+    "source": "Một tài khoản, hai không gian AI dành cho những nhu cầu khác nhau.",
+    "en": "One account, two AI spaces for different needs."
+  },
+  {
+    "source": "Mở",
+    "en": "Open"
+  },
+  {
+    "source": "Mở một cuộc hội thoại trước khi lưu ghi nhớ.",
+    "en": ""
+  },
+  {
+    "source": "Mở phòng chat",
+    "en": "Open chat room"
+  },
+  {
+    "source": "Mở rộng thanh công cụ",
+    "en": "Expand sidebar"
+  },
+  {
+    "source": "Mở thanh điều hướng",
+    "en": "Open navigation"
+  },
+  {
+    "source": "Mới",
+    "en": "New"
+  },
+  {
+    "source": "Ngạc nhiên",
+    "en": ""
+  },
+  {
+    "source": "Ngại ngùng",
+    "en": ""
+  },
+  {
+    "source": "Ngày sinh",
+    "en": "Birthday"
+  },
+  {
+    "source": "Ngày và giờ",
+    "en": "Date and time"
+  },
+  {
+    "source": "Ngôn ngữ",
+    "en": "Language"
+  },
+  {
+    "source": "Nguồn",
+    "en": "Sources"
+  },
+  {
+    "source": "Nguồn (",
+    "en": ""
+  },
+  {
+    "source": "người dùng",
+    "en": "users"
+  },
+  {
+    "source": "Người dùng",
+    "en": "User"
+  },
+  {
+    "source": "người đã dùng",
+    "en": "users"
+  },
+  {
+    "source": "Người khác có thể tìm thấy và thêm nhân vật này",
+    "en": ""
+  },
+  {
+    "source": "Người khác có thể tìm thấy và thêm nhân vật này.",
+    "en": "Other users can discover and add this character."
+  },
+  {
+    "source": "Người tạo",
+    "en": ""
+  },
+  {
+    "source": "người theo dõi",
+    "en": "followers"
+  },
+  {
+    "source": "Nhắc mình về…",
+    "en": "Remind me about…"
+  },
+  {
+    "source": "Nhắc nhở",
+    "en": "Reminders"
+  },
+  {
+    "source": "Nhắc nhở chỉ hiện khi bạn đang mở ứng dụng.",
+    "en": "Reminders appear while the app is open."
+  },
+  {
+    "source": "Nhắc nhở sắp tới",
+    "en": "Upcoming reminders"
+  },
+  {
+    "source": "Nhắn cho",
+    "en": "Message"
+  },
+  {
+    "source": "Nhắn gì đó... Gõ @ để gọi nhân vật",
+    "en": "Write a message... Type @ to call a character"
+  },
+  {
+    "source": "nhân vật",
+    "en": ""
+  },
+  {
+    "source": "Nhân vật",
+    "en": "Characters"
+  },
+  {
+    "source": "Nhân vật có sẵn",
+    "en": "Existing characters"
+  },
+  {
+    "source": "NHÂN VẬT CỘNG ĐỒNG",
+    "en": "COMMUNITY CHARACTERS"
+  },
+  {
+    "source": "Nhân vật của bạn",
+    "en": "Your characters"
+  },
+  {
+    "source": "Nhân vật của tôi",
+    "en": "My characters"
+  },
+  {
+    "source": "Nhân vật do Avibi xây dựng",
+    "en": ""
+  },
+  {
+    "source": "Nhân vật đang đến với bạn, chờ đợi là hạnh phúc.",
+    "en": "Your character is on the way. Please wait a moment."
+  },
+  {
+    "source": "Nhân vật hệ thống",
+    "en": "System characters"
+  },
+  {
+    "source": "NHÂN VẬT HỆ THỐNG",
+    "en": ""
+  },
+  {
+    "source": "Nhân vật hệ thống được tự thêm vào Nhân vật của tôi.",
+    "en": ""
+  },
+  {
+    "source": "Nhân vật luôn bên bạn",
+    "en": "Characters always by your side"
+  },
+  {
+    "source": "Nhân vật tiếp theo",
+    "en": ""
+  },
+  {
+    "source": "Nhân vật trước",
+    "en": ""
+  },
+  {
+    "source": "nhớ gì?",
+    "en": ""
+  },
+  {
+    "source": "Nội dung chỉ để tham khảo và chiêm nghiệm. Không có lá số hay quẻ bài nào thay đổi được vận mệnh của bạn ngoài lựa chọn và sự cố gắng của chính bạn.",
+    "en": "For reference and reflection only. No chart or card can change your destiny; your choices and effort shape your life."
+  },
+  {
+    "source": "Nội dung nhân vật không được phép.",
+    "en": ""
+  },
+  {
+    "source": "Phản hồi bị gián đoạn trước khi hoàn tất.",
+    "en": ""
+  },
+  {
+    "source": "Phản hồi trò chuyện bị gián đoạn. Vui lòng gửi lại tin nhắn.",
+    "en": ""
+  },
+  {
+    "source": "Phát bằng TTS",
+    "en": ""
+  },
+  {
+    "source": "Phiên đăng nhập không hợp lệ.",
+    "en": "Your sign-in session is invalid."
+  },
+  {
+    "source": "Phòng chat",
+    "en": "Chat room"
+  },
+  {
+    "source": "Phòng chat cần",
+    "en": ""
+  },
+  {
+    "source": "Phòng chat chuyên biệt",
+    "en": "Specialized chat rooms"
+  },
+  {
+    "source": "Phòng công khai chỉ chia sẻ nhóm nhân vật, không chia sẻ lịch sử tin nhắn. Nhân vật hệ thống có thể dùng ngay; nhân vật tự tạo cần được công khai trước.",
+    "en": ""
+  },
+  {
+    "source": "phòng nhóm",
+    "en": ""
+  },
+  {
+    "source": "Phòng nhóm",
+    "en": ""
+  },
+  {
+    "source": "Phòng xuất hiện ở mục Gần đây trên thanh bên.",
+    "en": ""
+  },
+  {
+    "source": "Phổ biến",
+    "en": "Popular"
+  },
+  {
+    "source": "PNG, JPEG, WEBP · GIF",
+    "en": ""
+  },
+  {
+    "source": "Quản lý",
+    "en": "Manage"
+  },
+  {
+    "source": "Quay lại",
+    "en": ""
+  },
+  {
+    "source": "Riêng tư",
+    "en": "Private"
+  },
+  {
+    "source": "Role play",
+    "en": ""
+  },
+  {
+    "source": "Rút một trải bài 3 lá",
+    "en": ""
+  },
+  {
+    "source": "Sample rate TTS không hợp lệ.",
+    "en": ""
+  },
+  {
+    "source": "Sáng",
+    "en": "Light"
+  },
+  {
+    "source": "Sáng tạo",
+    "en": "Create freely"
+  },
+  {
+    "source": "Sáng tạo nhân vật",
+    "en": "Create character"
+  },
+  {
+    "source": "Sao chép",
+    "en": "Copy"
+  },
+  {
+    "source": "Sau khi tạo phòng",
+    "en": ""
+  },
+  {
+    "source": "Sống cùng nhân vật.",
+    "en": ""
+  },
+  {
+    "source": "Suy nghĩ",
+    "en": ""
+  },
+  {
+    "source": "Sửa",
+    "en": "Edit"
+  },
+  {
+    "source": "Sức khỏe",
+    "en": "Health"
+  },
+  {
+    "source": "Tác vụ",
+    "en": "Tools"
+  },
+  {
+    "source": "Tác vụ trợ lý",
+    "en": "Assistant tasks"
+  },
+  {
+    "source": "Tags",
+    "en": ""
+  },
+  {
+    "source": "Tải avatar",
+    "en": ""
+  },
+  {
+    "source": "Tài khoản",
+    "en": "Account"
+  },
+  {
+    "source": "Tải lên và tìm nhân vật",
+    "en": ""
+  },
+  {
+    "source": "Tài liệu của phòng",
+    "en": "Room documents"
+  },
+  {
+    "source": "Tài nguyên đã chuẩn bị xong. Bạn có thể bắt đầu trò chuyện.",
+    "en": "Resources are ready. You can start chatting."
+  },
+  {
+    "source": "Tải truyện",
+    "en": ""
+  },
+  {
+    "source": "Tạm dừng",
+    "en": "Pause"
+  },
+  {
+    "source": "Tạo 5 câu trắc nghiệm ôn tập",
+    "en": ""
+  },
+  {
+    "source": "Tạo bản sao",
+    "en": "Create a copy"
+  },
+  {
+    "source": "Tạo bằng AI",
+    "en": ""
+  },
+  {
+    "source": "Tạo mới",
+    "en": "Create new"
+  },
+  {
+    "source": "Tạo nhắc nhở",
+    "en": "Create reminder"
+  },
+  {
+    "source": "Tạo nhân vật",
+    "en": "Create character"
+  },
+  {
+    "source": "Tạo nhân vật mới",
+    "en": "Create new character"
+  },
+  {
+    "source": "Tạo nhân vật từ truyện",
+    "en": ""
+  },
+  {
+    "source": "Tạo phiên bản phản chiếu",
+    "en": "Create a mirrored character"
+  },
+  {
+    "source": "Tạo phòng",
+    "en": "Create room"
+  },
+  {
+    "source": "Tạo phòng chat",
+    "en": "Create chat room"
+  },
+  {
+    "source": "Tạo phòng chat khác",
+    "en": ""
+  },
+  {
+    "source": "Tạo phòng nhóm",
+    "en": "Create group chat"
+  },
+  {
+    "source": "Tạo phòng và bắt đầu chat",
+    "en": ""
+  },
+  {
+    "source": "Tạo tài khoản",
+    "en": "Create account"
+  },
+  {
+    "source": "Tạo tài khoản demo được lưu trong database.",
+    "en": "Create an account saved in the database."
+  },
+  {
+    "source": "Tạo tài khoản dùng chung với AI Role Play.",
+    "en": "Create one account for both products."
+  },
+  {
+    "source": "Tạo từ truyện",
+    "en": ""
+  },
+  {
+    "source": "Tạo và bắt đầu trò chuyện",
+    "en": "Create and start chatting"
+  },
+  {
+    "source": "Tarot & Tử vi",
+    "en": "Tarot & Astrology"
+  },
+  {
+    "source": "Tarot và chiêm nghiệm",
+    "en": "Tarot and reflection"
+  },
+  {
+    "source": "Tắt âm phản ứng",
+    "en": ""
+  },
+  {
+    "source": "Tắt đèn",
+    "en": ""
+  },
+  {
+    "source": "Tắt đèn và ẩn mật khẩu",
+    "en": ""
+  },
+  {
+    "source": "Tắt nhạc nền",
+    "en": ""
+  },
+  {
+    "source": "Tắt và xóa mọi trí nhớ",
+    "en": "Turn off and delete all memories"
+  },
+  {
+    "source": "Tâm lý",
+    "en": "Wellbeing"
+  },
+  {
+    "source": "Tất cả",
+    "en": "All"
+  },
+  {
+    "source": "Tất cả nhân vật",
+    "en": "All characters"
+  },
+  {
+    "source": "Tên của bạn",
+    "en": "Your name"
+  },
+  {
+    "source": "Tên đăng nhập",
+    "en": "Username"
+  },
+  {
+    "source": "Tên đăng nhập, mật khẩu hoặc phiên đăng nhập không hợp lệ.",
+    "en": "The username, password or session is invalid."
+  },
+  {
+    "source": "Tên hiển thị",
+    "en": "Display name"
+  },
+  {
+    "source": "Tên nhân vật",
+    "en": "Character name"
+  },
+  {
+    "source": "Tên nhân vật gốc",
+    "en": "Original character name"
+  },
+  {
+    "source": "Tên phim / hoạt hình",
+    "en": ""
+  },
+  {
+    "source": "Tên phim, hoạt hình hoặc tác phẩm",
+    "en": "Movie, animation or work"
+  },
+  {
+    "source": "Tên phòng",
+    "en": ""
+  },
+  {
+    "source": "Tệp tải lên quá lớn.",
+    "en": "The uploaded file is too large."
+  },
+  {
+    "source": "Thay ảnh đại diện",
+    "en": "Change avatar"
+  },
+  {
+    "source": "Thay avatar",
+    "en": "Change avatar"
+  },
+  {
+    "source": "Thân thiết",
+    "en": ""
+  },
+  {
+    "source": "Theo dõi",
+    "en": "Follow"
+  },
+  {
+    "source": "Thế mạnh",
+    "en": ""
+  },
+  {
+    "source": "Thêm điều cần ghi nhớ",
+    "en": "Add a memory"
+  },
+  {
+    "source": "Thêm ký ức",
+    "en": ""
+  },
+  {
+    "source": "Thêm ký ức mới",
+    "en": ""
+  },
+  {
+    "source": "Thêm vào nhân vật của tôi",
+    "en": "Add to my characters"
+  },
+  {
+    "source": "Thiện cảm",
+    "en": ""
+  },
+  {
+    "source": "Thiết lập hồ sơ và quyền hiển thị của nhân vật.",
+    "en": "Set up the character profile and visibility."
+  },
+  {
+    "source": "Thông báo trên client",
+    "en": "Client notifications"
+  },
+  {
+    "source": "Thông tin",
+    "en": ""
+  },
+  {
+    "source": "Thông tin nhân vật",
+    "en": "Character information"
+  },
+  {
+    "source": "Thông tin nhân vật quá dài để kiểm duyệt.",
+    "en": ""
+  },
+  {
+    "source": "Thông tin sức khỏe thận trọng, dễ hiểu",
+    "en": "Careful, clear health information"
+  },
+  {
+    "source": "Thu gọn thanh công cụ",
+    "en": "Collapse sidebar"
+  },
+  {
+    "source": "Thu thanh điều hướng",
+    "en": "Collapse navigation"
+  },
+  {
+    "source": "Thử lại",
+    "en": "Try again"
+  },
+  {
+    "source": "tiếng Anh",
+    "en": ""
+  },
+  {
+    "source": "tiếng Việt",
+    "en": ""
+  },
+  {
+    "source": "Tiếng Việt",
+    "en": "Vietnamese"
+  },
+  {
+    "source": "Tiếp tục",
+    "en": ""
+  },
+  {
+    "source": "Tiếp tục trò chuyện",
+    "en": "Continue chatting"
+  },
+  {
+    "source": "Tìm được",
+    "en": ""
+  },
+  {
+    "source": "Tìm hoặc nhập tag rồi nhấn Enter",
+    "en": "Search or enter a tag, then press Enter"
+  },
+  {
+    "source": "Tìm nhân vật",
+    "en": ""
+  },
+  {
+    "source": "Tìm nhân vật hoặc cuộc trò chuyện",
+    "en": "Search characters or conversations"
+  },
+  {
+    "source": "Tìm theo tên hoặc loại",
+    "en": ""
+  },
+  {
+    "source": "Tìm theo tên, loại hoặc thẻ; mỗi nhân vật hiển thị rõ người tạo.",
+    "en": "Search by name, type or tag; every character shows its creator."
+  },
+  {
+    "source": "Tìm theo tên, mô tả hoặc tag",
+    "en": ""
+  },
+  {
+    "source": "Tin tưởng",
+    "en": ""
+  },
+  {
+    "source": "Tình cảm",
+    "en": "Romance"
+  },
+  {
+    "source": "Tóm tắt tài liệu mình gửi",
+    "en": "Summarise my document"
+  },
+  {
+    "source": "Tối",
+    "en": "Dark"
+  },
+  {
+    "source": "Tối đa 1000 ký tự",
+    "en": ""
+  },
+  {
+    "source": "Trả lời khác",
+    "en": "Alternative reply"
+  },
+  {
+    "source": "Trang chủ",
+    "en": "Home"
+  },
+  {
+    "source": "trên thẻ nhân vật.",
+    "en": ""
+  },
+  {
+    "source": "Trí nhớ của bạn",
+    "en": "Your memories"
+  },
+  {
+    "source": "Trình duyệt chặn phát tự động. Hãy bấm Nghe một lần để cho phép âm thanh.",
+    "en": ""
+  },
+  {
+    "source": "Trò chuyện",
+    "en": "Chat"
+  },
+  {
+    "source": "Trò chuyện →",
+    "en": "Chat →"
+  },
+  {
+    "source": "Trò chuyện gần đây",
+    "en": "Recent chats"
+  },
+  {
+    "source": "Trò chuyện riêng",
+    "en": ""
+  },
+  {
+    "source": "Trò chuyện và nhập vai cùng các nhân vật AI",
+    "en": "Chat and role-play with AI characters"
+  },
+  {
+    "source": "Trò chuyện với {name}",
+    "en": "Chat with {name}"
+  },
+  {
+    "source": "Trò chuyện với Trợ lý AI",
+    "en": "Chat with AI Assistant"
+  },
+  {
+    "source": "trong",
+    "en": ""
+  },
+  {
+    "source": "Trợ lý AI",
+    "en": "AI Assistant"
+  },
+  {
+    "source": "Trợ lý cá nhân",
+    "en": "Personal assistants"
+  },
+  {
+    "source": "Trợ lý chung · hỏi bất cứ điều gì",
+    "en": "General assistant · ask anything"
+  },
+  {
+    "source": "Trợ lý chuyên sâu cho từng nhu cầu. Mỗi lần bấm Chat là một cuộc trò chuyện mới.",
+    "en": "Specialised assistants for each need. Each Chat starts a new conversation."
+  },
+  {
+    "source": "Trợ lý dùng các tài liệu này để trả lời trong phòng.",
+    "en": "The assistant uses these documents to answer in this room."
+  },
+  {
+    "source": "TTS gateway không trả về PCM.",
+    "en": ""
+  },
+  {
+    "source": "TTS không trả về audio.",
+    "en": ""
+  },
+  {
+    "source": "TTS stream chưa hoàn tất.",
+    "en": ""
+  },
+  {
+    "source": "TTS stream kết thúc mà không có audio.",
+    "en": ""
+  },
+  {
+    "source": "TTS stream kết thúc trước speech.audio.done.",
+    "en": ""
+  },
+  {
+    "source": "TTS stream lỗi.",
+    "en": ""
+  },
+  {
+    "source": "Tùy chỉnh",
+    "en": "Customize"
+  },
+  {
+    "source": "Tùy chọn",
+    "en": "Preferences"
+  },
+  {
+    "source": "Tùy chọn. Có ảnh sẽ tạo bộ 6 ảnh biểu cảm.",
+    "en": ""
+  },
+  {
+    "source": "Từ 3★",
+    "en": ""
+  },
+  {
+    "source": "Từ 4,5★",
+    "en": ""
+  },
+  {
+    "source": "Từ 4★",
+    "en": ""
+  },
+  {
+    "source": "Tự chọn",
+    "en": "Auto select"
+  },
+  {
+    "source": "Tự sáng tạo",
+    "en": ""
+  },
+  {
+    "source": "Tư vấn sức khỏe",
+    "en": "Health guidance"
+  },
+  {
+    "source": "Tư vấn tâm lý",
+    "en": "Wellbeing support"
+  },
+  {
+    "source": "Từng nhân vật gửi lời chào đầu tiên.",
+    "en": ""
+  },
+  {
+    "source": "và bạn",
+    "en": ""
+  },
+  {
+    "source": "Vai trò",
+    "en": "Role"
+  },
+  {
+    "source": "Về trang chủ Trợ lý AI",
+    "en": "Back to AI Assistant home"
+  },
+  {
+    "source": "Ví dụ cách nói",
+    "en": ""
+  },
+  {
+    "source": "Ví dụ hội thoại",
+    "en": "Dialogue examples"
+  },
+  {
+    "source": "Ví dụ: bạn học, đồng nghiệp, người bạn thân...",
+    "en": "e.g. classmate, coworker, close friend..."
+  },
+  {
+    "source": "Ví dụ: Iron Man, Jujutsu Kaisen...",
+    "en": "e.g. Iron Man, Jujutsu Kaisen..."
+  },
+  {
+    "source": "Ví dụ: Linh",
+    "en": "e.g. Linh"
+  },
+  {
+    "source": "Ví dụ: Mình thích uống cà phê ít đường vào buổi sáng.",
+    "en": ""
+  },
+  {
+    "source": "Ví dụ: Người bạn",
+    "en": ""
+  },
+  {
+    "source": "Ví dụ: Quán cà phê nhỏ đầu hẻm, chiều mưa.",
+    "en": ""
+  },
+  {
+    "source": "ví dụ: thanhcong",
+    "en": "e.g. thanhcong"
+  },
+  {
+    "source": "Ví dụ: Tony Stark, Gojo Satoru...",
+    "en": "e.g. Tony Stark, Gojo Satoru..."
+  },
+  {
+    "source": "Viết email xin nghỉ phép",
+    "en": "Write a leave request email"
+  },
+  {
+    "source": "Vui vẻ",
+    "en": ""
+  },
+  {
+    "source": "x",
+    "en": ""
+  },
+  {
+    "source": "Xác nhận",
+    "en": ""
+  },
+  {
+    "source": "Xem →",
+    "en": "View →"
+  },
+  {
+    "source": "Xin chào! Cơ thể vừa gửi thông báo gì thế? Kể mình nghe, chúng ta cùng đọc cho đúng và bớt hoang mang nhé.",
+    "en": "Hello! What notification did your body just send? Tell me, and we'll read it carefully without the panic."
+  },
+  {
+    "source": "Xóa",
+    "en": "Delete"
+  },
+  {
+    "source": "Xóa {name}",
+    "en": "Delete {name}"
+  },
+  {
+    "source": "Xóa cuộc trò chuyện",
+    "en": "Delete conversation"
+  },
+  {
+    "source": "Xóa nguồn",
+    "en": "Remove source"
+  },
+  {
+    "source": "Xóa nhân vật",
+    "en": "Delete character"
+  },
+  {
+    "source": "Xóa nhân vật công khai",
+    "en": ""
+  },
+  {
+    "source": "Xóa nhân vật riêng tư",
+    "en": ""
+  },
+  {
+    "source": "Xong",
+    "en": ""
+  },
+  {
+    "source": "Xu hướng",
+    "en": ""
+  },
+  {
+    "source": "Yêu cầu không hợp lệ",
+    "en": ""
+  },
+  {
+    "source": "Yêu thích",
+    "en": "Favorites"
+  }
+]

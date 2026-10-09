@@ -1,0 +1,72 @@
+.chatEmojiPicker { position: relative; flex: 0 0 auto; }
+.chatEmojiToggle {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid var(--line-2, var(--line));
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 23px;
+  line-height: 1;
+  cursor: pointer;
+}
+.chatEmojiToggle:hover, .chatEmojiToggle[aria-expanded="true"] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.chatEmojiPanel {
+  position: absolute;
+  z-index: 40;
+  bottom: calc(100% + 9px);
+  left: 0;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 2px;
+  width: min(312px, calc(100vw - 32px));
+  max-height: 218px;
+  overflow-y: auto;
+  padding: 9px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--surface);
+  box-shadow: 0 14px 36px rgb(0 0 0 / .22);
+}
+.chatEmojiPanel button {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  height: 35px;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+.chatEmojiPanel button:hover, .chatEmojiPanel button:focus-visible {
+  background: var(--accent-soft);
+  outline-color: var(--accent);
+}
+:root .chatWorkspace .chatEmojiToggle,
+:root .asComposerBar .chatEmojiToggle { min-height: 34px; box-shadow: none; }
+@media (max-width: 420px) {
+  .chatEmojiPanel { grid-template-columns: repeat(7, minmax(0, 1fr)); width: min(270px, calc(100vw - 32px)); }
+}
+
+/* Keep the picker compact under the older Assistant composer button rules. */
+.assistantComposer .chatEmojiToggle {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  background: var(--surface);
+}
+.assistantComposer .chatEmojiPanel button {
+  min-width: 0;
+  height: 35px;
+  padding: 0;
+  background: transparent;
+}

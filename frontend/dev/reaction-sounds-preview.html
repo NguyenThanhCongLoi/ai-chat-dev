@@ -1,0 +1,13 @@
+<!doctype html><html><head><meta charset="utf-8"></head><body><div id="root"></div>
+<script type="module">
+import React,{useState} from "react";import{createRoot}from"react-dom/client";
+import{useReactionSounds}from"/src/roleplay/useReactionSounds.ts";
+function Preview(){const[room,setRoom]=useState("r");const sound=useReactionSounds(room,"u",["c"]);
+return React.createElement("section",{},React.createElement("button",{id:"toggle",onClick:sound.toggle,disabled:!sound.ready},"Toggle"),
+React.createElement("button",{id:"react",onClick:()=>sound.react(crypto.randomUUID(),"c","happy","en")},"React"),
+React.createElement("button",{id:"duplicate",onClick:()=>{sound.react("same","c","happy","en");sound.react("same","c","happy","en");}},"Duplicate"),
+React.createElement("button",{id:"opening",onClick:async()=>{window.__greetingPlayed=false;await sound.opening("c","en");window.__greetingPlayed=true;}},"Opening"),
+React.createElement("button",{id:"exit",onClick:()=>setRoom(null)},"Exit"),
+React.createElement("button",{id:"enter",onClick:()=>setRoom("r")},"Enter"));}
+createRoot(document.getElementById("root")).render(React.createElement(Preview));
+</script></body></html>

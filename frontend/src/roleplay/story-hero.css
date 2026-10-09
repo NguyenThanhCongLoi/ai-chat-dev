@@ -1,0 +1,186 @@
+/* Theme-aware introduction. All effects are isolated from chat/cards. */
+.rpStoryHero {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 1fr);
+  align-items: center;
+  min-height: 370px;
+  margin: 0 0 32px;
+  padding: 24px 18px;
+  gap: 24px;
+}
+.rpStoryHero::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -12px 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 8% 42%, color-mix(in srgb, var(--rp) 9%, transparent), transparent 60%),
+    radial-gradient(ellipse at 85% 55%, color-mix(in srgb, var(--as) 9%, transparent), transparent 60%);
+  border-radius: 28px;
+}
+.rpStoryCopy { position: relative; z-index: 7; padding: 12px 0; }
+.rpStoryCopy .eyebrow { display: block; margin-bottom: 22px; }
+.rpStoryCopy h1 {
+  margin: 0;
+  font-size: clamp(30px, 3.1vw, 49px);
+  line-height: 1.22;
+  letter-spacing: -.035em;
+  color: var(--ink);
+}
+.rpStoryCopy h1 span { display: block; }
+.rpStoryCopy h1 span + span { margin-top: 8px; }
+.rpStoryShowcase { position: relative; height: 340px; min-width: 0; }
+.rpStoryPortraits { position: absolute; inset: 0 28px; }
+.rpStoryPortrait {
+  position: absolute; top: 38px; left: calc(50% - 80px);
+  width: 160px; height: 226px;
+  transform: translateX(calc(var(--hero-slot) * 78px)) translateY(calc(var(--hero-depth) * 17px))
+    scale(calc(1.08 - var(--hero-depth) * .13));
+  transition: transform 900ms cubic-bezier(.22,.61,.36,1);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+/* A portrait wrapping from the left edge returns at the right edge.
+   Fade it in there instead of dragging it across the featured portrait. */
+.rpStoryPortrait.recycled { transition: none; animation: rpStoryReturn 900ms ease-out both; }
+@keyframes rpStoryReturn {
+  from { opacity: 0; }
+  45% { opacity: .65; }
+  to { opacity: 1; }
+}
+.rpStoryHero .rpStoryGlass {
+  position: relative; display: block; width: 100%; height: 100%;
+  padding: 0; overflow: hidden; border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.38);
+  background: var(--surface-3); color: white;
+  box-shadow: 0 12px 30px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.5);
+  text-align: left;
+  transition: border-color 180ms, box-shadow 180ms;
+}
+.rpStoryGlass > img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center 30%; }
+.rpStoryGlass::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(130deg, rgba(255,255,255,.24), rgba(255,255,255,.03) 34%, transparent 49%, rgba(255,255,255,.13) 76%, transparent);
+  border-radius: inherit; box-shadow: inset 0 0 0 1px rgba(255,255,255,.1);
+}
+.rpStoryHero .rpStoryGlass:hover:not(:disabled) {
+  background: var(--surface-3); border-color: rgba(255,255,255,.8);
+  box-shadow: 0 16px 38px rgba(0,0,0,.28), 0 0 24px color-mix(in srgb, var(--rp) 16%, transparent);
+}
+.rpStoryGlass:focus-visible { outline: 3px solid var(--rp); outline-offset: 4px; }
+.rpStoryCaption {
+  position: absolute; inset: auto 0 0; display: grid; gap: 5px;
+  padding: 40px 12px 13px; color: #fff;
+  background: linear-gradient(transparent, rgba(13,17,22,.7) 50%, rgba(13,17,22,.86));
+  transition: opacity 650ms ease;
+}
+.rpStoryCaption strong { line-height: 1.3; font-size: 14px; overflow: hidden; text-overflow: ellipsis; }
+.rpStoryCaption small { display: flex; align-items: center; gap: 4px; color: #e1e5eb; font-size: 10px; }
+.rpStoryPortrait:not(.featured) .rpStoryCaption { opacity: 0; }
+.rpStoryReflection {
+  position: absolute; top: calc(100% + 9px); left: 0; width: 100%; height: 108px;
+  overflow: hidden; opacity: .19; border-radius: 18px; pointer-events: none;
+  mask-image: linear-gradient(to bottom, #000, transparent 90%);
+  -webkit-mask-image: linear-gradient(to bottom, #000, transparent 90%);
+}
+.rpStoryReflection img {
+  position: absolute; bottom: 0; width: 100%; height: 226px;
+  object-fit: cover; object-position: center 30%; transform: scaleY(-1); filter: blur(.7px);
+}
+.rpStoryHero .rpStoryArrow {
+  position: absolute; top: 139px; z-index: 8; display: grid; place-items: center;
+  width: 34px; height: 34px; padding: 0; border-radius: 50%;
+  border: 1px solid var(--line-2); color: var(--ink);
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+  backdrop-filter: blur(12px); font-size: 27px; line-height: 1;
+}
+.rpStoryArrow.previous { left: 0; }
+.rpStoryArrow.next { right: 0; }
+.rpStoryArrow:disabled { opacity: .25; cursor: default; }
+.rpStoryHero .rpStoryArrow:hover:not(:disabled) { background: var(--surface-3); }
+.rpStorySparkle { position: absolute; color: var(--ink); pointer-events: none; }
+.rpStorySparkle.first { top: 19px; left: 40%; font-size: 24px; }
+.rpStorySparkle.second { top: 58px; left: 12%; font-size: 15px; }
+.rpStorySparkle.third { top: 249px; right: 9%; font-size: 16px; }
+:root[data-theme="light"] .rpStoryReflection { opacity: .13; }
+@media (min-width: 1450px) {
+  .rpStoryPortrait { transform: translateX(calc(var(--hero-slot) * 92px)) translateY(calc(var(--hero-depth) * 17px)) scale(calc(1.13 - var(--hero-depth) * .13)); }
+}
+@media (max-width: 1000px) {
+  .rpStoryHero { grid-template-columns: 1fr; gap: 0; padding: 12px 0; }
+  .rpStoryCopy { text-align: center; }
+  .rpStoryCopy h1 { font-size: clamp(28px, 5vw, 40px); }
+  .rpStoryCopy .eyebrow { margin-bottom: 14px; }
+  .rpStoryShowcase { width: min(100%, 560px); justify-self: center; }
+}
+@media (max-width: 480px) {
+  .rpStoryHero { margin-bottom: 20px; }
+  .rpStoryShowcase { height: 300px; }
+  .rpStoryPortrait { width: 136px; height: 196px; left: calc(50% - 68px);
+    transform: translateX(calc(var(--hero-slot) * 49px)) translateY(calc(var(--hero-depth) * 17px)) scale(calc(1.05 - var(--hero-depth) * .16)); }
+  .rpStoryArrow.previous { left: -3px; }
+  .rpStoryArrow.next { right: -3px; }
+  .rpStoryReflection { height: 80px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rpStoryPortrait, .rpStoryGlass, .rpStoryCaption { transition: none; animation: none; }
+}
+
+.rpStoryHero .rpBackgroundMusicButton, .rpBackgroundMusicFloating .rpBackgroundMusicButton {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: 24px;
+  padding: 9px 14px; border: 1px solid var(--line-2); border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 85%, transparent);
+  color: var(--ink); font-size: 12px; box-shadow: 0 2px 12px rgba(0,0,0,.06);
+}
+.rpStoryHero .rpBackgroundMusicButton:hover:not(:disabled), .rpBackgroundMusicFloating .rpBackgroundMusicButton:hover:not(:disabled) {
+  background: var(--surface-3); border-color: var(--rp);
+}
+.rpBackgroundMusicButton[aria-pressed="true"] { color: var(--rp); }
+.rpBackgroundMusicFloating { position: fixed; bottom: 12px; right: 16px; z-index: 30; }
+.rpBackgroundMusicFloating .rpBackgroundMusicButton { margin: 0; }
+
+.rpCatalogSections { display:flex; flex-wrap:wrap; gap:8px; margin: 0 0 20px; }
+.rpCatalogSections button { padding:8px 18px; border-radius:24px; width:auto; border:1px solid var(--line); background:var(--surface); color:var(--muted); cursor:pointer; }
+.rpCatalogSections button.active { background:var(--accent); color:var(--on-accent); }
+
+.myCharacterCard, .publicCard { position:relative; }
+
+
+
+.shell main nav.rpCatalogSections { display:flex; flex-direction:row; flex-wrap:nowrap; align-items:center; width:max-content; max-width:100%; overflow-x:auto; gap:4px; padding:4px; border-radius:24px; background:var(--surface-2); margin:0 0 20px; }
+.shell main nav.rpCatalogSections > button { flex:0 0 auto; width:auto; min-width:0; padding:7px 14px; font-size:13px; line-height:20px; white-space:nowrap; border:0; border-radius:20px; background:transparent; color:var(--muted); text-align:center; }
+.shell main nav.rpCatalogSections > button.active { background:var(--accent-soft); color:var(--accent); }
+.shell main nav.rpCatalogSections > button:hover { background:var(--surface-3); color:var(--ink); }
+
+.rpFavoriteAction[aria-pressed="true"] { color:var(--rp); border-color:var(--rp); background:var(--rp-soft); }
+
+/* Shared music controls for the hero, floating home control and chat sidebar. */
+.rpMusicControl{min-width:0;width:100%;border:1px solid var(--line);border-radius:14px;background:var(--surface);overflow:hidden}
+.rpMusicControlRow{display:flex;align-items:center;gap:2px}
+.rpMusicControl .rpMusicMute{position:relative;display:grid;place-items:center;flex:0 0 44px;width:44px;height:44px;padding:0;border:0;border-radius:10px;background:transparent;color:var(--muted);cursor:pointer}
+.rpMusicControl .rpMusicMute[aria-pressed="true"]{color:var(--rp)}
+.rpMusicMuteSlash{position:absolute;inset:0;display:grid;place-items:center;font-size:28px;font-weight:700}
+.rpMusicControl .rpBackgroundMusicButton,.toolMenu .rpCharacterMusicControl .rpMusicControl .rpBackgroundMusicButton{display:flex;align-items:center;justify-content:space-between;gap:12px;flex:1;min-width:0;width:auto;min-height:44px;margin:0;padding:10px 12px;border:0;border-radius:0;background:transparent;box-shadow:none;text-align:start}
+.rpMusicPercent{font-size:12px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.rpMusicVolumePanel{display:flex;align-items:center;gap:12px;padding:12px 14px;border-top:1px solid var(--line)}
+.rpMusicControl .rpMusicVolumePanel input[type="range"]{flex:1;min-width:0;width:100%;height:26px;margin:0;padding:0;accent-color:var(--rp);cursor:pointer}
+.rpMusicVolumePanel output{min-width:40px;text-align:end;font-size:12px;font-variant-numeric:tabular-nums}
+.rpMusicControl button:focus-visible,.rpMusicVolumePanel input:focus-visible{outline:2px solid var(--rp);outline-offset:-2px}
+.rpMusicControl button:disabled{opacity:.5;cursor:default}
+.rpBackgroundMusicFloating{width:min(290px,calc(100vw - 32px))}
+.rpStoryHero .rpMusicControl{width:min(300px,100%)}
+
+/* Touch controls: a generous draggable track and no horizontal scrolling. */
+.rpMusicControl .rpMusicVolumePanel input[type="range"]{height:44px;touch-action:pan-y}
+.rpMusicControl .rpMusicVolumePanel input[type="range"]::-webkit-slider-thumb{min-width:24px;min-height:24px}
+.rpMusicControl .rpMusicVolumePanel input[type="range"]::-moz-range-thumb{width:24px;height:24px}
+@media (max-width:820px){
+  .rpMusicControlRow button{min-height:48px}
+  .rpMusicControl .rpMusicMute{flex-basis:48px;width:48px;height:48px}
+  .rpMusicVolumePanel{padding:8px 12px;gap:8px}
+  .rpStoryHero .rpMusicControl{width:100%;max-width:340px}
+  .rpBackgroundMusicFloating{right:max(12px,env(safe-area-inset-right));bottom:calc(12px + env(safe-area-inset-bottom));max-width:calc(100vw - 24px)}
+}

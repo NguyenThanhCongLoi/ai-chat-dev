@@ -1,0 +1,12 @@
+.chatWorkspace .roleplayAmbient {
+  display: flex;
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.chatWorkspace .roleplayAmbient .messages {
+  flex: 1 1 0;
+  background: var(--bg);
+}

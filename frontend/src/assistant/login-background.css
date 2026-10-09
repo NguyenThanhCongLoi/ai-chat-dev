@@ -1,0 +1,122 @@
+/* Original illustrated login scenery; independent of workspace theme colors. */
+:root .assistantGate.loginScene {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: radial-gradient(circle at 20% 12%, #fff5db, transparent 36%), linear-gradient(165deg, #f9fbf5 20%, #e9f4e9 100%);
+}
+:root .assistantGate.loginScene--dark {
+  background: radial-gradient(circle at 18% 16%, #2c4146, transparent 37%), radial-gradient(ellipse at 8% 100%, #253126 0, transparent 45%), linear-gradient(160deg, #121f24, #0e181b) !important;
+}
+.loginScene::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 110%, #75a78a24, transparent 55%);
+}
+.loginSceneDecor {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.loginSceneDecor::before, .loginSceneDecor::after {
+  content: "";
+  position: absolute;
+  bottom: -11%;
+  width: min(36vw, 360px);
+  height: 45%;
+  opacity: .45;
+  filter: blur(8px);
+  background: radial-gradient(ellipse at 25% 80%, #789e7666, transparent 65%), radial-gradient(ellipse at 80% 40%, #a8bd8a55, transparent 58%);
+}
+.loginSceneDecor::before { left: -8%; transform: rotate(-12deg); }
+.loginSceneDecor::after { right: -9%; transform: scaleX(-1) rotate(-12deg); }
+.loginScene--dark .loginSceneDecor::before, .loginScene--dark .loginSceneDecor::after {
+  opacity: .25;
+  background: radial-gradient(ellipse at 25% 80%, #78876570, transparent 65%), radial-gradient(ellipse at 80% 40%, #756a4f55, transparent 58%);
+}
+.loginSceneDecor span {
+  position: absolute;
+  top: -8%;
+  left: var(--leaf-left);
+  width: var(--leaf-size);
+  height: calc(var(--leaf-size) * .6);
+  opacity: .55;
+  background: linear-gradient(130deg, #f6e6ac, #d4b866);
+  clip-path: polygon(0 50%, 24% 16%, 75% 0, 100% 50%, 75% 100%, 24% 84%);
+  animation: loginLeafFall var(--leaf-time) linear infinite;
+  animation-delay: var(--leaf-delay);
+}
+.loginScene--dark .loginSceneDecor span { opacity: .47; background: linear-gradient(120deg, #bd8a53, #73543d); }
+.loginSceneDecor span:nth-child(1) { --leaf-left: 8%; --leaf-size: 18px; --leaf-time: 17s; --leaf-delay: -4s; }
+.loginSceneDecor span:nth-child(2) { --leaf-left: 23%; --leaf-size: 13px; --leaf-time: 22s; --leaf-delay: -13s; }
+.loginSceneDecor span:nth-child(3) { --leaf-left: 39%; --leaf-size: 16px; --leaf-time: 19s; --leaf-delay: -9s; }
+.loginSceneDecor span:nth-child(4) { --leaf-left: 61%; --leaf-size: 12px; --leaf-time: 21s; --leaf-delay: -17s; }
+.loginSceneDecor span:nth-child(5) { --leaf-left: 74%; --leaf-size: 20px; --leaf-time: 24s; --leaf-delay: -5s; }
+.loginSceneDecor span:nth-child(6) { --leaf-left: 88%; --leaf-size: 14px; --leaf-time: 18s; --leaf-delay: -12s; }
+.loginSceneDecor span:nth-child(7) { --leaf-left: 97%; --leaf-size: 11px; --leaf-time: 25s; --leaf-delay: -21s; }
+@keyframes loginLeafFall { from { transform: translate(-25px, -5vh) rotate(0deg); } 50% { transform: translate(38px, 55vh) rotate(190deg); } to { transform: translate(-20px, 110vh) rotate(390deg); } }
+.loginSky {
+  position: absolute;
+  left: clamp(26px, 9vw, 160px);
+  top: clamp(60px, 14vh, 155px);
+  width: 90px;
+  height: 90px;
+  pointer-events: none;
+}
+.loginSkyOrb {
+  position: relative;
+  isolation: isolate;
+  display: block;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 72% 70%, #ffe668 0, #ffd439 32%, #ffad1f 76%, #ef8d19 100%);
+  box-shadow: inset -5px -6px 9px #e67e1960, inset 4px 5px 9px #fff4a571, 0 0 38px #f5b93a70;
+  animation: loginSunGlow 5s ease-in-out infinite;
+}
+.loginScene--light .loginSkyOrb::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -27px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from -4deg, #ffa824 0deg, #ffdf6c 7deg, #f9b636 11deg, transparent 14deg, transparent 24deg);
+  -webkit-mask: radial-gradient(circle, transparent 0 36px, #000 39px 58px, transparent 59px);
+  mask: radial-gradient(circle, transparent 0 36px, #000 39px 58px, transparent 59px);
+  filter: drop-shadow(0 2px 2px #d785252f);
+}
+.loginScene--light .loginSkyOrb::after {
+  content: "";
+  position: absolute;
+  top: 9px;
+  right: 10px;
+  width: 20px;
+  height: 9px;
+  border-radius: 50%;
+  background: #fff8cdbb;
+  transform: rotate(34deg);
+  box-shadow: -9px 4px 0 -3px #fffbe7e0;
+}
+@keyframes loginSunGlow { 50% { box-shadow: inset -5px -6px 9px #e67e1960, inset 4px 5px 9px #fff4a571, 0 0 53px #f5b93a9c; } }
+.loginScene--dark .loginSkyOrb {
+  width: 68px;
+  height: 68px;
+  background: #e3e8c3;
+  box-shadow: 0 0 0 12px #c7d6bb11, 0 0 55px #e2e7bc70;
+  animation: none;
+}
+.loginScene--dark .loginSkyOrb::after {
+  content: "";
+  position: absolute;
+  inset: -6px -14px 8px 14px;
+  border: 0;
+  border-radius: 50%;
+  background: #283e42;
+}
+
+@media (max-width:640px) { .loginSky { left:20px; top:82px; scale:.55; transform-origin:left top; } }
+@media (prefers-reduced-motion:reduce) { .loginSkyOrb, .loginSceneDecor span { animation:none; } }

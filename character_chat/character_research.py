@@ -1,4 +1,4 @@
-import concurrent.futures, json, re
+import concurrent.futures, re
 from urllib.parse import quote
 import httpx
 

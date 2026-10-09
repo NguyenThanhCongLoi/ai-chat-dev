@@ -1,0 +1,20 @@
+﻿<!doctype html>
+<html lang="vi">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Loading cat preview</title></head>
+<body style="margin:0"><div id="root"></div><script type="module">
+import React from "react";
+import { createRoot } from "react-dom/client";
+import { RolePlayLoadingCat } from "../src/roleplay/RolePlayLoadingCat";
+function Preview() {
+  const [session, setSession] = React.useState(0);
+  const [dark, setDark] = React.useState(false);
+  const [size, setSize] = React.useState("normal");
+  return React.createElement("main", {style:{minHeight:"100vh",display:"grid",placeContent:"center",gap:24,textAlign:"center",background:dark?"#101813":"#f4f8f6",color:dark?"#e8f1eb":"#17251e",fontFamily:"system-ui"}},
+    React.createElement("h1",null,"Loading cat preview"),
+    React.createElement("div", {role:"status","aria-label":"Loading"}, React.createElement(RolePlayLoadingCat,{key:session,size})),
+    React.createElement("button",{onClick:()=>setSession(v=>v+1)},"Next loading"),
+    React.createElement("button",{onClick:()=>setDark(v=>!v)},"Toggle theme"),
+    React.createElement("select",{value:size,onChange:e=>setSize(e.target.value),"aria-label":"Size"}, ["normal","compact","inline"].map(v=>React.createElement("option",{key:v},v))));
+}
+createRoot(document.getElementById("root")).render(React.createElement(React.StrictMode,null,React.createElement(Preview)));
+</script></body></html>
