@@ -4,6 +4,7 @@ WORKDIR /build/frontend
 COPY frontend/package*.json ./
 RUN npm ci
 COPY frontend/ ./
+COPY docs/UI_LOCALIZATION_STYLE.md /build/docs/UI_LOCALIZATION_STYLE.md
 RUN npm run build
 
 FROM python:3.12-slim-bookworm AS runtime
