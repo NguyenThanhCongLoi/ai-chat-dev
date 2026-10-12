@@ -27,3 +27,8 @@ Thinking is preloaded after room entry and displayed while typing is active
 state; reaction/final events then display the expressed emotion, including thinking.
 This waiting pose adds no LLM call. The emotion classification prompt includes
 thinking, and CMS previews expose its label and all supplied crop labels.
+
+
+## Elf / Selene Moonbrook
+
+image/react/elf.webp được cắt thành 9 biểu cảm: happy, sad, angry, surprised, laughing, crying, winking, playful, thinking. Neutral dùng Happy Smile, shy dùng Winking. Bộ được chia sẻ dưới __bundled__:elf và cập nhật theo hash file khi deploy ảnh mới; không gọi model tạo ảnh. Tên Selene Moonbrook/Elf hoặc preset_type=elf dùng bộ này.

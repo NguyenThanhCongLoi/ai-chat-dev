@@ -537,5 +537,7 @@
   "Chờ chút nhé, mình đang chuẩn bị đây!": "正在准备中，稍等一下哦！",
   "Phòng công khai chỉ chia sẻ nhóm nhân vật, không chia sẻ lịch sử tin nhắn. Nhân vật hệ thống có thể dùng ngay; nhân vật tự tạo cần được công khai trước.": "公开房间只分享角色组合，不分享聊天记录。系统角色可直接使用；自创角色需先公开。",
   "Chủ đề (tuỳ chọn)": "话题（可选）",
-  "Để trống để lấy cảm hứng từ tên nhóm hoặc trò chuyện tự nhiên.": "留空时，可以从群名获得灵感，也可以自然地聊下去。"
+  "Để trống để lấy cảm hứng từ tên nhóm hoặc trò chuyện tự nhiên.": "留空时，可以从群名获得灵感，也可以自然地聊下去。",
+  "Ẩn companion": "隐藏陪伴角色",
+  "Hiện companion": "显示陪伴角色"
 }

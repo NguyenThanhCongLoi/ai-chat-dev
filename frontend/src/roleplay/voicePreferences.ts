@@ -3,6 +3,9 @@ import type { Message } from "./types";
 export function shouldAutoplaySpeech(characterCount: number) {
   return characterCount === 1;
 }
+export function shouldPlayStandaloneReaction(characterCount:number, speechSupported:boolean) {
+  return characterCount > 1 || !speechSupported;
+}
 export function playbackMessage(id:string, automatic:boolean, messages:Message[], prepared:Message|undefined, greeting:Message|null) {
   const rendered=messages.find(item=>item.id===id);
   // Stream metadata arrives before React commits the updated draft.

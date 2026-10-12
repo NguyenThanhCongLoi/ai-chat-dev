@@ -537,5 +537,7 @@
   "Chờ chút nhé, mình đang chuẩn bị đây!": "Hang tight, we're getting things ready!",
   "Phòng công khai chỉ chia sẻ nhóm nhân vật, không chia sẻ lịch sử tin nhắn. Nhân vật hệ thống có thể dùng ngay; nhân vật tự tạo cần được công khai trước.": "Public rooms share the character group, not your message history. System characters are ready to use; publish your own characters first.",
   "Chủ đề (tuỳ chọn)": "Topic (optional)",
-  "Để trống để lấy cảm hứng từ tên nhóm hoặc trò chuyện tự nhiên.": "Leave blank to take inspiration from the group name or chat naturally."
+  "Để trống để lấy cảm hứng từ tên nhóm hoặc trò chuyện tự nhiên.": "Leave blank to take inspiration from the group name or chat naturally.",
+  "Ẩn companion": "Hide companion",
+  "Hiện companion": "Show companion"
 }

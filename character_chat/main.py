@@ -6,7 +6,7 @@ from .chat_transport import chat_stream, direct_completion, close_chat_transport
 from .gateway import _within_deadline
 from .suggestion_stream import merge_suggestion_stream, capture_suggestion, suggestion_budget, post_stream_suggestion_wait
 import sys
-from .speech_language import LANGUAGE_INSTRUCTION, LanguageStream, configured_voice, detect_speech_language, sentence_segments, speech_info, spoken_text, parse_language_reply
+from .speech_language import roleplay_output_prompt, LANGUAGE_INSTRUCTION, LanguageStream, configured_voice, detect_speech_language, sentence_segments, speech_info, spoken_text, parse_language_reply
 from .incremental_voice import SentenceSpeech, replay_parts
 import json, os, re, time, ipaddress, socket, httpx, secrets, concurrent.futures, base64, hashlib, unicodedata, asyncio, logging, io, wave
 from datetime import datetime, timezone, timedelta
@@ -2157,8 +2157,21 @@ def purge_document_record(db,document_id,force=False):
     if document:db.delete(document)
     return bool(document)
 
+def reset_room_character_feelings(db,user,character_ids):
+    """Relationship state is per user/character, not per room."""
+    if not character_ids:return
+    db.query(Relationship).filter(
+        Relationship.user_id==user,
+        (Relationship.character_id.in_(character_ids))|(Relationship.other_character_id.in_(character_ids)),
+    ).delete(synchronize_session=False)
+    for model in (CharacterState,RelationshipEvent,CharacterReflection):
+        db.query(model).filter(model.user_id==user,model.character_id.in_(character_ids)).delete(synchronize_session=False)
+
+
 def purge_room_record(db,room):
     room_id=room.id
+    character_ids=[item.character_id for item in db.query(RoomMember).filter_by(room_id=room_id).all()]
+    reset_room_character_feelings(db,room.user_id,character_ids)
     attached_ids=[item.document_id for item in db.query(RoomDocument).filter_by(room_id=room_id).all()]
     message_ids=[item.id for item in db.query(Message).filter_by(room_id=room_id).all()]
     archive_chat_before_delete(db,room_id)
@@ -2472,7 +2485,7 @@ def roleplay_model_options(db,model_id,short=False):
 
 def stream_roleplay_answer(prompt,temperature,max_tokens,profile_mode):
     """Stream a roleplay reply through the configured model chain."""
-    prompt=[*prompt,{"role":"system","content":LANGUAGE_INSTRUCTION}]
+    prompt=roleplay_output_prompt(prompt)
     candidates=list(dict.fromkeys(model for model in (llm.model,llm.fallback_model,llm.fallback_model_2) if model))
     if not candidates:raise RuntimeError("No roleplay model assigned in CMS")
     waits=[max(4,min(45,float(llm.model_gateway_timeouts.get(model,12)))) for model in candidates]
@@ -2575,7 +2588,7 @@ def send_message(room_id:str,data:MessageIn,background:BackgroundTasks,db:DBSess
             suggest_temperature,suggest_tokens=roleplay_model_options(db,llm.purpose_models.get("suggestion"),True)
             pool=concurrent.futures.ThreadPoolExecutor(max_workers=2)
             try:
-                answer_future=pool.submit(llm.chat_with_meta,[*prompt,{"role":"system","content":LANGUAGE_INSTRUCTION}],temperature,max_tokens,profile_mode="short" if c.speech.verbosity=="short" else "normal")
+                answer_future=pool.submit(llm.chat_with_meta,roleplay_output_prompt(prompt),temperature,max_tokens,profile_mode="short" if c.speech.verbosity=="short" else "normal")
                 suggestion_started=time.monotonic()
                 if suggest_enabled:
                     suggestion_future=pool.submit(llm.chat_with_meta,suggestion_prompt(prompt,c,data.message,previous_roleplay_suggestions(db,room_id)),suggest_temperature,suggest_tokens,llm.purpose_models.get("suggestion"),llm.purpose_models.get("suggestion_fallback") or "",llm.purpose_models.get("suggestion_fallback_2") or "",profile_mode="short",gateway_timeout_cap_seconds=8)
@@ -2592,6 +2605,8 @@ def send_message(room_id:str,data:MessageIn,background:BackgroundTasks,db:DBSess
                 pool.shutdown(wait=False,cancel_futures=True)
             if suggest_enabled:suggestions,suggestion_meta=finalize_suggestions(suggestions,data.message,preferred_language(db,user)[0],suggestion_meta)
             else:suggestions=[]
+            if not db.query(Message.id).filter_by(id=user_msg.id,room_id=room_id).first():
+                raise HTTPException(404,"Room was deleted")
             emotion=reply_expression(answer)
             msg=Message(id=uid(),room_id=room_id,sender_type="character",character_id=c.id,text=answer,sources=json.dumps(sources),emotion=emotion,speech_segments=json.dumps(speech_parts,ensure_ascii=False));db.add(msg)
             save_suggestions(db,msg.id,suggestions)
@@ -2708,6 +2723,9 @@ def stream_message(room_id:str,data:MessageIn,background:BackgroundTasks,request
                 answer=answer.strip() if partial else format_roleplay_reply(answer)
                 answer_latency_ms=int((time.monotonic()-started)*1000)
                 suggestions=resolve_job(job)[0] if job["state"].get("sent") and not partial else []
+                if not db.query(Message.id).filter_by(id=user_msg.id,room_id=room_id).first():
+                    if sentence_voice:sentence_voice.cancel()
+                    raise HTTPException(404,"Room was deleted")
                 emotion=reply_expression(answer)
                 msg.text=answer;msg.sources=json.dumps(sources);msg.emotion=emotion;msg.finish_status="partial" if partial else ""
                 msg.speech_segments=json.dumps(language_parts+[{"text":language_text,"language":active_language}],ensure_ascii=False)
@@ -3022,7 +3040,7 @@ def regenerate_message(room_id:str,message_id:str,db:DBSession=Depends(db_sessio
     started=time.monotonic()
     pool=concurrent.futures.ThreadPoolExecutor(max_workers=2)
     try:
-        answer_future=pool.submit(llm.chat_with_meta,[*prompts,{"role":"system","content":LANGUAGE_INSTRUCTION}],temperature,max_tokens,profile_mode="short" if character_data.speech.verbosity=="short" else "normal")
+        answer_future=pool.submit(llm.chat_with_meta,roleplay_output_prompt(prompts),temperature,max_tokens,profile_mode="short" if character_data.speech.verbosity=="short" else "normal")
         suggestion_started=time.monotonic();suggestion_future=pool.submit(llm.chat_with_meta,suggestion_prompt(prompts,character_data,prompt_message.text,previous_roleplay_suggestions(db,room_id)),suggest_temperature,suggest_tokens,llm.purpose_models.get("suggestion"),llm.purpose_models.get("suggestion_fallback") or "",llm.purpose_models.get("suggestion_fallback_2") or "",profile_mode="short",gateway_timeout_cap_seconds=8)
         try:
             answer,model_meta=answer_future.result()

@@ -14,6 +14,7 @@ from .schemas import uid
 # Pixel coordinates refer to the inspected original sheets. Labels and frames
 # fall outside these rectangles; scaling permits higher-resolution replacements.
 LAYOUTS = {
+    "elf": ((1920,1280), [(35,621),(666,1254),(1298,1885)], [(25,365),(441,787),(863,1207)]),
     "ruby": ((1600,1600), [(2,526),(541,1061),(1077,1598)], [(2,525),(543,1061),(1078,1598)]),
     "ha": ((1600,1600), [(36,512),(561,1040),(1088,1565)], [(38,480),(566,1007),(1091,1533)]),
     "kimanh": ((1920,1280), [(66,623),(674,1247),(1297,1854)], [(35,397),(455,815),(873,1200)]),
@@ -27,6 +28,7 @@ LAYOUTS = {
 }
 CELL_NAMES = ("happy","sad","angry","surprised","laughing","crying","winking","playful","thinking")
 ALIASES = {
+    "elf":"elf", "selene":"elf", "selenemoonbrook":"elf",
     "ha":"ha", "kimanh":"kimanh", "trinhkhainguyen":"trinhkhainguyen",
     "mira":"mira","mirasunpetal":"mira","lyra":"lyra","aurelion":"aurelion",
     "ren":"ren","ruby":"ruby","merr":"merr","nguyenvu":"nguyenvu",
@@ -39,6 +41,7 @@ def sheet_for(item):
     root = Path(os.getenv("CHARACTER_IMAGE_DIR","image")) / "react"
     names = [getattr(item,"name",""), getattr(item,"display_name","")]
     key = next((ALIASES[name_key(name)] for name in names if name_key(name) in ALIASES), None)
+    if key is None and getattr(item,"preset_type","")=="elf":key="elf"
     if key is None:
         # Full fantasy names such as Mira Sunpetal share their named sheet.
         given_names = {"mira","lyra","aurelion","ren","ruby","merr"}

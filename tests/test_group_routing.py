@@ -82,3 +82,10 @@ def test_requested_pair_can_override_cooldown():
 
 def test_invalid_selected_character_is_rejected():
     with pytest.raises(ValueError):plan_group("hello",cast(),"character:missing")
+
+
+def test_spontaneous_exchange_can_start_after_two_turns():
+    query="Should I choose a career in business or music and art?"
+    plan=plan_group(query,cast(),history=history(["study","health"]))
+    assert len(plan.speakers)==2 and plan.interaction=="exchange"
+    assert "one concrete question" in plan.instruction(plan.speakers[0].id)

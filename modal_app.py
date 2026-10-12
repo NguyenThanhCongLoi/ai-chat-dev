@@ -54,7 +54,7 @@ if (PROJECT_DIR/"sound_effect").is_dir():
     api_image=api_image.add_local_dir(str(PROJECT_DIR/"sound_effect"),remote_path="/root/sound_effect",ignore=["*.zip"])
 avatar_image=modal.Image.debian_slim(python_version="3.12").pip_install("pillow>=10.4","rembg[cpu]>=2.0.67","httpx>=0.27","modal>=1.5,<2").add_local_dir("character_chat",remote_path="/root/character_chat")
 
-@app.function(image=api_image,cpu=1,memory=1024,timeout=300,scaledown_window=120,max_containers=10,secrets=[llm_secret])
+@app.function(image=api_image,timeout=300,scaledown_window=2,max_containers=10,secrets=[llm_secret])
 def assistant_worker(messages:list,model:str,api_base:str,api_key:str,temperature:float=.35,max_tokens:int=1000,thinking_mode:str="default",reasoning_effort:str="default",request_timeout:float=12):
     """Independent inference worker for AI Assistant traffic."""
     import httpx
@@ -84,7 +84,7 @@ def assistant_worker(messages:list,model:str,api_base:str,api_key:str,temperatur
     from character_chat.assistant_pipeline import extract_assistant_text
     return extract_assistant_text(response.json())
 
-@app.function(image=api_image,cpu=1,memory=1024,timeout=300,scaledown_window=120,max_containers=10,secrets=[llm_secret])
+@app.function(image=api_image,timeout=300,scaledown_window=2,max_containers=10,secrets=[llm_secret])
 def assistant_stream_worker(messages:list,model:str,api_base:str,api_key:str,temperature:float=.35,max_tokens:int=1000,thinking_mode:str="default",reasoning_effort:str="default",request_timeout:float=14):
     """Yield visible answer text from an OpenAI-compatible SSE stream."""
     import json,httpx
@@ -142,14 +142,14 @@ def assistant_stream_worker(messages:list,model:str,api_base:str,api_key:str,tem
         status="interrupted"
     yield {"_stream_status":status,"finish_reason":finish_reason or "unknown"}
 
-@app.function(image=avatar_image,cpu=2,memory=4096,timeout=1800,scaledown_window=300,max_containers=4,secrets=[llm_secret],env={"LLM_API_BASE":"https://gateway.avibi.ai/v1","AVATAR_IMAGE_MODEL":"openai/gpt-image-1-mini"})
+@app.function(image=avatar_image,timeout=1800,scaledown_window=2,max_containers=4,secrets=[llm_secret],env={"LLM_API_BASE":"https://gateway.avibi.ai/v1","AVATAR_IMAGE_MODEL":"openai/gpt-image-1-mini"})
 def process_avatar(content:bytes,model:str="",api_base:str="",api_key:str=""):
     """Generate and cache the expression set once when a source image changes."""
     from character_chat.avatar_pipeline import build_ai_expression_variants,build_expression_variants
     try:return {"images":build_ai_expression_variants(content,model,api_base,api_key),"generated":True,"error":""}
     except Exception as exc:return {"images":build_expression_variants(content),"generated":False,"error":str(exc)[:500]}
 
-@app.function(image=api_image,cpu=1,memory=2048,timeout=21600,volumes={"/data":volume},secrets=[llm_secret,moderation_secret,docs_secret],env={"DATA_DIR":"/data","LLM_API_BASE":"https://gateway.avibi.ai/v1","CHARACTER_IMAGE_DIR":"/root/image","AVATAR_MODAL_FUNCTION":"process_avatar"})
+@app.function(image=api_image,min_containers=0,scaledown_window=2,timeout=21600,volumes={"/data":volume},secrets=[llm_secret,moderation_secret,docs_secret],env={"DATA_DIR":"/data","LLM_API_BASE":"https://gateway.avibi.ai/v1","CHARACTER_IMAGE_DIR":"/root/image","AVATAR_MODAL_FUNCTION":"process_avatar"})
 def backfill_avatars(target_name:str="",max_groups:int=0):
     """Durable migration job for existing characters; run outside the web lifecycle."""
     from character_chat.main import backfill_character_expressions,ensure_model_registry
@@ -160,7 +160,7 @@ def backfill_avatars(target_name:str="",max_groups:int=0):
     volume.commit()
     with Session() as db:return {"assets":db.query(CharacterExpressionAsset).count(),"target_name":target_name}
 
-@app.function(image=api_image,cpu=1,memory=2048,timeout=21600,volumes={"/data":volume},secrets=[llm_secret,moderation_secret,docs_secret],env={"DATA_DIR":"/data","LLM_API_BASE":"https://gateway.avibi.ai/v1","CHARACTER_IMAGE_DIR":"/root/image","AVATAR_MODAL_FUNCTION":"process_avatar"})
+@app.function(image=api_image,min_containers=0,scaledown_window=2,timeout=21600,volumes={"/data":volume},secrets=[llm_secret,moderation_secret,docs_secret],env={"DATA_DIR":"/data","LLM_API_BASE":"https://gateway.avibi.ai/v1","CHARACTER_IMAGE_DIR":"/root/image","AVATAR_MODAL_FUNCTION":"process_avatar"})
 def regenerate_avatar(character_id:str):
     """Regenerate one exact character instead of selecting by display name."""
     from character_chat.main import regenerate_character_expression_set,ensure_model_registry
@@ -170,7 +170,7 @@ def regenerate_avatar(character_id:str):
     volume.commit()
     return result
 
-@app.function(image=api_image,cpu=1,memory=1024,timeout=120,volumes={"/data":volume},env={"DATA_DIR":"/data"})
+@app.function(image=api_image,min_containers=0,scaledown_window=2,timeout=120,volumes={"/data":volume},env={"DATA_DIR":"/data"})
 def optimize_preset_avatar(preset_type:str):
     """One-time optimizer for an existing CMS preset avatar."""
     import base64,hashlib,json
@@ -193,7 +193,7 @@ def optimize_preset_avatar(preset_type:str):
         result={"preset_type":preset_type,"before_bytes":before,"after_bytes":len(content),"mime_type":mime,"version":version}
         print(json.dumps(result,ensure_ascii=False));return result
 
-@app.function(image=api_image,cpu=1,memory=1024,timeout=600,volumes={"/data":volume},env={"DATA_DIR":"/data"})
+@app.function(image=api_image,min_containers=0,scaledown_window=2,timeout=600,volumes={"/data":volume},env={"DATA_DIR":"/data"})
 def optimize_character_avatars():
     """One-time optimizer for all existing user/admin character card images."""
     import hashlib,json
@@ -216,7 +216,7 @@ def optimize_character_avatars():
         db.commit();volume.commit()
     print(json.dumps(result,ensure_ascii=False));return result
 
-@app.function(image=api_image,cpu=1,memory=1024,timeout=600,volumes={"/data":volume},env={"DATA_DIR":"/data"})
+@app.function(image=api_image,min_containers=0,scaledown_window=2,timeout=600,volumes={"/data":volume},env={"DATA_DIR":"/data"})
 def optimize_assistant_images():
     """Shrink existing Assistant image attachments before future model calls."""
     import json
@@ -235,7 +235,7 @@ def optimize_assistant_images():
 
 # SQLite on a Modal Volume must have a single writer/view. Request concurrency
 # remains high inside this container through @modal.concurrent below.
-@app.function(image=api_image,cpu=1,volumes={"/data":volume},secrets=[llm_secret,moderation_secret,docs_secret],timeout=600,scaledown_window=120,min_containers=1,max_containers=1,env={"DATA_DIR":"/data","DEMO_AUTH_ENABLED":"false","LLM_PROVIDER":"api","LLM_API_BASE":"https://gateway.avibi.ai/v1","LLM_MODEL":"openai/gpt-4.1-mini","LLM_FALLBACK_MODEL":"","MODERATION_MODEL":"","OPENAI_MODERATION_API_BASE":"https://api.openai.com/v1","FRONTEND_DIST":"/root/frontend/dist","CHARACTER_IMAGE_DIR":"/root/image","AVATAR_MODAL_FUNCTION":"process_avatar","BUILD_VERSION":BUILD_VERSION})
+@app.function(image=api_image,volumes={"/data":volume},secrets=[llm_secret,moderation_secret,docs_secret],timeout=600,scaledown_window=2,min_containers=1,max_containers=1,env={"DATA_DIR":"/data","DEMO_AUTH_ENABLED":"false","LLM_PROVIDER":"api","LLM_API_BASE":"https://gateway.avibi.ai/v1","LLM_MODEL":"openai/gpt-4.1-mini","LLM_FALLBACK_MODEL":"","MODERATION_MODEL":"","OPENAI_MODERATION_API_BASE":"https://api.openai.com/v1","FRONTEND_DIST":"/root/frontend/dist","CHARACTER_IMAGE_DIR":"/root/image","AVATAR_MODAL_FUNCTION":"process_avatar","BUILD_VERSION":BUILD_VERSION,"GROUP_ROUTER_MODE":os.getenv("GROUP_ROUTER_MODE","local"),"GROUP_ROUTER_TRANSPORT":os.getenv("GROUP_ROUTER_TRANSPORT","modal"),"GROUP_ROUTER_MODAL_APP":os.getenv("GROUP_ROUTER_MODAL_APP","character-chat-group-router"),"GROUP_ROUTER_API_BASE":os.getenv("GROUP_ROUTER_API_BASE",""),"GROUP_ROUTER_TIMEOUT_SECONDS":os.getenv("GROUP_ROUTER_TIMEOUT_SECONDS","1.5"),"GROUP_ROUTER_MIN_PROBABILITY":os.getenv("GROUP_ROUTER_MIN_PROBABILITY","0.65")})
 @modal.concurrent(max_inputs=20,target_inputs=12)
 @modal.asgi_app()
 def web():

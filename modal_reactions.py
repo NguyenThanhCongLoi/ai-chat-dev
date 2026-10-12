@@ -20,8 +20,8 @@ PROMPTS = {
     "shy": ["Mm.", "[chuckle]"],
 }
 
-@app.function(image=image, gpu="L4", memory=8192, timeout=900, max_containers=1,
-              scaledown_window=60, volumes={"/models":cache}, secrets=secrets)
+@app.function(image=image, gpu="L4", timeout=900, max_containers=1,
+              scaledown_window=2, volumes={"/models":cache}, secrets=secrets)
 def generate_reactions(reference: bytes, filename: str, repeat_short: bool=False, slots: list|None=None):
     import io
     import tempfile

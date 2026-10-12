@@ -19,6 +19,7 @@ def database():
 
 
 @pytest.mark.parametrize("name,expected", [
+    ("Selene Moonbrook","elf"),("Elf","elf"),
     ("Hà","ha"),("Kim Anh","kimanh"),("Trịnh Khải Nguyên","trinhkhainguyen"),
     ("Mira Sunpetal","mira"),("Lyra Moonveil","lyra"),("Aurelion Dawn","aurelion"),("Ruby","ruby"),("Nguyễn Vũ","nguyenvu"),("Merr","merr"),
 ])
@@ -106,3 +107,23 @@ def test_normal_smile_and_separate_thinking_portrait(database):
     assert reply_expression("*Cô ấy trầm ngâm suy nghĩ.* Đợi mình một chút.")=="thinking"
     assert reply_expression("What do you think I should do?")=="neutral"
     assert reply_expression("*She looks at you.* What do you think?")=="neutral"
+
+
+def test_elf_sheet_is_used_for_every_emotion(database):
+    from character_chat.schemas import CharacterSpec
+    item=CharacterSpec(id="elf-test",name="Selene Moonbrook",creation_type="preset",preset_type="elf")
+    source=module.ensure_bundled_expressions(database,item)
+    assert source=="__bundled__:elf"
+    assets={row.emotion:row.content for row in database.query(CharacterExpressionAsset).filter_by(character_id=source)}
+    assert set(assets)==set(module.CELL_NAMES)|{"neutral","shy"}
+    assert assets["neutral"]==assets["happy"]
+    assert assets["shy"]==assets["winking"]
+    for content in assets.values():
+        with Image.open(BytesIO(content)) as portrait:
+            assert portrait.size==(512,512)
+    assert assets["thinking"]!=assets["happy"]
+
+
+def test_renamed_elf_can_match_canonical_preset():
+    assert module.sheet_for(SimpleNamespace(name="Translated elf",display_name="",preset_type="elf"))[0]=="elf"
+    assert module.sheet_for(SimpleNamespace(name="Selena Other",display_name="",preset_type="custom")) is None

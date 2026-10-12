@@ -10,15 +10,18 @@ export function useReactionSounds(roomId:string|null,userId:string|undefined,cha
   const audio=useRef<HTMLAudioElement|null>(null);
   const seen=useRef(new Set<string>());
   const playbackTasks=useRef(new Map<string,Promise<void>>());
+  const playbackQueue=useRef<Promise<void>>(Promise.resolve());
   const last=useRef<string|null>(null);
   const sequence=useRef(0);
+  const playbackEpoch=useRef(0);
   const lastPlayed=useRef(0);
   const openingDone=useRef<(()=>void)|null>(null);
   const loaded=useRef(new Set<string>());
-  function stop(){audio.current?.pause();audio.current=null;openingDone.current?.();openingDone.current=null;}
+  function stopPlayer(){audio.current?.pause();audio.current=null;openingDone.current?.();openingDone.current=null;}
+  function stop(){++playbackEpoch.current;playbackQueue.current=Promise.resolve();stopPlayer();}
   useEffect(()=>{
     const epoch=++sequence.current;
-    setReady(false);stop();seen.current.clear();playbackTasks.current.clear();lastPlayed.current=0;
+    setReady(false);stop();seen.current.clear();playbackTasks.current.clear();playbackQueue.current=Promise.resolve();lastPlayed.current=0;
     clips.current.clear();requests.current.clear();loaded.current.clear();
     enabledRef.current=Object.fromEntries(characterIds.map(id=>[id,localStorage.getItem("reaction:"+userId+":"+id)!=="off"]));
     if(!userId)clearReactionCache();
@@ -44,21 +47,26 @@ export function useReactionSounds(roomId:string|null,userId:string|undefined,cha
   function react(messageId:string,characterId:string,emotion:string,language?:string,voiceId?:string):Promise<void>{
     const pending=playbackTasks.current.get(messageId);
     if(pending)return pending;
-    const task=performReaction(messageId,characterId,emotion,language,voiceId);
+    const epoch=sequence.current, generation=playbackEpoch.current;
+    const task=playbackQueue.current.catch(()=>{}).then(()=>{
+      if(epoch!==sequence.current||generation!==playbackEpoch.current)return;
+      return performReaction(messageId,characterId,emotion,language,voiceId,generation);
+    });
+    playbackQueue.current=task;
     playbackTasks.current.set(messageId,task);
     if(playbackTasks.current.size>128)playbackTasks.current.delete(playbackTasks.current.keys().next().value!);
     return task;
   }
-  async function performReaction(messageId:string,characterId:string,emotion:string,language?:string,voiceId?:string){
+  async function performReaction(messageId:string,characterId:string,emotion:string,language:string|undefined,voiceId:string|undefined,generation:number){
     const epoch=sequence.current;
     if(!roomId||seen.current.has(messageId))return;
     seen.current.add(messageId);
     if(seen.current.size>128)seen.current.delete(seen.current.values().next().value!);
     if(!enabledRef.current[characterId])return;
     const options=clips.current.get(characterId)||await requests.current.get(characterId)||[];
-    if(epoch!==sequence.current||!enabledRef.current[characterId]||document.visibilityState==="hidden"||window.frameElement?.getAttribute("aria-hidden")==="true")return;
-    // Do not stack sounds from multiple group members or successive rapid turns.
-    if(Date.now()-lastPlayed.current<4000)return;
+    if(epoch!==sequence.current||generation!==playbackEpoch.current||!enabledRef.current[characterId]||document.visibilityState==="hidden"||window.frameElement?.getAttribute("aria-hidden")==="true")return;
+    // Group clips are serialized above, so each speaker keeps their own beat.
+    if(characterIds.length===1&&Date.now()-lastPlayed.current<4000)return;
     const target=options.some(clip=>clip.target===language)?language:options.some(clip=>clip.target==="shared")?"shared":options.some(clip=>clip.target==="en")?"en":"vi";
     let candidates=options.filter(clip=>clip.emotion===emotion&&clip.target===target&&(!voiceId||clip.voice_id===voiceId));
 
@@ -66,7 +74,7 @@ export function useReactionSounds(roomId:string|null,userId:string|undefined,cha
     const fresh=candidates.filter(clip=>clip.id!==last.current);
     if(fresh.length)candidates=fresh;
     const clip=candidates[Math.floor(Math.random()*candidates.length)];
-    stop();
+    stopPlayer();
     const player=clip.player;player.currentTime=0;
     player.volume=clip.volume;audio.current=player;
     last.current=clip.id;lastPlayed.current=Date.now();

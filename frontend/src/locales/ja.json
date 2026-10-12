@@ -537,5 +537,7 @@
   "Chờ chút nhé, mình đang chuẩn bị đây!": "ただいま準備しています。少しお待ちくださいね。",
   "Phòng công khai chỉ chia sẻ nhóm nhân vật, không chia sẻ lịch sử tin nhắn. Nhân vật hệ thống có thể dùng ngay; nhân vật tự tạo cần được công khai trước.": "公開ルームで共有されるのはキャラクターの組み合わせだけで、チャット履歴は共有されません。システムキャラクターはそのまま使えます。自作キャラクターは先に公開してください。",
   "Chủ đề (tuỳ chọn)": "話題（任意）",
-  "Để trống để lấy cảm hứng từ tên nhóm hoặc trò chuyện tự nhiên.": "空欄なら、グループ名をヒントにしたり、自由に会話したりできます。"
+  "Để trống để lấy cảm hứng từ tên nhóm hoặc trò chuyện tự nhiên.": "空欄なら、グループ名をヒントにしたり、自由に会話したりできます。",
+  "Ẩn companion": "コンパニオンを非表示",
+  "Hiện companion": "コンパニオンを表示"
 }

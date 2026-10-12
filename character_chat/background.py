@@ -39,6 +39,10 @@ def analyze_turn(user_id,room_id,message_id,character_ids):
                 [{"role":"system","content":TURN_ANALYSIS_PROMPT},{"role":"user","content":json.dumps(payload,ensure_ascii=False)}],
                 TurnAnalysis,model=llm.fallback_model,max_tokens=700,
             )
+            # The room may have been deleted while the model was analyzing it.
+            # Discard the previous read snapshot before checking the source again.
+            db.rollback()
+            if not db.query(Message.id).filter_by(id=message_id,room_id=room_id).first():return
             if analysis.confidence>=.6:
                 db.add(MoodObservation(id=uid(),user_id=user_id,room_id=room_id,source_message_id=message_id,emotion=analysis.user_emotion[:50],valence=analysis.valence,arousal=analysis.arousal,confidence=analysis.confidence,directed_at_character=int(analysis.directed_at_character)))
             if analysis.relationship_event!="none" and analysis.confidence>=.6:

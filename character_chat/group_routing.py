@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 from functools import lru_cache
 import re
 import time
+import os
 import unicodedata
 from .retrieval import vector
 
@@ -52,11 +53,13 @@ class GroupPlan:
     reason: str = "single_room"
     scores: dict = field(default_factory=dict)
     latency_ms: float = 0
+    router: str = "local_rules_topics_v1"
+    decision: dict = field(default_factory=dict)
 
     def metadata(self):
         return {"speaker_ids":[c.id for c in self.speakers],"interaction":self.interaction,
                 "reason":self.reason,"scores":self.scores,"latency_ms":self.latency_ms,
-                "router":"local_rules_topics_v1"}
+                "router":self.router,**self.decision}
 
     def instruction(self, character_id):
         if len(self.speakers)<2:return ""
@@ -119,12 +122,13 @@ def plan_group(message, characters, mode="auto", history=()):
     ranked=sorted(chars,key=lambda c:(-scores[c.id],counts[c.id],chars.index(c)))
     first,second=ranked[:2]
     pair_requested=contains(text,PAIR) or contains(text,EXCHANGE)
-    # At least three single turns between spontaneous two-person interactions.
-    cooldown=any(len(set(turn))>1 for turn in turns[-3:])
-    eligible=(scores[second.id]>=.20 and scores[first.id]-scores[second.id]<.25)
+    # Keep two single turns between spontaneous two-person interactions.
+    cooldown=any(len(set(turn))>1 for turn in turns[-2:])
+    eligible=(scores[second.id]>=.18 and scores[first.id]-scores[second.id]<.28)
     different=features[first.id][1]!=features[second.id][1] or first.identity.role!=second.identity.role
-    if pair_requested or (not cooldown and len(turns)>=3 and eligible and different):
-        exchange=contains(text,EXCHANGE) or (not pair_requested and len(turns)%4==3)
+    if pair_requested or (not cooldown and len(turns)>=2 and eligible and different):
+        previous_pairs=sum(len(set(turn))>1 for turn in turns)
+        exchange=contains(text,EXCHANGE) or (not pair_requested and previous_pairs%2==0)
         return result([first,second],"exchange" if exchange else "complement","requested_pair" if pair_requested else "distinct_perspectives",scores)
     return result([first],"single","relevance_and_turn_balance",scores)
 
@@ -134,4 +138,28 @@ def plan_room(db, room_id, message, characters, mode="auto", exclude_message_id=
     if exclude_message_id:rows=rows.filter(Message.id!=exclude_message_id)
     rows=rows.order_by(Message.created_at.desc(),Message.id.desc()).limit(60).all()
     history=[{"sender_type":row.sender_type,"character_id":row.character_id,"text":row.text} for row in reversed(rows)]
-    return plan_group(message,characters,mode,history)
+    return plan_selected_group(message,characters,mode,history,db,room_id)
+
+
+def plan_selected_group(message,characters,mode="auto",history=(),db=None,room_id=None):
+    """Opt-in selector. Explicit requests and local fallback always remain available."""
+    local=plan_group(message,characters,mode,history)
+    enabled=os.getenv("GROUP_ROUTER_MODE","local").strip().lower()
+    if enabled!="decision" or len(characters)<2:return local
+    if local.reason in {"addressed_character","selected_character","user_requested_everyone","addressed_pair","followup","requested_pair"}:
+        return local
+    from .group_decision import select_speakers
+    topic="";title=""
+    if db is not None and room_id:
+        from .group_topic import group_context
+        context=group_context(db,room_id,characters) or {}
+        topic=context.get("topic","");title=context.get("room_name","")
+    started=time.perf_counter()
+    selected,meta,error=select_speakers(message,list(characters)[:6],history,topic,title)
+    if selected is None:
+        local.decision={**meta,"decision_fallback":error}
+        local.latency_ms=round((time.perf_counter()-started)*1000,3)
+        return local
+    interaction="single" if len(selected)==1 else ("exchange" if len(selected)==2 and local.interaction=="exchange" else "complement")
+    return GroupPlan(selected,interaction,"decision_selected",meta.get("decision_scores",{}),
+        round((time.perf_counter()-started)*1000,3),"jev_compatible",meta)

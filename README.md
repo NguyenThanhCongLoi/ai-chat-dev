@@ -1273,3 +1273,48 @@ Công cụ sao lưu bản cũ vào `backups/ui-locales/`, kiểm tra trường n
 - Chat đơn và nhóm cùng dùng suggest context ngắn: 4 tin gần nhất, mỗi tin khoảng 240 ký tự; tin user hiện tại khoảng 600 ký tự; mô tả nhân vật 240 ký tự; 3 câu gợi ý cũ, mỗi câu tối đa 120 ký tự. Phần đầu/cuối tin dài được giữ để bảo toàn cách xưng hô.
 - Nhãn HUMAN_USER/CHARACTER và chỉ dẫn ngôi nói được giữ. Rút context giúp giảm nhiễu; không bảo đảm model không bao giờ sai ngôi.
 - Voice tự phát vẫn bật cho phòng có đúng một nhân vật và ngôn ngữ được hỗ trợ. Phòng nhóm không tự phát voice.
+
+
+### Ngôn ngữ lượt trả lời và beat clip trong chat nhóm
+
+- Khoá ngôn ngữ được đặt cuối prompt thực gửi model, sau chỉ dẫn metadata audio. Tin user mới nhất quyết định ngôn ngữ lời thoại và action beat; lịch sử của nhân vật khác và marker audio không cho phép đổi ngôn ngữ.
+- Chat nhóm tự phát clip phản ứng của đúng character_id ở event reaction, hoặc khi hoàn tất câu nếu chưa có event. Clip được phát lần lượt, tối đa 3 giây/clip; bật/tắt âm phản ứng vẫn kiểm soát các clip này.
+- Voice lời thoại của nhóm vẫn không tự phát. Phòng đơn vẫn giữ tự phát voice.
+- Tương tác tự nhiên hai nhân vật được cho phép sau hai lượt; giữ hai lượt đơn giữa các lần tự phát. Ngưỡng điểm nhân vật thứ hai giảm từ 0.20 xuống 0.18; chênh điểm tối đa tăng từ 0.25 lên 0.28. Các lần tự phát luân phiên trao đổi hỏi ý kiến và góp góc nhìn bổ sung. User gọi tên một nhân vật vẫn ưu tiên đúng người đó.
+- Việc có hai nhân vật trả lời có thể tăng thời gian hoàn tất cả lượt, vì nhân vật sau đọc phần trả lời trước; bộ chọn vẫn chạy local và không gọi thêm LLM.
+
+
+### Companion video thử nghiệm cho elf
+
+- Trong phòng đơn của Selene Moonbrook/elf, nút mắt ở đầu cột phải hiện hoặc ẩn companion. Khi hiện, video thay phần giới thiệu, cảm xúc và menu; khi ẩn, các mục cũ xuất hiện lại.
+- Dùng image/elf_normal.webm và image/elf_talk.webm qua route /character-images đã có. Normal loop khi nghỉ; talk chỉ loop khi voice thực sự đang phát (gồm tự phát và bấm Nghe). Stream chữ hoặc chờ audio không bật talk. Video dùng contain để thấy toàn bộ khung hình, có thể có khoảng trống theo tỷ lệ cột.
+- Video không phát âm thanh riêng (muted, playsInline). Chỉ video trạng thái đang dùng chạy; ẩn companion/cột hoặc rời phòng sẽ dừng video. Mỗi lần mở phòng companion mặc định ẩn.
+- Video được đóng gói cùng thư mục image khi deploy Modal; cần deploy UI và image mới. Bản thử hiện áp dụng phòng đơn, chưa áp dụng companion nhiều nhân vật trong nhóm.
+
+
+- Khi mở companion elf trên desktop, cột video mở rộng khoảng 38% workspace (tối đa 480px và không vượt 44%); phần chat thu lại tương ứng. Video dùng toàn bộ chiều cao bên dưới hàng nút, co theo tỷ lệ contain để giữ đủ khung cảnh. Khi ẩn hoặc thu cột, bố cục chat trở lại kích thước cũ. Điện thoại giữ bố cục drawer.
+
+
+### Bộ chọn người trả lời Jev-compatible (thử nghiệm)
+
+Thử Laya Multilingual qua service riêng: [GROUP_DECISION_ROUTER.md](docs/GROUP_DECISION_ROUTER.md). Bật GROUP_ROUTER_MODE=decision cùng endpoint; mặc định local. Timeout/lỗi/không đủ điểm tự quay về local. Worker Laya chạy riêng trên Modal T4; không cần model local. Xem hướng dẫn để bật trên web. Web production vẫn mặc định local.
+
+
+### Cấu hình tiết kiệm Modal (12/10/2026)
+
+- Web giữ min_containers=1 và max_containers=1 để không cold-start và giữ một writer SQLite.
+- Bỏ CPU/RAM đặt trước ở modal_app.py, modal_reactions.py và modal_group_router.py; dùng mức mặc định Modal và bursting theo tài nguyên còn dư.
+- scaledown_window=2 giây cho web/worker. Web vẫn giữ một container do min_containers=1; các worker không có min sẽ scale về 0 khi rảnh.
+- GPU L4/T4 vẫn giữ cho model; thời gian load model và sử dụng GPU thực tế vẫn bị tính phí.
+- Không đổi timeout tác vụ, concurrency, nội dung hàm, API hay dữ liệu.
+- Worker gọi rải rác sẽ cold-start nhiều hơn. Nếu chi phí load lại lớn hơn thời gian giữ nóng, đo billing thực tế rồi tăng scaledown_window phù hợp.
+- Cần redeploy từng app để áp dụng. Việc sửa source không tự thay cấu hình app đang chạy.
+
+
+### Reset cảm xúc khi xoá đoạn chat
+
+- Xoá phòng chat reset Relationship và CharacterState của user hiện tại với các nhân vật trong phòng: thân thiết, tin tưởng, thiện cảm, căng thẳng, tôn trọng và mức cảm xúc về trạng thái ban đầu.
+- Nhân vật vẫn còn trong bộ sưu tập. Chat nhóm reset các thành viên trong phòng; không reset nhân vật không liên quan hoặc user khác.
+- Chỉ số lưu chung theo user/nhân vật, nên reset cũng áp dụng nếu nhân vật đó xuất hiện ở phòng khác của cùng user.
+- Xoá sự kiện quan hệ và reflection của cặp user/nhân vật để cảm xúc cũ không quay lại từ context. Ký ức thủ công ngoài phòng và tài nguyên voice/ảnh của nhân vật giữ nguyên.
+- Trả lời/phân tích nền hoàn tất sau khi lịch sử đã bị xoá sẽ bỏ kết quả, không tạo lại cảm xúc từ lượt cũ.

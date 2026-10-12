@@ -1,3 +1,5 @@
+import {ElfCompanion} from "./ElfCompanion";
+import {hasElfCompanion,companionTalking} from "./companionState";
 import { roomCharacterPool } from "./roomCharacterPool";
 import { openingVoiceMessages } from "./openingVoiceMessages";
 import { CharacterFeelings } from "./CharacterFeelings";
@@ -12,7 +14,7 @@ import {
   isReactionPreparationCancelled,
 } from "./reactionCache";
 import { useReactionSounds } from "./useReactionSounds";
-import { canSpeak, playbackMessage, shouldAutoplaySpeech } from "./voicePreferences";
+import { canSpeak, playbackMessage, shouldAutoplaySpeech, shouldPlayStandaloneReaction } from "./voicePreferences";
 import { BackgroundSpeech } from "./backgroundSpeech";
 import { useBackgroundMusic } from "./useBackgroundMusic";
 import { BackgroundMusicButton } from "./BackgroundMusicButton";
@@ -240,6 +242,8 @@ export default function RolePlayApp() {
   const [myCharacterFilter, setMyCharacterFilter] = useState("all");
   const [myCharacterTypeFilter, setMyCharacterTypeFilter] = useState("all");
   const [typingIds, setTypingIds] = useState<string[]>([]);
+  const [companionVisible,setCompanionVisible]=useState(false);
+  useEffect(()=>{setCompanionVisible(false);},[room?.id]);
   const [speechLoadingId, setSpeechLoadingId] = useState<string | null>(null);
   const [speakingId, setSpeakingId] = useState<string | null>(null);
   const reactionSounds = useReactionSounds(
@@ -1706,6 +1710,9 @@ export default function RolePlayApp() {
           reactionMetadataRef.current.set(payload.message_id, {
             emotion: payload.emotion, language: payload.language, voiceId: payload.voice_id,
           });
+          if (roomChars.length > 1)
+            void reactionSounds.react(payload.message_id, payload.character_id,
+              payload.emotion, payload.language, payload.voice_id);
         }
         if (event === "character_message") {
           if (
@@ -1743,9 +1750,9 @@ export default function RolePlayApp() {
             emotion, language: payload.reaction_language || payload.speech_languages?.[0],
             voiceId: payload.reaction_voice_id,
           });
-          // Supported dialogue owns its clip gate and group playback order.
-          // A reply without speech may still play its standalone reaction.
-          if (!payload.interrupted && activeRoomIdRef.current === sentRoomId && !canSpeak(payload as Message))
+          // Group reactions play independently; group dialogue never autoplays.
+          if (!payload.interrupted && activeRoomIdRef.current === sentRoomId &&
+              shouldPlayStandaloneReaction(roomChars.length, canSpeak(payload as Message)))
             void reactionSounds.react(payload.id, payload.character_id, emotion,
               payload.reaction_language || payload.speech_languages?.[0], payload.reaction_voice_id);
 
@@ -4566,7 +4573,7 @@ export default function RolePlayApp() {
 
         {page === "chat" && room && (
           <div
-            className={`chatWorkspace ${chatToolsCollapsed ? "toolsCollapsed" : ""}`}
+            className={`chatWorkspace ${chatToolsCollapsed ? "toolsCollapsed" : ""} ${!chatToolsCollapsed && companionVisible && roomChars.length === 1 && hasElfCompanion(roomChars[0]) ? "companionExpanded" : ""}`}
           >
             <div className="chat">
               <header
@@ -4815,7 +4822,7 @@ export default function RolePlayApp() {
               </div>
             </div>
 
-            <aside className="characterTools">
+            <aside className={`characterTools ${!chatToolsCollapsed && roomChars.length === 1 && hasElfCompanion(roomChars[0]) ? "companionAvailable" : ""} ${!chatToolsCollapsed && companionVisible && roomChars.length === 1 && hasElfCompanion(roomChars[0]) ? "companionFull" : ""}`}>
               <button
                 className="iconbtn collapseTools"
                 onClick={() => setChatToolsCollapsed((value) => !value)}
@@ -4829,7 +4836,21 @@ export default function RolePlayApp() {
                 />
               </button>
 
-              {!chatToolsCollapsed && (
+              {!chatToolsCollapsed && roomChars.length === 1 && hasElfCompanion(roomChars[0]) && (
+                <button className="iconbtn companionToggle" type="button"
+                  title={companionVisible?"Ẩn companion":"Hiện companion"}
+                  aria-label={companionVisible?"Ẩn companion":"Hiện companion"}
+                  aria-pressed={companionVisible}
+                  onClick={()=>setCompanionVisible(value=>!value)}>
+                  <Icon n={companionVisible?"eye-crossed":"eye"}/>
+                </button>
+              )}
+              {!chatToolsCollapsed && companionVisible && roomChars.length === 1 && hasElfCompanion(roomChars[0]) ? (
+                <ElfCompanion name={roomChars[0].name}
+                  talking={companionTalking(roomChars[0].id,speakingId,
+                    [...messages, ...(openingGreeting?.messages || []),
+                      ...automaticSpeechMessages.current.values()])}/>
+              ) : !chatToolsCollapsed && (
                 <>
                   {roomChars.length === 1 && (
                     <div className="toolProfile">

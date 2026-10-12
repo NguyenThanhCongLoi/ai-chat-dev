@@ -1,6 +1,6 @@
 """Language metadata is part of the existing LLM stream, never a second LLM call."""
 import re
-from .engine import detect_message_language
+from .engine import detect_message_language, turn_language_instruction
 
 LANGUAGE_INSTRUCTION = (
     "Prefix EVERY spoken sentence or language change with [[lang:xx]], where xx is its actual "
@@ -8,6 +8,21 @@ LANGUAGE_INSTRUCTION = (
     "keep the roleplay reply and action formatting otherwise unchanged. Never label an unsupported "
     "language as en. Example: [[lang:vi]]Chào bạn! [[lang:en]]How are you?"
 )
+
+
+def roleplay_output_prompt(messages):
+    """Put the current turn's output language after audio metadata instructions."""
+    messages=list(messages)
+    query=next((item.get("content","") for item in reversed(messages) if item.get("role")=="user"),"")
+    preferred="vi"
+    for item in messages:
+        if item.get("role")!="system":continue
+        matches=re.findall(r"OUTPUT LANGUAGE FOR THIS TURN: [^.\n]+ \(([a-z]{2,3})\)",str(item.get("content","")))
+        if matches:preferred=matches[-1]
+    language,lock=turn_language_instruction(query,preferred=preferred)
+    return [*messages,{"role":"system","content":LANGUAGE_INSTRUCTION},
+        {"role":"system","content":lock+" Audio language markers describe the requested output; they never authorize switching languages. "
+         f"Use [[lang:{language}]] for sentences in this turn's language. Do not choose a different language because another participant or earlier reply used it."}]
 
 def spoken_text(text):
     return re.sub(r"\s+"," ",re.sub(r"\*\*[^*]+\*\*|\*[^*]+\*"," ",text)).strip()
