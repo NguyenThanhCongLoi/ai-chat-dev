@@ -1,3 +1,41 @@
+# Đọc và sửa code AI Companion
+
+Refactor trong repo cá nhân: API/service backend, controller CMS và view Roleplay được chia theo chức năng. Entry point và các luồng hiện có được giữ tương thích.
+
+- **Bản đồ đầy đủ:** [CODE_STRUCTURE.md](docs/CODE_STRUCTURE.md)
+- **Backend:** main.py lắp ráp; character_chat/api/ xử lý endpoint; character_chat/services/ xử lý nghiệp vụ.
+- **CMS:** frontend/src/admin.ts giữ shared state/wiring; admin/controllers/ chứa handler theo miền.
+- **Roleplay:** RolePlayApp.tsx giữ hooks/orchestration; roleplay/views/ chứa markup và props typed.
+- **API contract:** tests/test_api_contract.py đóng băng OpenAPI và route order của ver1.
+- **Kết quả:** build frontend và Edge smoke đạt; backend 292 passed/23 lỗi cũ, frontend 65 passed/3 lỗi cũ. Không phát hiện test lỗi mới qua đối chiếu baseline; chi tiết nằm trong bản đồ code.
+
+### Luồng xử lý chính
+
+```text
+User -> API -> xác thực/quyền -> service -> LLM/TTS/database
+                                      -> SSE -> client/audio
+
+CMS event -> controller -> API -> service -> database
+Roleplay state/effects -> view props -> JSX; playback ở các hook/module audio
+```
+
+### Các file bắt đầu đọc
+
+| Bạn muốn hiểu | Điểm bắt đầu |
+| --- | --- |
+| Khởi động backend | character_chat/main.py, services/lifecycle.py |
+| Tài khoản và quyền | services/authentication.py, api/authentication.py |
+| Chat đơn/nhóm | api/roleplay_chat.py, services/roleplay_inference.py |
+| Voice và cache | services/speech.py, api/voice_playback.py, incremental_voice.py |
+| CMS | frontend/src/admin/controllers/, api/admin_*.py |
+| Giao diện chat | frontend/src/roleplay/views/ChatView.tsx |
+| Xoá và reset cảm xúc | services/deletion.py |
+| Model/prompt/key | services/model_registry.py, api/admin_models.py |
+
+Shared runtime và wrapper tương thích giữ các điểm gọi cũ của worker/test. Các module miền nhận dependency qua bind_*; không import main để tạo vòng phụ thuộc. Frontend view không thêm hooks hay tự phát audio. Xem bản đồ code trước khi đổi thứ tự bind hoặc lifecycle.
+
+---
+
 # Gói service ver1 cho BE
 
 Xem [BE_SERVICE_HANDOFF.md](docs/BE_SERVICE_HANDOFF.md) cho Docker, cấu hình, chuyển CMS và tích hợp. Nhánh này bắt đầu từ v1.0.0; bản đóng băng và nhánh update giữ nguyên.

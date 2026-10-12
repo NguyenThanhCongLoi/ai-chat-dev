@@ -94,7 +94,7 @@ export type AdminCharacter = {
     tts_voice_source?: "auto" | "clone" | "catalog";
     tts_voice_source_vi?: "auto" | "clone" | "catalog";
     tts_voice_source_en?: "auto" | "clone" | "catalog";
-    tts_languages?: Record<string, {enabled: boolean; voice_id: string}>;
+    tts_languages?: Record<string, { enabled: boolean; voice_id: string }>;
     tts_voice_vi?: string;
     tts_voice_en?: string;
     tts_volume?: number;
@@ -153,7 +153,13 @@ export type ModelConfig = {
 };
 export type ExpressionPreview = {
   character_id: string;
-  status: "queued" | "processing" | "ready" | "failed" | "no-image-model" | "missing";
+  status:
+    | "queued"
+    | "processing"
+    | "ready"
+    | "failed"
+    | "no-image-model"
+    | "missing";
   quality: string;
   error?: string;
   images: Record<string, string>;
@@ -165,3 +171,89 @@ export type ModelUpdate = ModelConfig & {
     images: number;
   };
 };
+
+// View/editor contracts shared by the CMS entrypoint and domain controllers.
+export type CmsHomeSection = {
+  id: string;
+  name: string;
+  rule?: string;
+  tags?: string[];
+  hidden?: boolean;
+};
+
+export type Connection = {
+  base: string;
+  gateway: boolean;
+  hint: string;
+  source: string;
+  ok: boolean;
+  baseKeyId?: string;
+  models: ModelConfig[];
+};
+
+export type AssistantStats = {
+  requests: number;
+  fallback_rate: number;
+  latency: number;
+  error_rate: number;
+  days: number[];
+};
+
+export type AssistantProfile = {
+  title: string;
+  slogan: string;
+  description: string;
+  greeting: string;
+  starters: string[];
+  visible: boolean;
+  user_pick: boolean;
+  icon?: string;
+  hue?: number;
+  hair?: number;
+  custom?: boolean;
+  stats?: AssistantStats;
+};
+
+export type AssistantProfiles = {
+  order: string[];
+  items: Record<string, AssistantProfile>;
+};
+
+export type AssistantDraft = {
+  main: string;
+  f1: string;
+  f2: string;
+  prompt: string;
+  fp1: string;
+  fp2: string;
+  title: string;
+  slogan: string;
+  description: string;
+  greeting: string;
+  starters: string;
+  visible: boolean;
+  user_pick: boolean;
+};
+
+export type GlobalDraft = {
+  prompt: string;
+  enabled: Record<string, boolean>;
+};
+
+export type AssistantTab = "info" | "model" | "prompt" | "stats";
+
+export type NewAssistantForm = {
+  title: string;
+  slogan: string;
+  description: string;
+  greeting: string;
+  icon: string;
+  hue: number;
+  hair: number;
+  main: string;
+  f1: string;
+  prompt: string;
+  visible: boolean;
+};
+
+export type LogRow = Record<string, unknown>;

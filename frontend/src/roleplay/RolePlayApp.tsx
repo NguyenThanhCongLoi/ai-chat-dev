@@ -1,22 +1,18 @@
-import { roomCharacterPool } from "./roomCharacterPool";
-import { openingVoiceMessages } from "./openingVoiceMessages";
-import { CharacterFeelings } from "./CharacterFeelings";
+// Owns shared state, effects and event orchestration; page markup lives in views/.
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { flushSync } from "react-dom";
+import { reportFirstChunk } from "../chatTiming";
 import {
-  useActionSounds,
-  prepareActionSounds,
-  activateActionSounds,
-} from "./useActionSounds";
-import {
-  prepareRoomReactions,
-  warmReactionClips,
-  isReactionPreparationCancelled,
-} from "./reactionCache";
-import { useReactionSounds } from "./useReactionSounds";
-import { canSpeak, playbackMessage, shouldAutoplaySpeech, shouldPlayStandaloneReaction } from "./voicePreferences";
-import { BackgroundSpeech } from "./backgroundSpeech";
-import { useBackgroundMusic } from "./useBackgroundMusic";
-import { BackgroundMusicButton } from "./BackgroundMusicButton";
-import { RoleplayStoryHero } from "./RoleplayStoryHero";
+  UI_LANGUAGES,
+  type UiLanguage,
+  localizeInterface,
+  rememberLanguage,
+  restoredLanguage,
+  setRuntimeTranslations,
+  storedLanguage,
+  supportedUiLanguage,
+} from "../i18n";
+import { Icon } from "../ui";
 import {
   afterUiLanguagePaint,
   loadCharacterIntroductions,
@@ -24,135 +20,60 @@ import {
   setUiLanguageGate,
   uiLanguageErrorMessage,
 } from "../uiLocales";
-import { reportFirstChunk } from "../chatTiming";
-import { AutoGrowTextarea, Icon, formatStarText } from "../ui";
-import { EmojiPicker } from "../EmojiPicker";
-import {
-  type ReactNode,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
-import { RolePlayLoadingCat } from "./RolePlayLoadingCat";
-import { PcmStreamPlayer, playSseSpeech } from "./streamSpeech";
-import { flushSync } from "react-dom";
-import type { Character, Message, Account } from "./types";
 import { API, api, authHeaders, responseError } from "./api";
+import { BackgroundMusicButton } from "./BackgroundMusicButton";
+import { BackgroundSpeech } from "./backgroundSpeech";
 import {
-  EmotionPortrait,
+  CharacterAvatar,
+  ReactionSummary,
+  reactionTotal,
+} from "./CharacterCards";
+import {
   expressionPortraitCache,
   loadExpressionPortrait,
 } from "./EmotionPortrait";
+import { openingVoiceMessages } from "./openingVoiceMessages";
+import { characterSpecPayload, roleLabels } from "./presentation";
 import {
-  MarketCard,
-  ReactionSummary,
-  reactionEmojis,
-  CharacterAvatar,
-  CommunityShowcase,
-  reactionTotal,
-  assetUrl,
-} from "./CharacterCards";
+  isReactionPreparationCancelled,
+  prepareRoomReactions,
+  warmReactionClips,
+} from "./reactionCache";
+import { RolePlayLoadingCat } from "./RolePlayLoadingCat";
+import { RoleplayStoryHero } from "./RoleplayStoryHero";
+import { roomCharacterPool } from "./roomCharacterPool";
+import { PcmStreamPlayer, playSseSpeech } from "./streamSpeech";
+import type {
+  Account,
+  Character,
+  HomeSection,
+  Message,
+  Room,
+  StoryCandidate,
+} from "./types";
 import {
-  localizeInterface,
-  rememberLanguage,
-  restoredLanguage,
-  setRuntimeTranslations,
-  storedLanguage,
-  supportedUiLanguage,
-  UI_LANGUAGES,
-  type UiLanguage,
-} from "../i18n";
+  activateActionSounds,
+  prepareActionSounds,
+  useActionSounds,
+} from "./useActionSounds";
+import { useBackgroundMusic } from "./useBackgroundMusic";
+import { useReactionSounds } from "./useReactionSounds";
+import { renderCharactersView } from "./views/CharactersView";
+import { renderChatView } from "./views/ChatView";
+import { renderCreateView } from "./views/CreateView";
+import { renderDiscoverView } from "./views/DiscoverView";
+import { renderHomeView } from "./views/HomeView";
+import { renderHomeBackdropView } from "./views/HomeBackdropView";
+import { renderMemoryView } from "./views/MemoryView";
+import { renderSettingsView } from "./views/SettingsView";
+import { renderSystemView } from "./views/SystemView";
+import {
+  canSpeak,
+  playbackMessage,
+  shouldAutoplaySpeech,
+  shouldPlayStandaloneReaction,
+} from "./voicePreferences";
 
-type Room = {
-  topic?: string;
-  id: string;
-  name: string;
-  character_ids: string[];
-  created_at?: string;
-  created?: boolean;
-  is_public?: boolean;
-};
-type StoryCandidate = {
-  name: string;
-  description: string;
-  source_evidence: string[];
-  importance: number;
-};
-type HomeSection = {
-  id: string;
-  name: string;
-  rule: "popular" | "trending" | "top_rated" | "favorites" | "tags";
-  tags: string[];
-};
-function renderRoleplayText(text: string, isCharacter: boolean): ReactNode {
-  if (!isCharacter) return text;
-  const normalized = text
-    .replace(/\\r\\n|\\n|\\r/g, "\n")
-    .split("\n")
-    .filter((line) => line.trim() !== "*")
-    .join("\n")
-    .trim()
-    .replace(/(^|\n)([ \t]*)\*([^*\n]{1,240})\*(?=[ \t]|\n|$)/g, "$1$2**$3**");
-  return formatStarText(normalized, "roleplay");
-}
-const characterSpecPayload = (character: Character) => {
-  const presentationFields = new Set([
-    "usage_count",
-    "trending_score",
-    "reactions",
-    "rating",
-    "rating_count",
-    "home_section",
-    "creator",
-    "is_public",
-    "character_type",
-    "tags",
-  ]);
-  return Object.fromEntries(
-    Object.entries(character).filter(([key]) => !presentationFields.has(key)),
-  );
-};
-const roleLabels = {
-  companion: "Đồng hành",
-  study: "Học tập",
-  work: "Công việc",
-  health: "Sức khỏe",
-  lifestyle: "Lối sống",
-} as const;
-const suggestedTags = [
-  "Anime",
-  "Boss",
-  "Mafia",
-  "Romance",
-  "Action",
-  "Adventure",
-  "Comedy",
-  "Comics",
-  "Drama",
-  "Fantasy",
-  "Horror",
-  "Sports",
-  "Supernatural",
-  "Slice of Life",
-  "Academy",
-  "Actor",
-  "Adaptive",
-  "AI",
-  "Alien",
-  "Amnesia",
-  "Ancient",
-  "Android",
-  "Angel",
-  "Angst",
-  "Animal",
-  "Anthro",
-  "Anxious",
-  "Mystery",
-  "Friendship",
-  "Work",
-  "Study",
-];
 export default function RolePlayApp() {
   const [uiLanguage, setUiLanguage] = useState<UiLanguage>(storedLanguage);
   const [, setTranslationRevision] = useState(0);
@@ -314,7 +235,9 @@ export default function RolePlayApp() {
   const playingCharacterRef = useRef<string | null>(null);
   const greetingSpeechRef = useRef<Message | null>(null);
   const openingSpeechIdsRef = useRef(new Set<string>());
-  const reactionMetadataRef = useRef(new Map<string, {emotion:string;language?:string;voiceId?:string}>());
+  const reactionMetadataRef = useRef(
+    new Map<string, { emotion: string; language?: string; voiceId?: string }>(),
+  );
   const openingGreetingVersion = useRef(0);
   const [openingGreeting, setOpeningGreeting] = useState<{
     roomId: string;
@@ -330,10 +253,15 @@ export default function RolePlayApp() {
   }, [chars]);
   const speechPreparationScope = useRef("");
   speechPreparationScope.current = (account?.id || "") + ":" + uiLanguage;
-  function prepareRoleplaySpeech(message: Message, incremental = false, autoplay = true) {
+  function prepareRoleplaySpeech(
+    message: Message,
+    incremental = false,
+    autoplay = true,
+  ) {
     if (!account || !message.text || !canSpeak(message)) return;
     const scope = speechPreparationScope.current;
-    const version = scope + ":" + (incremental ? "incremental:" + message.id : message.text);
+    const version =
+      scope + ":" + (incremental ? "incremental:" + message.id : message.text);
     void backgroundSpeech
       .prepare(message.id, version, () =>
         fetch(
@@ -408,7 +336,8 @@ export default function RolePlayApp() {
       playNextQueuedSpeech();
   }
   async function startRoleplayAudio(messageId: string, automatic = false) {
-    if (automatic && !shouldAutoplaySpeech(room?.character_ids.length || 0)) return;
+    if (automatic && !shouldAutoplaySpeech(room?.character_ids.length || 0))
+      return;
     if (!automatic) {
       ++openingGreetingVersion.current;
       reactionSounds.stop();
@@ -417,8 +346,11 @@ export default function RolePlayApp() {
 
     setError("");
     const selected = playbackMessage(
-      messageId, automatic, speechMessagesRef.current,
-      automaticSpeechMessages.current.get(messageId), greetingSpeechRef.current,
+      messageId,
+      automatic,
+      speechMessagesRef.current,
+      automaticSpeechMessages.current.get(messageId),
+      greetingSpeechRef.current,
     );
     if (selected && !canSpeak(selected)) return;
     playingCharacterRef.current = selected?.character_id || null;
@@ -448,13 +380,22 @@ export default function RolePlayApp() {
       ).catch(() => {});
     };
     try {
-      if (automatic && selected?.character_id && !openingSpeechIdsRef.current.has(messageId)) {
+      if (
+        automatic &&
+        selected?.character_id &&
+        !openingSpeechIdsRef.current.has(messageId)
+      ) {
         // Audio preparation already runs in parallel. Hold playback only.
         const reaction = reactionMetadataRef.current.get(messageId);
-        await reactionSounds.react(messageId, selected.character_id,
+        await reactionSounds.react(
+          messageId,
+          selected.character_id,
           reaction?.emotion || selected.emotion || "neutral",
-          reaction?.language || selected.speech_languages?.[0], reaction?.voiceId);
-        if (controller.signal.aborted || speechAbortRef.current !== controller) return;
+          reaction?.language || selected.speech_languages?.[0],
+          reaction?.voiceId,
+        );
+        if (controller.signal.aborted || speechAbortRef.current !== controller)
+          return;
       }
       const firstAudio = () => {
         if (controller.signal.aborted || speechAbortRef.current !== controller)
@@ -626,7 +567,8 @@ export default function RolePlayApp() {
     const message = messages.find((item) => item.id === active);
     // Partial text can temporarily report no spoken content while action beats
     // stream. Only a completed reply or interruption can revoke playback.
-    if (message && !canSpeak(message) && (!busy || message.interrupted)) stopRoleplayAudio();
+    if (message && !canSpeak(message) && (!busy || message.interrupted))
+      stopRoleplayAudio();
   }, [messages, speakingId, speechLoadingId, busy]);
   const [memoryPopupOpen, setMemoryPopupOpen] = useState(false);
   const [roomWizard, setRoomWizard] = useState<{
@@ -1215,8 +1157,10 @@ export default function RolePlayApp() {
     let active = true;
     const version = ++openingGreetingVersion.current;
     const greetings = openingGreeting.messages;
-    for (const greeting of greetings) openingSpeechIdsRef.current.add(greeting.id);
-    for (const greeting of greetings) prepareRoleplaySpeech(greeting, false, false);
+    for (const greeting of greetings)
+      openingSpeechIdsRef.current.add(greeting.id);
+    for (const greeting of greetings)
+      prepareRoleplaySpeech(greeting, false, false);
     queueMicrotask(() => {
       if (
         !active ||
@@ -1486,7 +1430,7 @@ export default function RolePlayApp() {
       }
       const pool = roomCharacterPool(visibleCharacters, presets);
       const members = wizard.selected
-        .map(id => pool.find(item => item.character.id === id)?.character)
+        .map((id) => pool.find((item) => item.character.id === id)?.character)
         .filter(Boolean) as Character[];
       const nextRoom = await api<Room>("/v1/rooms", "POST", {
         name:
@@ -1658,9 +1602,12 @@ export default function RolePlayApp() {
             !autoSpeechStarted.has(payload.message_id)
           ) {
             const spoken: Message = {
-              id: payload.message_id, sender_type: "character",
-              character_id: payload.character_id, text: payload.text,
-              speech_supported: true, speech_languages: payload.speech_languages,
+              id: payload.message_id,
+              sender_type: "character",
+              character_id: payload.character_id,
+              text: payload.text,
+              speech_supported: true,
+              speech_languages: payload.speech_languages,
             };
             autoSpeechStarted.add(spoken.id);
             automaticSpeechMessages.current.set(spoken.id, spoken);
@@ -1699,16 +1646,36 @@ export default function RolePlayApp() {
           );
         }
         if (event === "reaction" && activeRoomIdRef.current === sentRoomId) {
-          if (["neutral","happy","sad","angry","surprised","shy","thinking"].includes(payload.emotion)) {
+          if (
+            [
+              "neutral",
+              "happy",
+              "sad",
+              "angry",
+              "surprised",
+              "shy",
+              "thinking",
+            ].includes(payload.emotion)
+          ) {
             setActiveExpression(payload.emotion);
-            void loadExpressionPortrait(payload.character_id, payload.emotion).catch(() => {});
+            void loadExpressionPortrait(
+              payload.character_id,
+              payload.emotion,
+            ).catch(() => {});
           }
           reactionMetadataRef.current.set(payload.message_id, {
-            emotion: payload.emotion, language: payload.language, voiceId: payload.voice_id,
+            emotion: payload.emotion,
+            language: payload.language,
+            voiceId: payload.voice_id,
           });
           if (roomChars.length > 1)
-            void reactionSounds.react(payload.message_id, payload.character_id,
-              payload.emotion, payload.language, payload.voice_id);
+            void reactionSounds.react(
+              payload.message_id,
+              payload.character_id,
+              payload.emotion,
+              payload.language,
+              payload.voice_id,
+            );
         }
         if (event === "character_message") {
           if (
@@ -1743,14 +1710,27 @@ export default function RolePlayApp() {
               payload.suggestions;
           const emotion = payload.emotion || "neutral";
           reactionMetadataRef.current.set(payload.id, {
-            emotion, language: payload.reaction_language || payload.speech_languages?.[0],
+            emotion,
+            language:
+              payload.reaction_language || payload.speech_languages?.[0],
             voiceId: payload.reaction_voice_id,
           });
           // Group reactions play independently; group dialogue never autoplays.
-          if (!payload.interrupted && activeRoomIdRef.current === sentRoomId &&
-              shouldPlayStandaloneReaction(roomChars.length, canSpeak(payload as Message)))
-            void reactionSounds.react(payload.id, payload.character_id, emotion,
-              payload.reaction_language || payload.speech_languages?.[0], payload.reaction_voice_id);
+          if (
+            !payload.interrupted &&
+            activeRoomIdRef.current === sentRoomId &&
+            shouldPlayStandaloneReaction(
+              roomChars.length,
+              canSpeak(payload as Message),
+            )
+          )
+            void reactionSounds.react(
+              payload.id,
+              payload.character_id,
+              emotion,
+              payload.reaction_language || payload.speech_languages?.[0],
+              payload.reaction_voice_id,
+            );
 
           if (roomChars.length === 1)
             void loadExpressionPortrait(payload.character_id, emotion).catch(
@@ -1783,8 +1763,11 @@ export default function RolePlayApp() {
               // A failed early request must not permanently suppress autoplay.
               // Retry once with the complete reply, retaining successful streams.
               const retryCompletedReply = () => {
-                if (streamSequence !== rolePlayStreamSequence.current ||
-                    activeRoomIdRef.current !== sentRoomId) return;
+                if (
+                  streamSequence !== rolePlayStreamSequence.current ||
+                  activeRoomIdRef.current !== sentRoomId
+                )
+                  return;
                 prepareRoleplaySpeech(payload as Message);
               };
               const pending = backgroundSpeech.pending(payload.id);
@@ -2107,8 +2090,10 @@ export default function RolePlayApp() {
       );
     }),
   );
-  const matchingPublicRooms = publicRooms.filter(r => matchesSearch(r.name));
-  const matchingOwnedRooms = visibleRooms.filter(r => r.character_ids.length > 1 && matchesSearch(r.name));
+  const matchingPublicRooms = publicRooms.filter((r) => matchesSearch(r.name));
+  const matchingOwnedRooms = visibleRooms.filter(
+    (r) => r.character_ids.length > 1 && matchesSearch(r.name),
+  );
   const catalogSections = (
     <>
       <nav className="rpCatalogSections" aria-label="Bộ lọc nhân vật">
@@ -2129,13 +2114,16 @@ export default function RolePlayApp() {
         ))}
       </nav>
       {(catalogView === "team" ||
-        (catalogView === "all" && ((page === "discover" && matchingPublicRooms.length > 0) ||
-          (page === "characters" && matchingOwnedRooms.length > 0)))) && (
+        (catalogView === "all" &&
+          ((page === "discover" && matchingPublicRooms.length > 0) ||
+            (page === "characters" && matchingOwnedRooms.length > 0)))) && (
         <section>
           {catalogView === "all" && <h2>Phòng nhóm</h2>}
-        <div className="myCharacterGrid">
-          {(page === "discover" ? matchingPublicRooms : matchingOwnedRooms)
-            .map((r) => (
+          <div className="myCharacterGrid">
+            {(page === "discover"
+              ? matchingPublicRooms
+              : matchingOwnedRooms
+            ).map((r) => (
               <article className="card" key={r.id}>
                 <h3 data-no-translate="true">{r.name}</h3>
                 <p>{r.character_ids.length} nhân vật</p>
@@ -2175,10 +2163,10 @@ export default function RolePlayApp() {
                 )}
               </article>
             ))}
-          <button className="btn" onClick={() => openRoomWizard()}>
-            Tạo phòng chat
-          </button>
-        </div>
+            <button className="btn" onClick={() => openRoomWizard()}>
+              Tạo phòng chat
+            </button>
+          </div>
         </section>
       )}
     </>
@@ -2319,383 +2307,45 @@ export default function RolePlayApp() {
     <div
       className={`shell ${sidebarCollapsed ? "sidebarCollapsed" : ""} ${page === "chat" ? "chatShell" : ""} ${page === "home" ? "homeShell" : ""}`}
     >
-      {page === "home" && (
-        <div className="rpBackgroundMusicFloating">
-          <BackgroundMusicButton {...backgroundMusic} />
-        </div>
-      )}
+      {page === "home" && renderHomeBackdropView({ backgroundMusic })}
 
-      {settingsOpen && account && (
-        <div
-          className="settingsOverlay"
-          onMouseDown={(e) =>
-            e.target === e.currentTarget && setSettingsOpen(false)
-          }
-        >
-          <section className="personalSettings">
-            <aside className="settingsNav">
-              <div className="settingsIdentity">
-                {account.avatar_url ? (
-                  <img src={API + account.avatar_url} alt="Avatar" />
-                ) : (
-                  <span>{account.display_name[0]?.toUpperCase()}</span>
-                )}
+      {settingsOpen &&
+        account &&
+        renderSettingsView({
+          setSettingsOpen,
+          account,
+          settingsTab,
+          setSettingsTab,
+          logout,
+          act,
+          uploadUserAvatar,
+          profileName,
+          setProfileName,
+          profileBio,
+          setProfileBio,
+          saveProfile,
+          currentPassword,
+          setCurrentPassword,
+          newPassword,
+          setNewPassword,
+          changePassword,
+          savePreferences,
+        })}
 
-                <b>{account.display_name}</b>
-
-                <small>@{account.username}</small>
-              </div>
-
-              <button
-                className={settingsTab === "profile" ? "active" : ""}
-                onClick={() => setSettingsTab("profile")}
-              >
-                Hồ sơ công khai
-              </button>
-
-              <button
-                className={settingsTab === "account" ? "active" : ""}
-                onClick={() => setSettingsTab("account")}
-              >
-                Tài khoản
-              </button>
-
-              <button
-                className={settingsTab === "preferences" ? "active" : ""}
-                onClick={() => setSettingsTab("preferences")}
-              >
-                Tùy chọn
-              </button>
-
-              <button className="settingsLogout" onClick={logout}>
-                Đăng xuất
-              </button>
-            </aside>
-
-            <div className="settingsContent">
-              <button
-                className="settingsClose"
-                onClick={() => setSettingsOpen(false)}
-              >
-                ×
-              </button>
-
-              {settingsTab === "profile" && (
-                <>
-                  <h2>Hồ sơ công khai</h2>
-
-                  <label className="profileAvatar">
-                    {account.avatar_url ? (
-                      <img src={API + account.avatar_url} alt="Avatar" />
-                    ) : (
-                      <span>{account.display_name[0]?.toUpperCase()}</span>
-                    )}
-
-                    <b>Thay avatar</b>
-
-                    <input
-                      type="file"
-                      accept="image/png,image/jpeg,image/webp,image/gif"
-                      onChange={(e) =>
-                        e.target.files?.[0] &&
-                        act(() => uploadUserAvatar(e.target.files![0]))
-                      }
-                    />
-                  </label>
-
-                  <label>
-                    Tên đăng nhập
-                    <input value={account.username} disabled />
-                  </label>
-
-                  <label>
-                    Tên hiển thị
-                    <input
-                      maxLength={80}
-                      value={profileName}
-                      onChange={(e) => setProfileName(e.target.value)}
-                    />
-                  </label>
-
-                  <label>
-                    Giới thiệu
-                    <textarea
-                      maxLength={500}
-                      value={profileBio}
-                      onChange={(e) => setProfileBio(e.target.value)}
-                      placeholder="Giới thiệu ngắn về bạn…"
-                    />
-                  </label>
-
-                  <button onClick={() => act(saveProfile)}>Lưu hồ sơ</button>
-                </>
-              )}
-
-              {settingsTab === "account" && (
-                <>
-                  <h2>Tài khoản</h2>
-
-                  <div className="accountSummary">
-                    <span>Gói hiện tại</span>
-
-                    <b>Demo</b>
-                  </div>
-
-                  <label>
-                    Mật khẩu hiện tại
-                    <input
-                      type="password"
-                      value={currentPassword}
-                      onChange={(e) => setCurrentPassword(e.target.value)}
-                    />
-                  </label>
-
-                  <label>
-                    Mật khẩu mới
-                    <input
-                      type="password"
-                      value={newPassword}
-                      onChange={(e) => setNewPassword(e.target.value)}
-                      placeholder="Ít nhất 6 ký tự"
-                    />
-                  </label>
-
-                  <button
-                    disabled={!currentPassword || newPassword.length < 6}
-                    onClick={() => act(changePassword)}
-                  >
-                    Đổi mật khẩu
-                  </button>
-                </>
-              )}
-
-              {settingsTab === "preferences" && (
-                <>
-                  <h2>Tùy chọn</h2>
-
-                  <label>
-                    Giao diện
-                    <select
-                      value={account.theme}
-                      onChange={(e) =>
-                        savePreferences({
-                          theme: e.target.value as Account["theme"],
-                        })
-                      }
-                    >
-                      <option value="light">Sáng</option>
-
-                      <option value="dark">Tối</option>
-                    </select>
-                  </label>
-
-                  <label>
-                    Ngôn ngữ
-                    <select
-                      value={account.language}
-                      onChange={(e) =>
-                        savePreferences({
-                          language: e.target.value as UiLanguage,
-                        })
-                      }
-                    >
-                      {UI_LANGUAGES.map((language) => (
-                        <option value={language.code} key={language.code}>
-                          {language.label}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-
-                  <label className="preferenceToggle">
-                    <span>
-                      <b>Giảm chuyển động</b>
-
-                      <small>Hạn chế animation trong giao diện.</small>
-                    </span>
-
-                    <input
-                      type="checkbox"
-                      checked={account.reduced_motion}
-                      onChange={(e) =>
-                        savePreferences({ reduced_motion: e.target.checked })
-                      }
-                    />
-                  </label>
-                </>
-              )}
-            </div>
-          </section>
-        </div>
-      )}
-
-      {memoryPopupOpen && memoryTarget && (
-        <div
-          className="scrim enter"
-          onMouseDown={(event) =>
-            event.target === event.currentTarget && setMemoryPopupOpen(false)
-          }
-        >
-          <section
-            className="dialog"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Ký ức"
-          >
-            <header>
-              <div>
-                <span className="eyebrow">
-                  Ký ức ·{" "}
-                  {memoryTarget.kind === "room" ? "phòng nhóm" : "nhân vật"}
-                </span>
-
-                <h2>{memoryTarget.label} nhớ gì?</h2>
-              </div>
-
-              <button
-                className="iconbtn"
-                onClick={() => setMemoryPopupOpen(false)}
-                aria-label="Đóng"
-              >
-                <Icon n="cross-small" />
-              </button>
-            </header>
-
-            <div className="body">
-              <p className="rpMuted">
-                {memoryTarget.kind === "room"
-                  ? "Ký ức này chỉ dùng trong phòng nhóm hiện tại."
-                  : `Những điều ${memoryTarget.label} nhớ về bạn được dùng ở mọi phòng chat 1-1 với nhân vật này.`}{" "}
-                Ký ức được ghim luôn được ưu tiên.
-              </p>
-
-              <label className="field">
-                Thêm ký ức mới
-                <textarea
-                  value={memoryDraft}
-                  maxLength={1000}
-                  onChange={(event) => setMemoryDraft(event.target.value)}
-                  placeholder="Ví dụ: Mình thích uống cà phê ít đường vào buổi sáng."
-                />
-              </label>
-
-              <div className="rpRowBetween">
-                <small className="rpMuted">Tối đa 1000 ký tự</small>
-                <button
-                  className="btn primary sm"
-                  disabled={busy || !memoryDraft.trim()}
-                  onClick={() => void act(addRoleplayMemory)}
-                >
-                  <Icon n="plus-small" />
-                  Thêm ký ức
-                </button>
-              </div>
-
-              <div className="rpRowBetween">
-                <b>Đã nhớ</b>
-                <span className="chip">{memories.length} ký ức</span>
-              </div>
-
-              {!memories.length && (
-                <div className="empty">
-                  Chưa có ký ức nào. Thêm điều bạn muốn {memoryTarget.label} ghi
-                  nhớ ở ô phía trên.
-                </div>
-              )}
-
-              {[...memories]
-                .sort((x, y) => Number(y.pinned) - Number(x.pinned))
-                .map((m) => (
-                  <article
-                    className={`rpMemoryRow${m.pinned ? " pinned" : ""}`}
-                    key={m.id}
-                  >
-                    <textarea
-                      value={m.content}
-                      onChange={(e) =>
-                        setMemories((items) =>
-                          items.map((x) =>
-                            x.id === m.id
-                              ? { ...x, content: e.target.value }
-                              : x,
-                          ),
-                        )
-                      }
-                    />
-
-                    <div className="rpRowBetween">
-                      {m.pinned ? (
-                        <span className="chip accent">
-                          <Icon n="thumbtack" />
-                          Đã ghim
-                        </span>
-                      ) : (
-                        <span />
-                      )}
-
-                      <div className="rpRow">
-                        <button
-                          className="btn sm"
-                          onClick={() =>
-                            act(async () => {
-                              await api(`/v1/memories/${m.id}`, "PATCH", {
-                                content: m.content,
-                                pinned: m.pinned,
-                              });
-                              setNotice("Đã lưu ký ức");
-                            })
-                          }
-                        >
-                          Lưu
-                        </button>
-
-                        <button
-                          className="btn sm"
-                          onClick={() =>
-                            act(async () => {
-                              await api(`/v1/memories/${m.id}`, "PATCH", {
-                                pinned: !m.pinned,
-                              });
-                              setMemories((items) =>
-                                items.map((x) =>
-                                  x.id === m.id
-                                    ? { ...x, pinned: !x.pinned }
-                                    : x,
-                                ),
-                              );
-                            })
-                          }
-                        >
-                          {m.pinned ? "Bỏ ghim" : "Ghim"}
-                        </button>
-
-                        <button
-                          className="btn sm danger"
-                          onClick={() =>
-                            act(async () => {
-                              await api(`/v1/memories/${m.id}`, "DELETE");
-                              setMemories((items) =>
-                                items.filter((x) => x.id !== m.id),
-                              );
-                            })
-                          }
-                        >
-                          Xóa
-                        </button>
-                      </div>
-                    </div>
-                  </article>
-                ))}
-            </div>
-
-            <footer>
-              <button className="btn" onClick={() => setMemoryPopupOpen(false)}>
-                Xong
-              </button>
-            </footer>
-          </section>
-        </div>
-      )}
+      {memoryPopupOpen &&
+        memoryTarget &&
+        renderMemoryView({
+          setMemoryPopupOpen,
+          memoryTarget,
+          memoryDraft,
+          setMemoryDraft,
+          busy,
+          act,
+          addRoleplayMemory,
+          memories,
+          setMemories,
+          setNotice,
+        })}
 
       {characterInfo &&
         (() => {
@@ -3149,11 +2799,17 @@ export default function RolePlayApp() {
                           value={roomWizard.topic}
                           maxLength={500}
                           rows={3}
-                          onChange={(event) => setRoomWizard({
-                            ...roomWizard, topic: event.target.value,
-                          })}
+                          onChange={(event) =>
+                            setRoomWizard({
+                              ...roomWizard,
+                              topic: event.target.value,
+                            })
+                          }
                         />
-                        <small>Để trống để lấy cảm hứng từ tên nhóm hoặc trò chuyện tự nhiên.</small>
+                        <small>
+                          Để trống để lấy cảm hứng từ tên nhóm hoặc trò chuyện
+                          tự nhiên.
+                        </small>
                       </label>
 
                       <label className="field">
@@ -3173,8 +2829,8 @@ export default function RolePlayApp() {
                         </span>
                         <small>
                           Phòng công khai chỉ chia sẻ nhóm nhân vật, không chia
-                          sẻ lịch sử tin nhắn. Nhân vật hệ thống có thể dùng ngay;
-                          nhân vật tự tạo cần được công khai trước.
+                          sẻ lịch sử tin nhắn. Nhân vật hệ thống có thể dùng
+                          ngay; nhân vật tự tạo cần được công khai trước.
                         </small>
                       </label>
                       <div className="rpNextBox">
@@ -3422,1568 +3078,171 @@ export default function RolePlayApp() {
           />
         )}
 
-        {page === "home" && (
-          <>
-            <header>
-              <span className="eyebrow">KHÁM PHÁ NHÂN VẬT</span>
-
-              <h1>Hôm nay bạn cần ai đồng hành?</h1>
-
-              <p>
-                Chọn một người phù hợp với tâm trạng, học tập hoặc công việc của
-                bạn.
-              </p>
-            </header>
-
-            <div className="actions">
-              <button
-                className="secondaryButton"
-                onClick={() => openRoomWizard()}
-              >
-                Tạo phòng nhóm
-              </button>
-            </div>
-
-            {!!systemHomeCharacters.length && (
-              <section className="systemCharacterLane">
-                <div className="laneHeading">
-                  <h2>Nhân vật hệ thống</h2>
-
-                  <span> </span>
-                </div>
-
-                <div className="marketRow">
-                  {systemHomeCharacters.map((character) => (
-                    <MarketCard
-                      key={character.id}
-                      introduction={introText(character.description)}
-                      character={character}
-                      onOpen={() => addPreset(character)}
-                    />
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {!!customHomeCharacters.length && (
-              <section className="largeCharacterSection">
-                <div className="laneHeading">
-                  <h2>Nhân vật của bạn</h2>
-
-                  <span> </span>
-                </div>
-
-                <div className="grid showcaseGrid">
-                  {customHomeCharacters.map((character) => (
-                    <button
-                      className="card characterIntro showcaseCard"
-                      key={character.id}
-                      onClick={() => startCharacterChat(character)}
-                    >
-                      <CharacterAvatar
-                        character={character}
-                        className="showcaseImage"
-                      />
-
-                      <div className="showcaseCopy">
-                        <span className="roleBadge companion">
-                          {character.character_type || "Custom"}
-                        </span>
-
-                        <strong data-no-translate="true" translate="no">
-                          {character.name}
-                        </strong>
-
-                        <h3 data-no-translate="true" translate="no">
-                          {character.display_name || character.name}
-                        </h3>
-
-                        <p data-no-translate="true" translate="no">
-                          {introText(character.description)}
-                        </p>
-
-                        <span className="showcaseMeta">
-                          ◉ {character.usage_count || 0} người dùng{" "}
-                          <b>Trò chuyện →</b>
-                        </span>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {homeSections.map((section) => {
-              const members = charactersForSection(section);
-              if (!members.length) return null;
-              return (
-                <section className="largeCharacterSection" key={section.id}>
-                  <div className="laneHeading">
-                    <h2>{section.name}</h2>
-
-                    <span></span>
-                  </div>
-
-                  <div className="grid showcaseGrid">
-                    {members.map((character) => (
-                      <CommunityShowcase
-                        introduction={introText(character.description)}
-                        key={`${section.id}:${character.id}`}
-                        character={character}
-                        onOpen={() =>
-                          character.creation_type === "preset"
-                            ? addPreset(character)
-                            : startPublicCharacter(character)
-                        }
-                      />
-                    ))}
-                  </div>
-                </section>
-              );
-            })}
-
-            <h2>Tiếp tục trò chuyện</h2>
-
-            <div className="grid">
-              {visibleRooms
-                .filter((r) => matchesSearch(r.name))
-                .map((r) => (
-                  <button
-                    className="card"
-                    key={r.id}
-                    onClick={() => {
-                      void openRoom(r).catch(() => {});
-                    }}
-                  >
-                    {r.name}
-                  </button>
-                ))}
-            </div>
-          </>
-        )}
-
-        {page === "discover" && (
-          <>
-            <header className="collectionHeader">
-              <div>
-                <span className="eyebrow">CỘNG ĐỒNG</span>
-
-                <h1>Khám phá nhân vật public</h1>
-              </div>
-            </header>
-
-            {collectionTabs("discover")}
-
-            <div className="rpFilters">
-              {searchField}
-
-              <label className="rpFilter">
-                Loại
-                <select
-                  value={publicFilter}
-                  onChange={(event) => setPublicFilter(event.target.value)}
-                >
-                  {publicCategories.map(([value, label]) => (
-                    <option key={value} value={value}>
-                      {label}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <label className="rpFilter">
-                Đánh giá
-                <select
-                  value={String(publicRatingFilter)}
-                  onChange={(event) =>
-                    setPublicRatingFilter(Number(event.target.value))
-                  }
-                >
-                  <option value="0">Tất cả</option>
-
-                  <option value="4.5">Từ 4,5★</option>
-
-                  <option value="4">Từ 4★</option>
-
-                  <option value="3">Từ 3★</option>
-                </select>
-              </label>
-
-              {catalogView !== "team" && (
-                <span className="chip rpCount">
-                  {filteredPublicCharacters.length + (catalogView === "all" ? matchingPublicRooms.length : 0)} kết quả
-                </span>
-              )}
-            </div>
-
-            {catalogSections}
-            <div className="publicGrid">
-              {filteredPublicCharacters.map((c) => (
-                <article className="publicCard" key={c.id}>
-                  {c.avatar_url ? (
-                    <img src={assetUrl(c.avatar_url)} alt={c.name} />
-                  ) : (
-                    <div className="avatar publicAvatar">{c.name[0]}</div>
-                  )}
-
-                  <div className="publicBody">
-                    <span className="roleBadge companion">
-                      {c.character_type || "companion"}
-                    </span>
-
-                    <h3 data-no-translate="true" translate="no">
-                      {c.name}
-                    </h3>
-
-                    <div className="creatorLine">
-                      <small>
-                        bởi {c.creator?.name || "Người dùng"} ·{" "}
-                        {c.creator?.followers || 0} người theo dõi
-                      </small>
-
-                      <button
-                        onClick={() =>
-                          act(async () => {
-                            await api(
-                              `/v1/public/creators/${c.creator?.id}/follow`,
-                              "PUT",
-                              { following: true },
-                            );
-                            setNotice("Đã theo dõi người tạo");
-                          })
-                        }
-                      >
-                        Theo dõi
-                      </button>
-                    </div>
-
-                    <div className="socialStats">
-                      <span>
-                        ★ {c.rating || "Mới"} ({c.rating_count || 0})
-                      </span>
-
-                      <span>◉ {c.usage_count || 0} người đã dùng</span>
-                    </div>
-
-                    <div className="reactionBar">
-                      {["❤️", "😂", "🔥", "👍", "😮"].map((emoji) => (
-                        <button
-                          key={emoji}
-                          onClick={() =>
-                            act(async () => {
-                              await api(
-                                `/v1/characters/${c.id}/reaction`,
-                                "PUT",
-                                { reaction: emoji },
-                              );
-                              await refresh();
-                            })
-                          }
-                        >
-                          {emoji} {c.reactions?.[emoji] || ""}
-                        </button>
-                      ))}
-                    </div>
-
-                    <p data-no-translate="true" translate="no">
-                      {introText(c.description)}
-                    </p>
-
-                    <div className="tagRow">
-                      {c.tags?.map((tag) => (
-                        <span key={tag}>#{tag}</span>
-                      ))}
-                    </div>
-
-                    <div className="ratingRow">
-                      <small>Đánh giá:</small>
-
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <button
-                          key={star}
-                          onClick={() =>
-                            act(async () => {
-                              await api(
-                                `/v1/public/characters/${c.id}/rating`,
-                                "PUT",
-                                { rating: star },
-                              );
-                              setNotice(`Đã đánh giá ${star} sao`);
-                              await refresh();
-                            })
-                          }
-                        >
-                          {star}★
-                        </button>
-                      ))}
-                    </div>
-
-                    <button
-                      onClick={() =>
-                        act(async () => {
-                          const cloned = await api<Character>(
-                            `/v1/public/characters/${c.id}/clone`,
-                            "POST",
-                            {},
-                          );
-                          setChars((items) => [...items, cloned]);
-                          setPage("characters");
-                        })
-                      }
-                    >
-                      Thêm vào nhân vật của tôi
-                    </button>
-
-                    {favoriteButton(c)}
-                  </div>
-                </article>
-              ))}
-            </div>
-
-            {catalogView !== "team" && !filteredPublicCharacters.length &&
-              !(catalogView === "all" && matchingPublicRooms.length) && (
-              <div className="emptyState">Chưa có nhân vật public phù hợp.</div>
-            )}
-          </>
-        )}
-
-        {page === "characters" && (
-          <>
-            {collectionTabs("characters")}
-
-            <div className="rpFilters">
-              {searchField}
-
-              <label className="rpFilter">
-                Hiển thị
-                <select
-                  value={myCharacterFilter}
-                  onChange={(event) => setMyCharacterFilter(event.target.value)}
-                >
-                  <option value="all">Tất cả</option>
-
-                  <option value="private">Riêng tư</option>
-
-                  <option value="public">Công khai</option>
-                </select>
-              </label>
-
-              <label className="rpFilter">
-                Loại
-                <select
-                  value={myCharacterTypeFilter}
-                  onChange={(event) =>
-                    setMyCharacterTypeFilter(event.target.value)
-                  }
-                >
-                  <option value="all">Tất cả</option>
-
-                  {ownedTypes.map((type) => (
-                    <option value={type} key={type}>
-                      {roleLabels[type as keyof typeof roleLabels] || type}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              {catalogView !== "team" && (
-                <span className="chip rpCount">
-                  {filteredOwned.length} nhân vật
-                </span>
-              )}
-            </div>
-
-            {catalogSections}
-            <div className="grid myCharacterGrid">
-              {filteredOwned.map((c) => (
-                <article className="card myCharacterCard" key={c.id}>
-                  <CharacterAvatar character={c} className="myCharacterCover" />
-
-                  <div className="cardTitleRow">
-                    <strong data-no-translate="true" translate="no">
-                      {c.name}
-                    </strong>
-
-                    {c.simulation_label && (
-                      <span className="chip warn">AI simulation</span>
-                    )}
-                  </div>
-
-                  <small>
-                    <span className="chip accent">
-                      {c.is_public ? "Công khai" : "Riêng tư"}
-                    </span>{" "}
-                    {roleLabels[
-                      catalogCharacterType(c) as keyof typeof roleLabels
-                    ] || catalogCharacterType(c)}{" "}
-                    · {c.usage_count || 0} người dùng
-                  </small>
-
-                  <div className="reactionBar">
-                    {reactionEmojis.map((emoji) => (
-                      <button
-                        key={emoji}
-                        onClick={() => act(() => reactCharacter(c.id, emoji))}
-                      >
-                        {emoji} {c.reactions?.[emoji] || ""}
-                      </button>
-                    ))}
-                  </div>
-
-                  <p data-no-translate="true" translate="no">
-                    {introText(c.description)}
-                  </p>
-
-                  <div className="rpCardActions">
-                    {favoriteButton(c)}
-
-                    <button
-                      className="btn primary sm"
-                      disabled={busy}
-                      onClick={() => void startCharacterChat(c)}
-                    >
-                      <Icon n="comment-alt" />
-                      Trò chuyện
-                    </button>
-
-                    <button
-                      className="btn sm"
-                      onClick={() =>
-                        void openRoleplayMemories({
-                          kind: "character",
-                          id: c.id,
-                          label: c.name,
-                        })
-                      }
-                    >
-                      <Icon n="brain" />
-                      Ký ức
-                    </button>
-
-                    <button
-                      className="btn sm"
-                      onClick={() =>
-                        setCharacterInfo({ ids: [c.id], id: c.id })
-                      }
-                    >
-                      <Icon n="info" />
-                      Thông tin
-                    </button>
-
-                    <button
-                      className="btn sm danger"
-                      disabled={busy}
-                      title={
-                        c.is_public
-                          ? "Xóa nhân vật công khai"
-                          : "Xóa nhân vật riêng tư"
-                      }
-                      onClick={() => {
-                        if (
-                          !window.confirm(
-                            c.is_public
-                              ? `Xóa nhân vật công khai “${c.name}”? Nhân vật sẽ biến mất khỏi cộng đồng và dữ liệu trò chuyện của bạn cũng bị xóa.`
-                              : `Xóa nhân vật riêng tư “${c.name}” và dữ liệu trò chuyện liên quan?`,
-                          )
-                        )
-                          return;
-                        act(async () => {
-                          await api(`/v1/characters/${c.id}`, "DELETE");
-                          setChars((current) =>
-                            current.filter((item) => item.id !== c.id),
-                          );
-                          setRooms((current) =>
-                            current
-                              .filter(
-                                (item) =>
-                                  !(
-                                    item.character_ids.length === 1 &&
-                                    item.character_ids[0] === c.id
-                                  ),
-                              )
-                              .map((item) => ({
-                                ...item,
-                                character_ids: item.character_ids.filter(
-                                  (id) => id !== c.id,
-                                ),
-                              })),
-                          );
-                        });
-                      }}
-                    >
-                      <Icon n="trash" />
-                      Xóa
-                    </button>
-                  </div>
-                </article>
-              ))}
-            </div>
-
-            {catalogView !== "team" && !filteredOwned.length &&
-              !(catalogView === "all" && matchingOwnedRooms.length) && (
-              <div className="empty">
-                {visibleCharacters.length
-                  ? "Không có nhân vật nào khớp bộ lọc."
-                  : "Bạn chưa có nhân vật nào. Thêm từ tab Nhân vật hệ thống hoặc mở Sáng tạo nhân vật."}
-              </div>
-            )}
-          </>
-        )}
-
-        {page === "system" && (
-          <>
-            <header className="collectionHeader">
-              <div>
-                <span className="eyebrow">NHÂN VẬT HỆ THỐNG</span>
-
-                <h1>Nhân vật do Avibi xây dựng</h1>
-              </div>
-            </header>
-
-            {collectionTabs("system")}
-
-            <div className="rpFilters">
-              {searchField}
-
-              <label className="rpFilter">
-                Loại
-                <select
-                  value={systemTypeFilter}
-                  onChange={(event) => setSystemTypeFilter(event.target.value)}
-                >
-                  <option value="all">Tất cả</option>
-
-                  <option value="companion">Đồng hành</option>
-
-                  <option value="study">Học tập</option>
-
-                  <option value="work">Công việc</option>
-
-                  <option value="entertainment">Giải trí</option>
-                </select>
-              </label>
-
-              {catalogView !== "team" && (
-                <span className="chip rpCount">
-                  {filteredSystem.length} nhân vật
-                </span>
-              )}
-            </div>
-
-            {catalogSections}
-            <div className="grid myCharacterGrid">
-              {filteredSystem.map((p) => (
-                <article className="card myCharacterCard" key={p.id}>
-                  <CharacterAvatar character={p} className="myCharacterCover" />
-
-                  <strong data-no-translate="true" translate="no">
-                    {p.name}
-                  </strong>
-
-                  <small>
-                    <span className="chip">
-                      {p.category === "entertainment"
-                        ? "Giải trí"
-                        : roleLabels[p.support?.primary_role || "companion"]}
-                    </span>{" "}
-                    · {p.usage_count || 0} người dùng
-                  </small>
-
-                  <p data-no-translate="true" translate="no">
-                    {introText(p.support?.introduction || p.description)}
-                  </p>
-
-                  {!!p.support?.strengths.length && (
-                    <div className="strengths">
-                      {p.support.strengths.map((item) => (
-                        <span key={item}>{roleLabels[item]}</span>
-                      ))}
-                    </div>
-                  )}
-
-                  <div className="rpCardActions">
-                    {favoriteButton(p)}
-
-                    <button
-                      className="btn primary sm"
-                      disabled={busy}
-                      onClick={() => void addPreset(p)}
-                    >
-                      <Icon n="comment-alt" />
-                      Trò chuyện
-                    </button>
-
-                    <button
-                      className="btn sm"
-                      disabled={busy || hasPreset(p)}
-                      onClick={() => void addPresetOnly(p)}
-                    >
-                      {hasPreset(p) ? (
-                        <>
-                          <Icon n="check" />
-                          Đã thêm
-                        </>
-                      ) : (
-                        <>
-                          <Icon n="plus-small" />
-                          Thêm vào nhân vật của tôi
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </article>
-              ))}
-            </div>
-
-            {catalogView !== "team" && !filteredSystem.length && (
-              <div className="empty">Không có nhân vật hệ thống phù hợp.</div>
-            )}
-          </>
-        )}
-
-        {page === "create" && (
-          <>
-            <header className="collectionHeader">
-              <div>
-                <span className="eyebrow">CHAT BOT AI</span>
-
-                <h1>Sáng tạo nhân vật</h1>
-              </div>
-            </header>
-
-            <div className="tabs rpCreateTabs" role="tablist">
-              {[
-                ["custom", "Tự sáng tạo"],
-                ["story", "Tạo từ truyện"],
-                ["room", "Tạo phòng chat"],
-              ].map(([k, v]) => (
-                <button
-                  role="tab"
-                  aria-selected={mode === k}
-                  onClick={() => {
-                    setMode(k);
-                    if (k === "room") openRoomWizard();
-                  }}
-                  key={k}
-                >
-                  {v}
-                </button>
-              ))}
-            </div>
-
-            {mode === "room" && (
-              <section className="formCard">
-                <p>Chọn nhân vật từ bộ sưu tập để tạo phòng chat.</p>
-                <button
-                  className="btn primary"
-                  onClick={() => openRoomWizard()}
-                >
-                  Tạo phòng chat
-                </button>
-              </section>
-            )}
-            {mode === "custom" && (
-              <div className="createGrid">
-                <section className="formCard">
-                  <div className="avatarPick">
-                    <div className="avatarPickPreview">
-                      {avatarFile ? (
-                        <img
-                          src={URL.createObjectURL(avatarFile)}
-                          alt="Avatar preview"
-                        />
-                      ) : (
-                        <Icon n="user" size={24} />
-                      )}
-                    </div>
-
-                    <div className="stack" style={{ gap: 4 }}>
-                      <label className="btn sm">
-                        <Icon n="upload" />
-                        {avatarFile ? "Đổi ảnh" : "Tải avatar"}
-
-                        <input
-                          className="sr"
-                          type="file"
-                          accept="image/png,image/jpeg,image/webp,image/gif"
-                          onChange={(e) =>
-                            setAvatarFile(e.target.files?.[0] || null)
-                          }
-                        />
-                      </label>
-
-                      <small className="faint">
-                        Tùy chọn. Có ảnh sẽ tạo bộ 6 ảnh biểu cảm.
-                      </small>
-                    </div>
-                  </div>
-
-                  <label className="field">
-                    <span>Tên nhân vật</span>
-
-                    <input
-                      className="input"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder="Ví dụ: Linh"
-                    />
-                  </label>
-
-                  <label className="field">
-                    <span>Mô tả tính cách</span>
-
-                    <textarea
-                      className="input"
-                      rows={5}
-                      value={description}
-                      onChange={(e) => setDescription(e.target.value)}
-                      placeholder="Linh hơi lạnh lúc đầu, hài hước khi thân, thích âm nhạc..."
-                    />
-
-                    <small
-                      className="tnum"
-                      style={
-                        description.length > 6000
-                          ? { color: "var(--warn)" }
-                          : undefined
-                      }
-                    >
-                      {description.length.toLocaleString("vi-VN")} ký tự
-                      {description.length > 6000
-                        ? " · Trên 6000 ký tự: AI sẽ tóm tắt có cấu trúc trước khi tạo"
-                        : ""}
-                    </small>
-                  </label>
-
-                  <label className="check">
-                    <input
-                      type="checkbox"
-                      checked={existingMediaCharacter}
-                      onChange={(e) =>
-                        setExistingMediaCharacter(e.target.checked)
-                      }
-                    />
-                    Đây là nhân vật trong phim hoặc hoạt hình?
-                  </label>
-
-                  {existingMediaCharacter && (
-                    <div className="form-grid">
-                      <label className="field">
-                        <span>Tên nhân vật</span>
-
-                        <input
-                          className="input"
-                          value={mediaCharacterName}
-                          onChange={(e) =>
-                            setMediaCharacterName(e.target.value)
-                          }
-                          placeholder="Ví dụ: Tony Stark, Gojo Satoru..."
-                        />
-                      </label>
-
-                      <label className="field">
-                        <span>Tên phim / hoạt hình</span>
-
-                        <input
-                          className="input"
-                          value={mediaTitle}
-                          onChange={(e) => setMediaTitle(e.target.value)}
-                          placeholder="Ví dụ: Iron Man, Jujutsu Kaisen..."
-                        />
-                      </label>
-
-                      <small className="faint full">
-                        AI sẽ tham khảo nguồn công khai về nhân vật này; mô tả
-                        của bạn vẫn được ưu tiên.
-                      </small>
-                    </div>
-                  )}
-
-                  <div className="form-grid">
-                    <label className="field">
-                      <span>Vai trò</span>
-
-                      <input
-                        className="input"
-                        value={customRole}
-                        onChange={(e) => setCustomRole(e.target.value)}
-                        placeholder="Ví dụ: Người bạn"
-                      />
-                    </label>
-
-                    <label className="field">
-                      <span>Loại nhân vật</span>
-
-                      <select
-                        className="input"
-                        value={characterType}
-                        onChange={(e) => setCharacterType(e.target.value)}
-                      >
-                        <option value="companion">Đồng hành</option>
-
-                        <option value="study">Học tập</option>
-
-                        <option value="work">Công việc</option>
-
-                        <option value="entertainment">Giải trí</option>
-
-                        <option value="romance">Tình cảm</option>
-
-                        <option value="roleplay">Role play</option>
-                      </select>
-                    </label>
-                  </div>
-
-                  <div className="field">
-                    <span>
-                      Tags{" "}
-                      <small className="faint">({selectedTags.length}/8)</small>
-                    </span>
-
-                    <div className="tagBox">
-                      {selectedTags.map((tag) => (
-                        <span className="chip acc" key={tag}>
-                          #{tag}
-                          <button
-                            type="button"
-                            onClick={() => toggleTag(tag)}
-                            aria-label={`Bỏ tag ${tag}`}
-                          >
-                            ×
-                          </button>
-                        </span>
-                      ))}
-
-                      <input
-                        value={tagSearch}
-                        disabled={selectedTags.length >= 8}
-                        onChange={(e) => setTagSearch(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter" && tagSearch.trim()) {
-                            e.preventDefault();
-                            toggleTag(tagSearch.trim());
-                            setTagSearch("");
-                          }
-                        }}
-                        placeholder={
-                          selectedTags.length >= 8
-                            ? "Đã đủ 8 tag"
-                            : "Gõ rồi nhấn Enter"
-                        }
-                      />
-                    </div>
-
-                    <div className="pills">
-                      {suggestedTags
-                        .filter(
-                          (tag) =>
-                            !selectedTags.includes(tag) &&
-                            tag.toLowerCase().includes(tagSearch.toLowerCase()),
-                        )
-                        .map((tag) => (
-                          <button
-                            type="button"
-                            key={tag}
-                            disabled={selectedTags.length >= 8}
-                            onClick={() => toggleTag(tag)}
-                          >
-                            + {tag}
-                          </button>
-                        ))}
-                    </div>
-                  </div>
-                </section>
-
-                <section className="formCard">
-                  <label className="row switchRow">
-                    <span>
-                      <b>Công khai nhân vật</b>
-                      <br />
-                      <small className="muted">
-                        Người khác có thể tìm thấy và thêm nhân vật này
-                      </small>
-                    </span>
-
-                    <input
-                      type="checkbox"
-                      className="switch"
-                      checked={makePublic}
-                      onChange={(e) => setMakePublic(e.target.checked)}
-                    />
-                  </label>
-
-                  <label className="field">
-                    <span>Bối cảnh trò chuyện</span>
-
-                    <textarea
-                      className="input"
-                      value={customScenario}
-                      onChange={(e) => setCustomScenario(e.target.value)}
-                      placeholder="Ví dụ: Quán cà phê nhỏ đầu hẻm, chiều mưa."
-                    />
-                  </label>
-
-                  <label className="field">
-                    <span>Lời chào đầu tiên</span>
-
-                    <textarea
-                      className="input"
-                      value={customGreeting}
-                      onChange={(e) => setCustomGreeting(e.target.value)}
-                      placeholder="Câu đầu tiên nhân vật nói"
-                    />
-                  </label>
-
-                  <label className="field">
-                    <span>Ví dụ cách nói</span>
-
-                    <textarea
-                      className="input"
-                      rows={4}
-                      value={customExamples}
-                      onChange={(e) => setCustomExamples(e.target.value)}
-                      placeholder="Mỗi dòng một câu, tối đa 8"
-                    />
-                  </label>
-
-                  <button
-                    className="btn pri createSubmit"
-                    disabled={busy || description.length < 3}
-                    onClick={() =>
-                      act(async () => {
-                        const character = await api<Character>(
-                          "/v1/characters/generate",
-                          "POST",
-                          {
-                            name,
-                            description,
-                            role: customRole,
-                            scenario: customScenario,
-                            initial_greeting: customGreeting,
-                            dialogue_examples: customExamples
-                              .split("\n")
-                              .map((item) => item.trim())
-                              .filter(Boolean)
-                              .slice(0, 8),
-                            existing_media_character: existingMediaCharacter,
-                            media_character_name: mediaCharacterName,
-                            media_title: mediaTitle,
-                          },
-                        );
-                        await finishCreatedCharacter(character);
-                      }, true)
-                    }
-                  >
-                    <Icon n="sparkles" />
-                    Tạo bằng AI
-                  </button>
-                </section>
-              </div>
-            )}
-
-            {mode === "story" && (
-              <section className="formCard storyCard">
-                <div className="row storySteps" aria-label="Các bước">
-                  {["Tải truyện", "Tìm nhân vật", "Chọn & tạo"].map(
-                    (label, index) => (
-                      <span key={label} className="row" style={{ gap: 6 }}>
-                        {index > 0 && <Icon n="angle-small-right" />}
-
-                        <span
-                          className={`chip${(storyDocument ? 2 : busy ? 1 : 0) >= index ? " acc" : ""}`}
-                        >
-                          {index + 1}. {label}
-                        </span>
-                      </span>
-                    ),
-                  )}
-                </div>
-
-                {!storyDocument ? (
-                  <>
-                    <div className="field">
-                      <span>File truyện</span>
-
-                      <label className="btn storyFileBtn">
-                        <Icon n="upload" />
-                        {storyFile
-                          ? storyFile.name
-                          : "Chọn file .txt .md .pdf .docx .pptx"}
-
-                        <input
-                          className="sr"
-                          type="file"
-                          accept=".txt,.md,.pdf,.docx,.pptx"
-                          onChange={(event) =>
-                            setStoryFile(event.target.files?.[0] || null)
-                          }
-                        />
-                      </label>
-                    </div>
-
-                    <div className="row faint storyOr">
-                      <span />
-                      hoặc
-                      <span />
-                    </div>
-
-                    <label className="field">
-                      <span>Dán link</span>
-
-                      <input
-                        className="input"
-                        type="url"
-                        value={storyUrl}
-                        onChange={(event) => setStoryUrl(event.target.value)}
-                        placeholder="https://…"
-                      />
-                    </label>
-
-                    <button
-                      className="btn pri createSubmit"
-                      disabled={busy || (!storyFile && !storyUrl.trim())}
-                      onClick={() =>
-                        act(
-                          prepareStorySource,
-                          true,
-                          "Đã đọc truyện. Chọn nhân vật muốn tạo.",
-                        )
-                      }
-                    >
-                      <Icon n="search" />
-                      Tải lên và tìm nhân vật
-                    </button>
-
-                    <p className="faint" style={{ fontSize: 12, margin: 0 }}>
-                      Hệ thống đọc nội dung, tìm nhân vật trong truyện, rồi tạo
-                      tính cách và cách nói dựa trên các đoạn có nhân vật đó.
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <p style={{ margin: 0 }}>
-                      <b>Tìm được {storyCandidates.length} nhân vật</b> trong{" "}
-                      <span className="mono">{storyDocument.filename}</span>
-                    </p>
-
-                    {storyCandidates.length ? (
-                      <div className="storyFound">
-                        {storyCandidates.map((candidate) => (
-                          <label
-                            key={candidate.name}
-                            className={
-                              storyCharacterName === candidate.name
-                                ? "selected"
-                                : ""
-                            }
-                          >
-                            <input
-                              type="radio"
-                              name="story-candidate"
-                              checked={storyCharacterName === candidate.name}
-                              onChange={() =>
-                                setStoryCharacterName(candidate.name)
-                              }
-                            />
-
-                            <span>
-                              <b data-no-translate="true" translate="no">
-                                {candidate.name}
-                              </b>
-                              <br />
-
-                              <span
-                                className="muted"
-                                style={{ fontSize: 13 }}
-                                data-no-translate="true"
-                                translate="no"
-                              >
-                                {candidate.description}
-                              </span>
-
-                              {!!candidate.source_evidence.length && (
-                                <q>
-                                  {candidate.source_evidence
-                                    .slice(0, 2)
-                                    .join(" · ")}
-                                </q>
-                              )}
-                            </span>
-                          </label>
-                        ))}
-                      </div>
-                    ) : (
-                      <p className="muted" style={{ margin: 0 }}>
-                        Chưa tự tìm thấy nhân vật. Hãy nhập tên nhân vật xuất
-                        hiện trong truyện.
-                      </p>
-                    )}
-
-                    <label className="field">
-                      <span>Hoặc tự nhập tên nhân vật</span>
-
-                      <input
-                        className="input"
-                        value={storyCharacterName}
-                        onChange={(event) =>
-                          setStoryCharacterName(event.target.value)
-                        }
-                        placeholder="Tên nhân vật"
-                      />
-                    </label>
-
-                    <div className="row">
-                      <button
-                        className="btn"
-                        disabled={busy}
-                        onClick={() => {
-                          setStoryDocument(null);
-                          setStoryCandidates([]);
-                          setStoryCharacterName("");
-                        }}
-                      >
-                        Chọn truyện khác
-                      </button>
-
-                      <button
-                        className="btn pri"
-                        disabled={busy || !storyCharacterName.trim()}
-                        onClick={() =>
-                          act(
-                            createStoryCharacter,
-                            true,
-                            "Đã tạo nhân vật từ truyện.",
-                          )
-                        }
-                      >
-                        <Icon n="sparkles" />
-                        Tạo nhân vật từ truyện
-                      </button>
-                    </div>
-                  </>
-                )}
-              </section>
-            )}
-          </>
-        )}
-
-        {page === "chat" && room && (
-          <div
-            className={`chatWorkspace ${chatToolsCollapsed ? "toolsCollapsed" : ""}`}
-          >
-            <div className="chat">
-              <header
-                key={`emotion-header-${typingIds.length ? "thinking" : activeExpression}`}
-                className={`chatEmotionHeader emotion-${typingIds.length ? "thinking" : activeExpression} ${roomChars.length === 1 ? "singleCharacter" : "groupChatHeader"}`}
-              >
-                {roomChars.length === 1 && (
-                  <EmotionPortrait
-                    characterId={roomChars[0].id}
-                    emotion={typingIds.length ? "thinking" : activeExpression}
-                    name={roomChars[0].name}
-                  />
-                )}
-
-                <h1 data-no-translate="true" translate="no">
-                  {room.name}
-                </h1>
-
-                <p data-no-translate="true" translate="no">
-                  {roomChars.map((c) => c.name).join(" · ")}
-                </p>
-              </header>
-
-              <div className="roleplayAmbient">
-                <div className="messages" ref={messagesBox}>
-                  {messages.map((m, messageIndex) => {
-                    const author =
-                      roomChars.find((c) => c.id === m.character_id) ||
-                      chars.find((c) => c.id === m.character_id) ||
-                      presets.find((c) => c.id === m.character_id) ||
-                      publicCharacters.find((c) => c.id === m.character_id);
-                    const isLatestCharacter =
-                      messageIndex ===
-                      messages
-                        .map((item) => item.sender_type)
-                        .lastIndexOf("character");
-                    return (
-                      <div
-                        key={m.id}
-                        className={
-                          "messageBlock " +
-                          (m.sender_type === "user"
-                            ? "mineBlock"
-                            : m.sender_type === "character"
-                              ? "characterBlock"
-                              : "")
-                        }
-                      >
-                        {m.sender_type === "character" && author && (
-                          <CharacterAvatar
-                            character={author}
-                            className="chatMessageAvatar"
-                          />
-                        )}
-
-                        {m.sender_type === "document" && m.attachment ? (
-                          <div
-                            className={`documentMessage ${m.attachment.status}`}
-                          >
-                            <div className="documentIcon">
-                              <Icon n="document" />
-                            </div>
-
-                            <div>
-                              <strong>{m.attachment.filename}</strong>
-
-                              <span>
-                                {m.attachment.status === "ready"
-                                  ? "Đã gửi"
-                                  : m.attachment.status === "failed"
-                                    ? "Lỗi!"
-                                    : "Đang gửi…"}
-                              </span>
-                            </div>
-                          </div>
-                        ) : (
-                          <div
-                            className={
-                              "bubble " +
-                              (m.sender_type === "user" ? "mine" : "")
-                            }
-                          >
-                            {m.sender_type === "character" &&
-                              canSpeak(m) &&
-                              !m.id.startsWith("local-") && (
-                                <button
-                                  type="button"
-                                  className={`roleplaySpeakButton ${speakingId === m.id ? "playing" : ""}`}
-                                  onClick={() => void playRoleplayMessage(m.id)}
-                                  aria-label={`${speakingId === m.id || speechLoadingId === m.id ? "Dừng" : "Nghe"} giọng ${author?.name || room.name}`}
-                                  aria-pressed={speakingId === m.id}
-                                  title={
-                                    speakingId === m.id
-                                      ? "Dừng phát"
-                                      : "Phát bằng TTS"
-                                  }
-                                >
-                                  {speechLoadingId === m.id
-                                    ? "◌ Đang tạo"
-                                    : speakingId === m.id
-                                      ? "■ Dừng"
-                                      : "▶ Nghe"}
-                                </button>
-                              )}
-
-                            <small>
-                              {m.sender_type === "user" ? (
-                                "Bạn"
-                              ) : (
-                                <span data-no-translate="true" translate="no">
-                                  {author?.name}
-                                </span>
-                              )}
-                            </small>
-
-                            <div data-no-translate="true" translate="no">
-                              {renderRoleplayText(
-                                m.text,
-                                m.sender_type === "character",
-                              )}
-                            </div>
-
-                            {m.interrupted && (
-                              <p className="chatInterrupted">
-                                Câu trả lời bị gián đoạn. Hãy thử gửi lại.
-                              </p>
-                            )}
-
-                            {m.sender_type === "character" &&
-                              !m.id.startsWith("local-") && (
-                                <button
-                                  className="regenerate"
-                                  disabled={busy}
-                                  onClick={() => regenerateMessage(m)}
-                                >
-                                  <Icon n="rotate-right" /> Trả lời khác
-                                </button>
-                              )}
-
-                            {!!m.sources?.length && (
-                              <details>
-                                <summary>Nguồn ({m.sources.length})</summary>
-
-                                {m.sources.map((s, i) => (
-                                  <p key={i}>{s.document_id}</p>
-                                ))}
-                              </details>
-                            )}
-                          </div>
-                        )}
-
-                        {isLatestCharacter && !!m.suggestions?.length && (roomChars.length < 2 || !busy) && (
-                          <div className={roomChars.length > 1 ? "suggestions groupSuggestionRow" : "suggestions"}>
-                            {m.suggestions.slice(0,3).map((suggestion, index) => (
-                              <button
-                                key={index}
-                                disabled={busy}
-                                onClick={() => send(suggestion)}
-                                data-no-translate="true"
-                                translate="no"
-                              >
-                                {suggestion} ›
-                              </button>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-
-                  {typingIds.map((id) => (
-                    <div
-                      className="typingBubble"
-                      key={"typing-" + id}
-                      role="status"
-                      aria-label={`${chars.find((c) => c.id === id)?.name || "Nhân vật"} đang nhập`}
-                    >
-                      {chars.find((c) => c.id === id) && (
-                        <CharacterAvatar
-                          character={chars.find((c) => c.id === id)!}
-                          className="chatTypingAvatar"
-                        />
-                      )}
-
-                      <div className="typingDots">
-                        <i />
-
-                        <i />
-
-                        <i />
-                      </div>
-                    </div>
-                  ))}
-
-                  <div ref={messagesEnd} />
-                </div>
-              </div>
-
-              <div className="composer">
-                <div className="composerBox">
-                  <div className="mentions">
-                    {text.includes("@") &&
-                      roomChars.map((c) => (
-                        <button
-                          key={c.id}
-                          onClick={() =>
-                            setText(text.replace(/@[^\s]*$/, `@${c.name} `))
-                          }
-                        >
-                          @{c.name}
-                        </button>
-                      ))}
-                  </div>
-                  <AutoGrowTextarea
-                    value={text}
-                    onChange={(e) => setText(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" && !e.shiftKey) {
-                        e.preventDefault();
-                        send();
-                      }
-                    }}
-                    placeholder="Nhắn gì đó... Gõ @ để gọi nhân vật"
-                  />
-                  <div className="composerBar">
-                    <EmojiPicker
-                      onSelect={(emoji) =>
-                        setText((current) => current + emoji)
-                      }
-                      disabled={busy}
-                    />
-                    <span className="composerHint">
-                      Enter để gửi · Shift+Enter xuống dòng
-                    </span>
-                    <button
-                      className="composerSend"
-                      disabled={busy || !text.trim()}
-                      onClick={() => send()}
-                      aria-label="Gửi"
-                      title="Gửi (Enter)"
-                    >
-                      <Icon n="arrow-small-up" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <aside className="characterTools">
-              <button
-                className="iconbtn collapseTools"
-                onClick={() => setChatToolsCollapsed((value) => !value)}
-              >
-                <Icon
-                  n={
-                    chatToolsCollapsed
-                      ? "angle-small-left"
-                      : "angle-small-right"
-                  }
-                />
-              </button>
-
-              {!chatToolsCollapsed && (
-                <>
-                  {roomChars.length === 1 && (
-                    <div className="toolProfile">
-                      <div className="toolProfileArtwork">
-                        <CharacterAvatar
-                          character={roomChars[0]}
-                          className="toolAvatar"
-                        />
-                      </div>
-
-                      <div>
-                        <strong data-no-translate="true" translate="no">
-                          {roomChars[0].name}
-                        </strong>
-
-                        <small data-no-translate="true" translate="no">
-                          {introText(
-                            roomChars[0].support?.introduction ||
-                              roomChars[0].description,
-                          )}
-                        </small>
-
-                        <span>
-                          ◉ {roomChars[0].usage_count || 0} người dùng
-                        </span>
-                      </div>
-                    </div>
-                  )}
-
-                  {roomChars.length === 1 && room && (
-                    <CharacterFeelings
-                      characterId={roomChars[0].id}
-                      roomId={room.id}
-                      revision={messages.filter(message => message.sender_type === "character").at(-1)?.id || ""}
-                      busy={busy}
-                    />
-                  )}
-
-                  <div className="toolReactions">
-                    {roomChars.length === 1 &&
-                      ["❤️", "😂", "🔥", "👍", "😮"].map((emoji) => (
-                        <button
-                          key={emoji}
-                          onClick={() =>
-                            act(() => reactCharacter(roomChars[0].id, emoji))
-                          }
-                        >
-                          {emoji}
-
-                          <small>{roomChars[0].reactions?.[emoji] || 0}</small>
-                        </button>
-                      ))}
-                  </div>
-
-                  <div className="toolMenu">
-                    <button
-                      onClick={() => openRoomWizard(roomChars.map((c) => c.id))}
-                    >
-                      <span>
-                        <Icon n="users-alt" />
-                      </span>
-
-                      <b>Tạo phòng chat khác</b>
-
-                      <i>
-                        <Icon n="angle-small-right" />
-                      </i>
-                    </button>
-
-                    <button
-                      onClick={() => {
-                        if (roomChars.length > 1 && room)
-                          void openRoleplayMemories({
-                            kind: "room",
-                            id: room.id,
-                            label: room.name,
-                          });
-                        else if (roomChars[0])
-                          void openRoleplayMemories({
-                            kind: "character",
-                            id: roomChars[0].id,
-                            label: roomChars[0].name,
-                          });
-                      }}
-                    >
-                      <span>
-                        <Icon n="brain" />
-                      </span>
-
-                      <b>Ký ức</b>
-
-                      <i>
-                        <Icon n="angle-small-right" />
-                      </i>
-                    </button>
-
-                    <button
-                      onClick={() =>
-                        roomChars[0] &&
-                        setCharacterInfo({
-                          ids: roomChars.map((c) => c.id),
-                          id: roomChars[0].id,
-                        })
-                      }
-                    >
-                      <span>
-                        <Icon n="info" />
-                      </span>
-
-                      <b>Thông tin nhân vật</b>
-
-                      <i>
-                        <Icon n="angle-small-right" />
-                      </i>
-                    </button>
-                    <div
-                      className="rpCharacterMusicControl"
-                      data-background-music-control
-                    >
-                      <BackgroundMusicButton {...backgroundMusic} />
-                      <button
-                        type="button"
-                        disabled={
-                          (!reactionSounds.ready && !actionSounds.ready) ||
-                          (!reactionSounds.available && !actionSounds.available)
-                        }
-                        onClick={() => {
-                          if (reactionSounds.enabled) actionSounds.stop();
-                          reactionSounds.toggle();
-                        }}
-                        aria-pressed={reactionSounds.enabled}
-                        data-reaction-control
-                      >
-                        <span>
-                          <Icon n="volume" />
-                        </span>
-                        <b>
-                          {!reactionSounds.available && !actionSounds.available
-                            ? "Chưa có âm phản ứng"
-                            : reactionSounds.enabled
-                              ? "Tắt âm phản ứng"
-                              : "Bật âm phản ứng"}
-                        </b>
-                      </button>
-                    </div>
-                  </div>
-                </>
-              )}
-            </aside>
-          </div>
-        )}
+        {page === "home" &&
+          renderHomeView({
+            openRoomWizard,
+            systemHomeCharacters,
+            introText,
+            addPreset,
+            customHomeCharacters,
+            startCharacterChat,
+            homeSections,
+            charactersForSection,
+            startPublicCharacter,
+            visibleRooms,
+            matchesSearch,
+            openRoom,
+          })}
+
+        {page === "discover" &&
+          renderDiscoverView({
+            collectionTabs,
+            searchField,
+            publicFilter,
+            setPublicFilter,
+            publicCategories,
+            publicRatingFilter,
+            setPublicRatingFilter,
+            catalogView,
+            filteredPublicCharacters,
+            matchingPublicRooms,
+            catalogSections,
+            act,
+            setNotice,
+            refresh,
+            introText,
+            setChars,
+            setPage,
+            favoriteButton,
+          })}
+
+        {page === "characters" &&
+          renderCharactersView({
+            collectionTabs,
+            searchField,
+            myCharacterFilter,
+            setMyCharacterFilter,
+            myCharacterTypeFilter,
+            setMyCharacterTypeFilter,
+            ownedTypes,
+            catalogView,
+            filteredOwned,
+            catalogSections,
+            catalogCharacterType,
+            act,
+            reactCharacter,
+            introText,
+            favoriteButton,
+            busy,
+            startCharacterChat,
+            openRoleplayMemories,
+            setCharacterInfo,
+            setChars,
+            setRooms,
+            matchingOwnedRooms,
+            visibleCharacters,
+          })}
+
+        {page === "system" &&
+          renderSystemView({
+            collectionTabs,
+            searchField,
+            systemTypeFilter,
+            setSystemTypeFilter,
+            catalogView,
+            filteredSystem,
+            catalogSections,
+            introText,
+            favoriteButton,
+            busy,
+            addPreset,
+            hasPreset,
+            addPresetOnly,
+          })}
+
+        {page === "create" &&
+          renderCreateView({
+            mode,
+            setMode,
+            openRoomWizard,
+            avatarFile,
+            setAvatarFile,
+            name,
+            setName,
+            description,
+            setDescription,
+            existingMediaCharacter,
+            setExistingMediaCharacter,
+            mediaCharacterName,
+            setMediaCharacterName,
+            mediaTitle,
+            setMediaTitle,
+            customRole,
+            setCustomRole,
+            characterType,
+            setCharacterType,
+            selectedTags,
+            toggleTag,
+            tagSearch,
+            setTagSearch,
+            makePublic,
+            setMakePublic,
+            customScenario,
+            setCustomScenario,
+            customGreeting,
+            setCustomGreeting,
+            customExamples,
+            setCustomExamples,
+            busy,
+            act,
+            finishCreatedCharacter,
+            storyDocument,
+            storyFile,
+            setStoryFile,
+            storyUrl,
+            setStoryUrl,
+            prepareStorySource,
+            storyCandidates,
+            storyCharacterName,
+            setStoryCharacterName,
+            setStoryDocument,
+            setStoryCandidates,
+            createStoryCharacter,
+          })}
+
+        {page === "chat" &&
+          room &&
+          renderChatView({
+            chatToolsCollapsed,
+            typingIds,
+            activeExpression,
+            roomChars,
+            room,
+            messagesBox,
+            messages,
+            chars,
+            presets,
+            publicCharacters,
+            speakingId,
+            playRoleplayMessage,
+            speechLoadingId,
+            busy,
+            regenerateMessage,
+            send,
+            messagesEnd,
+            text,
+            setText,
+            setChatToolsCollapsed,
+            introText,
+            act,
+            reactCharacter,
+            openRoomWizard,
+            openRoleplayMemories,
+            setCharacterInfo,
+            backgroundMusic,
+            reactionSounds,
+            actionSounds,
+          })}
       </main>
     </div>
   );
