@@ -2,7 +2,7 @@
 
 ## 1. Phiên bản và phạm vi
 
-Nhánh integration/service-ver1 bắt đầu từ tag v1.0.0: backend + UI + CMS, không có companion video. main/ver1, tag v1.0.0 và update giữ nguyên. Đây là gói triển khai SQLite một instance; chưa phải bản PostgreSQL nhiều instance hay SSO với sản phẩm khác.
+Nhánh integration/service-ver1 (tag bàn giao v1.0.0-service.1) bắt đầu từ tag v1.0.0: backend + UI + CMS, không có companion video. main/ver1, tag v1.0.0 và update giữ nguyên. Đây là gói triển khai SQLite một instance; chưa phải bản PostgreSQL nhiều instance hay SSO với sản phẩm khác.
 
 | Mục | File/thư mục | Vai trò |
 | --- | --- | --- |
@@ -137,7 +137,13 @@ Proxy phải chuyển tiếp stream từng chunk, không buffer SSE và giữ Ra
 
 ## 8. Kiểm thử và giới hạn xác nhận
 
-Máy chuẩn bị gói không có Docker. Đã kiểm thử build UI, backup/restore và startup/backend trực tiếp; workflow CI bổ sung Docker build + smoke trên Linux. BE phải kiểm tra kết quả CI hoặc chạy Docker trên server trước bàn giao cuối cùng.
+Đã xác minh:
+- Build UI ver1 đạt.
+- 6 test đóng gói/khởi động/restore đạt, bao gồm backend Uvicorn chạy thật với CMS restore và credential thử nghiệm mã hoá.
+- 10 test reaction hiện có đạt.
+- GitHub CI Linux build Docker, khởi động container và smoke health/UI/CMS/xác thực đạt: https://github.com/NguyenThanhCongLoi/ai-chat-assistants/actions/runs/38221493070 (commit e12b7d7; các thay đổi sau chỉ ghi tài liệu).
+
+Máy chuẩn bị gói không cài Docker; container đã được xác minh bằng CI Linux. BE vẫn cần nghiệm thu trên hạ tầng đích với provider và dữ liệu thật. Có thể chạy python -m pytest -q tests/test_service_package.py tests/test_service_startup.py sau khi build UI để lặp lại test migration.
 
 Dữ liệu CMS live chưa được chuyển, provider LLM/TTS/GPU chưa được kiểm thử với secrets thật trong gói này. Đây là bộ triển khai có quy trình xác minh; không phải cam kết tất cả API ngoài luôn hoạt động.
 
