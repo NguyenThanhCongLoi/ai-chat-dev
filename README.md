@@ -1,3 +1,7 @@
+# Nhánh update
+
+Nhánh này giữ companion video để phát triển tiếp. Bản ver1 không có video nằm ở tag v1.0.0 và nhánh ver1/main. Hướng dẫn đóng gói đúng ver1 từ nhánh này: [RELEASE_VERSIONS.md](docs/RELEASE_VERSIONS.md).
+
 # Character Chat
 
 Tài liệu kiến trúc, API, database, AI pipeline, Modal, open source, bảo mật và vận hành: [docs/ARCHITECTURE_AND_ENGINEERING_GUIDE.md](docs/ARCHITECTURE_AND_ENGINEERING_GUIDE.md).
