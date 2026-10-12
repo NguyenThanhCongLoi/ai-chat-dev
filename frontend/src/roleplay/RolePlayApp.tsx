@@ -1,5 +1,3 @@
-import {ElfCompanion} from "./ElfCompanion";
-import {hasElfCompanion,companionTalking} from "./companionState";
 import { roomCharacterPool } from "./roomCharacterPool";
 import { openingVoiceMessages } from "./openingVoiceMessages";
 import { CharacterFeelings } from "./CharacterFeelings";
@@ -242,8 +240,6 @@ export default function RolePlayApp() {
   const [myCharacterFilter, setMyCharacterFilter] = useState("all");
   const [myCharacterTypeFilter, setMyCharacterTypeFilter] = useState("all");
   const [typingIds, setTypingIds] = useState<string[]>([]);
-  const [companionVisible,setCompanionVisible]=useState(false);
-  useEffect(()=>{setCompanionVisible(false);},[room?.id]);
   const [speechLoadingId, setSpeechLoadingId] = useState<string | null>(null);
   const [speakingId, setSpeakingId] = useState<string | null>(null);
   const reactionSounds = useReactionSounds(
@@ -4573,7 +4569,7 @@ export default function RolePlayApp() {
 
         {page === "chat" && room && (
           <div
-            className={`chatWorkspace ${chatToolsCollapsed ? "toolsCollapsed" : ""} ${!chatToolsCollapsed && companionVisible && roomChars.length === 1 && hasElfCompanion(roomChars[0]) ? "companionExpanded" : ""}`}
+            className={`chatWorkspace ${chatToolsCollapsed ? "toolsCollapsed" : ""}`}
           >
             <div className="chat">
               <header
@@ -4822,7 +4818,7 @@ export default function RolePlayApp() {
               </div>
             </div>
 
-            <aside className={`characterTools ${!chatToolsCollapsed && roomChars.length === 1 && hasElfCompanion(roomChars[0]) ? "companionAvailable" : ""} ${!chatToolsCollapsed && companionVisible && roomChars.length === 1 && hasElfCompanion(roomChars[0]) ? "companionFull" : ""}`}>
+            <aside className="characterTools">
               <button
                 className="iconbtn collapseTools"
                 onClick={() => setChatToolsCollapsed((value) => !value)}
@@ -4836,21 +4832,7 @@ export default function RolePlayApp() {
                 />
               </button>
 
-              {!chatToolsCollapsed && roomChars.length === 1 && hasElfCompanion(roomChars[0]) && (
-                <button className="iconbtn companionToggle" type="button"
-                  title={companionVisible?"Ẩn companion":"Hiện companion"}
-                  aria-label={companionVisible?"Ẩn companion":"Hiện companion"}
-                  aria-pressed={companionVisible}
-                  onClick={()=>setCompanionVisible(value=>!value)}>
-                  <Icon n={companionVisible?"eye-crossed":"eye"}/>
-                </button>
-              )}
-              {!chatToolsCollapsed && companionVisible && roomChars.length === 1 && hasElfCompanion(roomChars[0]) ? (
-                <ElfCompanion name={roomChars[0].name}
-                  talking={companionTalking(roomChars[0].id,speakingId,
-                    [...messages, ...(openingGreeting?.messages || []),
-                      ...automaticSpeechMessages.current.values()])}/>
-              ) : !chatToolsCollapsed && (
+              {!chatToolsCollapsed && (
                 <>
                   {roomChars.length === 1 && (
                     <div className="toolProfile">

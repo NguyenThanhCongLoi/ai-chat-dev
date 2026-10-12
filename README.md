@@ -1,3 +1,7 @@
+# Phiên bản ver1
+
+Bản này không có companion video. Hướng dẫn Git, đóng gói ZIP và deploy: [RELEASE_VERSIONS.md](docs/RELEASE_VERSIONS.md).
+
 # Character Chat
 
 Tài liệu kiến trúc, API, database, AI pipeline, Modal, open source, bảo mật và vận hành: [docs/ARCHITECTURE_AND_ENGINEERING_GUIDE.md](docs/ARCHITECTURE_AND_ENGINEERING_GUIDE.md).
@@ -1282,17 +1286,6 @@ Công cụ sao lưu bản cũ vào `backups/ui-locales/`, kiểm tra trường n
 - Voice lời thoại của nhóm vẫn không tự phát. Phòng đơn vẫn giữ tự phát voice.
 - Tương tác tự nhiên hai nhân vật được cho phép sau hai lượt; giữ hai lượt đơn giữa các lần tự phát. Ngưỡng điểm nhân vật thứ hai giảm từ 0.20 xuống 0.18; chênh điểm tối đa tăng từ 0.25 lên 0.28. Các lần tự phát luân phiên trao đổi hỏi ý kiến và góp góc nhìn bổ sung. User gọi tên một nhân vật vẫn ưu tiên đúng người đó.
 - Việc có hai nhân vật trả lời có thể tăng thời gian hoàn tất cả lượt, vì nhân vật sau đọc phần trả lời trước; bộ chọn vẫn chạy local và không gọi thêm LLM.
-
-
-### Companion video thử nghiệm cho elf
-
-- Trong phòng đơn của Selene Moonbrook/elf, nút mắt ở đầu cột phải hiện hoặc ẩn companion. Khi hiện, video thay phần giới thiệu, cảm xúc và menu; khi ẩn, các mục cũ xuất hiện lại.
-- Dùng image/elf_normal.webm và image/elf_talk.webm qua route /character-images đã có. Normal loop khi nghỉ; talk chỉ loop khi voice thực sự đang phát (gồm tự phát và bấm Nghe). Stream chữ hoặc chờ audio không bật talk. Video dùng contain để thấy toàn bộ khung hình, có thể có khoảng trống theo tỷ lệ cột.
-- Video không phát âm thanh riêng (muted, playsInline). Chỉ video trạng thái đang dùng chạy; ẩn companion/cột hoặc rời phòng sẽ dừng video. Mỗi lần mở phòng companion mặc định ẩn.
-- Video được đóng gói cùng thư mục image khi deploy Modal; cần deploy UI và image mới. Bản thử hiện áp dụng phòng đơn, chưa áp dụng companion nhiều nhân vật trong nhóm.
-
-
-- Khi mở companion elf trên desktop, cột video mở rộng khoảng 38% workspace (tối đa 480px và không vượt 44%); phần chat thu lại tương ứng. Video dùng toàn bộ chiều cao bên dưới hàng nút, co theo tỷ lệ contain để giữ đủ khung cảnh. Khi ẩn hoặc thu cột, bố cục chat trở lại kích thước cũ. Điện thoại giữ bố cục drawer.
 
 
 ### Bộ chọn người trả lời Jev-compatible (thử nghiệm)
