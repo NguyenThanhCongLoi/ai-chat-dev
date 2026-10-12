@@ -3,6 +3,7 @@ import hashlib
 import io
 import json
 import logging
+import os
 import time
 import uuid
 import wave
@@ -49,6 +50,8 @@ def valid_clip(content):
 def generation_error(exc):
     # Never send raw provider exceptions, credentials or tracebacks to the browser.
     message=str(exc).lower()
+    if "reaction generation is disabled" in message:
+        return "Reaction generation is disabled. Configure REACTION_GENERATOR_MODE=modal and worker credentials. Saved clips can still play."
     if "too short even after three repeats" in message:
         return "Reference is too short even after three repeats. Upload a sample of at least 2 seconds, preferably 8-15 seconds."
     if "longer than 5 seconds" in message:
@@ -98,6 +101,8 @@ def build_reaction_router(current_user, db_session, admin_auth, session_factory,
 
     def generate(reference, filename, repeat_short=False, slots=None):
         if generator: return generator(reference, filename, slots=slots)
+        if os.getenv("REACTION_GENERATOR_MODE", "modal") == "disabled":
+            raise ValueError("Reaction generation is disabled for this deployment")
         import modal
         return modal.Function.from_name("character-reactions", "generate_reactions").remote(reference, filename, repeat_short, slots)
 

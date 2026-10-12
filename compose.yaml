@@ -1,0 +1,13 @@
+services:
+  companion:
+    build: .
+    image: ai-companion:ver1-service
+    restart: unless-stopped
+    env_file: deploy/service.env
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - ./data:/data
+      - ./music_backgr/mp3:/media/music:ro
+    init: true
+    stop_grace_period: 45s

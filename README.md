@@ -1,3 +1,7 @@
+# Gói service ver1 cho BE
+
+Xem [BE_SERVICE_HANDOFF.md](docs/BE_SERVICE_HANDOFF.md) cho Docker, cấu hình, chuyển CMS và tích hợp. Nhánh này bắt đầu từ v1.0.0; bản đóng băng và nhánh update giữ nguyên.
+
 # Phiên bản ver1
 
 Bản này không có companion video. Hướng dẫn Git, đóng gói ZIP và deploy: [RELEASE_VERSIONS.md](docs/RELEASE_VERSIONS.md).
