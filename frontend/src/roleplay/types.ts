@@ -6,8 +6,8 @@ export type Character = {
   initial_greeting?: string;
   tts_volume?: number;
   tts_voice_id?: string;
-  tts_voice_mode?: "shared"|"separate";
-  tts_languages?: Record<string, {enabled: boolean; voice_id: string}>;
+  tts_voice_mode?: "shared" | "separate";
+  tts_languages?: Record<string, { enabled: boolean; voice_id: string }>;
   tts_voice_vi?: string;
   tts_voice_en?: string;
   tts_gender?: string;
@@ -46,7 +46,14 @@ export type Message = {
   speech_error?: string;
   sources?: { document_id: string }[];
   suggestions?: string[];
-  emotion?: "neutral" | "happy" | "sad" | "angry" | "surprised" | "shy" | "thinking";
+  emotion?:
+    | "neutral"
+    | "happy"
+    | "sad"
+    | "angry"
+    | "surprised"
+    | "shy"
+    | "thinking";
   attachment?: {
     document_id: string;
     filename: string;
@@ -64,4 +71,29 @@ export type Account = {
   language: import("../i18n").UiLanguage;
   reduced_motion: boolean;
   avatar_url?: string | null;
+};
+
+// Page contracts; these are presentation types, not API/schema changes.
+export type Room = {
+  topic?: string;
+  id: string;
+  name: string;
+  character_ids: string[];
+  created_at?: string;
+  created?: boolean;
+  is_public?: boolean;
+};
+
+export type StoryCandidate = {
+  name: string;
+  description: string;
+  source_evidence: string[];
+  importance: number;
+};
+
+export type HomeSection = {
+  id: string;
+  name: string;
+  rule: "popular" | "trending" | "top_rated" | "favorites" | "tags";
+  tags: string[];
 };

@@ -1,6 +1,52 @@
-# Nhánh update
+# Báo cáo hệ thống
 
-Nhánh này giữ companion video để phát triển tiếp. Bản ver1 không có video nằm ở tag v1.0.0 và nhánh ver1/main. Hướng dẫn đóng gói đúng ver1 từ nhánh này: [RELEASE_VERSIONS.md](docs/RELEASE_VERSIONS.md).
+Xem [AI_COMPANION_SYSTEM_REPORT.md](docs/AI_COMPANION_SYSTEM_REPORT.md) cho tính năng, thuật toán, luồng dữ liệu và giới hạn hiện tại.
+
+# Đọc và sửa code AI Companion
+
+Refactor trong repo cá nhân: API/service backend, controller CMS và view Roleplay được chia theo chức năng. Entry point và các luồng hiện có được giữ tương thích.
+
+- **Bản đồ đầy đủ:** [CODE_STRUCTURE.md](docs/CODE_STRUCTURE.md)
+- **Backend:** main.py lắp ráp; character_chat/api/ xử lý endpoint; character_chat/services/ xử lý nghiệp vụ.
+- **CMS:** frontend/src/admin.ts giữ shared state/wiring; admin/controllers/ chứa handler theo miền.
+- **Roleplay:** RolePlayApp.tsx giữ hooks/orchestration; roleplay/views/ chứa markup và props typed.
+- **API contract:** tests/test_api_contract.py đóng băng OpenAPI và route order của ver1.
+- **Kết quả:** build frontend và Edge smoke đạt; backend 292 passed/23 lỗi cũ, frontend 65 passed/3 lỗi cũ. Không phát hiện test lỗi mới qua đối chiếu baseline; chi tiết nằm trong bản đồ code.
+
+### Luồng xử lý chính
+
+```text
+User -> API -> xác thực/quyền -> service -> LLM/TTS/database
+                                      -> SSE -> client/audio
+
+CMS event -> controller -> API -> service -> database
+Roleplay state/effects -> view props -> JSX; playback ở các hook/module audio
+```
+
+### Các file bắt đầu đọc
+
+| Bạn muốn hiểu | Điểm bắt đầu |
+| --- | --- |
+| Khởi động backend | character_chat/main.py, services/lifecycle.py |
+| Tài khoản và quyền | services/authentication.py, api/authentication.py |
+| Chat đơn/nhóm | api/roleplay_chat.py, services/roleplay_inference.py |
+| Voice và cache | services/speech.py, api/voice_playback.py, incremental_voice.py |
+| CMS | frontend/src/admin/controllers/, api/admin_*.py |
+| Giao diện chat | frontend/src/roleplay/views/ChatView.tsx |
+| Xoá và reset cảm xúc | services/deletion.py |
+| Model/prompt/key | services/model_registry.py, api/admin_models.py |
+
+Shared runtime và wrapper tương thích giữ các điểm gọi cũ của worker/test. Các module miền nhận dependency qua bind_*; không import main để tạo vòng phụ thuộc. Frontend view không thêm hooks hay tự phát audio. Xem bản đồ code trước khi đổi thứ tự bind hoặc lifecycle.
+
+---
+
+# Gói service ver1 cho BE
+
+Xem [BE_SERVICE_HANDOFF.md](docs/BE_SERVICE_HANDOFF.md) cho Docker, cấu hình, chuyển CMS và tích hợp. Nhánh update hiện tích hợp gói service và kiến trúc module, kèm companion video; các tag đóng băng giữ bản cũ.
+
+# Nhánh update: module + companion video
+
+Bản này có video companion elf. Ver1 không có video vẫn ở nhánh ver1/main/integration/service-ver1. Hướng dẫn Git, đóng gói ZIP và deploy: [RELEASE_VERSIONS.md](docs/RELEASE_VERSIONS.md).
 
 # Character Chat
 
@@ -1286,17 +1332,6 @@ Công cụ sao lưu bản cũ vào `backups/ui-locales/`, kiểm tra trường n
 - Voice lời thoại của nhóm vẫn không tự phát. Phòng đơn vẫn giữ tự phát voice.
 - Tương tác tự nhiên hai nhân vật được cho phép sau hai lượt; giữ hai lượt đơn giữa các lần tự phát. Ngưỡng điểm nhân vật thứ hai giảm từ 0.20 xuống 0.18; chênh điểm tối đa tăng từ 0.25 lên 0.28. Các lần tự phát luân phiên trao đổi hỏi ý kiến và góp góc nhìn bổ sung. User gọi tên một nhân vật vẫn ưu tiên đúng người đó.
 - Việc có hai nhân vật trả lời có thể tăng thời gian hoàn tất cả lượt, vì nhân vật sau đọc phần trả lời trước; bộ chọn vẫn chạy local và không gọi thêm LLM.
-
-
-### Companion video thử nghiệm cho elf
-
-- Trong phòng đơn của Selene Moonbrook/elf, nút mắt ở đầu cột phải hiện hoặc ẩn companion. Khi hiện, video thay phần giới thiệu, cảm xúc và menu; khi ẩn, các mục cũ xuất hiện lại.
-- Dùng image/elf_normal.webm và image/elf_talk.webm qua route /character-images đã có. Normal loop khi nghỉ; talk chỉ loop khi voice thực sự đang phát (gồm tự phát và bấm Nghe). Stream chữ hoặc chờ audio không bật talk. Video dùng contain để thấy toàn bộ khung hình, có thể có khoảng trống theo tỷ lệ cột.
-- Video không phát âm thanh riêng (muted, playsInline). Chỉ video trạng thái đang dùng chạy; ẩn companion/cột hoặc rời phòng sẽ dừng video. Mỗi lần mở phòng companion mặc định ẩn.
-- Video được đóng gói cùng thư mục image khi deploy Modal; cần deploy UI và image mới. Bản thử hiện áp dụng phòng đơn, chưa áp dụng companion nhiều nhân vật trong nhóm.
-
-
-- Khi mở companion elf trên desktop, cột video mở rộng khoảng 38% workspace (tối đa 480px và không vượt 44%); phần chat thu lại tương ứng. Video dùng toàn bộ chiều cao bên dưới hàng nút, co theo tỷ lệ contain để giữ đủ khung cảnh. Khi ẩn hoặc thu cột, bố cục chat trở lại kích thước cũ. Điện thoại giữ bố cục drawer.
 
 
 ### Bộ chọn người trả lời Jev-compatible (thử nghiệm)

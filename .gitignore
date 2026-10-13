@@ -32,3 +32,6 @@ sound_effect/*.zip
 # Isolated decision model environment and downloads (D drive).
 .tools/
 .decision-cache/
+
+.env.*
+deploy/service.env
