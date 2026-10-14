@@ -43,7 +43,7 @@ cp deploy/service.env.example deploy/service.env
 chmod 600 deploy/service.env
 ~~~
 
-Điền DOCS_USERNAME, DOCS_PASSWORD, provider keys và CORS_ORIGINS của môi trường mới. Giữ DOCS_PASSWORD cũ nếu muốn giải mã API key đã lưu trong backup CMS. Không sao chép MODAL_TOKEN_* hoặc AVATAR_MODAL_FUNCTION từ server cũ.
+Xem ENV_HANDOFF.md để điền và chuyển env riêng. Điền DOCS_USERNAME, DOCS_PASSWORD, provider keys và CORS_ORIGINS của môi trường mới. Giữ DOCS_PASSWORD cũ nếu muốn giải mã API key đã lưu trong backup CMS. Không sao chép MODAL_TOKEN_* hoặc AVATAR_MODAL_FUNCTION từ server cũ.
 
 Cấu hình mặc định bắt buộc:
 ~~~env

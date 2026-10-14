@@ -1,5 +1,7 @@
 """Production entrypoint: one web process for the current SQLite release."""
 import os
+import json
+from urllib.parse import urlsplit
 from pathlib import Path
 import sys
 
@@ -26,6 +28,20 @@ def validate():
     for name in ("MODAL_TOKEN_ID", "MODAL_TOKEN_SECRET"):
         if os.getenv(name, "").strip():
             raise RuntimeError("Remove legacy " + name)
+    # Parse only structure here; never print secret values on configuration errors.
+    raw_keys = os.getenv("PROVIDER_API_KEYS_JSON", "").strip()
+    if raw_keys:
+        try:
+            mapping = json.loads(raw_keys)
+            if not isinstance(mapping, dict):
+                raise ValueError()
+            for base, key in mapping.items():
+                parsed = urlsplit(base)
+                if (parsed.scheme != "https" or not parsed.netloc or parsed.username or parsed.password
+                        or parsed.query or parsed.fragment or not isinstance(key, str) or not key.strip()):
+                    raise ValueError()
+        except (ValueError, TypeError):
+            raise RuntimeError("Invalid PROVIDER_API_KEYS_JSON; use an object of HTTPS base URLs and nonempty keys") from None
     dist = Path(os.getenv("FRONTEND_DIST", "frontend/dist"))
     for name in ("index.html", "admin.html"):
         if not (dist / name).is_file():

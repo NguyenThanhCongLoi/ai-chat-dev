@@ -24,3 +24,8 @@ music_backgr/wav
 sound_effect/*.zip
 
 image/tarot_tuvi/tarot/*.zip
+
+# Private environment and TLS key files are handed over separately.
+**/*.env
+**/*.pem
+**/*.key

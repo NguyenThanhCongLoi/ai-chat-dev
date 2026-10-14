@@ -17,7 +17,7 @@ def entrypoint():
 
 @pytest.fixture
 def valid_environment(tmp_path, monkeypatch):
-    for name in ("MODAL_TOKEN_ID", "MODAL_TOKEN_SECRET", "AVATAR_MODAL_FUNCTION"):
+    for name in ("MODAL_TOKEN_ID", "MODAL_TOKEN_SECRET", "AVATAR_MODAL_FUNCTION", "PROVIDER_API_KEYS_JSON"):
         monkeypatch.delenv(name, raising=False)
     config = {
         "DOCS_USERNAME": "fixture",
@@ -98,3 +98,36 @@ def test_default_avatar_preserves_migrated_images(monkeypatch):
     main.generate_character_expressions("new-character", b"source")
     assert defaults == ["new-character"]
     engine.dispose()
+
+
+def test_provider_env_key_overrides_cms_without_decrypting(monkeypatch):
+    import character_chat.main as main
+    from types import SimpleNamespace
+    sentinel = "fixture-provider-key"
+    monkeypatch.setenv("PROVIDER_API_KEYS_JSON", '{"https://provider.invalid/v1/":"fixture-provider-key"}')
+    monkeypatch.setattr(main, "decrypt_admin_secret", lambda value: pytest.fail("Env key must override DB credential"))
+    model = SimpleNamespace(api_base="https://provider.invalid/v1", api_key_encrypted="old-ciphertext")
+    assert main.credential_for_model(None, model) == sentinel
+    assert main.credential_for_base(None, model.api_base) == sentinel
+
+
+def test_provider_env_absence_keeps_cms_key(monkeypatch):
+    import character_chat.main as main
+    from types import SimpleNamespace
+    monkeypatch.setenv("PROVIDER_API_KEYS_JSON", "{}")
+    monkeypatch.setattr(main, "decrypt_admin_secret", lambda value: "fixture-cms-key")
+    model = SimpleNamespace(api_base="https://provider.invalid/v1", api_key_encrypted="ciphertext")
+    assert main.credential_for_model(None, model) == "fixture-cms-key"
+
+
+@pytest.mark.parametrize("raw", ['{"broken":"SECRET_MARKER"}', '["SECRET_MARKER"]', "SECRET_MARKER"])
+def test_invalid_provider_env_does_not_expose_key(valid_environment, monkeypatch, raw):
+    import character_chat.main as main
+    from fastapi import HTTPException
+    monkeypatch.setenv("PROVIDER_API_KEYS_JSON", raw)
+    with pytest.raises(RuntimeError) as error:
+        entrypoint().validate()
+    assert "PROVIDER_API_KEYS_JSON" in str(error.value) and "SECRET_MARKER" not in str(error.value)
+    with pytest.raises(HTTPException) as error:
+        main.environment_credential("https://provider.invalid/v1")
+    assert "SECRET_MARKER" not in error.value.detail

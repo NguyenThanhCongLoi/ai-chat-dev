@@ -38,3 +38,8 @@ deploy/service.env
 
 # Extracted Tarot cards are release assets; the source archive is not needed.
 image/tarot_tuvi/tarot/*.zip
+
+# Private environment and TLS key files are handed over separately.
+**/*.env
+**/*.pem
+**/*.key

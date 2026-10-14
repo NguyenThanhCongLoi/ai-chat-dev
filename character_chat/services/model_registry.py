@@ -141,7 +141,30 @@ def bind_runtime_settings(runtime: ModuleType) -> None:
 
     runtime.base_credential_id = base_credential_id
 
+    def environment_credential(api_base):
+        # Explicit provider keys travel in private env files, never in Git or API responses.
+        raw = runtime.os.getenv("PROVIDER_API_KEYS_JSON", "").strip()
+        if not raw:
+            return ""
+        try:
+            mapping = runtime.json.loads(raw)
+            if not isinstance(mapping, dict):
+                raise ValueError()
+            normalized = {}
+            for base, key in mapping.items():
+                if not isinstance(key, str) or not key.strip():
+                    raise ValueError()
+                normalized[runtime.normalized_api_base(base)] = key.strip()
+            return normalized.get(runtime.normalized_api_base(api_base), "")
+        except (ValueError, TypeError, runtime.HTTPException):
+            # Do not include the JSON payload or credentials in error details.
+            raise runtime.HTTPException(503, "Invalid PROVIDER_API_KEYS_JSON configuration") from None
+
+    runtime.environment_credential = environment_credential
+
     def credential_for_base(db, api_base):
+        if key := runtime.environment_credential(api_base):
+            return key
         base = runtime.normalized_api_base(api_base)
         stored = db.get(
             runtime.AppSetting, "credential:base:" + runtime.base_credential_id(base)
@@ -163,6 +186,8 @@ def bind_runtime_settings(runtime: ModuleType) -> None:
     runtime.credential_for_base = credential_for_base
 
     def credential_for_model(db, model):
+        if key := runtime.environment_credential(model.api_base):
+            return key
         if model.api_key_encrypted:
             return runtime.decrypt_admin_secret(model.api_key_encrypted)
         return runtime.credential_for_base(db, model.api_base)

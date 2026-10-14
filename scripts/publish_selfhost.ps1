@@ -15,12 +15,12 @@ try {
         "scripts/service_entrypoint.py", "scripts/publish_selfhost.ps1",
         "character_chat", "frontend/src",
         "docs/ASSISTANT_DIVINATION.md", "docs/SELF_HOSTED_DEPLOYMENT.md",
-        "docs/BE_SERVICE_HANDOFF.md", "docs/AI_COMPANION_SYSTEM_REPORT.md",
+        "docs/BE_SERVICE_HANDOFF.md", "docs/AI_COMPANION_SYSTEM_REPORT.md", "docs/ENV_HANDOFF.md",
         "tests/test_selfhost.py", "tests/test_divination.py", "tests/test_api_contract.py", "tests/test_app.py",
         "image/tarot_tuvi/tarot.jpg", "image/tarot_tuvi/tu_vi.jpg", "image/tarot_tuvi/cards"
     )
     # Refuse a commit containing files staged for another task.
-    $alreadyStaged = @(git diff --cached --name-only)
+    $alreadyStaged = @(git --no-pager diff --cached --name-only)
     if ($LASTEXITCODE -ne 0) { throw "Cannot inspect staged files." }
     foreach ($file in $alreadyStaged) {
         $allowed = $false
@@ -31,10 +31,10 @@ try {
     }
     git add -- $releasePaths
     if ($LASTEXITCODE -ne 0) { throw "Staging failed." }
-    git diff --cached --check
+    git --no-pager diff --cached --check
     if ($LASTEXITCODE -ne 0) { throw "Staged diff validation failed." }
-    git diff --cached --stat
-    git diff --cached --quiet
+    git --no-pager diff --cached --stat
+    git --no-pager diff --cached --quiet
     if ($LASTEXITCODE -eq 1) {
         git commit -m "Prepare standalone CPU service with Tarot and CMS updates; preserve GPU workers"
         if ($LASTEXITCODE -ne 0) { throw "Commit failed." }
