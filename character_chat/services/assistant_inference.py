@@ -158,25 +158,12 @@ def bind_run_assistant_model_chain(runtime: ModuleType) -> None:
                     reasoning_effort,
                     min(gateway_wait, attempt_budget),
                 )
-                if runtime.os.getenv("CHAT_TRANSPORT", "direct").lower() == "modal":
-                    import modal
-
-                    call = modal.Function.from_name(
-                        "character-chat", "assistant_worker"
-                    ).spawn(*args)
-                    try:
-                        answer = call.get(timeout=attempt_budget)
-                    except Exception:
-                        try:
-                            call.cancel()
-                        except Exception:
-                            pass
-                        raise
-                else:
-                    answer = runtime._within_deadline(
-                        lambda args=args: runtime.direct_completion(*args),
-                        attempt_budget,
-                    )
+                if runtime.os.getenv("CHAT_TRANSPORT", "direct").lower() != "direct":
+                    raise ValueError("Self-hosted chat requires CHAT_TRANSPORT=direct")
+                answer = runtime._within_deadline(
+                    lambda args=args: runtime.direct_completion(*args),
+                    attempt_budget,
+                )
                 if not isinstance(answer, str) or not answer.strip():
                     raise ValueError("Model returned an empty response")
                 runtime.record_model_success(item.id)

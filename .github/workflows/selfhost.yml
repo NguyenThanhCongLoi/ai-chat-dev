@@ -1,0 +1,38 @@
+name: Standalone CPU service
+on:
+  push:
+    branches: [selfhost/dev]
+  pull_request:
+    branches: [selfhost/dev]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install ".[dev]"
+      - run: pytest -q tests/test_selfhost.py tests/test_service_package.py tests/test_divination.py tests/test_api_contract.py tests/test_group_decision.py tests/test_chat_transport.py tests/test_reaction_sounds.py
+      - run: pytest -q tests/test_app.py -k assistant
+      - run: docker build -t ai-companion:test .
+      - name: Start isolated CPU service without Modal
+        run: |
+          docker run -d --name companion -p 127.0.0.1:8000:8000 -e DOCS_USERNAME=smoke -e DOCS_PASSWORD=ci-test-only -e REACTION_GENERATOR_MODE=disabled ai-companion:test
+          docker exec companion python -c "import importlib.util; assert importlib.util.find_spec('modal') is None"
+      - name: Smoke
+        env:
+          DOCS_USERNAME: smoke
+          DOCS_PASSWORD: ci-test-only
+        run: |
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:8000/health; then break; fi
+            sleep 2
+          done
+          python scripts/smoke_service.py --admin
+      - name: Logs
+        if: always()
+        run: docker logs companion || true

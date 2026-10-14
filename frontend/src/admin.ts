@@ -1100,6 +1100,8 @@ const modelPurposeLabels: Record<string, string> = {
   assistant_health: "Assistant · Sức khỏe",
   assistant_homework: "Assistant · Bài tập",
   assistant_tarot: "Assistant · Tarot",
+  assistant_tuvi: "Assistant · Tử vi",
+  assistant_tuvi_fallback: "Dự phòng · Tử vi",
   assistant_suggestion: "Assistant · Gợi ý trả lời",
 };
 /* ---------- Cấu hình AI (theo màn admAI của prototype) ---------- */
@@ -1197,6 +1199,7 @@ const assistantPurposes = [
   "assistant_health",
   "assistant_homework",
   "assistant_tarot",
+  "assistant_tuvi",
   "assistant_suggestion",
 ];
 /* ---------- Trợ lý AI (theo màn "as-cms" của prototype) ---------- */
@@ -1225,9 +1228,10 @@ const ASSISTANT_INFO: Record<
     desc: "Giải thích từng bước từ tài liệu của bạn",
   },
   assistant_tarot: {
-    name: "Tarot & Tử vi",
+    name: "Tarot",
     desc: "Gửi Bát Tự, lá số hoặc trải bài minh họa",
   },
+  assistant_tuvi: {name:"Tử vi & Bát Tự",desc:"Diễn giải lá số và thông tin ngày sinh"},
   assistant_suggestion: {
     name: "Gợi ý trả lời",
     desc: "Tác vụ nền: sinh 3 gợi ý dưới mỗi câu trả lời",

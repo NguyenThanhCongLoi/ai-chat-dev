@@ -1,6 +1,7 @@
 import type { Mode, ModeItem } from "./types";
 
 export const MODES: ModeItem[] = [
+  {id:"assistant_tuvi",icon:"☾",title:"Tử vi",copy:"Chiêm nghiệm Tử vi và Bát Tự",slogan:"Đọc dấu hiệu, hiểu lựa chọn của mình.",greeting:"Bạn muốn khám phá điều gì? Hãy gửi thông tin hoặc lá số để cùng chiêm nghiệm."},
   {
     id: "assistant_general",
     icon: "✦",
@@ -52,7 +53,8 @@ export const STARTERS: Record<Mode, string[]> = {
   assistant_psychology: ["Mình đang thấy áp lực", "Làm sao để ngủ ngon hơn?", "Mình muốn tâm sự một chút"],
   assistant_health: ["Đọc giúp chỉ số xét nghiệm", "Đau đầu thường xuyên do đâu?", "Gợi ý thực đơn lành mạnh"],
   assistant_homework: ["Giải thích đạo hàm hàm hợp", "Kiểm tra bài văn của mình", "Tạo 5 câu trắc nghiệm ôn tập"],
-  assistant_tarot: ["Rút một trải bài 3 lá", "Đọc Bát Tự minh họa", "Lá bài cho hôm nay"],
+  assistant_tarot: ["Rút một trải bài 3 lá", "Lá bài cho hôm nay", "Giải thích trải bài vừa rút"],
+  assistant_tuvi: ["Đọc Bát Tự minh họa", "Cần thông tin gì để xem Tử vi?", "Giải thích lá số của mình"],
 };
 export const ROOM_TITLES: Record<Mode, string> = {
   assistant_general: "Trợ lý AI",
@@ -60,6 +62,7 @@ export const ROOM_TITLES: Record<Mode, string> = {
   assistant_health: "Tư vấn sức khỏe",
   assistant_homework: "Hỗ trợ bài tập",
   assistant_tarot: "Tarot và chiêm nghiệm",
+  assistant_tuvi: "Tử vi và Bát Tự",
 };
 export const UI_TEXTS = [
   "Nhân vật",

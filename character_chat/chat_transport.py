@@ -128,7 +128,6 @@ def direct_stream(messages, model, api_base, api_key, temperature=.35, max_token
 
 
 def chat_stream(*args):
-    if os.getenv("CHAT_TRANSPORT", "direct").lower() == "modal":
-        import modal
-        return modal.Function.from_name("character-chat", "assistant_stream_worker").remote_gen(*args)
+    if os.getenv("CHAT_TRANSPORT", "direct").lower() != "direct":
+        raise ValueError("Self-hosted chat requires CHAT_TRANSPORT=direct")
     return direct_stream(*args)

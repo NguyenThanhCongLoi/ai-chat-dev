@@ -1,3 +1,4 @@
+from character_chat.divination import bootstrap_tuvi_models
 """api.assistant_rooms: domain-specific application implementation.
 
 Dependencies are injected through the shared application runtime; no global
@@ -12,6 +13,7 @@ def bind_assistant_profiles_config(runtime: ModuleType) -> None:
     """Register these implementations against the supplied application runtime."""
 
     def assistant_profiles_config(db):
+        bootstrap_tuvi_models(db, runtime.model_profile)
         items = {}
         for purpose in (*runtime.ASSISTANT_PROMPTS, "assistant_suggestion"):
             row = db.get(runtime.AppSetting, "assistant_profile:" + purpose)
@@ -46,6 +48,17 @@ def bind_assistant_profiles_config(runtime: ModuleType) -> None:
         )
 
     runtime.assistant_preferred_model = assistant_preferred_model
+
+    @runtime.app.get("/v1/assistant/profiles")
+    def assistant_public_profiles(
+        user: str = runtime.Depends(runtime.current_user),
+        db: runtime.DBSession = runtime.Depends(runtime.db_session),
+    ):
+        # Expose presentation only; credentials and prompts stay server-side.
+        fields = ("title", "slogan", "description", "greeting", "starters", "visible", "icon")
+        config = runtime.assistant_profiles_config(db)
+        return {"items": {purpose: {key: value for key, value in profile.items() if key in fields}
+                          for purpose, profile in config["items"].items() if purpose in runtime.ASSISTANT_PROMPTS}}
 
     @runtime.app.get("/v1/admin/assistant-profiles")
     def admin_assistant_profiles(
@@ -166,7 +179,7 @@ def bind_assistant_profiles_config(runtime: ModuleType) -> None:
         mode = str(data.get("mode") or "assistant_general")
         if mode not in runtime.ASSISTANT_PROMPTS:
             raise runtime.HTTPException(400, "Assistant mode is invalid")
-        if mode != "assistant_general":
+        if mode != "assistant_general" and not (mode in ("assistant_tarot", "assistant_tuvi") and data.get("new_session") is True):
             existing = (
                 db.query(runtime.Room)
                 .filter(
@@ -186,6 +199,29 @@ def bind_assistant_profiles_config(runtime: ModuleType) -> None:
         db.add(row)
         db.commit()
         return {**runtime.assistant_room_out(row), "is_new": True}
+
+
+    @runtime.app.get("/v1/assistant/chats/{room_id}/tarot")
+    def tarot_session_state(room_id: str, user: str = runtime.Depends(runtime.current_user), db: runtime.DBSession = runtime.Depends(runtime.db_session)):
+        from character_chat.divination import session_state
+        room = runtime.assistant_room(db, user, room_id)
+        if room.name.split(":", 2)[1] != "assistant_tarot":
+            raise runtime.HTTPException(400, "This room is not Tarot")
+        state = session_state(db, room_id)
+        return {"remaining":len(state["remaining"]) if state else 78, "session_id":state["session_id"] if state else None}
+
+    @runtime.app.post("/v1/assistant/chats/{room_id}/tarot/reset")
+    def reset_tarot_session(room_id: str, user: str = runtime.Depends(runtime.current_user), db: runtime.DBSession = runtime.Depends(runtime.db_session)):
+        from character_chat.divination import reset_session
+        room = runtime.assistant_room(db, user, room_id)
+        if room.name.split(":", 2)[1] != "assistant_tarot":
+            raise runtime.HTTPException(400, "This room is not Tarot")
+        ids = [item.id for item in db.query(runtime.Message).filter_by(room_id=room_id).all()]
+        runtime.purge_message_dependents(db, ids)
+        db.query(runtime.Message).filter_by(room_id=room_id).delete()
+        state = reset_session(db, room_id)
+        db.commit()
+        return {"remaining":78,"session_id":state["session_id"]}
 
     runtime.create_assistant_chat = create_assistant_chat
 

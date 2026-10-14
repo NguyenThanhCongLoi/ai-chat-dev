@@ -13,6 +13,11 @@ export type Chat = { is_new?: boolean; id: string; mode: Mode; title: string; cr
 export type WorkspaceRoom = { id: string; name: string; created_at?: string; character_ids?: string[] };
 export type WorkspaceCharacter = { id: string; name: string; avatar_url?: string | null };
 export type ChatSource = {
+  kind?: "tarot";
+  reading_id?: string;
+  remaining?: number;
+  session_id?: string;
+  cards?: import("./DivinationExperience").TarotCard[];
   index: number;
   document_id: string;
   filename: string;
@@ -36,7 +41,8 @@ export type Mode =
   | "assistant_psychology"
   | "assistant_health"
   | "assistant_homework"
-  | "assistant_tarot";
+  | "assistant_tarot"
+  | "assistant_tuvi";
 export type ModeItem = {
   id: Mode;
   icon: string;

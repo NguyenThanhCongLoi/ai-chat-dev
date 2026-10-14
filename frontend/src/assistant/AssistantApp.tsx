@@ -1,3 +1,4 @@
+import {DivinationChooser,TarotSpread} from "./DivinationExperience";
 import { afterUiLanguagePaint, loadCompleteUiTranslations, setUiLanguageGate, uiLanguageErrorMessage } from "../uiLocales";
 import { reportFirstChunk } from "../chatTiming";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
@@ -16,7 +17,7 @@ import { EmojiPicker } from "../EmojiPicker";
 import { AssistantMarkdown } from "./AssistantMarkdown";
 import { RolePlayLoadingCat } from "../roleplay/RolePlayLoadingCat";
 import type { Account, Chat, WorkspaceRoom, WorkspaceCharacter, ChatMessage, UploadedFile, AssistantModel, SavedMemory, AssistantReminder, Mode } from "./types";
-import { MODES, STARTERS, EN } from "./config";
+import { MODES as BASE_MODES, STARTERS as BASE_STARTERS, EN } from "./config";
 
 const headers = (): Record<string, string> => {
   const token = localStorage.getItem("auth_token");
@@ -59,6 +60,36 @@ export default function AssistantApp({ landingOnly = false, }: {
     landingOnly?: boolean;
 }) {
     const [account, setAccount] = useState<Account | null>(null), [ready, setReady] = useState(false), [authMode, setAuthMode] = useState<"login" | "register">("login"), [username, setUsername] = useState(""), [password, setPassword] = useState(""), [lampOn, setLampOn] = useState(false), [owlAway, setOwlAway] = useState(false), [loginTheme, setLoginTheme] = useState<"light" | "dark">(() => localStorage.getItem("preferred_theme") === "dark" ? "dark" : "light"), [displayName, setDisplayName] = useState(""), [language, setLanguage] = useState<UiLanguage>(storedLanguage), [translations, setTranslations] = useState<Record<string, string>>({}), [error, setError] = useState("");
+    type Presentation = { title?: string; slogan?: string; description?: string; greeting?: string; starters?: string[]; visible?: boolean };
+    const [cmsProfiles, setCmsProfiles] = useState<Record<string, Presentation>>({});
+    // Refresh public CMS presentation without exposing private model configuration.
+    const MODES = BASE_MODES.map(item => {
+        const profile = cmsProfiles[item.id];
+        return {...item,
+            ...(profile?.title ? {title: profile.title} : {}),
+            ...(profile?.slogan ? {slogan: profile.slogan} : {}),
+            ...(profile?.description ? {copy: profile.description} : {}),
+            ...(profile?.greeting ? {greeting: profile.greeting} : {})};
+    });
+    const STARTERS = {...BASE_STARTERS};
+    for (const item of BASE_MODES) {
+        const starters = cmsProfiles[item.id]?.starters;
+        if (starters?.length) STARTERS[item.id] = starters;
+    }
+    useEffect(() => {
+        if (!account) return;
+        let active = true;
+        const refresh = () => {
+            if (document.visibilityState === "hidden") return;
+            void request<{items: Record<string, Presentation>}>("/v1/assistant/profiles")
+                .then(config => {if (active) setCmsProfiles(config.items);}).catch(() => {});
+        };
+        refresh();
+        window.addEventListener("focus", refresh);
+        document.addEventListener("visibilitychange", refresh);
+        const timer = window.setInterval(refresh, 30000);
+        return () => {active = false; window.clearInterval(timer); window.removeEventListener("focus", refresh); document.removeEventListener("visibilitychange", refresh);};
+    }, [account]);
     const [mode, setMode] = useState<Mode>(() => {
         const requested = new URLSearchParams(window.location.search).get("mode");
         return MODES.some((item) => item.id === requested) ? requested as Mode : "assistant_general";
@@ -545,9 +576,7 @@ export default function AssistantApp({ landingOnly = false, }: {
         });
         return () => cancelAnimationFrame(frame);
     }, [messages, busy, chat?.id]);
-    const visibleChatCount = (nextMode: Mode) => nextMode === "assistant_general"
-        ? chats.filter((item) => item.mode === nextMode).length
-        : Number(chats.some((item) => item.mode === nextMode));
+    const visibleChatCount = (nextMode: Mode) => chats.filter((item) => item.mode === nextMode).length;
     async function loadChats() {
         const rooms = await request<Chat[]>("/v1/assistant/chats");
         setChats(rooms);
@@ -556,6 +585,7 @@ export default function AssistantApp({ landingOnly = false, }: {
         setHistoryError(false);
     }
     async function openChat(item: Chat) {
+        setDivinationChooser(false);
         const sequence = ++taskOpenSequence.current;
         cancelAssistantStream();
         activeChatIdRef.current = item.id;
@@ -582,6 +612,7 @@ export default function AssistantApp({ landingOnly = false, }: {
         }
     }
     function newChat(nextMode: Mode = "assistant_general") {
+        setDivinationChooser(false);
         taskOpenSequence.current += 1;
         cancelAssistantStream();
         activeChatIdRef.current = null;
@@ -594,7 +625,25 @@ export default function AssistantApp({ landingOnly = false, }: {
         setFile(null);
         setSidebarOpen(false);
     }
-    async function openTaskRoom(nextMode: Mode) {
+    const [divinationChooser,setDivinationChooser]=useState(false);
+    useEffect(()=>{
+        const wide=window.matchMedia("(min-width: 1051px)");
+        const changed=()=>{if(!wide.matches)setSessionHistoryOpen(false);};
+        wide.addEventListener("change",changed);
+        return()=>wide.removeEventListener("change",changed);
+    },[]);
+    const [tarotRemaining,setTarotRemaining]=useState(78);
+    useEffect(()=>{let active=true;if(chat?.mode==="assistant_tarot")void request<{remaining:number}>("/v1/assistant/chats/"+chat.id+"/tarot").then(state=>{if(active)setTarotRemaining(state.remaining);}).catch(()=>{});return()=>{active=false;};},[chat?.id,chat?.mode]);
+    async function resetTarot(){
+        if(!chat || busy || !window.confirm(tr("Làm mới lượt rút sẽ xóa lịch sử Tarot trong phòng này. Tiếp tục?")))return;
+        setBusy(true);setError("");
+        try{const state=await request<{remaining:number}>("/v1/assistant/chats/"+chat.id+"/tarot/reset","POST",{});setMessages([]);setTarotRemaining(state.remaining);}
+        catch(reason){setError(String(reason));}
+        finally{setBusy(false);}
+    }
+    async function openTaskRoom(nextMode: Mode, chosen = false) {
+        if(nextMode === "assistant_tarot" && !chosen){++taskOpenSequence.current;cancelAssistantStream();setDivinationChooser(true);return;}
+        setDivinationChooser(false);
         const sequence = ++taskOpenSequence.current;
         cancelAssistantStream();
         try {
@@ -614,19 +663,19 @@ export default function AssistantApp({ landingOnly = false, }: {
                 setError(String(reason));
         }
     }
-    async function createTaskSession(nextMode: Mode = mode) {
+    async function createTaskSession(nextMode: Mode = mode, forceNew = false) {
         const sequence = ++taskOpenSequence.current;
         cancelAssistantStream();
         setError("");
         try {
-            if (nextMode !== "assistant_general") {
+            if (nextMode !== "assistant_general" && !forceNew) {
                 const existing = chats.find((item) => item.mode === nextMode);
                 if (existing) {
                     await openChat(existing);
                     return;
                 }
             }
-            const created = await request<Chat>("/v1/assistant/chats", "POST", { mode: nextMode });
+            const created = await request<Chat>("/v1/assistant/chats", "POST", { mode: nextMode, ...(forceNew ? {new_session: true} : {}) });
             if (sequence !== taskOpenSequence.current)
                 return;
             setChats((current) => current.some((item) => item.id === created.id) ? current : [created, ...current]);
@@ -667,6 +716,7 @@ export default function AssistantApp({ landingOnly = false, }: {
         const onWorkspaceNavigation = (event: MessageEvent) => {
             if (event.origin !== window.location.origin || event.data?.type !== "avibi-workspace-navigate")
                 return;
+            setDivinationChooser(false);
             const params = new URL(event.data.path, window.location.origin).searchParams;
             if (params.get("panel") === "memory") {
                 setMemoryPanelOpen(true);
@@ -970,6 +1020,12 @@ export default function AssistantApp({ landingOnly = false, }: {
                     message?: string;
                     text?: string;
                 };
+                if(event === "tarot") {
+                    const source = payload as unknown as import("./types").ChatSource;
+                    setTarotRemaining(source.remaining ?? 78);
+                    setMessages(current=>[...current.filter(item=>item.id!==streamId), {id:streamId,role:"assistant",text:"",sources:[source]}]);
+                    return;
+                }
                 if (event === "suggestions") {
                     const suggestionPayload = payload as unknown as { message_id: string; suggestions: string[] };
                     suggestionReceipt = { messageId: suggestionPayload.message_id, options: suggestionPayload.suggestions, milliseconds: performance.now() - sentAt };
@@ -1316,7 +1372,7 @@ export default function AssistantApp({ landingOnly = false, }: {
             {historyError && <button onClick={() => void loadChats().catch(() => setHistoryError(true))}>{tr("Không tải được lịch sử. Thử lại")}</button>}
 
             {(inAssistant
-                ? MODES.map((item) => ({ id: item.id, kind: "channel" as const, label: tr(item.title), sub: tr(item.copy), date: "", path: `/ai-assistant?workspace=1&mode=${item.id}`, avatar: <ModeAvatar mode={item.id} size={26}/> }))
+                ? MODES.filter(item=>item.id!=="assistant_tuvi" && cmsProfiles[item.id]?.visible !== false).map((item) => ({ id: item.id, kind: "channel" as const, label: tr(item.title), sub: tr(item.copy), date: "", path: `/ai-assistant?workspace=1&mode=${item.id}`, avatar: <ModeAvatar mode={item.id} size={26}/> }))
                 : visibleRolePlayRooms.map((item) => {
                     const members = (item.character_ids || []).map((id) => workspaceCharacters.find((value) => value.id === id)).filter((value): value is WorkspaceCharacter => Boolean(value));
                     return { id: item.id, kind: "roleplay" as const, label: item.name, sub: members.map((value) => value.name).join(", "), date: item.created_at || "", path: `/role-play-ai?workspace=1&view=chat&room=${item.id}`, avatar: (<span className={`platformRecentAvatars${members.length > 1 ? " group" : ""}`} aria-hidden="true">
@@ -1493,7 +1549,7 @@ export default function AssistantApp({ landingOnly = false, }: {
           </div>}
 
       </div>);
-    const selectedMode = MODES.find((item) => item.id === mode)!;
+    const selectedMode = {...MODES.find((item) => item.id === mode)!, ...(mode==="assistant_tarot" && !cmsProfiles[mode]?.title?{title:"Tarot"}:{})};
     const activeReminders = reminders.filter((item) => item.status === "active").sort((left, right) => left.due_at.localeCompare(right.due_at));
     const composer = (home: boolean) => (<footer className={`assistantComposer asComposer${home ? " home" : ""}`}>
 
@@ -1504,7 +1560,7 @@ export default function AssistantApp({ landingOnly = false, }: {
                 event.preventDefault();
                 send();
             }
-        }} placeholder={mode === "assistant_tarot" ? tr("Gửi Bát Tự, lá số minh họa hoặc đặt câu hỏi để chiêm nghiệm…") : home ? tr("Hỏi mình bất cứ điều gì…") : `${tr("Nhắn cho")} ${tr(selectedMode.title)}…`}/>
+        }} placeholder={mode === "assistant_tarot" ? tr("Đặt câu hỏi hoặc chọn một trải bài Tarot…") : mode === "assistant_tuvi" ? tr("Gửi Bát Tự, lá số minh họa hoặc đặt câu hỏi để chiêm nghiệm…") : home ? tr("Hỏi mình bất cứ điều gì…") : `${tr("Nhắn cho")} ${tr(selectedMode.title)}…`}/>
 
       <div className="asComposerBar">
 
@@ -1545,6 +1601,7 @@ export default function AssistantApp({ landingOnly = false, }: {
 
     </footer>);
     return (<div className="assistantApp">
+        {divinationChooser && <DivinationChooser tr={tr} onClose={()=>setDivinationChooser(false)} onChoose={(next)=>{setDivinationChooser(false);void openTaskRoom(next,true);}}/>}
 
       <aside className={sidebarOpen ? "open" : ""}>
 
@@ -1586,7 +1643,7 @@ export default function AssistantApp({ landingOnly = false, }: {
 
           <strong>{tr("Tác vụ")}</strong>
 
-          {MODES.filter((item) => item.id !== "assistant_general").map((item) => (<button className={mode === item.id && Boolean(chat) ? "active" : ""} onClick={() => openTaskRoom(item.id)} key={item.id}>
+          {MODES.filter((item) => item.id !== "assistant_general" && item.id !== "assistant_tuvi" && cmsProfiles[item.id]?.visible !== false).map((item) => (<button className={mode === item.id && Boolean(chat) ? "active" : ""} onClick={() => openTaskRoom(item.id)} key={item.id}>
 
                 <i>{item.icon}</i>
 
@@ -1728,7 +1785,8 @@ export default function AssistantApp({ landingOnly = false, }: {
 
           </header>)}
 
-        {chat && mode === "assistant_tarot" && (<p className="tarotNotice asTarotBar"><Icon n="info"/>{tr("Nội dung chỉ để tham khảo và chiêm nghiệm. Không có lá số hay quẻ bài nào thay đổi được vận mệnh của bạn ngoài lựa chọn và sự cố gắng của chính bạn.")}</p>)}
+        {chat && mode==="assistant_tarot" && <div className="tarotSessionBar"><span>{tr("Lá bài còn lại")}: {tarotRemaining}/78</span><button className="btn sm" onClick={()=>void resetTarot()} disabled={busy}>{tr("Làm mới lượt rút")}</button></div>}
+        {chat && (mode === "assistant_tarot" || mode === "assistant_tuvi") && (<p className="tarotNotice asTarotBar"><Icon n="info"/>{tr("Nội dung chỉ để tham khảo và chiêm nghiệm. Không có lá số hay quẻ bài nào thay đổi được vận mệnh của bạn ngoài lựa chọn và sự cố gắng của chính bạn.")}</p>)}
 
         <section ref={conversationRef} className={`assistantConversation asConversation ${messages.length ? "hasMessages" : ""} ${chat ? "inRoom" : "isHome"}`}>
 
@@ -1750,7 +1808,7 @@ export default function AssistantApp({ landingOnly = false, }: {
 
                 <div className="asSpecGrid">
 
-                  {MODES.filter((item) => item.id !== "assistant_general").map((item) => {
+                  {MODES.filter((item) => item.id !== "assistant_general" && item.id !== "assistant_tuvi" && cmsProfiles[item.id]?.visible !== false).map((item) => {
                 const count = visibleChatCount(item.id);
                 return (<article className="asSpec" key={item.id}>
 
@@ -1840,6 +1898,7 @@ export default function AssistantApp({ landingOnly = false, }: {
 
                     <b>{item.role === "user" ? tr("Bạn") : tr(selectedMode.title)}</b>
 
+                    {item.role === "assistant" && item.sources?.filter(source=>source.kind==="tarot").map(source=><TarotSpread key={source.reading_id} readingId={source.reading_id||item.id} cards={source.cards||[]} tr={tr}/>)}
                     {item.role === "assistant"
                       ? <AssistantMarkdown text={item.text} />
                       : <p data-no-translate="true" translate="no">{item.text}</p>}
@@ -1868,7 +1927,7 @@ export default function AssistantApp({ landingOnly = false, }: {
 
                     {Boolean(item.sources?.length) && (<div className="assistantSources">
 
-                        {item.sources!.map((source) => (<span key={`${item.id}-${source.index}`}>[{source.index}] {source.filename}{source.location ? ` · ${source.location}` : ""}</span>))}
+                        {item.sources!.filter(source=>source.kind!=="tarot").map((source) => (<span key={`${item.id}-${source.index}`}>[{source.index}] {source.filename}{source.location ? ` · ${source.location}` : ""}</span>))}
 
                       </div>)}
 
@@ -1902,12 +1961,12 @@ export default function AssistantApp({ landingOnly = false, }: {
 
         </section>
 
-        {chat && mode === "assistant_general" && <div className="assistantSessionNew"><button className="btn sm" disabled={busy} onClick={() => void createTaskSession()}><Icon n="plus-small"/>{tr("Hỏi chủ đề mới")}</button></div>}
+        {chat && ["assistant_general", "assistant_tarot", "assistant_tuvi"].includes(mode) && <div className="assistantSessionNew"><button className="btn sm" disabled={busy} onClick={() => void createTaskSession(mode, true)}><Icon n="plus-small"/>{tr("Hỏi chủ đề mới")}</button></div>}
         {chat && <div className="asFoot">{composer(false)}</div>}
         {(chat || mode !== "assistant_general") && <aside className={`assistantSessionHistory${sessionHistoryOpen ? " open" : ""}`} aria-label={tr("Lịch sử trò chuyện")}>
           <header><b><Icon n="time-past"/>{tr("Lịch sử trò chuyện")}</b><button className="iconbtn" onClick={() => setSessionHistoryOpen((value) => !value)} aria-label={tr("Đóng lịch sử")}><Icon n="cross-small"/></button></header>
           <div className="assistantSessionHistoryList">
-            {chats.filter((item) => item.mode === mode).slice(0, mode === "assistant_general" ? undefined : 1).map((item) => <div className={`assistantSessionRow${chat?.id === item.id ? " active" : ""}`} key={item.id}>
+            {chats.filter((item) => item.mode === mode).map((item) => <div className={`assistantSessionRow${chat?.id === item.id ? " active" : ""}`} key={item.id}>
               <button onClick={() => { if (window.matchMedia("(max-width: 1050px)").matches) setSessionHistoryOpen(false); void openChat(item); }} title={item.title}>{item.title}</button>
               <button className="assistantSessionDelete" onClick={() => void removeChat(item)} title={tr("Xóa cuộc trò chuyện")} aria-label={tr("Xóa cuộc trò chuyện")}><Icon n="cross-small"/></button>
             </div>)}

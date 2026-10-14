@@ -12,6 +12,12 @@ def bind_generate_character_expressions(runtime: ModuleType) -> None:
     """Register these implementations against the supplied application runtime."""
 
     def generate_character_expressions(character_id, content):
+        # The minimum server must preserve migrated art, even when CMS has an image model.
+        if runtime.os.getenv("AVATAR_GENERATOR_MODE", "default").strip().lower() == "default":
+            with runtime.Session() as db:
+                if not db.query(runtime.CharacterExpressionAsset).filter_by(character_id=character_id).count():
+                    runtime.install_default_expressions(db, character_id)
+            return
         try:
             with runtime.Session() as status_db:
                 version = status_db.get(
@@ -102,26 +108,17 @@ def bind_generate_character_expressions(runtime: ModuleType) -> None:
                 generation_error = (
                     generation_error or f"Chưa cấu hình API key cho {image_base}"
                 )
-            remote_name = runtime.os.getenv("AVATAR_MODAL_FUNCTION", "").strip()
-            if remote_name and image_key:
+            # Run the existing image pipeline on this host; never dispatch to Modal.
+            # default mode intentionally keeps bundled/user images without paid generation.
+            if image_key and runtime.os.getenv("AVATAR_GENERATOR_MODE", "default").strip().lower() == "direct":
                 try:
-                    import modal
-
-                    result = modal.Function.from_name(
-                        "character-chat", remote_name
-                    ).remote(content, image_model, image_base, image_key)
-                    if isinstance(result, dict) and "images" in result:
-                        variants = result["images"]
-                        generated = bool(result.get("generated"))
-                        generation_error = str(result.get("error") or "")[:500]
-                    else:
-                        variants = result
-                        generated = True
+                    from character_chat.avatar_pipeline import build_ai_expression_variants
+                    variants = build_ai_expression_variants(content, image_model, image_base, image_key)
+                    generated = True
                 except Exception as exc:
-                    variants = None
                     generation_error = str(exc)[:500]
             elif character_id.startswith("__preset__:"):
-                generation_error = "Chưa cấu hình tác vụ tạo ảnh trên máy chủ"
+                generation_error = "Image generation is disabled; use existing or default images"
             if character_id.startswith("__preset__:") and (
                 not generated
                 or not isinstance(variants, dict)

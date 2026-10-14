@@ -127,7 +127,7 @@ def bind_get_admin_settings(runtime: ModuleType) -> None:
                 "source": (
                     "cms"
                     if row and row.value
-                    else ("modal_secret" if configured else "missing")
+                    else ("environment" if configured else "missing")
                 ),
                 "hint": (
                     db.get(runtime.AppSetting, "credential_hint:avibi").value
@@ -230,7 +230,7 @@ def bind_get_admin_settings(runtime: ModuleType) -> None:
         configured = bool(runtime.character_engine.llm.api_key)
         return {
             "configured": configured,
-            "source": "modal_secret" if configured else "missing",
+            "source": "environment" if configured else "missing",
             "hint": "",
         }
 

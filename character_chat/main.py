@@ -369,6 +369,7 @@ ASSISTANT_ROOM_TITLES = {
     "assistant_health": "Tư vấn sức khỏe",
     "assistant_homework": "Hỗ trợ bài tập",
     "assistant_tarot": "Tarot và chiêm nghiệm",
+    "assistant_tuvi": "Tử vi và Bát Tự",
 }
 
 

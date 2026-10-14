@@ -10,6 +10,22 @@ def validate():
             raise RuntimeError(name + " must be configured; copy deploy/service.env.example")
     if os.getenv("DEMO_AUTH_ENABLED", "false").lower() != "false":
         raise RuntimeError("Production service requires DEMO_AUTH_ENABLED=false")
+    # Refuse legacy configuration rather than silently contacting the previous platform.
+    for name, allowed, default in (
+        ("CHAT_TRANSPORT", {"direct"}, "direct"),
+        ("GROUP_ROUTER_MODE", {"local"}, "local"),
+        ("GROUP_ROUTER_TRANSPORT", {"http"}, "http"),
+        ("REACTION_GENERATOR_MODE", {"disabled"}, "disabled"),
+        ("AVATAR_GENERATOR_MODE", {"default", "direct"}, "default"),
+    ):
+        os.environ.setdefault(name, default)
+        if os.getenv(name, default).strip().lower() not in allowed:
+            raise RuntimeError(name + " is invalid for this self-hosted release")
+    if os.getenv("AVATAR_MODAL_FUNCTION", "").strip():
+        raise RuntimeError("Remove legacy AVATAR_MODAL_FUNCTION")
+    for name in ("MODAL_TOKEN_ID", "MODAL_TOKEN_SECRET"):
+        if os.getenv(name, "").strip():
+            raise RuntimeError("Remove legacy " + name)
     dist = Path(os.getenv("FRONTEND_DIST", "frontend/dist"))
     for name in ("index.html", "admin.html"):
         if not (dist / name).is_file():

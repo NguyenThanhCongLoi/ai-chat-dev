@@ -1,3 +1,5 @@
+> Nhánh selfhost/dev: dùng [hướng dẫn server riêng](SELF_HOSTED_DEPLOYMENT.md). Không dùng token Modal. GPU giữ nguyên và chưa chuyển; tạo reaction mới tắt trong bản CPU. Tài liệu này mô tả packaging/data gốc, ưu tiên cấu hình của hướng dẫn mới.
+
 # Bàn giao AI Companion ver1 cho BE
 
 ## 1. Phiên bản và phạm vi

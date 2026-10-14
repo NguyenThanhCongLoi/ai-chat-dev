@@ -1,0 +1,392 @@
+[
+  {
+    "id": "major_arcana_00_the_fool",
+    "name": "The Fool",
+    "image": "/character-images/tarot_tuvi/cards/major_arcana_00_the_fool.webp"
+  },
+  {
+    "id": "major_arcana_01_the_magician",
+    "name": "The Magician",
+    "image": "/character-images/tarot_tuvi/cards/major_arcana_01_the_magician.webp"
+  },
+  {
+    "id": "major_arcana_02_the_high_priestess",
+    "name": "The High Priestess",
+    "image": "/character-images/tarot_tuvi/cards/major_arcana_02_the_high_priestess.webp"
+  },
+  {
+    "id": "major_arcana_03_the_empress",
+    "name": "The Empress",
+    "image": "/character-images/tarot_tuvi/cards/major_arcana_03_the_empress.webp"
+  },
+  {
+    "id": "major_arcana_04_the_emperor",
+    "name": "The Emperor",
+    "image": "/character-images/tarot_tuvi/cards/major_arcana_04_the_emperor.webp"
+  },
+  {
+    "id": "major_arcana_05_the_hierophant",
+    "name": "The Hierophant",
+    "image": "/character-images/tarot_tuvi/cards/major_arcana_05_the_hierophant.webp"
+  },
+  {
+    "id": "major_arcana_06_the_lovers",
+    "name": "The Lovers",
+    "image": "/character-images/tarot_tuvi/cards/major_arcana_06_the_lovers.webp"
+  },
+  {
+    "id": "major_arcana_07_the_chariot",
+    "name": "The Chariot",
+    "image": "/character-images/tarot_tuvi/cards/major_arcana_07_the_chariot.webp"
+  },
+  {
+    "id": "major_arcana_08_strength",
+    "name": "Strength",
+    "image": "/character-images/tarot_tuvi/cards/major_arcana_08_strength.webp"
+  },
+  {
+    "id": "major_arcana_09_the_hermit",
+    "name": "The Hermit",
+    "image": "/character-images/tarot_tuvi/cards/major_arcana_09_the_hermit.webp"
+  },
+  {
+    "id": "major_arcana_10_wheel_of_fortune",
+    "name": "Wheel of Fortune",
+    "image": "/character-images/tarot_tuvi/cards/major_arcana_10_wheel_of_fortune.webp"
+  },
+  {
+    "id": "major_arcana_11_justice",
+    "name": "Justice",
+    "image": "/character-images/tarot_tuvi/cards/major_arcana_11_justice.webp"
+  },
+  {
+    "id": "major_arcana_12_the_hanged_man",
+    "name": "The Hanged Man",
+    "image": "/character-images/tarot_tuvi/cards/major_arcana_12_the_hanged_man.webp"
+  },
+  {
+    "id": "major_arcana_13_death",
+    "name": "Death",
+    "image": "/character-images/tarot_tuvi/cards/major_arcana_13_death.webp"
+  },
+  {
+    "id": "major_arcana_14_temperance",
+    "name": "Temperance",
+    "image": "/character-images/tarot_tuvi/cards/major_arcana_14_temperance.webp"
+  },
+  {
+    "id": "major_arcana_15_the_devil",
+    "name": "The Devil",
+    "image": "/character-images/tarot_tuvi/cards/major_arcana_15_the_devil.webp"
+  },
+  {
+    "id": "major_arcana_16_the_tower",
+    "name": "The Tower",
+    "image": "/character-images/tarot_tuvi/cards/major_arcana_16_the_tower.webp"
+  },
+  {
+    "id": "major_arcana_17_the_star",
+    "name": "The Star",
+    "image": "/character-images/tarot_tuvi/cards/major_arcana_17_the_star.webp"
+  },
+  {
+    "id": "major_arcana_18_the_moon",
+    "name": "The Moon",
+    "image": "/character-images/tarot_tuvi/cards/major_arcana_18_the_moon.webp"
+  },
+  {
+    "id": "major_arcana_19_the_sun",
+    "name": "The Sun",
+    "image": "/character-images/tarot_tuvi/cards/major_arcana_19_the_sun.webp"
+  },
+  {
+    "id": "major_arcana_20_judgement",
+    "name": "Judgement",
+    "image": "/character-images/tarot_tuvi/cards/major_arcana_20_judgement.webp"
+  },
+  {
+    "id": "major_arcana_21_the_world",
+    "name": "The World",
+    "image": "/character-images/tarot_tuvi/cards/major_arcana_21_the_world.webp"
+  },
+  {
+    "id": "cups_01_ace_of_cups",
+    "name": "Ace of Cups",
+    "image": "/character-images/tarot_tuvi/cards/cups_01_ace_of_cups.webp"
+  },
+  {
+    "id": "cups_02_two_of_cups",
+    "name": "Two of Cups",
+    "image": "/character-images/tarot_tuvi/cards/cups_02_two_of_cups.webp"
+  },
+  {
+    "id": "cups_03_three_of_cups",
+    "name": "Three of Cups",
+    "image": "/character-images/tarot_tuvi/cards/cups_03_three_of_cups.webp"
+  },
+  {
+    "id": "cups_04_four_of_cups",
+    "name": "Four of Cups",
+    "image": "/character-images/tarot_tuvi/cards/cups_04_four_of_cups.webp"
+  },
+  {
+    "id": "cups_05_five_of_cups",
+    "name": "Five of Cups",
+    "image": "/character-images/tarot_tuvi/cards/cups_05_five_of_cups.webp"
+  },
+  {
+    "id": "cups_06_six_of_cups",
+    "name": "Six of Cups",
+    "image": "/character-images/tarot_tuvi/cards/cups_06_six_of_cups.webp"
+  },
+  {
+    "id": "cups_07_seven_of_cups",
+    "name": "Seven of Cups",
+    "image": "/character-images/tarot_tuvi/cards/cups_07_seven_of_cups.webp"
+  },
+  {
+    "id": "cups_08_eight_of_cups",
+    "name": "Eight of Cups",
+    "image": "/character-images/tarot_tuvi/cards/cups_08_eight_of_cups.webp"
+  },
+  {
+    "id": "cups_09_nine_of_cups",
+    "name": "Nine of Cups",
+    "image": "/character-images/tarot_tuvi/cards/cups_09_nine_of_cups.webp"
+  },
+  {
+    "id": "cups_10_ten_of_cups",
+    "name": "Ten of Cups",
+    "image": "/character-images/tarot_tuvi/cards/cups_10_ten_of_cups.webp"
+  },
+  {
+    "id": "cups_11_page_of_cups",
+    "name": "Page of Cups",
+    "image": "/character-images/tarot_tuvi/cards/cups_11_page_of_cups.webp"
+  },
+  {
+    "id": "cups_12_knight_of_cups",
+    "name": "Knight of Cups",
+    "image": "/character-images/tarot_tuvi/cards/cups_12_knight_of_cups.webp"
+  },
+  {
+    "id": "cups_13_queen_of_cups",
+    "name": "Queen of Cups",
+    "image": "/character-images/tarot_tuvi/cards/cups_13_queen_of_cups.webp"
+  },
+  {
+    "id": "cups_14_king_of_cups",
+    "name": "King of Cups",
+    "image": "/character-images/tarot_tuvi/cards/cups_14_king_of_cups.webp"
+  },
+  {
+    "id": "pentacles_01_ace_of_pentacles",
+    "name": "Ace of Pentacles",
+    "image": "/character-images/tarot_tuvi/cards/pentacles_01_ace_of_pentacles.webp"
+  },
+  {
+    "id": "pentacles_02_two_of_pentacles",
+    "name": "Two of Pentacles",
+    "image": "/character-images/tarot_tuvi/cards/pentacles_02_two_of_pentacles.webp"
+  },
+  {
+    "id": "pentacles_03_three_of_pentacles",
+    "name": "Three of Pentacles",
+    "image": "/character-images/tarot_tuvi/cards/pentacles_03_three_of_pentacles.webp"
+  },
+  {
+    "id": "pentacles_04_four_of_pentacles",
+    "name": "Four of Pentacles",
+    "image": "/character-images/tarot_tuvi/cards/pentacles_04_four_of_pentacles.webp"
+  },
+  {
+    "id": "pentacles_05_five_of_pentacles",
+    "name": "Five of Pentacles",
+    "image": "/character-images/tarot_tuvi/cards/pentacles_05_five_of_pentacles.webp"
+  },
+  {
+    "id": "pentacles_06_six_of_pentacles",
+    "name": "Six of Pentacles",
+    "image": "/character-images/tarot_tuvi/cards/pentacles_06_six_of_pentacles.webp"
+  },
+  {
+    "id": "pentacles_07_seven_of_pentacles",
+    "name": "Seven of Pentacles",
+    "image": "/character-images/tarot_tuvi/cards/pentacles_07_seven_of_pentacles.webp"
+  },
+  {
+    "id": "pentacles_08_eight_of_pentacles",
+    "name": "Eight of Pentacles",
+    "image": "/character-images/tarot_tuvi/cards/pentacles_08_eight_of_pentacles.webp"
+  },
+  {
+    "id": "pentacles_09_nine_of_pentacles",
+    "name": "Nine of Pentacles",
+    "image": "/character-images/tarot_tuvi/cards/pentacles_09_nine_of_pentacles.webp"
+  },
+  {
+    "id": "pentacles_10_ten_of_pentacles",
+    "name": "Ten of Pentacles",
+    "image": "/character-images/tarot_tuvi/cards/pentacles_10_ten_of_pentacles.webp"
+  },
+  {
+    "id": "pentacles_11_page_of_pentacles",
+    "name": "Page of Pentacles",
+    "image": "/character-images/tarot_tuvi/cards/pentacles_11_page_of_pentacles.webp"
+  },
+  {
+    "id": "pentacles_12_knight_of_pentacles",
+    "name": "Knight of Pentacles",
+    "image": "/character-images/tarot_tuvi/cards/pentacles_12_knight_of_pentacles.webp"
+  },
+  {
+    "id": "pentacles_13_queen_of_pentacles",
+    "name": "Queen of Pentacles",
+    "image": "/character-images/tarot_tuvi/cards/pentacles_13_queen_of_pentacles.webp"
+  },
+  {
+    "id": "pentacles_14_king_of_pentacles",
+    "name": "King of Pentacles",
+    "image": "/character-images/tarot_tuvi/cards/pentacles_14_king_of_pentacles.webp"
+  },
+  {
+    "id": "swords_01_ace_of_swords",
+    "name": "Ace of Swords",
+    "image": "/character-images/tarot_tuvi/cards/swords_01_ace_of_swords.webp"
+  },
+  {
+    "id": "swords_02_two_of_swords",
+    "name": "Two of Swords",
+    "image": "/character-images/tarot_tuvi/cards/swords_02_two_of_swords.webp"
+  },
+  {
+    "id": "swords_03_three_of_swords",
+    "name": "Three of Swords",
+    "image": "/character-images/tarot_tuvi/cards/swords_03_three_of_swords.webp"
+  },
+  {
+    "id": "swords_04_four_of_swords",
+    "name": "Four of Swords",
+    "image": "/character-images/tarot_tuvi/cards/swords_04_four_of_swords.webp"
+  },
+  {
+    "id": "swords_05_five_of_swords",
+    "name": "Five of Swords",
+    "image": "/character-images/tarot_tuvi/cards/swords_05_five_of_swords.webp"
+  },
+  {
+    "id": "swords_06_six_of_swords",
+    "name": "Six of Swords",
+    "image": "/character-images/tarot_tuvi/cards/swords_06_six_of_swords.webp"
+  },
+  {
+    "id": "swords_07_seven_of_swords",
+    "name": "Seven of Swords",
+    "image": "/character-images/tarot_tuvi/cards/swords_07_seven_of_swords.webp"
+  },
+  {
+    "id": "swords_08_eight_of_swords",
+    "name": "Eight of Swords",
+    "image": "/character-images/tarot_tuvi/cards/swords_08_eight_of_swords.webp"
+  },
+  {
+    "id": "swords_09_nine_of_swords",
+    "name": "Nine of Swords",
+    "image": "/character-images/tarot_tuvi/cards/swords_09_nine_of_swords.webp"
+  },
+  {
+    "id": "swords_10_ten_of_swords",
+    "name": "Ten of Swords",
+    "image": "/character-images/tarot_tuvi/cards/swords_10_ten_of_swords.webp"
+  },
+  {
+    "id": "swords_11_page_of_swords",
+    "name": "Page of Swords",
+    "image": "/character-images/tarot_tuvi/cards/swords_11_page_of_swords.webp"
+  },
+  {
+    "id": "swords_12_knight_of_swords",
+    "name": "Knight of Swords",
+    "image": "/character-images/tarot_tuvi/cards/swords_12_knight_of_swords.webp"
+  },
+  {
+    "id": "swords_13_queen_of_swords",
+    "name": "Queen of Swords",
+    "image": "/character-images/tarot_tuvi/cards/swords_13_queen_of_swords.webp"
+  },
+  {
+    "id": "swords_14_king_of_swords",
+    "name": "King of Swords",
+    "image": "/character-images/tarot_tuvi/cards/swords_14_king_of_swords.webp"
+  },
+  {
+    "id": "wands_01_ace_of_wands",
+    "name": "Ace of Wands",
+    "image": "/character-images/tarot_tuvi/cards/wands_01_ace_of_wands.webp"
+  },
+  {
+    "id": "wands_02_two_of_wands",
+    "name": "Two of Wands",
+    "image": "/character-images/tarot_tuvi/cards/wands_02_two_of_wands.webp"
+  },
+  {
+    "id": "wands_03_three_of_wands",
+    "name": "Three of Wands",
+    "image": "/character-images/tarot_tuvi/cards/wands_03_three_of_wands.webp"
+  },
+  {
+    "id": "wands_04_four_of_wands",
+    "name": "Four of Wands",
+    "image": "/character-images/tarot_tuvi/cards/wands_04_four_of_wands.webp"
+  },
+  {
+    "id": "wands_05_five_of_wands",
+    "name": "Five of Wands",
+    "image": "/character-images/tarot_tuvi/cards/wands_05_five_of_wands.webp"
+  },
+  {
+    "id": "wands_06_six_of_wands",
+    "name": "Six of Wands",
+    "image": "/character-images/tarot_tuvi/cards/wands_06_six_of_wands.webp"
+  },
+  {
+    "id": "wands_07_seven_of_wands",
+    "name": "Seven of Wands",
+    "image": "/character-images/tarot_tuvi/cards/wands_07_seven_of_wands.webp"
+  },
+  {
+    "id": "wands_08_eight_of_wands",
+    "name": "Eight of Wands",
+    "image": "/character-images/tarot_tuvi/cards/wands_08_eight_of_wands.webp"
+  },
+  {
+    "id": "wands_09_nine_of_wands",
+    "name": "Nine of Wands",
+    "image": "/character-images/tarot_tuvi/cards/wands_09_nine_of_wands.webp"
+  },
+  {
+    "id": "wands_10_ten_of_wands",
+    "name": "Ten of Wands",
+    "image": "/character-images/tarot_tuvi/cards/wands_10_ten_of_wands.webp"
+  },
+  {
+    "id": "wands_11_page_of_wands",
+    "name": "Page of Wands",
+    "image": "/character-images/tarot_tuvi/cards/wands_11_page_of_wands.webp"
+  },
+  {
+    "id": "wands_12_knight_of_wands",
+    "name": "Knight of Wands",
+    "image": "/character-images/tarot_tuvi/cards/wands_12_knight_of_wands.webp"
+  },
+  {
+    "id": "wands_13_queen_of_wands",
+    "name": "Queen of Wands",
+    "image": "/character-images/tarot_tuvi/cards/wands_13_queen_of_wands.webp"
+  },
+  {
+    "id": "wands_14_king_of_wands",
+    "name": "King of Wands",
+    "image": "/character-images/tarot_tuvi/cards/wands_14_king_of_wands.webp"
+  }
+]

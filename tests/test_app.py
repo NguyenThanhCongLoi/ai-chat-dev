@@ -1010,21 +1010,16 @@ def test_suggestion_client_latency_is_separate_owned_and_write_once():
 @pytest.mark.parametrize("transport", ["direct","modal"])
 def test_assistant_cms_permission_and_each_selected_model_parameters(monkeypatch,pick,transport):
     monkeypatch.setenv("CHAT_TRANSPORT",transport)
-    import modal
     import character_chat.main as main
     isolated=create_engine("sqlite://",connect_args={"check_same_thread":False},poolclass=StaticPool)
     Base.metadata.create_all(isolated);Local=sessionmaker(isolated,expire_on_commit=False)
     calls=[]
-    class Call:
-        def get(self,timeout):return "Answer"
-    class Worker:
-        def spawn(self,*args):calls.append(args);return Call()
-    monkeypatch.setattr(modal.Function,"from_name",lambda *args:Worker())
     def complete(*args):calls.append(args);return "Answer"
     monkeypatch.setattr(main,"direct_completion",complete)
     monkeypatch.setattr(main,"model_circuit_remaining",lambda model:0)
     monkeypatch.setattr(main,"credential_for_model",lambda db,item:"test-key")
     monkeypatch.setattr(main,"record_model_success",lambda model:None)
+    monkeypatch.setattr(main,"record_model_failure",lambda *args:None)
     with Local() as db:
         primary=ModelConfig(id="task-main",name="Task",provider="test",model_id="same-wire",api_base="https://task.invalid")
         chosen=ModelConfig(id="user-pick",name="Chosen",provider="test",model_id="same-wire",api_base="https://chosen.invalid")
@@ -1038,6 +1033,12 @@ def test_assistant_cms_permission_and_each_selected_model_parameters(monkeypatch
         assert bool(available) is pick
         preferred=main.assistant_preferred_model(db,"assistant_health","user-pick")
         assert preferred==("user-pick" if pick else "")
+        # This branch has removed the CPU Modal transport: reject it without calling a provider.
+        if transport == "modal":
+            with pytest.raises(RuntimeError, match="CHAT_TRANSPORT=direct"):
+                main.run_assistant_model_chain(db,[primary,chosen],"assistant_health","prompt",[],"",preferred_model_id=preferred)
+            assert not calls
+            return
         answer,meta=main.run_assistant_model_chain(db,[primary,chosen],"assistant_health","prompt",[],"",preferred_model_id=preferred)
         assert answer=="Answer"
         assert calls[0][2]==("https://chosen.invalid" if pick else "https://task.invalid")

@@ -585,3 +585,11 @@ Modal web đóng gói frontend/dist và source API; cần deploy sau build để
 | modal_app.py, modal_reactions.py | Cấu hình tài nguyên, container, worker và đóng gói. |
 
 Các tài liệu docs được dùng tham khảo nhưng có chỗ đã cũ; báo cáo ưu tiên mã hiện tại. Kèm AI_COMPANION_API_INVENTORY.csv trích từ decorator toàn cây module, gồm file, dòng, method, path và hàm xử lý; không phải schema đã chạy hay bằng chứng endpoint production hoạt động.
+
+## Cập nhật 14/10/2026: Tarot / Tử vi
+Assistant có màn chọn Tarot/Tử vi huyền bí dùng ảnh có sẵn, normal/back-to-face flip rồi mở chat. Hai purpose assistant_tarot/assistant_tuvi tách prompt/model và fallback trong CMS. Backend quản bộ78lá theo room trong AppSetting; rút không hoàn lại và chiều ngược/xuôi ngẫu nhiên. Eventtarot đi trước text; kết quả lưu Message.sources và hiển thị bằng ảnh. Nút reset có xác nhận, xóa chat Tarot trong phòng và tạo bộ mới; memory thủ công/uploads/config giữ. Modelreply muộn saureset bị bỏ. Không thay schemaDB. Xem [ASSISTANT_DIVINATION.md](ASSISTANT_DIVINATION.md) cho giới hạn và kiểm thử.
+
+
+## Server riêng — selfhost/dev (14/10/2026)
+
+Xem SELF_HOSTED_DEPLOYMENT.md. Bản CPU chạy chat trực tiếp qua provider API, không có SDK Modal trong Docker, chặn transport/token cũ. GPU reaction/Laya giữ nguyên code và chưa migration. Router dùng local, clip cũ vẫn được lưu/phát, tạo reaction mới tắt. Không tự đổi SQLite sang PostgreSQL. Docker image Linux được cấu hình kiểm tra qua workflow selfhost.yml; máy phát triển hiện chưa có Docker nên chưa xác minh container locally.

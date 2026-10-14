@@ -6,6 +6,7 @@ dependencies = ["fastapi>=0.115", "uvicorn>=0.30", "sqlalchemy>=2", "pydantic>=2
 
 [project.optional-dependencies]
 dev = ["pytest>=8"]
+# Retained only for legacy GPU deployments; the standalone Docker image does not install this extra.
 modal = ["modal>=1.5"]
 
 [build-system]
@@ -15,3 +16,6 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["character_chat*"]
+
+[tool.setuptools.package-data]
+character_chat = ["tarot_deck.json"]

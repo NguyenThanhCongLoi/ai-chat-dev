@@ -35,3 +35,6 @@ sound_effect/*.zip
 
 .env.*
 deploy/service.env
+
+# Extracted Tarot cards are release assets; the source archive is not needed.
+image/tarot_tuvi/tarot/*.zip

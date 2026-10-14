@@ -111,7 +111,7 @@ def bind_purge_message_dependents(runtime: ModuleType) -> None:
         db.query(runtime.RoomDocument).filter_by(room_id=room_id).delete()
         db.query(runtime.RoomMember).filter_by(room_id=room_id).delete()
         db.query(runtime.AppSetting).filter(
-            runtime.AppSetting.key == "room_topic:" + room_id
+            runtime.AppSetting.key.in_(["room_topic:" + room_id, "tarot_session:" + room_id])
         ).delete()
         db.delete(room)
         db.flush()

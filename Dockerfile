@@ -8,11 +8,11 @@ COPY docs/UI_LOCALIZATION_STYLE.md /build/docs/UI_LOCALIZATION_STYLE.md
 RUN npm run build
 
 FROM python:3.12-slim-bookworm AS runtime
-ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 DATA_DIR=/data FRONTEND_DIST=/app/frontend/dist CHARACTER_IMAGE_DIR=/app/image DEMO_AUTH_ENABLED=false CHAT_TRANSPORT=direct GROUP_ROUTER_MODE=local ROLEPLAY_MUSIC_DIR=/media/music
+ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 DATA_DIR=/data FRONTEND_DIST=/app/frontend/dist CHARACTER_IMAGE_DIR=/app/image DEMO_AUTH_ENABLED=false CHAT_TRANSPORT=direct GROUP_ROUTER_MODE=local GROUP_ROUTER_TRANSPORT=http REACTION_GENERATOR_MODE=disabled AVATAR_GENERATOR_MODE=default ROLEPLAY_MUSIC_DIR=/media/music
 WORKDIR /app
 COPY pyproject.toml ./
 COPY character_chat/ ./character_chat/
-RUN pip install --no-cache-dir ".[modal]"
+RUN pip install --no-cache-dir "."
 COPY --from=ui /build/frontend/dist ./frontend/dist/
 COPY image/ ./image/
 COPY sound_effect/ ./sound_effect/

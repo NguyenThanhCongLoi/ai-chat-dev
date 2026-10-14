@@ -1,3 +1,11 @@
+# Bản server riêng: selfhost/dev
+
+Để chạy bản CPU không gọi Modal, xem [SELF_HOSTED_DEPLOYMENT.md](docs/SELF_HOSTED_DEPLOYMENT.md). Docker image không cài SDK Modal; entrypoint chặn cấu hình cũ. GPU Chatterbox/Laya giữ nguyên code và chưa chuyển trong đợt này. Các hướng dẫn Modal bên dưới là tài liệu triển khai cũ.
+
+## Tarot và Tử vi trong Assistant
+
+Xem [ASSISTANT_DIVINATION.md](docs/ASSISTANT_DIVINATION.md) cho màn chọn hai chế độ, bộ 78 lá, rút tiếp không trùng, reset lượt và prompt/model CMS riêng.
+
 # Báo cáo hệ thống
 
 Xem [AI_COMPANION_SYSTEM_REPORT.md](docs/AI_COMPANION_SYSTEM_REPORT.md) cho tính năng, thuật toán, luồng dữ liệu và giới hạn hiện tại.

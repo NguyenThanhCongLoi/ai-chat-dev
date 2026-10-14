@@ -1,3 +1,4 @@
+from character_chat.divination import prepare_tarot, bootstrap_tuvi_models, reading_is_current
 """api.assistant_chat: domain-specific application implementation.
 
 Assistant response endpoints, preserving nonstream and SSE behavior.
@@ -22,6 +23,7 @@ def bind_send_assistant_message(runtime: ModuleType) -> None:
     ):
         room = runtime.assistant_room(db, user, room_id)
         mode = room.name.split(":", 2)[1]
+        bootstrap_tuvi_models(db, runtime.model_profile)
         text = str(data.get("message") or "").strip()[:12000]
         if not text:
             raise runtime.HTTPException(400, "Message is required")
@@ -107,7 +109,11 @@ def bind_send_assistant_message(runtime: ModuleType) -> None:
         prompt = runtime.effective_project_prompt(
             runtime.ASSISTANT_PROMPTS[mode], profile.get(mode + "_instruction", "")
         )
+        divination_prompt, tarot_spread = prepare_tarot(mode, text, history, db, room.id)
+        if tarot_spread:
+            sources = [*sources, tarot_spread]
         system_context = (
+            divination_prompt +
             "\n\nTask pipeline rules:\n"
             + runtime.task_guardrail(mode, text)
             + (
@@ -212,6 +218,8 @@ def bind_send_assistant_message(runtime: ModuleType) -> None:
         suggestions, suggestion_meta = runtime.finalize_suggestions(
             suggestions, text, runtime.preferred_language(db, user)[0], suggestion_meta
         )
+        if mode == "assistant_tarot" and not reading_is_current(db, room.id, tarot_spread, user_message.id):
+            raise runtime.HTTPException(409, "Lượt rút đã được làm mới. Hãy gửi lại câu hỏi.")
         reply = runtime.Message(
             id=runtime.uid(),
             room_id=room.id,
@@ -270,6 +278,7 @@ def bind_send_assistant_message(runtime: ModuleType) -> None:
     ):
         room = runtime.assistant_room(db, user, room_id)
         mode = room.name.split(":", 2)[1]
+        bootstrap_tuvi_models(db, runtime.model_profile)
         text = str(data.get("message") or "").strip()[:12000]
         if not text:
             raise runtime.HTTPException(400, "Message is required")
@@ -371,7 +380,11 @@ def bind_send_assistant_message(runtime: ModuleType) -> None:
         prompt_slots = (prompt_slots + [0, 1, 2])[:3]
         if not candidates[0]:
             raise runtime.HTTPException(503, "Chưa phân công model cho AI Assistant")
+        divination_prompt, tarot_spread = prepare_tarot(mode, text, history, db, room.id)
+        if tarot_spread:
+            sources = [*sources, tarot_spread]
         system_context = (
+            divination_prompt +
             "\n\nTask pipeline rules:\n"
             + runtime.task_guardrail(mode, text)
             + (
@@ -428,6 +441,8 @@ def bind_send_assistant_message(runtime: ModuleType) -> None:
 
         def event_body():
             nonlocal suggestion_future
+            if tarot_spread:
+                yield "event: tarot\ndata: " + runtime.json.dumps(tarot_spread, ensure_ascii=False) + "\n\n"
             response_waits = [
                 int(
                     runtime.model_profile(db, item).get(
@@ -794,6 +809,9 @@ def bind_send_assistant_message(runtime: ModuleType) -> None:
                     suggestion_cancel.set()
                     suggestion_future.cancel()
                 suggestion_pool.shutdown(wait=False, cancel_futures=True)
+                if mode == "assistant_tarot" and not reading_is_current(db, room.id, tarot_spread, user_message.id):
+                    yield 'event: error\ndata: {"message":"Lượt rút đã được làm mới. Hãy gửi lại câu hỏi."}\n\n'
+                    return
                 reply = runtime.Message(
                     id=reply_id,
                     room_id=room.id,
@@ -840,6 +858,9 @@ def bind_send_assistant_message(runtime: ModuleType) -> None:
                     },
                     ensure_ascii=False,
                 ) + "\n\n"
+                return
+            if mode == "assistant_tarot" and not reading_is_current(db, room.id, tarot_spread, user_message.id):
+                yield 'event: error\ndata: {"message":"Lượt rút đã được làm mới. Hãy gửi lại câu hỏi."}\n\n'
                 return
             reply = runtime.Message(
                 id=reply_id,

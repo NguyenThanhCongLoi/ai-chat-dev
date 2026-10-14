@@ -1,7 +1,7 @@
 services:
   companion:
     build: .
-    image: ai-companion:ver1-service
+    image: ai-companion:selfhost-dev
     restart: unless-stopped
     env_file: deploy/service.env
     ports:
@@ -11,3 +11,8 @@ services:
       - ./music_backgr/mp3:/media/music:ro
     init: true
     stop_grace_period: 45s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

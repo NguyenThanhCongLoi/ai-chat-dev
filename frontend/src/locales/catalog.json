@@ -140,6 +140,10 @@
     "en": "What would you like to start with?"
   },
   {
+    "source": "Bạn muốn khám phá điều gì? Hãy gửi thông tin hoặc lá số để cùng chiêm nghiệm.",
+    "en": ""
+  },
+  {
     "source": "Bắt đầu cuộc trò chuyện",
     "en": "Start the conversation"
   },
@@ -216,6 +220,10 @@
     "en": ""
   },
   {
+    "source": "Các lá bài được rút",
+    "en": ""
+  },
+  {
     "source": "Cài đặt",
     "en": "Settings"
   },
@@ -229,6 +237,10 @@
   },
   {
     "source": "Căng thẳng",
+    "en": ""
+  },
+  {
+    "source": "Cần thông tin gì để xem Tử vi?",
     "en": ""
   },
   {
@@ -288,6 +300,10 @@
     "en": "Use only in this task"
   },
   {
+    "source": "Chiêm nghiệm Tử vi và Bát Tự",
+    "en": ""
+  },
+  {
     "source": "Cho phép AI Assistant ghi nhớ điều bạn chủ động lưu",
     "en": "Allow AI Assistant to use details you explicitly save"
   },
@@ -316,6 +332,10 @@
     "en": "Choose your space"
   },
   {
+    "source": "Chọn lá bài để bước vào không gian của bạn.",
+    "en": ""
+  },
+  {
     "source": "Chọn một người phù hợp với tâm trạng, học tập hoặc công việc của bạn.",
     "en": "Choose someone for your mood, studies or work."
   },
@@ -325,6 +345,10 @@
   },
   {
     "source": "Chọn nhân vật từ bộ sưu tập để tạo phòng chat.",
+    "en": ""
+  },
+  {
+    "source": "Chọn Tarot hoặc Tử vi",
     "en": ""
   },
   {
@@ -632,6 +656,10 @@
     "en": "Sign out"
   },
   {
+    "source": "Đặt câu hỏi hoặc chọn một trải bài Tarot…",
+    "en": ""
+  },
+  {
     "source": "Đặt riêng tư",
     "en": ""
   },
@@ -674,6 +702,10 @@
   {
     "source": "Đọc dấu hiệu để hiểu mình, không để số phận viết thay.",
     "en": "Read the signs to understand yourself, never to let fate write your story."
+  },
+  {
+    "source": "Đọc dấu hiệu, hiểu lựa chọn của mình.",
+    "en": ""
   },
   {
     "source": "Đọc giúp chỉ số xét nghiệm",
@@ -748,8 +780,16 @@
     "en": ""
   },
   {
+    "source": "Giải thích lá số của mình",
+    "en": ""
+  },
+  {
     "source": "Giải thích một khái niệm khó",
     "en": "Explain a tricky concept"
+  },
+  {
+    "source": "Giải thích trải bài vừa rút",
+    "en": ""
   },
   {
     "source": "Giải thích từng bước từ tài liệu của bạn",
@@ -1084,6 +1124,18 @@
     "en": ""
   },
   {
+    "source": "Lá bài còn lại",
+    "en": ""
+  },
+  {
+    "source": "Làm mới lượt rút",
+    "en": ""
+  },
+  {
+    "source": "Làm mới lượt rút sẽ xóa lịch sử Tarot trong phòng này. Tiếp tục?",
+    "en": ""
+  },
+  {
     "source": "Làm sao để ngủ ngon hơn?",
     "en": ""
   },
@@ -1224,6 +1276,10 @@
     "en": "One question can open a new possibility."
   },
   {
+    "source": "Một khoảng lặng để khám phá",
+    "en": ""
+  },
+  {
     "source": "Một tài khoản, hai không gian AI dành cho những nhu cầu khác nhau.",
     "en": "One account, two AI spaces for different needs."
   },
@@ -1277,6 +1333,10 @@
   },
   {
     "source": "Nguồn (",
+    "en": ""
+  },
+  {
+    "source": "Ngược",
     "en": ""
   },
   {
@@ -1988,6 +2048,14 @@
     "en": "Wellbeing support"
   },
   {
+    "source": "Tử vi",
+    "en": ""
+  },
+  {
+    "source": "Tử vi và Bát Tự",
+    "en": ""
+  },
+  {
     "source": "Từng nhân vật gửi lời chào đầu tiên.",
     "en": ""
   },
@@ -2101,6 +2169,10 @@
   },
   {
     "source": "Xu hướng",
+    "en": ""
+  },
+  {
+    "source": "Xuôi",
     "en": ""
   },
   {
