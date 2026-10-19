@@ -46,7 +46,12 @@ volume=modal.Volume.from_name("character-chat-data",create_if_missing=True)
 llm_secret=modal.Secret.from_name("character-chat-llm")
 moderation_secret=modal.Secret.from_name("character-chat-moderation")
 docs_secret=modal.Secret.from_name("character-chat-docs")
-api_image=modal.Image.debian_slim(python_version="3.12").pip_install("fastapi>=0.115","uvicorn>=0.30","sqlalchemy>=2","pydantic>=2","python-multipart>=0.0.9","httpx>=0.27","pillow>=10.4","pymupdf>=1.24","python-docx>=1.1","python-pptx>=1.0","openpyxl>=3.1","cryptography>=43","modal>=1.5,<2").add_local_dir("character_chat",remote_path="/root/character_chat").add_local_dir("frontend/dist",remote_path="/root/frontend/dist").add_local_dir("image",remote_path="/root/image")
+# Private .env is read locally; only explicit JEV variables become a runtime
+# secret. The file itself is never bundled in the image.
+from character_chat import jev as jev_config
+jev_env = {name: os.environ[name] for name in jev_config.ENV_NAMES if os.environ.get(name)}
+jev_secrets = [modal.Secret.from_dict(jev_env)] if jev_env else []
+api_image=modal.Image.debian_slim(python_version="3.12").pip_install("fastapi>=0.115","uvicorn>=0.30","sqlalchemy>=2","pydantic>=2","python-multipart>=0.0.9","httpx>=0.27","pillow>=10.4","pymupdf>=1.24","python-docx>=1.1","python-pptx>=1.0","openpyxl>=3.1","cryptography>=43","modal>=1.5,<2").add_local_dir("character_chat",remote_path="/root/character_chat",ignore=["**/__pycache__/**","**/*.pyc"]).add_local_dir("frontend/dist",remote_path="/root/frontend/dist").add_local_dir("image",remote_path="/root/image",ignore=["video/*.mp4","worlds/selene/moonfall/backgrounds/echoes_videos/videos/final/events/*.mp4","worlds/selene/moonfall/props/*.png","worlds/selene/moonfall/props/*.webp"])
 api_image=api_image.add_local_file(str(PROJECT_DIR/"docs"/"UI_LOCALIZATION_STYLE.md"),remote_path="/root/docs/UI_LOCALIZATION_STYLE.md")
 if (PROJECT_DIR/"music_backgr"/"mp3").is_dir():
     api_image=api_image.add_local_dir(str(PROJECT_DIR/"music_backgr"/"mp3"),remote_path="/root/music_backgr/mp3")
@@ -149,7 +154,7 @@ def process_avatar(content:bytes,model:str="",api_base:str="",api_key:str=""):
     try:return {"images":build_ai_expression_variants(content,model,api_base,api_key),"generated":True,"error":""}
     except Exception as exc:return {"images":build_expression_variants(content),"generated":False,"error":str(exc)[:500]}
 
-@app.function(image=api_image,min_containers=0,scaledown_window=2,timeout=21600,volumes={"/data":volume},secrets=[llm_secret,moderation_secret,docs_secret],env={"DATA_DIR":"/data","LLM_API_BASE":"https://gateway.avibi.ai/v1","CHARACTER_IMAGE_DIR":"/root/image","AVATAR_MODAL_FUNCTION":"process_avatar"})
+@app.function(image=api_image,min_containers=0,scaledown_window=2,timeout=21600,volumes={"/data":volume},secrets=[llm_secret,moderation_secret,docs_secret]+jev_secrets,env={"DATA_DIR":"/data","LLM_API_BASE":"https://gateway.avibi.ai/v1","CHARACTER_IMAGE_DIR":"/root/image","AVATAR_MODAL_FUNCTION":"process_avatar"})
 def backfill_avatars(target_name:str="",max_groups:int=0):
     """Durable migration job for existing characters; run outside the web lifecycle."""
     from character_chat.main import backfill_character_expressions,ensure_model_registry
@@ -160,7 +165,7 @@ def backfill_avatars(target_name:str="",max_groups:int=0):
     volume.commit()
     with Session() as db:return {"assets":db.query(CharacterExpressionAsset).count(),"target_name":target_name}
 
-@app.function(image=api_image,min_containers=0,scaledown_window=2,timeout=21600,volumes={"/data":volume},secrets=[llm_secret,moderation_secret,docs_secret],env={"DATA_DIR":"/data","LLM_API_BASE":"https://gateway.avibi.ai/v1","CHARACTER_IMAGE_DIR":"/root/image","AVATAR_MODAL_FUNCTION":"process_avatar"})
+@app.function(image=api_image,min_containers=0,scaledown_window=2,timeout=21600,volumes={"/data":volume},secrets=[llm_secret,moderation_secret,docs_secret]+jev_secrets,env={"DATA_DIR":"/data","LLM_API_BASE":"https://gateway.avibi.ai/v1","CHARACTER_IMAGE_DIR":"/root/image","AVATAR_MODAL_FUNCTION":"process_avatar"})
 def regenerate_avatar(character_id:str):
     """Regenerate one exact character instead of selecting by display name."""
     from character_chat.main import regenerate_character_expression_set,ensure_model_registry
@@ -235,7 +240,7 @@ def optimize_assistant_images():
 
 # SQLite on a Modal Volume must have a single writer/view. Request concurrency
 # remains high inside this container through @modal.concurrent below.
-@app.function(image=api_image,volumes={"/data":volume},secrets=[llm_secret,moderation_secret,docs_secret],timeout=600,scaledown_window=2,min_containers=1,max_containers=1,env={"DATA_DIR":"/data","DEMO_AUTH_ENABLED":"false","LLM_PROVIDER":"api","LLM_API_BASE":"https://gateway.avibi.ai/v1","LLM_MODEL":"openai/gpt-4.1-mini","LLM_FALLBACK_MODEL":"","MODERATION_MODEL":"","OPENAI_MODERATION_API_BASE":"https://api.openai.com/v1","FRONTEND_DIST":"/root/frontend/dist","CHARACTER_IMAGE_DIR":"/root/image","AVATAR_MODAL_FUNCTION":"process_avatar","BUILD_VERSION":BUILD_VERSION,"GROUP_ROUTER_MODE":os.getenv("GROUP_ROUTER_MODE","local"),"GROUP_ROUTER_TRANSPORT":os.getenv("GROUP_ROUTER_TRANSPORT","modal"),"GROUP_ROUTER_MODAL_APP":os.getenv("GROUP_ROUTER_MODAL_APP","character-chat-group-router"),"GROUP_ROUTER_API_BASE":os.getenv("GROUP_ROUTER_API_BASE",""),"GROUP_ROUTER_TIMEOUT_SECONDS":os.getenv("GROUP_ROUTER_TIMEOUT_SECONDS","1.5"),"GROUP_ROUTER_MIN_PROBABILITY":os.getenv("GROUP_ROUTER_MIN_PROBABILITY","0.65")})
+@app.function(image=api_image,volumes={"/data":volume},secrets=[llm_secret,moderation_secret,docs_secret]+jev_secrets,timeout=600,scaledown_window=2,min_containers=1,max_containers=1,env={"DATA_DIR":"/data","WORLD_DEMO_ENABLED":os.getenv("WORLD_DEMO_ENABLED","true"),"WORLD_CHAPTER_PREPARE_ON_STARTUP":"true","DEMO_AUTH_ENABLED":"false","LLM_PROVIDER":"api","LLM_API_BASE":"https://gateway.avibi.ai/v1","LLM_MODEL":"openai/gpt-4.1-mini","LLM_FALLBACK_MODEL":"","MODERATION_MODEL":"","OPENAI_MODERATION_API_BASE":"https://api.openai.com/v1","FRONTEND_DIST":"/root/frontend/dist","CHARACTER_IMAGE_DIR":"/root/image","AVATAR_MODAL_FUNCTION":"process_avatar","BUILD_VERSION":BUILD_VERSION,"GROUP_ROUTER_MODE":os.getenv("GROUP_ROUTER_MODE","local"),"GROUP_ROUTER_TRANSPORT":os.getenv("GROUP_ROUTER_TRANSPORT","modal"),"GROUP_ROUTER_MODAL_APP":os.getenv("GROUP_ROUTER_MODAL_APP","character-chat-group-router"),"GROUP_ROUTER_API_BASE":os.getenv("GROUP_ROUTER_API_BASE",""),"GROUP_ROUTER_TIMEOUT_SECONDS":os.getenv("GROUP_ROUTER_TIMEOUT_SECONDS","1.5"),"GROUP_ROUTER_MIN_PROBABILITY":os.getenv("GROUP_ROUTER_MIN_PROBABILITY","0.65")})
 @modal.concurrent(max_inputs=20,target_inputs=12)
 @modal.asgi_app()
 def web():

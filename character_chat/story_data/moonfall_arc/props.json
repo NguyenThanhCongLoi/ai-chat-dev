@@ -1,0 +1,374 @@
+{
+  "version": "props-20261018-new-21eae014be-ch2-petal1",
+  "hotspots": {
+    "selene_01_old_gate": {
+      "scene": "ancient_gate",
+      "background": "ancient_gate",
+      "asset": "ch01_gate_lock",
+      "x": 0.472,
+      "y": 0.545,
+      "width": 0.055,
+      "height": 0.1,
+      "mode": "wall"
+    },
+    "selene_01_collapsed_path": {
+      "scene": "ancient_gate",
+      "background": "ancient_gate",
+      "asset": "ch01_collapsed_path",
+      "x": 0.18,
+      "y": 0.72,
+      "width": 0.25,
+      "height": 0.23,
+      "mode": "floor"
+    },
+    "selene_01_broken_statue": {
+      "scene": "outer_ruins",
+      "background": "moonfall_outer_ruins",
+      "asset": "ch01_broken_statue",
+      "x": 0.1,
+      "y": 0.25,
+      "width": 0.18,
+      "height": 0.59,
+      "mode": "floor"
+    },
+    "selene_01_rune_wall": {
+      "scene": "outer_ruins",
+      "background": "moonfall_outer_ruins",
+      "asset": "ch01_rune_wall",
+      "x": 0.45,
+      "y": 0.27,
+      "width": 0.13,
+      "height": 0.4,
+      "mode": "wall"
+    },
+    "selene_02_pendant": {
+      "scene": "inner_ruins",
+      "background": "inner_ruins",
+      "asset": "ch02_silver_pendant_scene",
+      "x": 0.24,
+      "y": 0.66,
+      "width": 0.2,
+      "height": 0.26,
+      "mode": "floor"
+    },
+    "selene_02_moonflower": {
+      "scene": "inner_ruins",
+      "background": "inner_ruins",
+      "asset": "ch02_petal_under_stone",
+      "x": 0.51,
+      "y": 0.76,
+      "width": 0.14,
+      "height": 0.17,
+      "mode": "floor"
+    },
+    "selene_02_journal": {
+      "scene": "archive",
+      "background": "ancient_archive",
+      "asset": "ch02_ancient_journal",
+      "x": 0.28,
+      "y": 0.63,
+      "width": 0.115,
+      "height": 0.13,
+      "mode": "floor"
+    },
+    "selene_02_torn_page": {
+      "scene": "archive",
+      "background": "ancient_archive",
+      "asset": "ch02_torn_diary_page",
+      "x": 0.6,
+      "y": 0.73,
+      "width": 0.075,
+      "height": 0.09,
+      "mode": "table"
+    },
+    "selene_03_ritual_circle": {
+      "scene": "chamber",
+      "background": "underground_chamber",
+      "asset": "ch03_ritual_circle",
+      "x": 0.41,
+      "y": 0.56,
+      "width": 0.3,
+      "height": 0.11,
+      "mode": "floor_flat"
+    },
+    "selene_03_blood_rune": {
+      "scene": "chamber",
+      "background": "underground_chamber",
+      "asset": "ch03_red_rune",
+      "x": 0.525,
+      "y": 0.595,
+      "width": 0.07,
+      "height": 0.04,
+      "mode": "floor_flat"
+    },
+    "selene_03_burned_letter": {
+      "scene": "chamber",
+      "background": "underground_chamber",
+      "asset": "burned_letter",
+      "x": 0.14,
+      "y": 0.81,
+      "width": 0.12,
+      "height": 0.12,
+      "mode": "floor_flat"
+    },
+    "selene_03_council_seal": {
+      "scene": "chamber",
+      "background": "underground_chamber",
+      "asset": "council_seal",
+      "x": 0.62,
+      "y": 0.74,
+      "width": 0.09,
+      "height": 0.12,
+      "mode": "floor"
+    },
+    "selene_04_crystal": {
+      "scene": "past",
+      "background": "moonfall_past",
+      "asset": "ch04_crystal_fragment",
+      "x": 0.18,
+      "y": 0.73,
+      "width": 0.13,
+      "height": 0.22,
+      "mode": "floor"
+    },
+    "selene_04_echo": {
+      "scene": "past",
+      "background": "moonfall_past",
+      "asset": "ch04_shattered_echo",
+      "x": 0.43,
+      "y": 0.38,
+      "width": 0.16,
+      "height": 0.27,
+      "mode": "light"
+    },
+    "selene_04_tablet": {
+      "scene": "past",
+      "background": "moonfall_past",
+      "asset": "ch04_broken_tablet",
+      "x": 0.33,
+      "y": 0.65,
+      "width": 0.12,
+      "height": 0.28,
+      "mode": "floor"
+    },
+    "selene_04_corridor": {
+      "scene": "past",
+      "background": "moonfall_past",
+      "asset": "ch04_corridor_guiding_lights",
+      "x": 0.52,
+      "y": 0.67,
+      "width": 0.17,
+      "height": 0.23,
+      "mode": "light"
+    },
+    "selene_05_ink": {
+      "scene": "records",
+      "background": "ancient_archive",
+      "asset": "ch05_archive_record",
+      "x": 0.3,
+      "y": 0.686,
+      "width": 0.1,
+      "height": 0.055,
+      "mode": "table"
+    },
+    "selene_05_seal": {
+      "scene": "records",
+      "background": "ancient_archive",
+      "asset": "ch05_archive_record_detail_seal",
+      "x": 0.31,
+      "y": 0.708,
+      "width": 0.025,
+      "height": 0.025,
+      "mode": "detail"
+    },
+    "selene_05_timestamp": {
+      "scene": "records",
+      "background": "ancient_archive",
+      "asset": "ch05_archive_record_detail_edit_date",
+      "x": 0.37,
+      "y": 0.69,
+      "width": 0.025,
+      "height": 0.025,
+      "mode": "detail"
+    },
+    "selene_05_letter": {
+      "scene": "witch_house",
+      "background": "witch_area",
+      "asset": "ch05_elarion_letter",
+      "x": 0.36,
+      "y": 0.7,
+      "width": 0.09,
+      "height": 0.08,
+      "mode": "floor"
+    },
+    "selene_05_signature": {
+      "scene": "witch_house",
+      "background": "witch_area",
+      "asset": "ch05_elarion_letter_detail_signature",
+      "x": 0.415,
+      "y": 0.74,
+      "width": 0.025,
+      "height": 0.035,
+      "mode": "detail"
+    },
+    "selene_06_activation": {
+      "scene": "vault",
+      "background": "deep_vault",
+      "asset": "ch06_record_activation",
+      "x": 0.17,
+      "y": 0.32,
+      "width": 0.09,
+      "height": 0.49,
+      "mode": "floor"
+    },
+    "selene_06_barrier": {
+      "scene": "vault",
+      "background": "deep_vault",
+      "asset": "ch06_record_barrier",
+      "x": 0.61,
+      "y": 0.34,
+      "width": 0.085,
+      "height": 0.48,
+      "mode": "floor"
+    },
+    "selene_06_mirror": {
+      "scene": "vault",
+      "background": "deep_vault",
+      "asset": "ch06_mirror_shard",
+      "x": 0.31,
+      "y": 0.71,
+      "width": 0.19,
+      "height": 0.25,
+      "mode": "floor"
+    },
+    "selene_06_separation": {
+      "scene": "corridor",
+      "background": "memory_corridor",
+      "asset": "ch06_separation_mark",
+      "x": 0.16,
+      "y": 0.36,
+      "width": 0.13,
+      "height": 0.28,
+      "mode": "wall"
+    },
+    "selene_06_stops": {
+      "scene": "corridor",
+      "background": "memory_corridor",
+      "asset": "ch06_moonfall_end_mark",
+      "x": 0.42,
+      "y": 0.74,
+      "width": 0.16,
+      "height": 0.12,
+      "mode": "floor_flat"
+    },
+    "selene_07_altar": {
+      "scene": "temple",
+      "background": "moon_temple",
+      "asset": "ch07_four_item_altar",
+      "x": 0.27,
+      "y": 0.67,
+      "width": 0.29,
+      "height": 0.27,
+      "mode": "floor"
+    },
+    "selene_07_inscription": {
+      "scene": "temple",
+      "background": "moon_temple",
+      "asset": "ch07_moonlit_inscription",
+      "x": 0.12,
+      "y": 0.32,
+      "width": 0.12,
+      "height": 0.32,
+      "mode": "wall"
+    },
+    "selene_07_vessel": {
+      "scene": "pale_chamber",
+      "background": "pale_moon_chamber",
+      "asset": "ch07_vessel_mark",
+      "x": 0.22,
+      "y": 0.55,
+      "width": 0.14,
+      "height": 0.24,
+      "mode": "wall"
+    },
+    "selene_07_split": {
+      "scene": "pale_chamber",
+      "background": "pale_moon_chamber",
+      "asset": "ch07_fragment_boundaries",
+      "x": 0.43,
+      "y": 0.29,
+      "width": 0.21,
+      "height": 0.39,
+      "mode": "light"
+    },
+    "selene_08_archive": {
+      "scene": "memory_space",
+      "background": "memory_space",
+      "asset": "ch08_preserved_memories",
+      "x": 0.13,
+      "y": 0.24,
+      "width": 0.26,
+      "height": 0.5,
+      "mode": "light"
+    },
+    "selene_08_pendant": {
+      "scene": "memory_space",
+      "background": "memory_space",
+      "asset": "ch02_silver_pendant_item",
+      "x": 0.48,
+      "y": 0.45,
+      "width": 0.12,
+      "height": 0.26,
+      "mode": "warm"
+    },
+    "selene_08_mechanisms": {
+      "scene": "final_chamber",
+      "background": "pale_moon_chamber",
+      "asset": "ch08_three_mechanisms",
+      "x": 0.2,
+      "y": 0.51,
+      "width": 0.31,
+      "height": 0.38,
+      "mode": "floor"
+    },
+    "selene_08_boundary": {
+      "scene": "final_chamber",
+      "background": "pale_moon_chamber",
+      "asset": "ch08_dividing_light_lines",
+      "x": 0.52,
+      "y": 0.24,
+      "width": 0.17,
+      "height": 0.4,
+      "mode": "light"
+    }
+  },
+  "items": {
+    "ancient_key": "ch01_wrapped_key",
+    "silver_pendant": "ch02_silver_pendant_item",
+    "ancient_journal": "ch02_ancient_journal",
+    "moonflower_petal": "ch02_petal_under_stone",
+    "crystal_fragment": "ch04_crystal_fragment",
+    "broken_tablet": "ch04_broken_tablet",
+    "council_record": "ch05_archive_record",
+    "elarion_letter": "ch05_elarion_letter",
+    "mirror_shard": "ch06_mirror_shard",
+    "torn_diary_page": "ch02_torn_diary_page",
+    "moon_rune": "moon_rune",
+    "moonstone": "moonstone",
+    "witch_symbol": "witch_symbol",
+    "seal_stone": "seal_stone"
+  },
+  "missing_inventory_art": [],
+  "reserved_art": {
+    "ch08_warm_pendant": "Different pendant design; retain original Chapter 2 pendant and add realtime warm glow."
+  },
+  "source_revision_note": "34 replacement RGBA sources; prepared alpha trimmed; inventory-only prepared art retained where no new source exists.",
+  "inventory_crops": {
+    "moonflower_petal": [
+      0.263,
+      0.767,
+      0.078,
+      0.082
+    ]
+  }
+}

@@ -40,9 +40,17 @@ def bind_lifespan(runtime: ModuleType) -> None:
                     row.spec = current.model_dump_json()
                     row.updated_at = runtime.now()
             db.commit()
+        starter=getattr(runtime,"start_world_chapter_audio",None)
+        world_audio_task=starter() if starter else None
         try:
             yield
         finally:
+            if world_audio_task and not world_audio_task.done():
+                world_audio_task.cancel()
+                try:
+                    await world_audio_task
+                except runtime.asyncio.CancelledError:
+                    pass
             runtime.close_chat_transport()
 
     runtime.lifespan = lifespan

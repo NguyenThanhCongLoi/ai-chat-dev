@@ -1,0 +1,6 @@
+.assistantGate .homePreparationProgress{width:min(320px,75vw);display:flex;align-items:center;gap:12px;margin:14px auto;color:var(--ink);font-size:13px;font-variant-numeric:tabular-nums}.homePreparationProgress progress{flex:1;min-width:0;height:6px;min-height:6px;max-height:6px;appearance:none;border:0;border-radius:999px;overflow:hidden;background:var(--line)}.homePreparationProgress progress::-webkit-progress-bar{background:var(--line);border-radius:999px}.homePreparationProgress progress::-webkit-progress-value{background:var(--accent);border-radius:999px;transition:width .18s ease}.homePreparationProgress progress::-moz-progress-bar{background:var(--accent);border-radius:999px}.homePreparationProgress span{min-width:38px;text-align:right}@media(prefers-reduced-motion:reduce){.homePreparationProgress progress::-webkit-progress-value{transition:none}}
+
+.homePreparationProgress progress:not([value]){background:linear-gradient(90deg,var(--line),var(--accent),var(--line));background-size:200% 100%;animation:homeGateWaiting 1.6s linear infinite}
+.homePreparationProgress progress:not([value])::-webkit-progress-bar{background:transparent}
+@keyframes homeGateWaiting{to{background-position:-200% 0}}
+@media(prefers-reduced-motion:reduce){.homePreparationProgress progress:not([value]){animation:none}}

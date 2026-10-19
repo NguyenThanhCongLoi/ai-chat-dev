@@ -46,6 +46,7 @@ export type DiscoverViewProps = {
       | "rooms"
       | "chat"
       | "memories"
+      | "experiences"
     >
   >;
   favoriteButton: (c: import("../types").Character) => React.JSX.Element;

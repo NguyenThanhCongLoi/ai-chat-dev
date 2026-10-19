@@ -1,0 +1,781 @@
+// Generated from character_chat/models.py; contains schema only, no user data.
+// Existing databases may differ in nullability/defaults after legacy ALTER TABLE migrations.
+// ORM defaults are notes, not SQL DEFAULT constraints. Only declared foreign keys are drawn.
+Project AI_Companion {
+  database_type: 'SQLite'
+  Note: 'Current application schema. Timestamps/JSON/UUID-like IDs retain their actual VARCHAR/TEXT types. Not a PostgreSQL migration.'
+}
+
+Table action_sound_assets {
+  id varchar [pk, not null]
+  title varchar [not null]
+  mime_type varchar [not null]
+  content blob [not null, note: 'Binary asset/file/audio content']
+}
+
+Table ai_request_logs {
+  id varchar [pk, not null]
+  user_id varchar [not null]
+  room_id varchar [not null]
+  user_message_id varchar [null, note: 'No database FK declared; value may be managed by application logic']
+  response_message_id varchar [null, note: 'No database FK declared; value may be managed by application logic']
+  product varchar [not null]
+  task varchar [not null, note: 'Application default: \'response\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  primary_model varchar [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  primary_model_config_id varchar [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT; No database FK declared; value may be managed by application logic']
+  primary_model_name varchar [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  primary_api_base varchar [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  fallback_model varchar [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  fallback_model_2 varchar [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  fallback_used integer [not null, note: 'Application default: 0; supplied by SQLAlchemy, not SQL DEFAULT']
+  fallback_reason text [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  actual_model varchar [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  actual_model_config_id varchar [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT; No database FK declared; value may be managed by application logic']
+  actual_model_name varchar [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  actual_api_base varchar [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  gateway_snapshot_source varchar [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  thinking_mode varchar [not null, note: 'Application default: \'default\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  reasoning_effort varchar [not null, note: 'Application default: \'default\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  conversation_snapshot text [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  archive_source varchar [not null, note: 'Application default: \'captured\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  output_text text [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  continuation_count integer [not null, note: 'Application default: 0; supplied by SQLAlchemy, not SQL DEFAULT']
+  finish_status varchar [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  client_suggestion_ms integer [null]
+  client_first_chunk_ms integer [null]
+  server_prepare_ms integer [null]
+  gateway_headers_ms integer [null]
+  gateway_first_chunk_ms integer [null]
+  latency_ms integer [not null, note: 'Application default: 0; supplied by SQLAlchemy, not SQL DEFAULT']
+  error text [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    product [name: 'ix_ai_request_logs_product']
+    response_message_id [name: 'ix_ai_request_logs_response_message_id']
+    room_id [name: 'ix_ai_request_logs_room_id']
+    user_id [name: 'ix_ai_request_logs_user_id']
+    user_message_id [name: 'ix_ai_request_logs_user_message_id']
+  }
+}
+
+Table app_settings {
+  key varchar [pk, not null]
+  value text [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  updated_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+}
+
+Table assistant_files {
+  document_id varchar [pk, not null]
+  mime_type varchar [not null]
+  content blob [not null, note: 'Binary asset/file/audio content']
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+}
+
+Table assistant_memories {
+  id varchar [pk, not null]
+  user_id varchar [not null]
+  mode varchar [not null, note: 'Application default: \'assistant_general\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  room_id varchar [null, note: 'No database FK declared; value may be managed by application logic']
+  content text [not null]
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+  updated_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    mode [name: 'ix_assistant_memories_mode']
+    room_id [name: 'ix_assistant_memories_room_id']
+    user_id [name: 'ix_assistant_memories_user_id']
+  }
+}
+
+Table assistant_memory_settings {
+  user_id varchar [pk, not null]
+  enabled integer [not null, note: 'Application default: 0; supplied by SQLAlchemy, not SQL DEFAULT']
+  updated_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+}
+
+Table assistant_reminders {
+  id varchar [pk, not null]
+  user_id varchar [not null]
+  title varchar [not null]
+  due_at varchar [not null]
+  status varchar [not null, note: 'Application default: \'active\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  last_notified_at varchar [null]
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+  updated_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    due_at [name: 'ix_assistant_reminders_due_at']
+    status [name: 'ix_assistant_reminders_status']
+    user_id [name: 'ix_assistant_reminders_user_id']
+  }
+}
+
+Table audit_events {
+  id varchar [pk, not null]
+  user_id varchar [null, note: 'No database FK declared; value may be managed by application logic']
+  username varchar [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  session_hash varchar [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  category varchar [not null]
+  action varchar [not null]
+  method varchar [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  path varchar [not null]
+  status varchar [not null]
+  status_code integer [not null, note: 'Application default: 200; supplied by SQLAlchemy, not SQL DEFAULT']
+  latency_ms integer [not null, note: 'Application default: 0; supplied by SQLAlchemy, not SQL DEFAULT']
+  ip_address varchar [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  user_agent text [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  error text [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  details text [not null, note: 'Application default: \'{}\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    action [name: 'ix_audit_events_action']
+    category [name: 'ix_audit_events_category']
+    created_at [name: 'ix_audit_events_created_at']
+    path [name: 'ix_audit_events_path']
+    session_hash [name: 'ix_audit_events_session_hash']
+    status [name: 'ix_audit_events_status']
+    status_code [name: 'ix_audit_events_status_code']
+    user_id [name: 'ix_audit_events_user_id']
+    username [name: 'ix_audit_events_username']
+  }
+}
+
+Table background_music_assets {
+  id varchar [pk, not null]
+  title varchar [not null]
+  mime_type varchar [not null]
+  content blob [not null, note: 'Binary asset/file/audio content']
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+}
+
+Table character_assets {
+  character_id varchar [pk, not null]
+  mime_type varchar [not null]
+  content blob [not null, note: 'Binary asset/file/audio content']
+  updated_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+}
+
+Table character_expression_assets {
+  id varchar [pk, not null]
+  character_id varchar [not null, note: 'No database FK declared; value may be managed by application logic']
+  emotion varchar [not null]
+  mime_type varchar [not null, note: 'Application default: \'image/png\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  content blob [not null, note: 'Binary asset/file/audio content']
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+  updated_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    character_id [name: 'ix_character_expression_assets_character_id']
+    emotion [name: 'ix_character_expression_assets_emotion']
+  }
+}
+
+Table character_knowledge {
+  id varchar [pk, not null]
+  character_id varchar [not null]
+  document_id varchar [not null]
+  cutoff_page integer [null]
+  cutoff_chapter integer [null]
+
+  indexes {
+    character_id [name: 'ix_character_knowledge_character_id']
+    document_id [name: 'ix_character_knowledge_document_id']
+  }
+}
+
+Table character_publications {
+  character_id varchar [pk, not null]
+  creator_user_id varchar [not null]
+  is_public integer [not null, note: 'Application default: 0; supplied by SQLAlchemy, not SQL DEFAULT']
+  character_type varchar [not null, note: 'Application default: \'companion\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  tags text [not null, note: 'Application default: \'[]\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+  updated_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    character_type [name: 'ix_character_publications_character_type']
+    creator_user_id [name: 'ix_character_publications_creator_user_id']
+    is_public [name: 'ix_character_publications_is_public']
+  }
+}
+
+Table character_ratings {
+  id varchar [pk, not null]
+  character_id varchar [not null]
+  user_id varchar [not null]
+  rating integer [not null]
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+  updated_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    character_id [name: 'ix_character_ratings_character_id']
+    user_id [name: 'ix_character_ratings_user_id']
+  }
+}
+
+Table character_reaction_assets {
+  id varchar [pk, not null]
+  character_id varchar [not null, note: 'No database FK declared; value may be managed by application logic']
+  target varchar [not null]
+  emotion varchar [not null]
+  variant integer [not null, note: 'Application default: 0; supplied by SQLAlchemy, not SQL DEFAULT']
+  voice_version varchar [not null]
+  mime_type varchar [not null, note: 'Application default: \'audio/wav\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  content blob [not null, note: 'Binary asset/file/audio content']
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    character_id [name: 'ix_character_reaction_assets_character_id']
+  }
+}
+
+Table character_reaction_references {
+  character_id varchar [not null, note: 'No database FK declared; value may be managed by application logic']
+  target varchar [not null]
+  voice_id varchar [not null, note: 'No database FK declared; value may be managed by application logic']
+  filename varchar [not null]
+  mime_type varchar [not null]
+  content blob [not null, note: 'Binary asset/file/audio content']
+  updated_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    (character_id, target) [pk]
+  }
+}
+
+Table character_reactions {
+  id varchar [pk, not null]
+  character_id varchar [not null]
+  user_id varchar [not null]
+  reaction varchar [not null]
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    character_id [name: 'ix_character_reactions_character_id']
+    user_id [name: 'ix_character_reactions_user_id']
+  }
+}
+
+Table character_reflections {
+  id varchar [pk, not null]
+  user_id varchar [not null]
+  character_id varchar [not null]
+  room_id varchar [null, note: 'No database FK declared; value may be managed by application logic']
+  content text [not null]
+  importance float [not null, note: 'Application default: 0.5; supplied by SQLAlchemy, not SQL DEFAULT']
+  confidence float [not null, note: 'Application default: 0.5; supplied by SQLAlchemy, not SQL DEFAULT']
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    character_id [name: 'ix_character_reflections_character_id']
+    room_id [name: 'ix_character_reflections_room_id']
+    user_id [name: 'ix_character_reflections_user_id']
+  }
+}
+
+Table character_states {
+  id varchar [pk, not null]
+  user_id varchar [not null]
+  character_id varchar [not null]
+  emotion varchar [not null, note: 'Application default: \'neutral\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  energy float [not null, note: 'Application default: 0.6; supplied by SQLAlchemy, not SQL DEFAULT']
+  mood float [not null, note: 'Application default: 0.5; supplied by SQLAlchemy, not SQL DEFAULT']
+  intensity float [not null, note: 'Application default: 0.2; supplied by SQLAlchemy, not SQL DEFAULT']
+  updated_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    character_id [name: 'ix_character_states_character_id']
+    user_id [name: 'ix_character_states_user_id']
+  }
+}
+
+Table character_usage {
+  id varchar [pk, not null]
+  character_id varchar [not null]
+  user_id varchar [not null]
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    character_id [name: 'ix_character_usage_character_id']
+    user_id [name: 'ix_character_usage_user_id']
+  }
+}
+
+Table character_versions {
+  id varchar [pk, not null]
+  character_id varchar [not null]
+  spec text [not null, note: 'CharacterSpec JSON stored as TEXT']
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    character_id [name: 'ix_character_versions_character_id']
+  }
+}
+
+Table character_voice_samples {
+  character_id varchar [not null, note: 'No database FK declared; value may be managed by application logic']
+  target varchar [not null]
+  voice_id varchar [not null, note: 'No database FK declared; value may be managed by application logic']
+  filename varchar [not null]
+  mime_type varchar [not null]
+  content blob [not null, note: 'Binary asset/file/audio content']
+  sample_language varchar [not null]
+  ref_text text [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  updated_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    (character_id, target) [pk]
+  }
+}
+
+Table characters {
+  id varchar [pk, not null]
+  user_id varchar [not null]
+  name varchar [not null]
+  spec text [not null, note: 'CharacterSpec JSON stored as TEXT']
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+  updated_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    user_id [name: 'ix_characters_user_id']
+  }
+}
+
+Table creator_follows {
+  id varchar [pk, not null]
+  follower_user_id varchar [not null]
+  creator_user_id varchar [not null]
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    creator_user_id [name: 'ix_creator_follows_creator_user_id']
+    follower_user_id [name: 'ix_creator_follows_follower_user_id']
+  }
+}
+
+Table daily_tasks {
+  id varchar [pk, not null]
+  user_id varchar [not null]
+  title varchar [not null]
+  domain varchar [not null, note: 'Application default: \'lifestyle\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  status varchar [not null, note: 'Application default: \'open\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  priority integer [not null, note: 'Application default: 2; supplied by SQLAlchemy, not SQL DEFAULT']
+  notes text [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  due_at varchar [null]
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+  updated_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    user_id [name: 'ix_daily_tasks_user_id']
+  }
+}
+
+Table document_chunks {
+  id varchar [pk, not null]
+  document_id varchar [not null]
+  text text [not null]
+  meta text [not null, note: 'Application default: \'{}\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  embedding text [not null, note: 'Application default: \'[]\'; supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    document_id [name: 'ix_document_chunks_document_id']
+  }
+}
+
+Table documents {
+  id varchar [pk, not null]
+  user_id varchar [not null]
+  filename varchar [not null]
+  status varchar [not null, note: 'Application default: \'pending\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  error text [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    user_id [name: 'ix_documents_user_id']
+  }
+}
+
+Table memories {
+  id varchar [pk, not null]
+  user_id varchar [not null]
+  character_id varchar [null, note: 'No database FK declared; value may be managed by application logic']
+  room_id varchar [null, note: 'No database FK declared; value may be managed by application logic']
+  type varchar [not null, note: 'Application default: \'fact\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  content text [not null]
+  importance float [not null, note: 'Application default: 0.5; supplied by SQLAlchemy, not SQL DEFAULT']
+  confidence float [not null, note: 'Application default: 0.7; supplied by SQLAlchemy, not SQL DEFAULT']
+  visibility varchar [not null]
+  pinned integer [not null, note: 'Application default: 0; supplied by SQLAlchemy, not SQL DEFAULT']
+  embedding text [not null, note: 'Application default: \'[]\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  source_message_id varchar [null, note: 'No database FK declared; value may be managed by application logic']
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+  last_accessed_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    character_id [name: 'ix_memories_character_id']
+    room_id [name: 'ix_memories_room_id']
+    user_id [name: 'ix_memories_user_id']
+  }
+}
+
+Table message_alternatives {
+  id varchar [pk, not null]
+  message_id varchar [not null]
+  text text [not null]
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    message_id [name: 'ix_message_alternatives_message_id']
+  }
+}
+
+Table message_speech {
+  message_id varchar [pk, not null]
+  signature varchar [not null]
+  mime_type varchar [not null, note: 'Application default: \'audio/mpeg\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  content blob [not null, note: 'Binary asset/file/audio content']
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+}
+
+Table message_speech_parts {
+  message_id varchar [not null]
+  position integer [not null]
+  sample_rate integer [not null]
+  content blob [not null, note: 'Binary asset/file/audio content']
+
+  indexes {
+    (message_id, position) [pk]
+  }
+}
+
+Table message_speech_runs {
+  message_id varchar [pk, not null]
+  signature varchar [not null]
+  status varchar [not null, note: 'Application default: \'generating\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  error text [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+}
+
+Table message_suggestions {
+  id varchar [pk, not null]
+  message_id varchar [not null]
+  text varchar [not null]
+  position integer [not null, note: 'Application default: 0; supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    message_id [name: 'ix_message_suggestions_message_id']
+  }
+}
+
+Table messages {
+  id varchar [pk, not null]
+  room_id varchar [not null]
+  sender_type varchar [not null]
+  character_id varchar [null, note: 'No database FK declared; value may be managed by application logic']
+  text text [not null]
+  speech_segments text [not null, note: 'Application default: \'[]\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  sources text [not null, note: 'Application default: \'[]\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  emotion varchar [not null, note: 'Application default: \'neutral\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  finish_status varchar [not null, note: 'Application default: \'complete\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    room_id [name: 'ix_messages_room_id']
+  }
+}
+
+Table model_configs {
+  id varchar [pk, not null]
+  name varchar [not null]
+  provider varchar [not null]
+  model_id varchar [not null, note: 'No database FK declared; value may be managed by application logic']
+  api_base varchar [not null]
+  api_key_encrypted text [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  api_key_hint varchar [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  logo varchar [not null, note: 'Application default: \'AI\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  enabled integer [not null, note: 'Application default: 1; supplied by SQLAlchemy, not SQL DEFAULT']
+  assistant_name varchar [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  assistant_model_id varchar [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT; No database FK declared; value may be managed by application logic']
+  assistant_enabled integer [not null, note: 'Application default: 1; supplied by SQLAlchemy, not SQL DEFAULT']
+  assistant_thinking_mode varchar [not null, note: 'Application default: \'default\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  assistant_reasoning_effort varchar [not null, note: 'Application default: \'default\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  role varchar [not null, note: 'Application default: \'available\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+  updated_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    model_id [name: 'ix_model_configs_model_id']
+  }
+}
+
+Table mood_observations {
+  id varchar [pk, not null]
+  user_id varchar [not null]
+  room_id varchar [null, note: 'No database FK declared; value may be managed by application logic']
+  source_message_id varchar [null, note: 'No database FK declared; value may be managed by application logic']
+  emotion varchar [not null, note: 'Application default: \'neutral\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  valence float [not null, note: 'Application default: 0; supplied by SQLAlchemy, not SQL DEFAULT']
+  arousal float [not null, note: 'Application default: 0.3; supplied by SQLAlchemy, not SQL DEFAULT']
+  confidence float [not null, note: 'Application default: 0.5; supplied by SQLAlchemy, not SQL DEFAULT']
+  directed_at_character integer [not null, note: 'Application default: 0; supplied by SQLAlchemy, not SQL DEFAULT']
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    room_id [name: 'ix_mood_observations_room_id']
+    user_id [name: 'ix_mood_observations_user_id']
+  }
+}
+
+Table processing_jobs {
+  id varchar [pk, not null]
+  user_id varchar [not null, note: 'No database FK declared; value may be managed by application logic']
+  job_type varchar [not null]
+  status varchar [not null, note: 'Application default: \'pending\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  resource_id varchar [null, note: 'No database FK declared; value may be managed by application logic']
+  content_preview text [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  error text [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+  updated_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    resource_id [name: 'ix_processing_jobs_resource_id']
+    user_id [name: 'ix_processing_jobs_user_id']
+  }
+}
+
+Table prompt_traces {
+  id varchar [pk, not null]
+  user_id varchar [not null]
+  character_id varchar [not null]
+  room_id varchar [not null, note: 'No database FK declared; value may be managed by application logic']
+  query text [not null]
+  layers text [not null, note: 'Application default: \'[]\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  memory_ids text [not null, note: 'Application default: \'[]\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  document_ids text [not null, note: 'Application default: \'[]\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  state text [not null, note: 'Application default: \'{}\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    character_id [name: 'ix_prompt_traces_character_id']
+    room_id [name: 'ix_prompt_traces_room_id']
+    user_id [name: 'ix_prompt_traces_user_id']
+  }
+}
+
+Table relationship_events {
+  id varchar [pk, not null]
+  user_id varchar [not null]
+  character_id varchar [not null]
+  room_id varchar [null, note: 'No database FK declared; value may be managed by application logic']
+  source_message_id varchar [null, note: 'No database FK declared; value may be managed by application logic']
+  event_type varchar [not null, note: 'Application default: \'interaction\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  valence float [not null, note: 'Application default: 0; supplied by SQLAlchemy, not SQL DEFAULT']
+  confidence float [not null, note: 'Application default: 0.5; supplied by SQLAlchemy, not SQL DEFAULT']
+  deltas text [not null, note: 'Application default: \'{}\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    character_id [name: 'ix_relationship_events_character_id']
+    room_id [name: 'ix_relationship_events_room_id']
+    user_id [name: 'ix_relationship_events_user_id']
+  }
+}
+
+Table relationships {
+  id varchar [pk, not null]
+  user_id varchar [not null]
+  character_id varchar [not null]
+  other_character_id varchar [null, note: 'No database FK declared; value may be managed by application logic']
+  familiarity float [not null, note: 'Application default: 0; supplied by SQLAlchemy, not SQL DEFAULT']
+  trust float [not null, note: 'Application default: 0; supplied by SQLAlchemy, not SQL DEFAULT']
+  affinity float [not null, note: 'Application default: 0; supplied by SQLAlchemy, not SQL DEFAULT']
+  tension float [not null, note: 'Application default: 0; supplied by SQLAlchemy, not SQL DEFAULT']
+  respect float [not null, note: 'Application default: 0; supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    character_id [name: 'ix_relationships_character_id']
+    user_id [name: 'ix_relationships_user_id']
+  }
+}
+
+Table room_documents {
+  id varchar [pk, not null]
+  room_id varchar [not null]
+  document_id varchar [not null]
+
+  indexes {
+    document_id [name: 'ix_room_documents_document_id']
+    room_id [name: 'ix_room_documents_room_id']
+  }
+}
+
+Table room_members {
+  id varchar [pk, not null]
+  room_id varchar [not null]
+  character_id varchar [not null]
+
+  indexes {
+    character_id [name: 'ix_room_members_character_id']
+    room_id [name: 'ix_room_members_room_id']
+  }
+}
+
+Table room_story_states {
+  room_id varchar [pk, not null]
+  events text [not null, note: 'Application default: \'[]\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  updated_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+}
+
+Table rooms {
+  id varchar [pk, not null]
+  user_id varchar [not null]
+  name varchar [not null]
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    user_id [name: 'ix_rooms_user_id']
+  }
+}
+
+Table style_examples {
+  id varchar [pk, not null]
+  character_id varchar [not null]
+  text text [not null]
+  embedding text [not null, note: 'Application default: \'[]\'; supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    character_id [name: 'ix_style_examples_character_id']
+  }
+}
+
+Table user_accounts {
+  user_id varchar [pk, not null]
+  username varchar [not null]
+  display_name varchar [not null]
+  password_hash text [not null]
+  theme varchar [not null, note: 'Application default: \'light\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  status varchar [not null, note: 'Application default: \'active\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  is_admin integer [not null, note: 'Application default: 0; supplied by SQLAlchemy, not SQL DEFAULT']
+  suspended_until varchar [null]
+  ban_reason text [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+  updated_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    username [name: 'ix_user_accounts_username', unique]
+  }
+}
+
+Table user_avatars {
+  user_id varchar [pk, not null]
+  mime_type varchar [not null]
+  content blob [not null, note: 'Binary asset/file/audio content']
+  updated_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+}
+
+Table user_profiles {
+  user_id varchar [pk, not null]
+  bio text [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  language varchar [not null, note: 'Application default: \'vi\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  reduced_motion integer [not null, note: 'Application default: 0; supplied by SQLAlchemy, not SQL DEFAULT']
+  updated_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+}
+
+Table user_sessions {
+  token_hash varchar [pk, not null]
+  user_id varchar [not null]
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+  expires_at varchar [not null]
+
+  indexes {
+    expires_at [name: 'ix_user_sessions_expires_at']
+    user_id [name: 'ix_user_sessions_user_id']
+  }
+}
+
+Table users {
+  id varchar [pk, not null]
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+}
+
+Table voice_events {
+  id varchar [pk, not null]
+  message_id varchar [not null, note: 'No database FK declared; value may be managed by application logic']
+  character_id varchar [not null, note: 'No database FK declared; value may be managed by application logic']
+  user_id varchar [not null, note: 'No database FK declared; value may be managed by application logic']
+  event_type varchar [not null]
+  status varchar [not null]
+  model_id varchar [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT; No database FK declared; value may be managed by application logic']
+  voice_id varchar [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT; No database FK declared; value may be managed by application logic']
+  latency_ms integer [not null, note: 'Application default: 0; supplied by SQLAlchemy, not SQL DEFAULT']
+  audio_bytes integer [not null, note: 'Application default: 0; supplied by SQLAlchemy, not SQL DEFAULT']
+  automatic integer [not null, note: 'Application default: 0; supplied by SQLAlchemy, not SQL DEFAULT']
+  error text [not null, note: 'Application default: \'\'; supplied by SQLAlchemy, not SQL DEFAULT']
+  created_at varchar [not null, note: 'Application default: now(); supplied by SQLAlchemy, not SQL DEFAULT']
+
+  indexes {
+    character_id [name: 'ix_voice_events_character_id']
+    created_at [name: 'ix_voice_events_created_at']
+    event_type [name: 'ix_voice_events_event_type']
+    message_id [name: 'ix_voice_events_message_id']
+    status [name: 'ix_voice_events_status']
+    user_id [name: 'ix_voice_events_user_id']
+  }
+}
+
+// Only SQLAlchemy-declared FK constraints; no inferred relationships.
+Ref: ai_request_logs.room_id > rooms.id
+Ref: ai_request_logs.user_id > users.id
+Ref: assistant_files.document_id - documents.id
+Ref: assistant_memories.user_id > users.id
+Ref: assistant_memory_settings.user_id - users.id
+Ref: assistant_reminders.user_id > users.id
+Ref: character_assets.character_id - characters.id
+Ref: character_knowledge.character_id > characters.id
+Ref: character_knowledge.document_id > documents.id
+Ref: character_publications.character_id - characters.id
+Ref: character_publications.creator_user_id > users.id
+Ref: character_ratings.character_id > characters.id
+Ref: character_ratings.user_id > users.id
+Ref: character_reactions.character_id > characters.id
+Ref: character_reactions.user_id > users.id
+Ref: character_reflections.character_id > characters.id
+Ref: character_reflections.user_id > users.id
+Ref: character_states.character_id > characters.id
+Ref: character_states.user_id > users.id
+Ref: character_usage.character_id > characters.id
+Ref: character_usage.user_id > users.id
+Ref: character_versions.character_id > characters.id
+Ref: characters.user_id > users.id
+Ref: creator_follows.creator_user_id > users.id
+Ref: creator_follows.follower_user_id > users.id
+Ref: daily_tasks.user_id > users.id
+Ref: document_chunks.document_id > documents.id
+Ref: documents.user_id > users.id
+Ref: memories.user_id > users.id
+Ref: message_alternatives.message_id > messages.id
+Ref: message_speech.message_id - messages.id
+Ref: message_speech_parts.message_id > messages.id
+Ref: message_speech_runs.message_id - messages.id
+Ref: message_suggestions.message_id > messages.id
+Ref: messages.room_id > rooms.id
+Ref: mood_observations.user_id > users.id
+Ref: prompt_traces.character_id > characters.id
+Ref: prompt_traces.user_id > users.id
+Ref: relationship_events.character_id > characters.id
+Ref: relationship_events.user_id > users.id
+Ref: relationships.character_id > characters.id
+Ref: relationships.user_id > users.id
+Ref: room_documents.document_id > documents.id
+Ref: room_documents.room_id > rooms.id
+Ref: room_members.character_id > characters.id
+Ref: room_members.room_id > rooms.id
+Ref: room_story_states.room_id - rooms.id
+Ref: rooms.user_id > users.id
+Ref: style_examples.character_id > characters.id
+Ref: user_accounts.user_id - users.id
+Ref: user_avatars.user_id - users.id
+Ref: user_profiles.user_id - users.id
+Ref: user_sessions.user_id > users.id

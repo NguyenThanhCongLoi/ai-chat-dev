@@ -95,3 +95,31 @@ def test_late_background_analysis_does_not_restore_deleted_room_feelings(tmp_pat
         assert db.query(main.MoodObservation).count()==0
         assert db.query(main.Memory).count()==0
     engine.dispose()
+
+def test_reset_rejects_late_analysis_from_another_retained_room(tmp_path,monkeypatch):
+    from character_chat import background,jev
+    from character_chat.schemas import TurnAnalysis
+    engine=create_engine("sqlite:///"+str(tmp_path/"cross-room-late.sqlite"))
+    main.Base.metadata.create_all(engine)
+    Local=sessionmaker(engine,expire_on_commit=False)
+    monkeypatch.setattr(background,"Session",Local)
+    monkeypatch.setattr(jev,"enabled",lambda task:False)
+    with Local() as db:
+        db.add(main.User(id="user"))
+        db.add(main.Character(id="selene",user_id="user",name="Selene",spec=CharacterSpec(id="selene",name="Selene").model_dump_json()))
+        for room in ("deleted","retained"):
+            db.add(main.Room(id=room,user_id="user",name=room))
+            db.add(main.RoomMember(id="member-"+room,room_id=room,character_id="selene"))
+        db.add(main.Message(id="old-question",room_id="retained",sender_type="user",text="Remember this old event"))
+        db.commit()
+    def analyzed(*args,**kwargs):
+        with Local() as db:main.delete_room("deleted",db,"user")
+        return TurnAnalysis(confidence=.9,significance=.8,relationship_event="conflict",reflection="Old conflict",memory_worthy=True,memory_summary="Old memory")
+    monkeypatch.setattr(background.llm,"json",analyzed)
+    background.analyze_turn("user","retained","old-question",["selene"])
+    with Local() as db:
+        assert db.get(main.Message,"old-question") is not None
+        assert db.query(main.Memory).count()==0
+        assert db.query(main.CharacterReflection).count()==0
+        assert db.query(main.RelationshipEvent).count()==0
+    engine.dispose()

@@ -2,6 +2,7 @@ import math, re, json
 from datetime import datetime, timezone
 from collections import Counter
 from .db import Document, DocumentChunk, Memory, CharacterKnowledge, RoomDocument
+from .roleplay_recall import rank_scores, same_statement
 
 def tokens(text): return re.findall(r"\w+",text.lower(),re.UNICODE)
 def vector(text):
@@ -49,6 +50,11 @@ def room_document_manifest(db,room_id):
 def retrieve_memories(db,user_id,character_id,room_id,query,limit=5):
     rows=db.query(Memory).filter_by(user_id=user_id).all()
     visible=[m for m in rows if (m.visibility=="USER_GLOBAL" or m.visibility=="CHARACTER_PRIVATE" and m.character_id==character_id or m.visibility=="ROOM_SHARED" and m.room_id==room_id)]
+    if any(m.type=="world_shared" for m in visible):
+        from .moonfall_store import shared_memories
+        verified={m.id for m in shared_memories(db,user_id,character_id)}
+        visible=[m for m in visible if m.type!="world_shared" or m.id in verified]
+    relevance = dict(zip((m.id for m in visible), rank_scores(query, [m.content for m in visible])))
     def score(memory):
         try:
             created=datetime.fromisoformat(memory.created_at);created=created if created.tzinfo else created.replace(tzinfo=timezone.utc)
@@ -56,14 +62,17 @@ def retrieve_memories(db,user_id,character_id,room_id,query,limit=5):
             recency=1/(1+age_days/30)
         except Exception:recency=.5
         emotional=.12 if memory.type in ("event","preference","llm_extracted") else 0
-        return similarity(query,memory.content)*.48+memory.importance*.2+recency*.14+emotional+memory.pinned*.06
+        confidence = max(0, min(1, memory.confidence if memory.confidence is not None else .5))
+        return relevance[memory.id]*.55 + memory.importance*.16 + recency*.09 + emotional*.5 + confidence*.08 + memory.pinned*.06
     pinned=sorted((memory for memory in visible if memory.pinned),key=score,reverse=True)
-    unpinned=sorted((memory for memory in visible if not memory.pinned),key=score,reverse=True)
+    # Do not fill the prompt with unrelated recent facts just to reach the limit.
+    unpinned=sorted((memory for memory in visible if not memory.pinned and relevance[memory.id]>0),
+                    key=lambda m:(score(m), m.created_at, m.id),reverse=True)
     return (pinned+unpinned)[:limit]
 def store_memory(db,**values):
     existing=db.query(Memory).filter_by(user_id=values["user_id"],visibility=values["visibility"],character_id=values.get("character_id"),room_id=values.get("room_id")).all()
     for m in existing:
-        if m.content.casefold().strip()==values["content"].casefold().strip() or similarity(m.content,values["content"])>.9:
+        if same_statement(m.content,values["content"]):
             m.importance=max(m.importance,values.get("importance",.5));db.commit();return m
     from .schemas import uid
     m=Memory(id=uid(),**values);db.add(m);db.commit();return m

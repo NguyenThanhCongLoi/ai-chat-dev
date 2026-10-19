@@ -1,0 +1,17 @@
+{
+  "background": "memory_atlas",
+  "intro": [
+    "selene_intro_1080"
+  ],
+  "assets": [
+    {
+      "id": "memory_atlas",
+      "path": "worlds/selene/moonfall/backgrounds/echoes_bg_16x9/ch07_between_memories.webp"
+    },
+    {
+      "id": "selene_intro_1080",
+      "path": "worlds/hub/video/selene_intro_20261018_from17.webm"
+    }
+  ],
+  "standard_intro": []
+}

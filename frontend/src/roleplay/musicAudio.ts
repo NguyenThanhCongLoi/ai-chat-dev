@@ -4,7 +4,7 @@ export class MusicAudio {
   private source: MediaElementAudioSourceNode | null = null;
   private gain: GainNode | null = null;
   private level = .3;
-  constructor(private audio: HTMLAudioElement) {
+  constructor(private audio: HTMLAudioElement, private sharedContext?:()=>AudioContext) {
     audio.crossOrigin = "anonymous"; // Must be set before assigning src.
   }
   setVolume(value: number) {
@@ -18,7 +18,7 @@ export class MusicAudio {
       const Constructor = window.AudioContext ||
         (window as unknown as {webkitAudioContext?: typeof AudioContext}).webkitAudioContext;
       if (Constructor) {
-        const context = new Constructor();
+        const context = this.sharedContext ? this.sharedContext() : new Constructor();
         try {
           const gain = context.createGain();
           const source = context.createMediaElementSource(this.audio);
@@ -27,7 +27,7 @@ export class MusicAudio {
           this.audio.volume = 1;
           gain.gain.setValueAtTime(this.level, context.currentTime);
         } catch {
-          void context.close().catch(() => {});
+          if(!this.sharedContext)void context.close().catch(() => {});
         }
       }
     }
@@ -38,7 +38,7 @@ export class MusicAudio {
   }
   dispose() {
     this.source?.disconnect(); this.gain?.disconnect();
-    if (this.context) void this.context.close().catch(() => {});
+    if (this.context && !this.sharedContext) void this.context.close().catch(() => {});
     this.source = null; this.gain = null; this.context = null;
   }
 }

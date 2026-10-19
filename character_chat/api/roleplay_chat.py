@@ -143,6 +143,7 @@ def bind_send_message(runtime: ModuleType) -> None:
                     sender_type="character",
                     character_id=c.id,
                     text=answer,
+                    reply_to_message_id=user_msg.id,
                     sources=runtime.json.dumps(sources),
                     emotion=emotion,
                     speech_segments=runtime.json.dumps(
@@ -154,6 +155,8 @@ def bind_send_message(runtime: ModuleType) -> None:
                 runtime.update_relationship(
                     runtime.relationship(db, user, c.id), data.message
                 )
+                from ..character_social import record_turn
+                record_turn(db,user,room_id,user_msg.id)
                 db.commit()
                 runtime.save_ai_request_log(
                     db,
@@ -394,6 +397,7 @@ def bind_send_message(runtime: ModuleType) -> None:
                         character_id=c.id,
                         text="",
                         finish_status="generating",
+                        reply_to_message_id=user_msg.id,
                     )
                     db.add(msg)
                     db.commit()
@@ -554,6 +558,8 @@ def bind_send_message(runtime: ModuleType) -> None:
                     runtime.update_relationship(
                         runtime.relationship(db, user, c.id), data.message
                     )
+                    from ..character_social import record_turn
+                    record_turn(db,user,room_id,user_msg.id)
                     db.commit()
                     if sentence_voice:
                         if partial:

@@ -28,6 +28,10 @@
     "en": "＋ Create new character"
   },
   {
+    "source": "＋ Tạo nhân vật riêng",
+    "en": ""
+  },
+  {
     "source": "＋ Tạo phòng chat",
     "en": ""
   },
@@ -68,7 +72,15 @@
     "en": ""
   },
   {
+    "source": "Admin preview: các chương đều mở, không ảnh hưởng tài khoản khác.",
+    "en": "Admin preview: all chapters are available; other accounts are unaffected."
+  },
+  {
     "source": "AI",
+    "en": ""
+  },
+  {
+    "source": "Ai được biết?",
     "en": ""
   },
   {
@@ -116,6 +128,10 @@
     "en": "You"
   },
   {
+    "source": "Bạn bè",
+    "en": ""
+  },
+  {
     "source": "Bạn chưa có cuộc trò chuyện nào.",
     "en": "No conversations yet."
   },
@@ -124,12 +140,28 @@
     "en": ""
   },
   {
+    "source": "Bạn có thể cân nhắc lại trước khi quyết định.",
+    "en": "You may reconsider before making this final."
+  },
+  {
     "source": "Bạn có thể chỉnh sửa, ghim hoặc xóa ký ức.",
     "en": "You can edit, pin or delete memories."
   },
   {
     "source": "Bạn có thể gửi câu hỏi hoặc đính kèm tệp để bắt đầu.",
     "en": "Send a question or attach a file to get started."
+  },
+  {
+    "source": "Bạn đã khám phá kết này ở lượt trước. Kết cũ được giữ nguyên và không phát lại.",
+    "en": "You discovered this ending in an earlier attempt. It stays in your collection without playing again."
+  },
+  {
+    "source": "Bạn đang nhắc đến",
+    "en": ""
+  },
+  {
+    "source": "Bản đồ ký ức",
+    "en": "Memory Atlas"
   },
   {
     "source": "Bạn không có quyền thực hiện thao tác này.",
@@ -146,6 +178,14 @@
   {
     "source": "Bắt đầu cuộc trò chuyện",
     "en": "Start the conversation"
+  },
+  {
+    "source": "Bắt đầu lại từ chương 1. Manh mối và lựa chọn của lượt này sẽ được làm mới; bộ sưu tập kết vẫn được giữ.",
+    "en": "Start again from Chapter 1. This attempt's clues and choices will reset; your ending collection will stay."
+  },
+  {
+    "source": "Bắt đầu lượt chơi mới",
+    "en": "Start a new attempt"
   },
   {
     "source": "Bấm Chat để tiếp tục cuộc trò chuyện của từng tác vụ.",
@@ -168,11 +208,27 @@
     "en": "Enable character research and combine it with your description."
   },
   {
+    "source": "Bất đồng",
+    "en": ""
+  },
+  {
     "source": "Bật lại",
     "en": "Resume"
   },
   {
     "source": "Bật nhạc nền",
+    "en": ""
+  },
+  {
+    "source": "Bị gạt đi",
+    "en": ""
+  },
+  {
+    "source": "Biên niên ký của bạn",
+    "en": "Your Chronicle"
+  },
+  {
+    "source": "Biết đến nhau, chưa có cuộc gặp được ghi nhận",
     "en": ""
   },
   {
@@ -188,6 +244,10 @@
     "en": "Unpin"
   },
   {
+    "source": "Bỏ qua đoạn phim",
+    "en": "Skip cinematic"
+  },
+  {
     "source": "Bộ ảnh biểu cảm tạo quá lâu. Vui lòng thử lại sau.",
     "en": ""
   },
@@ -198,6 +258,10 @@
   {
     "source": "Bối cảnh",
     "en": "Scenario"
+  },
+  {
+    "source": "Bối cảnh áp dụng ngay trong chat thường. Bot nhận các trường này ở lượt tiếp theo; không sửa persona nhân vật.",
+    "en": ""
   },
   {
     "source": "Bối cảnh trò chuyện",
@@ -212,7 +276,15 @@
     "en": ""
   },
   {
+    "source": "Bước vào câu chuyện",
+    "en": "Enter the story"
+  },
+  {
     "source": "Bước vào câu chuyện.",
+    "en": ""
+  },
+  {
+    "source": "Cả phòng biết",
     "en": ""
   },
   {
@@ -220,7 +292,19 @@
     "en": ""
   },
   {
+    "source": "Các kết đã khám phá",
+    "en": "Discovered endings"
+  },
+  {
     "source": "Các lá bài được rút",
+    "en": ""
+  },
+  {
+    "source": "Các sự kiện theo thứ tự liệt kê; đường nối không khẳng định quan hệ nhân quả.",
+    "en": ""
+  },
+  {
+    "source": "Các tín hiệu quan hệ đã ghi cho nhân vật trong phòng này; confidence là ước lượng, không phải cảm xúc thật của AI.",
     "en": ""
   },
   {
@@ -236,11 +320,23 @@
     "en": "Account settings"
   },
   {
+    "source": "CANON",
+    "en": ""
+  },
+  {
+    "source": "Canon cố định",
+    "en": ""
+  },
+  {
     "source": "Căng thẳng",
     "en": ""
   },
   {
     "source": "Cần thông tin gì để xem Tử vi?",
+    "en": ""
+  },
+  {
+    "source": "Cập nhật recap AI",
     "en": ""
   },
   {
@@ -261,6 +357,10 @@
   },
   {
     "source": "Chạm để cú mèo bay đi",
+    "en": ""
+  },
+  {
+    "source": "Chạm để giới thiệu",
     "en": ""
   },
   {
@@ -292,7 +392,15 @@
     "en": ""
   },
   {
+    "source": "CHAT BOT AI · PHÒNG HIỆN TẠI",
+    "en": ""
+  },
+  {
     "source": "Chat nhóm ·",
+    "en": ""
+  },
+  {
+    "source": "Chỉ cần chọn nhân vật rồi nhắn tin. Ký ức, cảm xúc, ngữ cảnh và gợi ý hỗ trợ ngay trong cuộc trò chuyện.",
     "en": ""
   },
   {
@@ -300,7 +408,27 @@
     "en": "Use only in this task"
   },
   {
+    "source": "Chỉ giới thiệu tên và vai trò. Chat riêng, ký ức và bí mật không được chia sẻ.",
+    "en": ""
+  },
+  {
+    "source": "Chỉ tạo khi bạn yêu cầu, có thể dùng model tính phí. Tóm tắt tối đa 60 tin nhắn gần đây; góc nhìn là suy luận có thể sai, không phải canon.",
+    "en": ""
+  },
+  {
+    "source": "Chia sẻ",
+    "en": ""
+  },
+  {
+    "source": "Chia sẻ ý nghĩa",
+    "en": ""
+  },
+  {
     "source": "Chiêm nghiệm Tử vi và Bát Tự",
+    "en": ""
+  },
+  {
+    "source": "Cho các nhân vật làm quen",
     "en": ""
   },
   {
@@ -308,7 +436,15 @@
     "en": "Allow AI Assistant to use details you explicitly save"
   },
   {
+    "source": "Cho Selene nhớ trải nghiệm này trong chat thường",
+    "en": "Let Selene remember this in normal chat"
+  },
+  {
     "source": "Chọn & tạo",
+    "en": ""
+  },
+  {
+    "source": "Chọn bạn đồng hành từ kho nhân vật, gặp gỡ, chọn thẻ hành động và tìm manh mối. Tiến trình phiêu lưu được lưu riêng.",
     "en": ""
   },
   {
@@ -318,6 +454,10 @@
   {
     "source": "Chọn cách bắt đầu: dùng nhân vật có sẵn hoặc tạo một người hoàn toàn mới.",
     "en": "Start with an existing character or create someone entirely new."
+  },
+  {
+    "source": "Chọn cách trải nghiệm",
+    "en": ""
   },
   {
     "source": "Chọn file .txt .md .pdf .docx .pptx",
@@ -336,8 +476,20 @@
     "en": ""
   },
   {
+    "source": "Chọn lại",
+    "en": "Reset selection"
+  },
+  {
     "source": "Chọn một người phù hợp với tâm trạng, học tập hoặc công việc của bạn.",
     "en": "Choose someone for your mood, studies or work."
+  },
+  {
+    "source": "Chọn một nhân vật",
+    "en": ""
+  },
+  {
+    "source": "Chọn người để giới thiệu…",
+    "en": ""
   },
   {
     "source": "Chọn nhân vật",
@@ -368,11 +520,27 @@
     "en": ""
   },
   {
+    "source": "Chờ khám phá",
+    "en": ""
+  },
+  {
+    "source": "Chơi lại từ chương 1",
+    "en": "Replay from Chapter 1"
+  },
+  {
     "source": "Chủ đề (tuỳ chọn)",
     "en": ""
   },
   {
+    "source": "Chung phòng",
+    "en": ""
+  },
+  {
     "source": "Chunk PCM16 không hợp lệ.",
+    "en": ""
+  },
+  {
+    "source": "Chuỗi sự kiện & nguồn",
     "en": ""
   },
   {
@@ -396,6 +564,14 @@
     "en": ""
   },
   {
+    "source": "Chưa có ký ức phù hợp. Bạn vẫn có thể thêm qua nút Ký ức của nhân vật/phòng.",
+    "en": ""
+  },
+  {
+    "source": "Chưa có mốc được ghi. Không tạo mốc giả để lấp danh sách.",
+    "en": ""
+  },
+  {
     "source": "Chưa có nhạc nền",
     "en": ""
   },
@@ -412,6 +588,14 @@
     "en": "No account yet? Sign up"
   },
   {
+    "source": "Chưa được giới thiệu",
+    "en": ""
+  },
+  {
+    "source": "Chưa kết nối được. Bạn có thể thử lại.",
+    "en": ""
+  },
+  {
     "source": "Chưa phân công model TTS trong CMS",
     "en": ""
   },
@@ -421,6 +605,26 @@
   },
   {
     "source": "Chưa tự tìm thấy nhân vật. Hãy nhập tên nhân vật xuất hiện trong truyện.",
+    "en": ""
+  },
+  {
+    "source": "Chương đã mở không yêu cầu tích điểm lại.",
+    "en": "Unlocked chapters do not require earning points again."
+  },
+  {
+    "source": "CHƯƠNG HOÀN THÀNH",
+    "en": "CHAPTER COMPLETE"
+  },
+  {
+    "source": "Có cạnh tranh",
+    "en": ""
+  },
+  {
+    "source": "Còn nghi ngại",
+    "en": ""
+  },
+  {
+    "source": "Công cụ cốt truyện",
     "en": ""
   },
   {
@@ -468,6 +672,10 @@
     "en": ""
   },
   {
+    "source": "DẪN TRUYỆN",
+    "en": "NARRATION"
+  },
+  {
     "source": "Demo",
     "en": ""
   },
@@ -477,6 +685,22 @@
   },
   {
     "source": "Dịch vụ vừa được khởi động lại. Vui lòng gửi lại tin nhắn.",
+    "en": ""
+  },
+  {
+    "source": "Dùng âm lượng từ CMS",
+    "en": "Use CMS volume defaults"
+  },
+  {
+    "source": "Dùng ký ức đã lưu trong phòng này",
+    "en": ""
+  },
+  {
+    "source": "Dự kiến được chọn",
+    "en": ""
+  },
+  {
+    "source": "Dự kiến được chọn là kết quả truy hồi theo tin user gần nhất; Đã dùng ở lượt trước dựa trên prompt trace. Đây là ngân sách ký tự, không phải token.",
     "en": ""
   },
   {
@@ -512,8 +736,16 @@
     "en": "{count} characters selected"
   },
   {
+    "source": "Đã có câu chuyện chung",
+    "en": ""
+  },
+  {
     "source": "Đã có tài khoản? Đăng nhập",
     "en": "Already have an account? Sign in"
+  },
+  {
+    "source": "Đã dùng ở lượt trước",
+    "en": ""
   },
   {
     "source": "Đã đánh giá {count} sao",
@@ -536,11 +768,23 @@
     "en": ""
   },
   {
+    "source": "Đã được giới thiệu",
+    "en": ""
+  },
+  {
+    "source": "Đã gặp nhau",
+    "en": ""
+  },
+  {
     "source": "Đã ghim",
     "en": ""
   },
   {
     "source": "Đã gửi",
+    "en": ""
+  },
+  {
+    "source": "Đã khám phá",
     "en": ""
   },
   {
@@ -556,7 +800,23 @@
     "en": "Preferences saved"
   },
   {
+    "source": "Đã lưu. Áp dụng từ câu trả lời tiếp theo.",
+    "en": ""
+  },
+  {
+    "source": "Đã ngắt",
+    "en": ""
+  },
+  {
+    "source": "Đã ngắt liên kết hiển thị; lịch sử và điều đã biết vẫn còn.",
+    "en": ""
+  },
+  {
     "source": "Đã nhớ",
+    "en": ""
+  },
+  {
+    "source": "Đã quen mặt",
     "en": ""
   },
   {
@@ -580,6 +840,14 @@
     "en": "Something went wrong. Please try again."
   },
   {
+    "source": "Đang chờ xác nhận…",
+    "en": ""
+  },
+  {
+    "source": "Đang chuẩn bị cảnh…",
+    "en": "Preparing the scene…"
+  },
+  {
     "source": "Đang chuẩn bị tài nguyên...",
     "en": "Preparing resources..."
   },
@@ -588,12 +856,20 @@
     "en": "Preparing the complete interface and character content."
   },
   {
+    "source": "Đang gửi lời giới thiệu…",
+    "en": ""
+  },
+  {
     "source": "Đang gửi…",
     "en": ""
   },
   {
     "source": "Đang hoàn thiện nhân vật...",
     "en": "Finishing your character..."
+  },
+  {
+    "source": "Đang mở ký ức…",
+    "en": "Opening a memory…"
   },
   {
     "source": "đang nhập...",
@@ -622,6 +898,10 @@
   {
     "source": "Đang xây dựng tính cách, tạo chân dung chính diện và bộ ảnh biểu cảm.",
     "en": "Building the personality, front portrait and expression set."
+  },
+  {
+    "source": "Đang xem lại chương đã hoàn thành",
+    "en": "Revisiting a completed chapter"
   },
   {
     "source": "Đánh giá",
@@ -660,6 +940,10 @@
     "en": ""
   },
   {
+    "source": "Đặt giới hạn",
+    "en": ""
+  },
+  {
     "source": "Đặt riêng tư",
     "en": ""
   },
@@ -692,6 +976,26 @@
     "en": "You can chat as soon as preparation is complete."
   },
   {
+    "source": "Địa điểm",
+    "en": ""
+  },
+  {
+    "source": "Điểm mở chương",
+    "en": "Chapter unlock points"
+  },
+  {
+    "source": "Điều câu chuyện đang giữ lại",
+    "en": ""
+  },
+  {
+    "source": "Điều đã biết",
+    "en": ""
+  },
+  {
+    "source": "Điều kiện mở chương",
+    "en": "Chapter requirements"
+  },
+  {
     "source": "Đính kèm",
     "en": "Attach"
   },
@@ -720,6 +1024,10 @@
     "en": "Close"
   },
   {
+    "source": "Đóng bảng cốt truyện",
+    "en": ""
+  },
+  {
     "source": "Đóng lịch sử",
     "en": "Close history"
   },
@@ -736,6 +1044,10 @@
     "en": "Companion"
   },
   {
+    "source": "Được trân trọng",
+    "en": ""
+  },
+  {
     "source": "Emoji",
     "en": ""
   },
@@ -749,6 +1061,10 @@
   },
   {
     "source": "Gateway không trả về âm thanh.",
+    "en": ""
+  },
+  {
+    "source": "Gặp lần đầu được ghi nhận",
     "en": ""
   },
   {
@@ -774,6 +1090,10 @@
   {
     "source": "Ghim",
     "en": "Pin"
+  },
+  {
+    "source": "Ghim vào ký ức",
+    "en": ""
   },
   {
     "source": "Giải thích đạo hàm hàm hợp",
@@ -820,11 +1140,27 @@
     "en": "Bio"
   },
   {
+    "source": "Giới thiệu họ",
+    "en": ""
+  },
+  {
+    "source": "Giới thiệu lại",
+    "en": ""
+  },
+  {
     "source": "Giới thiệu ngắn về bạn…",
     "en": "A short introduction about you…"
   },
   {
     "source": "Gõ rồi nhấn Enter",
+    "en": ""
+  },
+  {
+    "source": "Góc nhìn",
+    "en": ""
+  },
+  {
+    "source": "Góc nhìn nhân vật",
     "en": ""
   },
   {
@@ -834,6 +1170,10 @@
   {
     "source": "Gỡ rối trong lòng, tìm lại nhịp của riêng bạn.",
     "en": "Untangle your thoughts and find your own rhythm again."
+  },
+  {
+    "source": "Gợi ý",
+    "en": "Hint"
   },
   {
     "source": "Gợi ý thực đơn lành mạnh",
@@ -876,6 +1216,10 @@
     "en": ""
   },
   {
+    "source": "Hãy trò chuyện với Selene để mở cốt truyện.",
+    "en": "Talk to Selene to unlock her story."
+  },
+  {
     "source": "Hệ thống",
     "en": ""
   },
@@ -908,8 +1252,16 @@
     "en": "Understand your body better, care for yourself better."
   },
   {
+    "source": "Họ chỉ gặp nhau khi bạn tạo phòng nhóm có cả hai và họ cùng trò chuyện.",
+    "en": ""
+  },
+  {
     "source": "Hoàn tất",
     "en": "Done"
+  },
+  {
+    "source": "Hoàn thành chương",
+    "en": "Complete chapter"
   },
   {
     "source": "hoặc",
@@ -944,6 +1296,10 @@
     "en": "Ask me anything…"
   },
   {
+    "source": "Hỏi Selene, chia sẻ điều bạn nghĩ…",
+    "en": "Ask Selene, share a thought…"
+  },
+  {
     "source": "Hồ sơ",
     "en": "Profile"
   },
@@ -962,6 +1318,10 @@
   {
     "source": "Hỗ trợ học tập",
     "en": "Homework support"
+  },
+  {
+    "source": "HỒI TRUYỆN KHÉP LẠI",
+    "en": "ARC COMPLETE"
   },
   {
     "source": "Hôm nay bạn cần ai đồng hành?",
@@ -992,6 +1352,10 @@
     "en": "AI channels"
   },
   {
+    "source": "Kết nối hai nhân vật",
+    "en": ""
+  },
+  {
     "source": "kết quả",
     "en": ""
   },
@@ -1002,6 +1366,14 @@
   {
     "source": "Khám phá nhân vật public",
     "en": "Discover public characters"
+  },
+  {
+    "source": "Khám phá và thu thập đủ dấu vết trước",
+    "en": "Gather the evidence first"
+  },
+  {
+    "source": "Kho ký ức",
+    "en": "Memory Archive"
   },
   {
     "source": "Không cho phép nội dung tình dục liên quan người dưới 18 tuổi.",
@@ -1033,6 +1405,10 @@
   },
   {
     "source": "Không kiểm tra được phiên đăng nhập. Hãy tải lại trang để thử lại.",
+    "en": ""
+  },
+  {
+    "source": "Không phải / bỏ qua",
     "en": ""
   },
   {
@@ -1088,11 +1464,23 @@
     "en": "The chat will open when every step is complete."
   },
   {
+    "source": "Kiểm tra",
+    "en": "Check"
+  },
+  {
     "source": "Kiểm tra bài văn của mình",
     "en": ""
   },
   {
+    "source": "Kiến thức",
+    "en": "Lore"
+  },
+  {
     "source": "ký tự",
+    "en": ""
+  },
+  {
+    "source": "ký tự dự kiến cho ký ức",
     "en": ""
   },
   {
@@ -1108,6 +1496,14 @@
     "en": ""
   },
   {
+    "source": "Ký ức & cốt truyện",
+    "en": ""
+  },
+  {
+    "source": "Ký ức chính",
+    "en": "Core memories"
+  },
+  {
     "source": "Ký ức đã ghim",
     "en": "Pinned memories"
   },
@@ -1120,11 +1516,19 @@
     "en": ""
   },
   {
+    "source": "Ký ức và cốt truyện Roleplay",
+    "en": ""
+  },
+  {
     "source": "Lá bài cho hôm nay",
     "en": ""
   },
   {
     "source": "Lá bài còn lại",
+    "en": ""
+  },
+  {
+    "source": "Làm lành",
     "en": ""
   },
   {
@@ -1172,6 +1576,14 @@
     "en": ""
   },
   {
+    "source": "Lore & bí mật",
+    "en": ""
+  },
+  {
+    "source": "Lore của phòng riêng này. Lọc người biết trước khi so khớp từ khóa; không đưa lore này vào kho công khai. Canon khóa tính nhất quán trong prompt, không thay thế kiểm duyệt. Không thể giữ bí mật nội dung đã nói ra trong lịch sử chung.",
+    "en": ""
+  },
+  {
     "source": "Lối sống",
     "en": ""
   },
@@ -1184,8 +1596,28 @@
     "en": "First greeting"
   },
   {
+    "source": "lời dẫn",
+    "en": "narration"
+  },
+  {
     "source": "Lời giới thiệu",
     "en": "Introduction"
+  },
+  {
+    "source": "lời thoại",
+    "en": "dialogue"
+  },
+  {
+    "source": "Luôn xét",
+    "en": ""
+  },
+  {
+    "source": "Luôn xét đưa vào context",
+    "en": ""
+  },
+  {
+    "source": "lượt chung",
+    "en": ""
   },
   {
     "source": "lượt dùng",
@@ -1196,12 +1628,24 @@
     "en": ""
   },
   {
+    "source": "Lượt trò chuyện có ý nghĩa tối thiểu",
+    "en": "Minimum meaningful chat turns"
+  },
+  {
     "source": "Lưu",
     "en": "Save"
   },
   {
+    "source": "Lưu bối cảnh",
+    "en": ""
+  },
+  {
     "source": "Lưu hồ sơ",
     "en": "Save profile"
+  },
+  {
+    "source": "Lưu lore",
+    "en": ""
   },
   {
     "source": "Lưu trí nhớ",
@@ -1264,8 +1708,20 @@
     "en": "Personality or story description"
   },
   {
+    "source": "Mốc quan hệ",
+    "en": ""
+  },
+  {
     "source": "Mỗi dòng một câu, tối đa 8",
     "en": ""
+  },
+  {
+    "source": "Mối liên kết",
+    "en": ""
+  },
+  {
+    "source": "Mỗi lượt chat hợp lệ được 1 điểm; trò chuyện đúng chủ đề và tăng tin tưởng có thể giúp mở sớm hơn.",
+    "en": "Each meaningful chat turn earns 1 point. Relevant topics and growing trust can unlock the chapter sooner."
   },
   {
     "source": "Mỗi nhân vật có tính cách, giọng nói và mục tiêu riêng.",
@@ -1277,6 +1733,10 @@
   },
   {
     "source": "Một khoảng lặng để khám phá",
+    "en": ""
+  },
+  {
+    "source": "Một nhân vật biết",
     "en": ""
   },
   {
@@ -1308,6 +1768,14 @@
     "en": "New"
   },
   {
+    "source": "Mục tiêu đang dang dở",
+    "en": ""
+  },
+  {
+    "source": "Nâng cao",
+    "en": ""
+  },
+  {
     "source": "Ngạc nhiên",
     "en": ""
   },
@@ -1324,8 +1792,28 @@
     "en": "Date and time"
   },
   {
+    "source": "Ngắt liên kết",
+    "en": ""
+  },
+  {
+    "source": "Nghe",
+    "en": "Listen to "
+  },
+  {
+    "source": "Nghe lời dẫn",
+    "en": "Listen to narration"
+  },
+  {
     "source": "Ngôn ngữ",
     "en": "Language"
+  },
+  {
+    "source": "Ngôn ngữ giọng đọc",
+    "en": "Voice language"
+  },
+  {
+    "source": "Ngôn ngữ văn bản",
+    "en": "Text language"
   },
   {
     "source": "Nguồn",
@@ -1336,7 +1824,15 @@
     "en": ""
   },
   {
+    "source": "Nguồn hình thành",
+    "en": ""
+  },
+  {
     "source": "Ngược",
+    "en": ""
+  },
+  {
+    "source": "Người chứng kiến",
     "en": ""
   },
   {
@@ -1400,6 +1896,10 @@
     "en": "Characters"
   },
   {
+    "source": "Nhân vật bạn tạo được lưu riêng tư tại đây.",
+    "en": ""
+  },
+  {
     "source": "Nhân vật có sẵn",
     "en": "Existing characters"
   },
@@ -1422,6 +1922,10 @@
   {
     "source": "Nhân vật đang đến với bạn, chờ đợi là hạnh phúc.",
     "en": "Your character is on the way. Please wait a moment."
+  },
+  {
+    "source": "Nhân vật được lưu riêng tư. Hiện chỉ nhân vật hệ thống được công khai.",
+    "en": ""
   },
   {
     "source": "Nhân vật hệ thống",
@@ -1448,7 +1952,19 @@
     "en": ""
   },
   {
+    "source": "Nhật ký phiên",
+    "en": ""
+  },
+  {
     "source": "nhớ gì?",
+    "en": ""
+  },
+  {
+    "source": "NHỮNG CUỘC GẶP BẠN TẠO NÊN",
+    "en": ""
+  },
+  {
+    "source": "Nội dung",
     "en": ""
   },
   {
@@ -1456,8 +1972,16 @@
     "en": "For reference and reflection only. No chart or card can change your destiny; your choices and effort shape your life."
   },
   {
+    "source": "Nội dung đang dùng bản tiếng Anh dự phòng.",
+    "en": "Story text currently uses the English fallback."
+  },
+  {
     "source": "Nội dung nhân vật không được phép.",
     "en": ""
+  },
+  {
+    "source": "Ở lại chương này",
+    "en": "Stay in this chapter"
   },
   {
     "source": "Phản hồi bị gián đoạn trước khi hoàn tất.",
@@ -1474,6 +1998,10 @@
   {
     "source": "Phiên đăng nhập không hợp lệ.",
     "en": "Your sign-in session is invalid."
+  },
+  {
+    "source": "Phiêu lưu trong thế giới",
+    "en": ""
   },
   {
     "source": "Phòng chat",
@@ -1516,7 +2044,15 @@
     "en": "Manage"
   },
   {
+    "source": "Quan sát",
+    "en": "Inspect "
+  },
+  {
     "source": "Quay lại",
+    "en": ""
+  },
+  {
+    "source": "Riêng nhân vật",
     "en": ""
   },
   {
@@ -1540,6 +2076,10 @@
     "en": "Light"
   },
   {
+    "source": "Sang chương tiếp theo",
+    "en": "Next chapter"
+  },
+  {
     "source": "Sáng tạo",
     "en": "Create freely"
   },
@@ -1556,8 +2096,24 @@
     "en": ""
   },
   {
+    "source": "Sắp xong rùi, tới ngay đây nhé!",
+    "en": "Almost ready — we’ll be right with you!"
+  },
+  {
+    "source": "Soạn mục mới",
+    "en": ""
+  },
+  {
+    "source": "Số ngày trò chuyện tối thiểu",
+    "en": "Minimum distinct chat days"
+  },
+  {
     "source": "Sống cùng nhân vật.",
     "en": ""
+  },
+  {
+    "source": "suy nghĩ",
+    "en": "thought"
   },
   {
     "source": "Suy nghĩ",
@@ -1566,6 +2122,14 @@
   {
     "source": "Sửa",
     "en": "Edit"
+  },
+  {
+    "source": "Sửa ghi chú",
+    "en": ""
+  },
+  {
+    "source": "Sửa lore",
+    "en": ""
   },
   {
     "source": "Sức khỏe",
@@ -1592,6 +2156,10 @@
     "en": "Account"
   },
   {
+    "source": "Tải lại cấu hình",
+    "en": ""
+  },
+  {
     "source": "Tải lên và tìm nhân vật",
     "en": ""
   },
@@ -1602,6 +2170,10 @@
   {
     "source": "Tài nguyên đã chuẩn bị xong. Bạn có thể bắt đầu trò chuyện.",
     "en": "Resources are ready. You can start chatting."
+  },
+  {
+    "source": "Tải nhật ký riêng",
+    "en": ""
   },
   {
     "source": "Tải truyện",
@@ -1668,6 +2240,10 @@
     "en": ""
   },
   {
+    "source": "Tạo recap AI",
+    "en": ""
+  },
+  {
     "source": "Tạo tài khoản",
     "en": "Create account"
   },
@@ -1705,6 +2281,14 @@
   },
   {
     "source": "Tắt đèn và ẩn mật khẩu",
+    "en": ""
+  },
+  {
+    "source": "Tắt giọng",
+    "en": "Voice off"
+  },
+  {
+    "source": "Tắt ký ức không xóa lịch sử chat, quan hệ hoặc ký ức đã lưu.",
     "en": ""
   },
   {
@@ -1784,6 +2368,10 @@
     "en": "Follow"
   },
   {
+    "source": "Thế giới",
+    "en": "World"
+  },
+  {
     "source": "Thế mạnh",
     "en": ""
   },
@@ -1797,6 +2385,14 @@
   },
   {
     "source": "Thêm ký ức mới",
+    "en": ""
+  },
+  {
+    "source": "Thêm lore hoặc bí mật",
+    "en": ""
+  },
+  {
+    "source": "Thêm thủ công hoặc nguồn không còn khả dụng",
     "en": ""
   },
   {
@@ -1832,6 +2428,10 @@
     "en": "Careful, clear health information"
   },
   {
+    "source": "Thời điểm",
+    "en": ""
+  },
+  {
     "source": "Thu gọn thanh công cụ",
     "en": "Collapse sidebar"
   },
@@ -1841,7 +2441,7 @@
   },
   {
     "source": "Thử lại",
-    "en": "Try again"
+    "en": "Retry"
   },
   {
     "source": "tiếng Anh",
@@ -1856,12 +2456,24 @@
     "en": "Vietnamese"
   },
   {
+    "source": "Tiếng vọng",
+    "en": "Echoes"
+  },
+  {
     "source": "Tiếp tục",
     "en": ""
   },
   {
+    "source": "Tiếp tục ký ức",
+    "en": "Continue memory"
+  },
+  {
     "source": "Tiếp tục trò chuyện",
     "en": "Continue chatting"
+  },
+  {
+    "source": "Tiêu đề",
+    "en": ""
   },
   {
     "source": "Tìm được",
@@ -1892,12 +2504,40 @@
     "en": ""
   },
   {
+    "source": "Tin cậy",
+    "en": ""
+  },
+  {
+    "source": "Tin đồn",
+    "en": ""
+  },
+  {
+    "source": "tin nhắn nguồn",
+    "en": ""
+  },
+  {
     "source": "Tin tưởng",
     "en": ""
   },
   {
+    "source": "Tin tưởng tối thiểu",
+    "en": "Minimum trust"
+  },
+  {
     "source": "Tình cảm",
     "en": "Romance"
+  },
+  {
+    "source": "Toàn tài khoản",
+    "en": ""
+  },
+  {
+    "source": "Tóm tắt",
+    "en": ""
+  },
+  {
+    "source": "Tóm tắt & góc nhìn nhân vật",
+    "en": ""
   },
   {
     "source": "Tóm tắt tài liệu mình gửi",
@@ -1908,12 +2548,20 @@
     "en": "Dark"
   },
   {
+    "source": "Tôi chọn điều này",
+    "en": "This is my choice"
+  },
+  {
     "source": "Tối đa 1000 ký tự",
     "en": ""
   },
   {
     "source": "Trả lời khác",
     "en": "Alternative reply"
+  },
+  {
+    "source": "Trải nghiệm",
+    "en": ""
   },
   {
     "source": "Trang chủ",
@@ -1928,6 +2576,10 @@
     "en": "Your memories"
   },
   {
+    "source": "Trích tối đa 10 đoạn gần đây, có người nói. Đây là nhật ký trích dẫn, chưa phải bản tóm tắt AI.",
+    "en": ""
+  },
+  {
     "source": "Trình duyệt chặn phát tự động. Hãy bấm Nghe một lần để cho phép âm thanh.",
     "en": ""
   },
@@ -1938,6 +2590,10 @@
   {
     "source": "Trò chuyện →",
     "en": "Chat →"
+  },
+  {
+    "source": "Trò chuyện cùng nhân vật",
+    "en": ""
   },
   {
     "source": "Trò chuyện gần đây",
@@ -1956,12 +2612,20 @@
     "en": "Chat with {name}"
   },
   {
+    "source": "Trò chuyện với Selene",
+    "en": "Talk to Selene"
+  },
+  {
     "source": "Trò chuyện với Trợ lý AI",
     "en": "Chat with AI Assistant"
   },
   {
     "source": "trong",
     "en": ""
+  },
+  {
+    "source": "Trở lại trò chuyện với Selene",
+    "en": "Return to Selene chat"
   },
   {
     "source": "Trợ lý AI",
@@ -1982,6 +2646,10 @@
   {
     "source": "Trợ lý dùng các tài liệu này để trả lời trong phòng.",
     "en": "The assistant uses these documents to answer in this room."
+  },
+  {
+    "source": "Trở về",
+    "en": "Back"
   },
   {
     "source": "TTS gateway không trả về PCM.",
@@ -2016,6 +2684,10 @@
     "en": "Preferences"
   },
   {
+    "source": "Tùy chọn ghi nhớ",
+    "en": ""
+  },
+  {
     "source": "Tùy chọn. Có ảnh sẽ tạo bộ 6 ảnh biểu cảm.",
     "en": ""
   },
@@ -2034,6 +2706,22 @@
   {
     "source": "Tự chọn",
     "en": "Auto select"
+  },
+  {
+    "source": "Tự đọc lần lượt",
+    "en": "Read in order"
+  },
+  {
+    "source": "Tự đọc lời nhân vật",
+    "en": "Auto-read character dialogue"
+  },
+  {
+    "source": "Từ khóa / alias, phân cách dấu phẩy",
+    "en": ""
+  },
+  {
+    "source": "Tự lưu ký ức và reflection mới từ phòng này",
+    "en": ""
   },
   {
     "source": "Tự sáng tạo",
@@ -2060,12 +2748,20 @@
     "en": ""
   },
   {
+    "source": "Tương tác",
+    "en": ""
+  },
+  {
     "source": "và bạn",
     "en": ""
   },
   {
     "source": "Vai trò",
     "en": "Role"
+  },
+  {
+    "source": "Vật phẩm",
+    "en": "Artifacts"
   },
   {
     "source": "Về trang chủ Trợ lý AI",
@@ -2112,8 +2808,16 @@
     "en": "e.g. Tony Stark, Gojo Satoru..."
   },
   {
+    "source": "Viết cảm nhận cho hành trình này",
+    "en": "Write a reflection for this journey"
+  },
+  {
     "source": "Viết email xin nghỉ phép",
     "en": "Write a leave request email"
+  },
+  {
+    "source": "Viết lại hành trình của tôi",
+    "en": "Write my journey"
   },
   {
     "source": "Vui vẻ",
@@ -2132,6 +2836,22 @@
     "en": "View →"
   },
   {
+    "source": "Xem ký ức đã giữ",
+    "en": "View recovered memories"
+  },
+  {
+    "source": "Xem lại đoạn ký ức",
+    "en": "Replay memory"
+  },
+  {
+    "source": "Xem lại lựa chọn",
+    "en": "Reconsider"
+  },
+  {
+    "source": "Xem thử kết truyện",
+    "en": "Preview an ending"
+  },
+  {
     "source": "Xin chào! Cơ thể vừa gửi thông báo gì thế? Kể mình nghe, chúng ta cùng đọc cho đúng và bớt hoang mang nhé.",
     "en": "Hello! What notification did your body just send? Tell me, and we'll read it carefully without the panic."
   },
@@ -2148,6 +2868,10 @@
     "en": "Delete conversation"
   },
   {
+    "source": "Xóa ký ức này?",
+    "en": ""
+  },
+  {
     "source": "Xóa nguồn",
     "en": "Remove source"
   },
@@ -2161,6 +2885,10 @@
   },
   {
     "source": "Xóa nhân vật riêng tư",
+    "en": ""
+  },
+  {
+    "source": "Xóa recap và góc nhìn",
     "en": ""
   },
   {

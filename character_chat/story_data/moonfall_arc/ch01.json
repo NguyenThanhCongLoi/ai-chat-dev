@@ -1,0 +1,704 @@
+{
+  "id": "selene_01",
+  "order": 1,
+  "enabled": true,
+  "implemented": true,
+  "title": {
+    "vi": "Tàn tích thức giấc",
+    "en": "The Ruins That Woke"
+  },
+  "objective": {
+    "vi": "Khám phá cổng cổ, tìm chìa khóa và giải trình tự rune.",
+    "en": "Explore the gate, find its key, and restore the rune sequence."
+  },
+  "scenes": [
+    {
+      "id": "ancient_gate",
+      "title": {
+        "vi": "Cổng cổ",
+        "en": "Ancient Gate"
+      },
+      "background": "replacement_ch01_ancient_gate",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_01.line.001"
+        },
+        {
+          "type": "dialogue",
+          "text_key": "selene_01.line.002",
+          "speaker": "selene",
+          "expression": "thinking"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_01_old_gate",
+          "title": {
+            "vi": "Ổ khóa cổng",
+            "en": "Gate lock"
+          },
+          "item": "moon_rune",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_01.line.003"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_01.line.004",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_01_collapsed_path",
+          "title": {
+            "vi": "Lối đi sụp",
+            "en": "Collapsed path"
+          },
+          "item": "ancient_key",
+          "optional": false,
+          "x": 0.4,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_01.line.005"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_01.line.006",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "side_path",
+      "title": {
+        "vi": "Con đường bị bỏ quên",
+        "en": "Forgotten side path"
+      },
+      "background": "replacement_ch01_ruined_path",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_01.expanded.side_path"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_01_clear_stones",
+          "title": {
+            "vi": "Dời đá chắn lối",
+            "en": "Clear the stones"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_01.expanded.side_path.clear_stones"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_01_footprints",
+          "title": {
+            "vi": "Đối chiếu dấu chân",
+            "en": "Compare the footprints"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.39,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_01.expanded.side_path.footprints"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_01_arrow_trap",
+          "title": {
+            "vi": "Phiến đá có huy hiệu",
+            "en": "The crested slab"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.66,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "dialogue",
+              "text_key": "selene_01.expanded.side_path.arrow_trap.speech",
+              "speaker": "selene",
+              "expression": "serious"
+            },
+            {
+              "type": "visual_effect",
+              "visual_event": "ARROW_TRAP"
+            },
+            {
+              "type": "narration",
+              "text_key": "selene_01.expanded.side_path.arrow_trap"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_01.expanded.ward_aftermath.fallen_arrow.speech",
+              "speaker": "selene",
+              "expression": "serious"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "ward_aftermath",
+      "title": {
+        "vi": "Dư âm vòng phép",
+        "en": "After the ward"
+      },
+      "background": "replacement_ch01_ruined_path",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_01.expanded.ward_aftermath"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_01_fallen_arrow",
+          "title": {
+            "vi": "Kiểm tra mũi tên",
+            "en": "Examine the arrow"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_01.expanded.ward_aftermath.fallen_arrow"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_01_oath_mark",
+          "title": {
+            "vi": "Đọc huy hiệu Moonbrook",
+            "en": "Read the Moonbrook crest"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.39,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_01.expanded.ward_aftermath.oath_mark"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "outer_ruins",
+      "title": {
+        "vi": "Tàn tích ngoài",
+        "en": "Outer Ruins"
+      },
+      "background": "replacement_ch01_outer_ruins",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_01.line.007"
+        },
+        {
+          "type": "dialogue",
+          "text_key": "selene_01.line.008",
+          "speaker": "selene",
+          "expression": "thinking"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_01_broken_statue",
+          "title": {
+            "vi": "Pho tượng vỡ",
+            "en": "Broken statue"
+          },
+          "item": "moonstone",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_01.line.009"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_01.line.010",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_01_rune_wall",
+          "title": {
+            "vi": "Bức tường rune",
+            "en": "Rune wall"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.4,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_01.line.011"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_01.line.012",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        }
+      ]
+    }
+  ],
+  "puzzles": [
+    {
+      "id": "selene_01_puzzle",
+      "type": "rune_order",
+      "title": {
+        "vi": "Lời thề trên đá",
+        "en": "The vow in stone"
+      },
+      "scene": "outer_ruins",
+      "requires_inspections": [
+        "selene_01_old_gate",
+        "selene_01_collapsed_path",
+        "selene_01_broken_statue",
+        "selene_01_rune_wall",
+        "selene_01_clear_stones",
+        "selene_01_footprints",
+        "selene_01_arrow_trap",
+        "selene_01_fallen_arrow",
+        "selene_01_oath_mark"
+      ],
+      "required_items": [
+        "ancient_key"
+      ],
+      "options": [
+        {
+          "id": "moon",
+          "label": {
+            "vi": "TRĂNG",
+            "en": "MOON"
+          }
+        },
+        {
+          "id": "memory",
+          "label": {
+            "vi": "KÝ ỨC",
+            "en": "MEMORY"
+          }
+        },
+        {
+          "id": "blood",
+          "label": {
+            "vi": "MÁU",
+            "en": "BLOOD"
+          }
+        }
+      ],
+      "solution": [
+        "moon",
+        "memory",
+        "blood"
+      ],
+      "hints": [
+        {
+          "vi": "Lời thề bắt đầu bằng thứ đang soi xuống mình.",
+          "en": "The vow begins with what shines above us."
+        },
+        {
+          "vi": "Pho tượng nói về soi đường, giữ tên, rồi đóng lời thề.",
+          "en": "The statue speaks of leading, naming, then sealing."
+        },
+        {
+          "vi": "TRĂNG → KÝ ỨC → MÁU.",
+          "en": "MOON → MEMORY → BLOOD."
+        }
+      ],
+      "events": [
+        {
+          "type": "dialogue",
+          "text_key": "selene_01.line.013",
+          "speaker": "selene",
+          "expression": "determined"
+        },
+        {
+          "type": "visual_effect",
+          "effect": "RUNE_GLOW"
+        }
+      ],
+      "flags": {}
+    }
+  ],
+  "choice": {
+    "id": "selene_01_choice",
+    "prompt_key": "selene_01.line.014",
+    "options": [
+      {
+        "id": "selene_01_choice_0",
+        "label_key": "selene_01.line.015",
+        "effects": {
+          "truth": 1
+        },
+        "flags": {},
+        "tags": [],
+        "events": [
+          {
+            "type": "dialogue",
+            "text_key": "selene_01.line.016",
+            "speaker": "selene",
+            "expression": "serious"
+          }
+        ]
+      },
+      {
+        "id": "selene_01_choice_1",
+        "label_key": "selene_01.line.017",
+        "effects": {
+          "trust": 1,
+          "understanding": 1
+        },
+        "flags": {},
+        "tags": [],
+        "events": [
+          {
+            "type": "dialogue",
+            "text_key": "selene_01.line.018",
+            "speaker": "selene",
+            "expression": "serious"
+          }
+        ]
+      },
+      {
+        "id": "selene_01_choice_2",
+        "label_key": "selene_01.line.019",
+        "effects": {
+          "understanding": 2
+        },
+        "flags": {
+          "questioned_memory_reliability": true
+        },
+        "tags": [
+          "question_memory"
+        ],
+        "events": [
+          {
+            "type": "dialogue",
+            "text_key": "selene_01.line.020",
+            "speaker": "selene",
+            "expression": "serious"
+          }
+        ]
+      }
+    ]
+  },
+  "memory": {
+    "id": "M01",
+    "title": {
+      "vi": "M01 · Rune đầu tiên",
+      "en": "M01 · The First Rune"
+    },
+    "video": "memory_video_01",
+    "events": [
+      {
+        "type": "narration",
+        "text_key": "selene_01.line.021",
+        "speaker": "narrator",
+        "expression": "thinking"
+      },
+      {
+        "type": "narration",
+        "text_key": "selene_01.line.022",
+        "speaker": "narrator",
+        "expression": "thinking"
+      },
+      {
+        "type": "dialogue",
+        "text_key": "selene_01.line.023",
+        "speaker": "selene",
+        "expression": "thinking"
+      }
+    ],
+    "fact_key": "selene_01.line.024"
+  },
+  "localization": {
+    "selene_01.line.001": {
+      "vi": "Cánh cổng cổ đứng im dưới ánh trăng. Selene dừng lại trước những nét khắc đã bạc màu.",
+      "en": "The ancient gate stands silent in the moonlight. Selene pauses before its weathered carvings.",
+      "ja": "月明かりの下、古びた門が静かにそびえている。セレーネは、かすれた彫刻の前で足を止めた。",
+      "zh": "月光下，古老的大门寂然伫立。塞琳在斑驳的刻痕前停下脚步。",
+      "ko": "달빛 아래 고대의 문이 고요히 서 있다. 셀레네는 희미해진 문양 앞에서 걸음을 멈춘다.",
+      "my": "လရောင်အောက်မှာ ရှေးဟောင်းတံခါးကြီးက တိတ်ဆိတ်နေတယ်။ ဆယ်လင်းက မှေးမှိန်နေတဲ့ ထွင်းထားသောအမှတ်တွေရှေ့မှာ ရပ်လိုက်တယ်။",
+      "km": "ទ្វារបុរាណឈរស្ងៀមក្រោមពន្លឺចន្ទ។ សេលែនឈប់នៅមុខក្បាច់ឆ្លាក់ដែលស្រអាប់ទៅតាមកាលវេលា។"
+    },
+    "selene_01.line.002": {
+      "vi": "Tôi có cảm giác đã từng đến đây... Mình xem cánh cổng trước nhé.",
+      "en": "I feel as though I've been here before... Let's take a look at the gate first.",
+      "ja": "ここに来たことがある気がする……まずは、あの門を調べてみよう。",
+      "zh": "总觉得我以前来过这里……先看看那扇门吧。",
+      "ko": "여기 와 본 적이 있는 것 같아요… 우선 저 문부터 살펴봐요.",
+      "my": "ဒီနေရာကို အရင်က ရောက်ဖူးသလိုပဲ… တံခါးကို အရင်ကြည့်ကြရအောင်။",
+      "km": "ខ្ញុំមានអារម្មណ៍ថាធ្លាប់មកទីនេះហើយ… យើងមើលទ្វារជាមុនសិនទៅ។"
+    },
+    "selene_01.line.003": {
+      "vi": "Cánh cổng không nhúc nhích. Ổ khóa hình trăng vẫn nguyên vẹn; bên bậc đá có thứ ánh bạc ló ra.",
+      "en": "The gate won't budge. Its moon-shaped lock is intact; a silver glint peeks out beside a stone step.",
+      "ja": "門はびくともしない。月形の鍵穴は壊れておらず、石段の脇で銀色の何かが光っている。",
+      "zh": "门纹丝不动，月形锁孔仍完好无损。石阶旁，隐约闪过一点银光。",
+      "ko": "문은 꿈쩍도 하지 않는다. 달 모양 자물쇠는 멀쩡하고, 돌계단 옆에서 은빛이 살짝 비친다.",
+      "my": "တံခါးက လုံးဝမလှုပ်ဘူး။ လပုံစံသော့ခလောက်က မပျက်စီးသေးဘဲ ကျောက်လှေကားဘေးမှာ ငွေရောင်လေးတစ်ချက် လက်နေတယ်။",
+      "km": "ទ្វារមិនកម្រើកសោះ។ សោរាងព្រះចន្ទនៅល្អនៅឡើយ ហើយមានពន្លឺប្រាក់បន្តិចចាំងចេញពីក្បែរជំហានថ្ម។"
+    },
+    "selene_01.line.004": {
+      "vi": "Nó bị khóa rồi... Khoan đã, dưới bậc đá kia có gì lấp lánh. Mình thử nhìn kỹ nhé.",
+      "en": "It's locked... Wait, something's glinting beneath that step. Let's take a closer look.",
+      "ja": "鍵がかかってる……待って、あの石段の下で何か光ってる。よく見てみよう。",
+      "zh": "锁住了……等等，那块石阶下面好像有什么在发光。我们仔细看看。",
+      "ko": "잠겨 있네요… 잠깐, 저 돌계단 밑에서 뭔가 반짝여요. 자세히 살펴봐요.",
+      "my": "သော့ခတ်ထားတာပဲ… ခဏ၊ ဟိုကျောက်လှေကားအောက်မှာ တစ်ခုခု လက်နေတယ်။ သေချာကြည့်ကြရအောင်။",
+      "km": "វាជាប់សោហើយ… ចាំបន្តិច មានអ្វីមួយភ្លឺនៅក្រោមជំហានថ្មនោះ។ យើងមើលឱ្យច្បាស់បន្តិចទៅ។"
+    },
+    "selene_01.line.005": {
+      "vi": "Bạn tìm được chiếc chìa khóa cổ dưới bậc đá. Những nét rune trên thân chìa giống với nét khắc ở ổ khóa.",
+      "en": "You find an ancient key beneath the step. The runes along its shaft resemble the markings on the lock.",
+      "ja": "石段の下から古い鍵が見つかった。軸に刻まれたルーンは、鍵穴の模様とよく似ている。",
+      "zh": "你在石阶下找到一把古老的钥匙。钥匙上的符文，与锁孔周围的刻痕十分相似。",
+      "ko": "돌계단 아래에서 오래된 열쇠를 찾았다. 열쇠에 새겨진 룬이 자물쇠의 문양과 닮아 있다.",
+      "my": "ကျောက်လှေကားအောက်မှာ ရှေးဟောင်းသော့တစ်ချောင်း တွေ့ရတယ်။ သော့ပေါ်က ရူန်းအမှတ်တွေဟာ သော့ခလောက်ပေါ်က အမှတ်တွေနဲ့ ဆင်တူနေတယ်။",
+      "km": "អ្នករកឃើញកូនសោបុរាណនៅក្រោមជំហានថ្ម។ អក្សររុនលើកូនសោស្រដៀងនឹងស្នាមឆ្លាក់នៅលើសោទ្វារ។"
+    },
+    "selene_01.line.006": {
+      "vi": "Một chiếc chìa khóa... Nhưng hình như vẫn thiếu điều gì đó. Mình tìm thêm những dấu khắc quanh đây nhé.",
+      "en": "A key... But I think we're still missing something. Let's look for more markings around here.",
+      "ja": "鍵だ……でも、まだ何か足りない気がする。この辺りの刻印も探してみよう。",
+      "zh": "是一把钥匙……但好像还缺了什么。再找找附近有没有别的刻痕吧。",
+      "ko": "열쇠였네요… 그런데 아직 뭔가 부족한 것 같아요. 주변의 다른 문양도 찾아봐요.",
+      "my": "သော့တစ်ချောင်းပဲ… ဒါပေမဲ့ တစ်ခုခု လိုနေသေးသလိုပဲ။ ဒီအနားက ထွင်းထားတဲ့ အမှတ်တွေကို ထပ်ရှာကြည့်ရအောင်။",
+      "km": "កូនសោមួយ… តែខ្ញុំគិតថាយើងនៅខ្វះអ្វីមួយទៀត។ យើងរកមើលស្នាមឆ្លាក់ផ្សេងទៀតនៅជុំវិញនេះទៅ។"
+    },
+    "selene_01.line.007": {
+      "vi": "Giữa tàn tích ngoài, những nét khắc còn sót lại trên đá. Pho tượng và bức tường có vẻ cùng kể một câu chuyện.",
+      "en": "Among the outer ruins, markings survive in the stone. The statue and the wall seem to belong to the same story."
+    },
+    "selene_01.line.008": {
+      "vi": "Hoang tàn đến thế mà những văn tự cổ vẫn còn... Mình thử đọc quanh pho tượng rồi so với bức tường kia nhé.",
+      "en": "So much has fallen, yet the old inscriptions are still here... Let us look around the statue, then compare them with that wall."
+    },
+    "selene_01.line.009": {
+      "vi": "Sau lưng tượng, dòng chữ gợi ý: ánh trăng soi đường; ký ức giữ tên; máu đóng lời thề.",
+      "en": "Behind the statue: moonlight leads the way; memory keeps the name; blood seals the vow."
+    },
+    "selene_01.line.010": {
+      "vi": "Pho tượng vỡ vẫn còn những nét chữ. Có lẽ chúng sẽ giúp mình hiểu các ký hiệu trên tường.",
+      "en": "There is still writing on the broken statue. It might help us make sense of the symbols on the wall."
+    },
+    "selene_01.line.011": {
+      "vi": "Ba biểu tượng còn xoay được: TRĂNG, KÝ ỨC, MÁU. Đây là một thứ tự, không phải phép hiến tế.",
+      "en": "Three symbols still turn: MOON, MEMORY, BLOOD. It is an ordering mechanism, not a demand for a sacrifice."
+    },
+    "selene_01.line.012": {
+      "vi": "Những ký hiệu này có thể xoay được. Mình thử đối chiếu chúng với dòng chữ bên pho tượng nhé.",
+      "en": "These symbols can turn. Let us compare them with the inscription by the statue."
+    },
+    "selene_01.line.013": {
+      "vi": "Nó nhận ra chìa khóa… và cả thứ tự tôi đã quên.",
+      "en": "It recognizes the key... and the order I forgot."
+    },
+    "selene_01.line.014": {
+      "vi": "Bạn muốn cùng Selene đi tiếp thế nào?",
+      "en": "How will you continue beside Selene?"
+    },
+    "selene_01.line.015": {
+      "vi": "Tôi sẽ giúp cô tìm lại mọi ký ức.",
+      "en": "I'll help you recover every memory."
+    },
+    "selene_01.line.016": {
+      "vi": "Mọi ký ức… nghe có vẻ đơn giản hơn việc thực sự mang chúng trở lại.",
+      "en": "Every memory... that sounds simpler than carrying them back."
+    },
+    "selene_01.line.017": {
+      "vi": "Mình chỉ tìm những điều cô thực sự muốn nhớ.",
+      "en": "We only find what you actually want to remember."
+    },
+    "selene_01.line.018": {
+      "vi": "Vậy nếu tôi đổi ý, anh sẽ nghe chứ? …Cảm ơn.",
+      "en": "Then if I change my mind, you will listen? ...Thank you."
+    },
+    "selene_01.line.019": {
+      "vi": "Có lẽ cô quên chúng vì một lý do.",
+      "en": "Maybe you forgot it for a reason."
+    },
+    "selene_01.line.020": {
+      "vi": "Một lý do… Tôi chưa biết mình sợ tìm ra nó hay sợ không tìm ra.",
+      "en": "A reason... I cannot tell whether I fear finding it, or never finding it."
+    },
+    "selene_01.line.021": {
+      "vi": "Dưới ánh trăng, Selene trẻ chạy qua hành lang Moonbrook về phía cánh cửa rune đang hé.",
+      "en": "Under moonlight, young Selene runs through a Moonbrook corridor toward a half-open rune door."
+    },
+    "selene_01.line.022": {
+      "vi": "Một giọng nói chưa rõ người cất lên: “Selene! Đừng mở cánh cửa đó!”",
+      "en": "An unidentified voice calls: “Selene! Don't open that door!”"
+    },
+    "selene_01.line.023": {
+      "vi": "Tôi đã ngoảnh lại… Nhưng gương mặt ấy không còn trong mảnh nhớ này.",
+      "en": "I turned around... But that face is missing from the fragment."
+    },
+    "selene_01.line.024": {
+      "vi": "Bạn và Selene mở cổng bằng chìa khóa và thứ tự TRĂNG–KÝ ỨC–MÁU; M01 kết thúc trước khi nhận ra người gọi cô.",
+      "en": "You and Selene opened the gate with its key and MOON–MEMORY–BLOOD; M01 ended before the caller could be identified."
+    },
+    "selene_01.line.025": {
+      "vi": "Cánh cổng đã mở. Selene từng ở Moonbrook; có người gọi cô dừng trước một cánh cửa. Ký ức giữ lời gọi nhưng không giữ gương mặt.",
+      "en": "The gate is open. Selene lived in Moonbrook; someone called her away from a door. The memory keeps the call but not the face."
+    },
+    "selene_01.line.026": {
+      "vi": "Ai đã gọi Selene? Vì sao chính gương mặt ấy biến mất?",
+      "en": "Who called Selene, and why is that face missing?"
+    },
+    "selene_01.expanded.side_path": {
+      "vi": "Lối nhỏ vòng quanh cổng bị đá vụn che khuất. Những khe chữ nhật chạy dọc tường.",
+      "en": "Rubble hides a narrow path around the gate. Rectangular slits line the wall."
+    },
+    "selene_01.expanded.side_path.clear_stones": {
+      "vi": "Bạn dời đá rời để lộ một hàng phiến lát. Vệt mòn chạy sát tường rồi dừng trước huy hiệu trăng.",
+      "en": "You move loose stones, exposing paving. A worn trail hugs the wall and stops at a moon crest."
+    },
+    "selene_01.expanded.side_path.footprints": {
+      "vi": "Dấu giày cũ vòng tránh phiến đá giữa đường. Người từng qua đây biết có thứ nằm dưới nó.",
+      "en": "Old footprints skirt the central slab. Someone who passed here knew what lay beneath it."
+    },
+    "selene_01.expanded.side_path.arrow_trap": {
+      "vi": "Một tiếng tách vang dưới chân; tên bật khỏi tường. Selene giơ vòng phép bạc, giữ mũi tên giữa không trung rồi để nó rơi xuống.",
+      "en": "A click sounds underfoot; an arrow springs from the wall. Selene raises a silver ward, holds the arrow in midair, then lets it fall."
+    },
+    "selene_01.expanded.side_path.arrow_trap.speech": {
+      "vi": "Đừng nhúc nhích.",
+      "en": "Do not move."
+    },
+    "selene_01.expanded.ward_aftermath": {
+      "vi": "Cơ chế đã ngừng. Selene vẫn nhìn bàn tay vừa giơ lên.",
+      "en": "The mechanism is still. Selene studies her raised hand."
+    },
+    "selene_01.expanded.ward_aftermath.fallen_arrow": {
+      "vi": "Vòng bạc đã tan, nhưng mũi tên thật còn nằm đó. Phép thuật đến trước khi Selene nhớ mình từng học nó.",
+      "en": "The silver ring is gone, but the arrow remains. The spell came before Selene could remember learning it."
+    },
+    "selene_01.expanded.ward_aftermath.fallen_arrow.speech": {
+      "vi": "Tôi không nghĩ… Tôi chỉ biết mình phải làm vậy.",
+      "en": "I did not think… I only knew I had to do it."
+    },
+    "selene_01.expanded.ward_aftermath.oath_mark": {
+      "vi": "Dưới huy hiệu là bàn tay đặt lên rune. Người Moonbrook dùng ký hiệu như lời thề, không chỉ như phép thuật.",
+      "en": "Below the crest, a carving shows a hand upon a rune. In Moonbrook, a symbol could be an oath as well as a spell."
+    }
+  },
+  "required_inspections": [
+    "selene_01_old_gate",
+    "selene_01_collapsed_path",
+    "selene_01_broken_statue",
+    "selene_01_rune_wall",
+    "selene_01_clear_stones",
+    "selene_01_footprints",
+    "selene_01_arrow_trap",
+    "selene_01_fallen_arrow",
+    "selene_01_oath_mark"
+  ],
+  "summary_key": "selene_01.line.025",
+  "reflection_key": "selene_01.line.026"
+}

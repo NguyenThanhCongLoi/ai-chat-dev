@@ -22,6 +22,12 @@ def init_db():
         with engine.begin() as connection:
             if "room_id" not in columns:connection.execute(text("ALTER TABLE assistant_memories ADD COLUMN room_id VARCHAR"))
             connection.execute(text("CREATE INDEX IF NOT EXISTS ix_assistant_memories_room_id ON assistant_memories (room_id)"))
+    if "messages" in inspect(engine).get_table_names():
+        columns={c["name"] for c in inspect(engine).get_columns("messages")}
+        with engine.begin() as connection:
+            if "reply_to_message_id" not in columns:
+                connection.execute(text("ALTER TABLE messages ADD COLUMN reply_to_message_id VARCHAR"))
+            connection.execute(text("CREATE INDEX IF NOT EXISTS ix_messages_reply_to_message_id ON messages (reply_to_message_id)"))
     # create_all does not add columns to an existing SQLite database. Keep this
     # tiny migration here so deployed volumes retain their conversations.
     if "messages" in inspect(engine).get_table_names():

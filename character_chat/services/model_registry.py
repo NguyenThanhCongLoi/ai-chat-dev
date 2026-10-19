@@ -491,6 +491,14 @@ def bind_runtime_settings(runtime: ModuleType) -> None:
     runtime.ensure_model_registry = ensure_model_registry
 
     def apply_model_registry(db):
+        # JEV is a decision API, not a chat model assignment. Reuse encrypted
+        # API-base credentials; env keys have priority and are never returned.
+        from .. import jev
+        jev_row = db.get(runtime.AppSetting, "credential:base:" + runtime.base_credential_id("https://api.typesafe.ai"))
+        try:
+            jev.set_cms_key(runtime.decrypt_admin_secret(jev_row.value) if jev_row and jev_row.value else "")
+        except Exception:
+            jev.set_cms_key("__unreadable_cms_key__")
         # Reset first so removed or disabled assignments cannot remain active.
         runtime.apply_runtime_settings(runtime.runtime_settings(db))
         # CMS role assignments are authoritative after the registry is created.

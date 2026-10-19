@@ -1,0 +1,692 @@
+{
+  "id": "selene_06",
+  "order": 6,
+  "enabled": true,
+  "implemented": true,
+  "title": {
+    "vi": "Hai mươi chín phút bị mất",
+    "en": "The Missing 29 Minutes"
+  },
+  "objective": {
+    "vi": "Sắp lại dòng thời gian và đối diện cánh cửa ký ức cuối.",
+    "en": "Reconstruct the timeline and face the final memory door."
+  },
+  "scenes": [
+    {
+      "id": "vault",
+      "title": {
+        "vi": "Hầm sâu",
+        "en": "Deep Vault"
+      },
+      "background": "replacement_ch06_deep_vault",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_06.line.001"
+        },
+        {
+          "type": "dialogue",
+          "text_key": "selene_06.line.002",
+          "speaker": "selene",
+          "expression": "thinking"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_06_activation",
+          "title": {
+            "vi": "23:47 · Kích hoạt",
+            "en": "23:47 · Activation"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_06.line.003"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_06.line.004",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_06_barrier",
+          "title": {
+            "vi": "23:52 · Hàng rào phía bắc",
+            "en": "23:52 · North barrier"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.4,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_06.line.005"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_06.line.006",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "mirror_hall",
+      "title": {
+        "vi": "Hành lang gương",
+        "en": "Hall of mirrors"
+      },
+      "background": "replacement_ch06_mirror_room",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_06.expanded.mirror_hall"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_06_mirror_desync",
+          "title": {
+            "vi": "Phản chiếu chậm nhịp",
+            "en": "The delayed reflection"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "dialogue",
+              "text_key": "selene_06.expanded.mirror_hall.mirror_desync.speech",
+              "speaker": "selene",
+              "expression": "serious"
+            },
+            {
+              "type": "visual_effect",
+              "visual_event": "MIRROR_DESYNC"
+            },
+            {
+              "type": "narration",
+              "text_key": "selene_06.expanded.mirror_hall.mirror_desync"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_06_mirror_boundary",
+          "title": {
+            "vi": "Rời khỏi mặt kính",
+            "en": "Step away from the glass"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.39,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_06.expanded.mirror_hall.mirror_boundary"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_06_mirror",
+          "title": {
+            "vi": "Mảnh gương",
+            "en": "Mirror Shard"
+          },
+          "item": "mirror_shard",
+          "optional": true,
+          "x": 0.31,
+          "y": 0.71,
+          "width": 0.19,
+          "height": 0.25,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_06.line.007"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_06.line.008",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {
+            "found_mirror_shard": true
+          },
+          "echo": "mirror_echo",
+          "lore": "",
+          "tags": [],
+          "scene_asset": "prop_ch06_mirror_shard",
+          "presentation_mode": "floor"
+        }
+      ]
+    },
+    {
+      "id": "clock_landing",
+      "title": {
+        "vi": "Chiếu nghỉ đồng hồ",
+        "en": "Clock landing"
+      },
+      "background": "memory_corridor",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_06.expanded.clock_landing"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_06_midnight",
+          "title": {
+            "vi": "Kiểm tra mốc đổi ngày",
+            "en": "Check the date change"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_06.expanded.clock_landing.midnight"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_06_elapsed_time",
+          "title": {
+            "vi": "Đối chiếu khoảng thời gian",
+            "en": "Compare the elapsed time"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.39,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_06.expanded.clock_landing.elapsed_time"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_06.expanded.clock_landing.elapsed_time.speech",
+              "speaker": "selene",
+              "expression": "serious"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "corridor",
+      "title": {
+        "vi": "Hành lang ký ức",
+        "en": "Memory Corridor"
+      },
+      "background": "memory_corridor",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_06.line.009"
+        },
+        {
+          "type": "dialogue",
+          "text_key": "selene_06.line.010",
+          "speaker": "selene",
+          "expression": "thinking"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_06_separation",
+          "title": {
+            "vi": "00:03 · Dấu tách",
+            "en": "00:03 · Separation mark"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_06.line.011"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_06.line.012",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_06_stops",
+          "title": {
+            "vi": "00:16 · Moonfall dừng",
+            "en": "00:16 · Moonfall stops"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.4,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_06.line.013"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_06.line.014",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        }
+      ]
+    }
+  ],
+  "puzzles": [
+    {
+      "id": "selene_06_puzzle",
+      "type": "timeline_order",
+      "title": {
+        "vi": "Ghép 29 phút",
+        "en": "Rebuild the 29 minutes"
+      },
+      "scene": "corridor",
+      "requires_inspections": [
+        "selene_06_activation",
+        "selene_06_barrier",
+        "selene_06_separation",
+        "selene_06_stops",
+        "selene_06_mirror_desync",
+        "selene_06_mirror_boundary",
+        "selene_06_midnight",
+        "selene_06_elapsed_time"
+      ],
+      "required_items": [],
+      "options": [
+        {
+          "id": "2347",
+          "label": {
+            "vi": "23:47 · Kích hoạt",
+            "en": "23:47 · Activation"
+          }
+        },
+        {
+          "id": "2352",
+          "label": {
+            "vi": "23:52 · Hàng rào đổ",
+            "en": "23:52 · Barrier collapse"
+          }
+        },
+        {
+          "id": "0003",
+          "label": {
+            "vi": "00:03 · Tách ký ức",
+            "en": "00:03 · Memory separation"
+          }
+        },
+        {
+          "id": "0016",
+          "label": {
+            "vi": "00:16 · Moonfall dừng",
+            "en": "00:16 · Moonfall stops"
+          }
+        }
+      ],
+      "solution": [
+        "2347",
+        "2352",
+        "0003",
+        "0016"
+      ],
+      "hints": [
+        {
+          "vi": "Đêm ấy đi qua nửa đêm.",
+          "en": "That night crosses midnight."
+        },
+        {
+          "vi": "Tách ký ức xảy ra trước lúc Moonfall dừng.",
+          "en": "Separation comes before Moonfall stops."
+        },
+        {
+          "vi": "23:47 → 23:52 → 00:03 → 00:16.",
+          "en": "23:47 → 23:52 → 00:03 → 00:16."
+        }
+      ],
+      "events": [
+        {
+          "type": "dialogue",
+          "text_key": "selene_06.line.015",
+          "speaker": "selene",
+          "expression": "determined"
+        },
+        {
+          "type": "visual_effect",
+          "effect": "RUNE_GLOW"
+        }
+      ],
+      "flags": {}
+    }
+  ],
+  "choice": {
+    "id": "selene_06_choice",
+    "prompt_key": "selene_06.line.016",
+    "options": [
+      {
+        "id": "selene_06_choice_0",
+        "label_key": "selene_06.line.017",
+        "effects": {
+          "truth": 2
+        },
+        "flags": {},
+        "tags": [],
+        "events": [
+          {
+            "type": "dialogue",
+            "text_key": "selene_06.line.018",
+            "speaker": "selene",
+            "expression": "serious"
+          }
+        ]
+      },
+      {
+        "id": "selene_06_choice_1",
+        "label_key": "selene_06.line.019",
+        "effects": {
+          "trust": 2
+        },
+        "flags": {},
+        "tags": [],
+        "events": [
+          {
+            "type": "dialogue",
+            "text_key": "selene_06.line.020",
+            "speaker": "selene",
+            "expression": "serious"
+          }
+        ]
+      },
+      {
+        "id": "selene_06_choice_2",
+        "label_key": "selene_06.line.021",
+        "effects": {
+          "understanding": 3
+        },
+        "flags": {
+          "noticed_selene_paradox": true
+        },
+        "tags": [
+          "recognize_paradox",
+          "question_memory_design"
+        ],
+        "events": [
+          {
+            "type": "dialogue",
+            "text_key": "selene_06.line.022",
+            "speaker": "selene",
+            "expression": "serious"
+          }
+        ]
+      }
+    ]
+  },
+  "memory": {
+    "id": "M06",
+    "title": {
+      "vi": "M06 · Hai mươi chín phút bị mất",
+      "en": "M06 · The Missing 29 Minutes"
+    },
+    "video": "memory_video_06",
+    "events": [
+      {
+        "type": "narration",
+        "text_key": "selene_06.line.023",
+        "speaker": "narrator",
+        "expression": "thinking"
+      },
+      {
+        "type": "narration",
+        "text_key": "selene_06.line.024",
+        "speaker": "narrator",
+        "expression": "thinking"
+      },
+      {
+        "type": "dialogue",
+        "text_key": "selene_06.line.025",
+        "speaker": "selene",
+        "expression": "thinking"
+      }
+    ],
+    "fact_key": "selene_06.line.026"
+  },
+  "localization": {
+    "selene_06.line.001": {
+      "vi": "Trong hầm, đồng hồ và dấu vết nghi lễ giữ lại những mốc rời. Cần tìm điểm bắt đầu trước khi sắp lại đêm ấy.",
+      "en": "The vault's clock and ritual traces preserve scattered times. Find a starting point before reconstructing that night."
+    },
+    "selene_06.line.002": {
+      "vi": "Tôi muốn hiểu đêm ấy đã diễn ra thế nào, nhưng mình cứ chậm thôi. Bắt đầu từ những mốc còn kiểm tra được nhé.",
+      "en": "I want to understand how that night unfolded, but let us take it slowly. Start with the times we can still verify."
+    },
+    "selene_06.line.003": {
+      "vi": "Nghi lễ bắt đầu lúc 23:47 theo cả đồng hồ và nhật ký.",
+      "en": "The clock and journal agree: ritual activation at 23:47."
+    },
+    "selene_06.line.004": {
+      "vi": "Mình cần một mốc bắt đầu chắc chắn. Thử xem đồng hồ và bản ghi có cùng chỉ về một thời điểm không.",
+      "en": "We need a reliable starting point. Check whether the clock and the written record agree."
+    },
+    "selene_06.line.005": {
+      "vi": "Hàng rào phía bắc đổ lúc 23:52; đây không phải thời điểm nghi lễ kết thúc.",
+      "en": "The north barrier collapsed at 23:52; the ritual did not end there."
+    },
+    "selene_06.line.006": {
+      "vi": "Hàng rào đổ là một sự kiện riêng. Mình đừng nhầm nó với lúc mọi chuyện kết thúc nhé.",
+      "en": "The barrier falling is an event of its own. Let us not mistake it for the moment everything ended."
+    },
+    "selene_06.line.007": {
+      "vi": "Hình Selene trong gương chậm hơn cô một nhịp. Một bản thể được nhớ lại không hoàn toàn trùng với người đang đứng đây.",
+      "en": "Selene's reflection lags a heartbeat behind. A remembered self does not perfectly match the person standing here."
+    },
+    "selene_06.line.008": {
+      "vi": "Hình trong gương không hoàn toàn theo kịp tôi. Mình quan sát nó như một dấu vết, đừng vội coi đó là hiện tại.",
+      "en": "The reflection does not quite keep pace with me. Let us treat it as a trace, rather than assume it shows the present."
+    },
+    "selene_06.line.009": {
+      "vi": "Hành lang ký ức giữ những mốc sau nửa đêm. Chúng có thể nối tiếp các dấu vết trong hầm.",
+      "en": "The memory corridor holds times from after midnight. They may continue the sequence begun in the vault."
+    },
+    "selene_06.line.010": {
+      "vi": "Mình còn thiếu đoạn nối giữa lúc hàng rào đổ và lúc Moonfall dừng. Thử tìm các dấu mốc ở hành lang này nhé.",
+      "en": "We are missing the stretch between the barrier's collapse and Moonfall stopping. Let us look for time marks along this corridor."
+    },
+    "selene_06.line.011": {
+      "vi": "Dấu hằn dưới lớp phủ ghi 00:03 — Tách ký ức. Sau nó, sức ép trong hầm giảm.",
+      "en": "A mark beneath the overlay reads 00:03 — Memory Separation. Pressure in the vault decreased afterward."
+    },
+    "selene_06.line.012": {
+      "vi": "Có một dấu mốc bị lớp phủ che đi. Nó có thể nối khoảng trống giữa hai sự kiện mình đã tìm được.",
+      "en": "A time mark is hidden beneath the overlay. It may connect the gap between the events we have found."
+    },
+    "selene_06.line.013": {
+      "vi": "00:16 là thời điểm Moonfall dừng, không phải lúc ký ức bị tách.",
+      "en": "00:16 marks when Moonfall stopped, not when memories were separated."
+    },
+    "selene_06.line.014": {
+      "vi": "Mốc cuối này cần đặt cạnh các mốc khác. Nhớ là đêm ấy đã đi qua nửa đêm nhé.",
+      "en": "This last time mark needs the others beside it. Remember, that night crossed midnight."
+    },
+    "selene_06.line.015": {
+      "vi": "Không phải tôi quên toàn bộ đêm đó. Có người đã chọn phần nào được ở lại.",
+      "en": "I did not forget the whole night. Someone chose what would remain."
+    },
+    "selene_06.line.016": {
+      "vi": "Bạn đáp thế nào trước cánh cửa Selene không muốn mở?",
+      "en": "How do you answer at the door Selene fears?"
+    },
+    "selene_06.line.017": {
+      "vi": "Sự thật quan trọng hơn nỗi sợ.",
+      "en": "The truth matters more than fear."
+    },
+    "selene_06.line.018": {
+      "vi": "Vậy hãy nhớ rằng người sợ vẫn đang đứng bên anh.",
+      "en": "Then remember that the frightened person is still standing beside you."
+    },
+    "selene_06.line.019": {
+      "vi": "Nếu cô muốn dừng, mình dừng.",
+      "en": "If you want to stop, we stop."
+    },
+    "selene_06.line.020": {
+      "vi": "Tôi muốn nhìn lại từ một khoảng cách an toàn. Không phải bị đẩy vào trong.",
+      "en": "I want to look from a safe distance. Not be pushed inside."
+    },
+    "selene_06.line.021": {
+      "vi": "Nếu muốn quên hẳn, sao cô để đường quay về?",
+      "en": "If you wanted to forget completely, why leave a path back?"
+    },
+    "selene_06.line.022": {
+      "vi": "Tôi không biết. Và có lẽ đó là câu hỏi quan trọng nhất mình đã tìm ra.",
+      "en": "I do not know. And that may be the most important question we have found."
+    },
+    "selene_06.line.023": {
+      "vi": "Selene trẻ nói với Elarion: “Làm đi.” Ông đáp: “Cô sẽ quên tất cả.”",
+      "en": "Young Selene tells Elarion: “Do it.” He replies: “You will forget everything.”"
+    },
+    "selene_06.line.024": {
+      "vi": "“Không phải tất cả,” cô nói. “Để lại đủ để tôi tìm được đường về.”",
+      "en": "“Not everything,” she says. “Leave me enough to find my way back.”"
+    },
+    "selene_06.line.025": {
+      "vi": "Tôi đã yêu cầu điều đó. Cả quên đi, lẫn con đường để nhớ lại. Hai việc ấy cùng là lựa chọn của tôi.",
+      "en": "I asked for it. Both forgetting, and a path back. Both choices were mine."
+    },
+    "selene_06.line.026": {
+      "vi": "M06 xác nhận Selene tự yêu cầu tách ký ức và để lại đường quay về; dòng thời gian là 23:47, 23:52, 00:03, 00:16.",
+      "en": "M06 confirmed Selene requested memory separation and a path back; the timeline was 23:47, 23:52, 00:03, 00:16."
+    },
+    "selene_06.line.027": {
+      "vi": "Selene đã yêu cầu quên đi, đồng thời giữ đủ dấu vết để tìm đường về. Cả hai đều là lựa chọn của cô.",
+      "en": "Selene requested forgetting while keeping enough traces to find her way back. Both choices were hers."
+    },
+    "selene_06.line.028": {
+      "vi": "Tại sao một người muốn quên lại chuẩn bị cho ngày nhớ lại?",
+      "en": "Why prepare to remember while choosing to forget?"
+    },
+    "selene_06.expanded.mirror_hall": {
+      "vi": "Các mặt gương phản chiếu Selene ở những độ tuổi khác nhau. Không mặt nào giữ trọn căn phòng.",
+      "en": "Mirrors reflect Selene at different ages. None holds the whole room."
+    },
+    "selene_06.expanded.mirror_hall.mirror_desync": {
+      "vi": "Selene bước trái; phản chiếu đứng yên rồi tự tiến sát kính. Một hình trắng mờ thoáng hiện sau nó.",
+      "en": "Selene steps left; the reflection stays still, then approaches the glass. A pale shape flickers behind it."
+    },
+    "selene_06.expanded.mirror_hall.mirror_desync.speech": {
+      "vi": "Đừng nhìn nó như tôi.",
+      "en": "Do not treat it as me."
+    },
+    "selene_06.expanded.mirror_hall.mirror_boundary": {
+      "vi": "Selene giơ phép; gương nứt và phản chiếu tan. Những mặt còn lại vẫn cho thấy các thời điểm khác nhau.",
+      "en": "Selene raises a spell; the glass cracks and the reflection fades. Other mirrors still show different moments."
+    },
+    "selene_06.expanded.clock_landing": {
+      "vi": "Bánh răng dừng giữa hai ngày. Những con số phải được đọc qua nửa đêm.",
+      "en": "Gears stand still between two dates. The timestamps must be read across midnight."
+    },
+    "selene_06.expanded.clock_landing.midnight": {
+      "vi": "Dấu đổi ngày nằm giữa 23:52 và 00:03. Đặt 00:03 trước 23:47 sẽ biến chuỗi sự kiện thành ngày khác.",
+      "en": "The date changes between 23:52 and 00:03. Placing 00:03 before 23:47 would move the events into another day."
+    },
+    "selene_06.expanded.clock_landing.elapsed_time": {
+      "vi": "Từ 23:47 tới 00:16 là hai mươi chín phút. Mốc tách ký ức nằm trong khoảng đó, không phải lúc nghi lễ bắt đầu.",
+      "en": "From 23:47 to 00:16 is twenty-nine minutes. Memory separation falls inside that interval, not at the ritual start."
+    },
+    "selene_06.expanded.clock_landing.elapsed_time.speech": {
+      "vi": "Mình phải giữ cả thứ tự lẫn khoảng trống giữa các mốc.",
+      "en": "We need both the order and the gaps between the times."
+    }
+  },
+  "required_inspections": [
+    "selene_06_activation",
+    "selene_06_barrier",
+    "selene_06_separation",
+    "selene_06_stops",
+    "selene_06_mirror_desync",
+    "selene_06_mirror_boundary",
+    "selene_06_midnight",
+    "selene_06_elapsed_time"
+  ],
+  "summary_key": "selene_06.line.027",
+  "reflection_key": "selene_06.line.028"
+}

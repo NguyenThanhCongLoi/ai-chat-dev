@@ -40,8 +40,15 @@ def build_memory_router(db_session, current_user, owned, memory_out,
     @router.patch("/v1/memories/{memory_id}")
     def patch_memory(memory_id:str,changes:dict,db:DBSession=Depends(db_session),user:str=Depends(current_user)):
         m=owned(db,Memory,memory_id,user)
-        if "content" in changes:m.content=str(changes["content"])[:1000]
-        if "pinned" in changes:m.pinned=bool(changes["pinned"])
+        if "content" in changes:
+            content=changes["content"]
+            if not isinstance(content,str) or not 1<=len(content.strip())<=1000:raise HTTPException(400,"Ký ức phải có từ 1 đến 1000 ký tự")
+            try:ensure_safe_content(content)
+            except ValueError:raise HTTPException(400,"Nội dung cần được kiểm duyệt") from None
+            m.content=content.strip()
+        if "pinned" in changes:
+            if type(changes["pinned"]) is not bool:raise HTTPException(400,"Pinned must be a boolean")
+            m.pinned=changes["pinned"]
         db.commit();return memory_out(m)
 
     @router.delete("/v1/memories/{memory_id}")

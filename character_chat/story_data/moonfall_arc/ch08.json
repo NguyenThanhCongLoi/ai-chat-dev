@@ -1,0 +1,669 @@
+{
+  "id": "selene_08",
+  "order": 8,
+  "enabled": true,
+  "implemented": true,
+  "title": {
+    "vi": "Ký ức cuối cùng",
+    "en": "The Final Memory"
+  },
+  "objective": {
+    "vi": "Nhìn lại điều thực sự đã tìm thấy, hợp các vật dẫn và quyết định trước cánh cửa cuối.",
+    "en": "Review what you actually found, synthesize the artifacts, and face the final door."
+  },
+  "scenes": [
+    {
+      "id": "memory_space",
+      "title": {
+        "vi": "Không gian ký ức",
+        "en": "Memory Space"
+      },
+      "background": "replacement_ch08_memory_space",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_08.line.001"
+        },
+        {
+          "type": "dialogue",
+          "text_key": "selene_08.line.002",
+          "speaker": "selene",
+          "expression": "thinking"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_08_archive",
+          "title": {
+            "vi": "Những điều đã giữ",
+            "en": "What you kept"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_08.line.003"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_08.line.004",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_08_pendant",
+          "title": {
+            "vi": "Mặt dây chuyền đang ấm",
+            "en": "Warm pendant"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.48,
+          "y": 0.45,
+          "width": 0.12,
+          "height": 0.26,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_08.line.005"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_08.line.006",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": [],
+          "scene_asset": "prop_ch02_silver_pendant_item",
+          "presentation_mode": "warm"
+        }
+      ]
+    },
+    {
+      "id": "pendant_echo",
+      "title": {
+        "vi": "Lời nhắn trong chiếc vòng",
+        "en": "Message in the pendant"
+      },
+      "background": "replacement_ch02_rooftop",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_08.expanded.pendant_echo"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_08_pendant_message",
+          "title": {
+            "vi": "Tiếng vọng chiếc vòng",
+            "en": "The pendant echo"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_08.expanded.pendant_echo.pendant_message"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_08_present_promise",
+          "title": {
+            "vi": "Đặt vòng cạnh bản ghi",
+            "en": "Place the pendant beside the record"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.39,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_08.expanded.pendant_echo.present_promise"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_08.expanded.pendant_echo.present_promise.speech",
+              "speaker": "selene",
+              "expression": "serious"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "decision_threshold",
+      "title": {
+        "vi": "Trước ngưỡng quyết định",
+        "en": "Before the decision"
+      },
+      "background": "replacement_ch08_final_chamber",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_08.expanded.decision_threshold"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_08_restore_cost",
+          "title": {
+            "vi": "Đọc cơ chế khôi phục",
+            "en": "Read the restore mechanism"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_08.expanded.decision_threshold.restore_cost"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_08_destroy_cost",
+          "title": {
+            "vi": "Đọc cơ chế phá hủy",
+            "en": "Read the destroy mechanism"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.39,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_08.expanded.decision_threshold.destroy_cost"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_08_transfer_cost",
+          "title": {
+            "vi": "Đọc cơ chế chuyển giao",
+            "en": "Read the transfer mechanism"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.66,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_08.expanded.decision_threshold.transfer_cost"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "final_chamber",
+      "title": {
+        "vi": "Căn phòng cuối",
+        "en": "Final Chamber"
+      },
+      "background": "replacement_ch08_final_chamber",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_08.line.007"
+        },
+        {
+          "type": "dialogue",
+          "text_key": "selene_08.line.008",
+          "speaker": "selene",
+          "expression": "thinking"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_08_mechanisms",
+          "title": {
+            "vi": "Ba cơ chế",
+            "en": "Three mechanisms"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_08.line.009"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_08.line.010",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_08_boundary",
+          "title": {
+            "vi": "Đường sáng ngăn các mảnh",
+            "en": "Light between fragments"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.4,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_08.line.011"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_08.line.012",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        }
+      ]
+    }
+  ],
+  "puzzles": [
+    {
+      "id": "selene_08_puzzle",
+      "type": "artifact_slot",
+      "title": {
+        "vi": "Dựng khung cho ký ức",
+        "en": "Build a frame for memory"
+      },
+      "scene": "final_chamber",
+      "requires_inspections": [
+        "selene_08_archive",
+        "selene_08_pendant",
+        "selene_08_mechanisms",
+        "selene_08_boundary",
+        "selene_08_pendant_message",
+        "selene_08_present_promise",
+        "selene_08_restore_cost",
+        "selene_08_destroy_cost",
+        "selene_08_transfer_cost"
+      ],
+      "required_items": [
+        "silver_pendant",
+        "ancient_journal",
+        "crystal_fragment"
+      ],
+      "options": [
+        {
+          "id": "silver_pendant",
+          "label": {
+            "vi": "Mặt dây chuyền",
+            "en": "Silver Pendant"
+          }
+        },
+        {
+          "id": "ancient_journal",
+          "label": {
+            "vi": "Nhật ký",
+            "en": "Ancient Journal"
+          }
+        },
+        {
+          "id": "crystal_fragment",
+          "label": {
+            "vi": "Mảnh tinh thể",
+            "en": "Crystal Fragment"
+          }
+        }
+      ],
+      "solution": [
+        "silver_pendant",
+        "ancient_journal",
+        "crystal_fragment"
+      ],
+      "hints": [
+        {
+          "vi": "Khung cần một lời hứa, một bản ghi và một góc nhìn.",
+          "en": "The frame needs a promise, a record, and a viewpoint."
+        },
+        {
+          "vi": "Tìm ba vật đã giữ lời, chữ và hình.",
+          "en": "Look for the objects that kept words, writing, and images."
+        },
+        {
+          "vi": "Chọn mặt dây chuyền, nhật ký và tinh thể.",
+          "en": "Choose the pendant, journal, and crystal."
+        }
+      ],
+      "events": [
+        {
+          "type": "dialogue",
+          "text_key": "selene_08.line.013",
+          "speaker": "selene",
+          "expression": "determined"
+        },
+        {
+          "type": "visual_effect",
+          "effect": "RUNE_GLOW"
+        }
+      ],
+      "flags": {}
+    }
+  ],
+  "choice": {
+    "id": "selene_08_choice",
+    "prompt_key": "selene_08.line.014",
+    "options": [
+      {
+        "id": "selene_08_choice_0",
+        "label_key": "selene_08.line.015",
+        "effects": {
+          "truth": 1
+        },
+        "flags": {},
+        "tags": [
+          "restore"
+        ],
+        "events": [
+          {
+            "type": "dialogue",
+            "text_key": "selene_08.line.016",
+            "speaker": "selene",
+            "expression": "serious"
+          }
+        ]
+      },
+      {
+        "id": "selene_08_choice_1",
+        "label_key": "selene_08.line.017",
+        "effects": {
+          "trust": 1
+        },
+        "flags": {},
+        "tags": [
+          "destroy"
+        ],
+        "events": [
+          {
+            "type": "dialogue",
+            "text_key": "selene_08.line.018",
+            "speaker": "selene",
+            "expression": "serious"
+          }
+        ]
+      },
+      {
+        "id": "selene_08_choice_2",
+        "label_key": "selene_08.line.019",
+        "effects": {
+          "sacrifice": 1
+        },
+        "flags": {},
+        "tags": [
+          "transfer"
+        ],
+        "events": [
+          {
+            "type": "dialogue",
+            "text_key": "selene_08.line.020",
+            "speaker": "selene",
+            "expression": "serious"
+          }
+        ]
+      }
+    ]
+  },
+  "memory": {
+    "id": "M08",
+    "title": {
+      "vi": "M08 · Ký ức giữa ánh trăng",
+      "en": "M08 · The Memory Between Moonlight"
+    },
+    "video": "memory_video_08",
+    "events": [
+      {
+        "type": "narration",
+        "text_key": "selene_08.line.021",
+        "speaker": "narrator",
+        "expression": "thinking"
+      },
+      {
+        "type": "narration",
+        "text_key": "selene_08.line.022",
+        "speaker": "narrator",
+        "expression": "thinking"
+      },
+      {
+        "type": "dialogue",
+        "text_key": "selene_08.line.023",
+        "speaker": "selene",
+        "expression": "thinking"
+      }
+    ],
+    "fact_key": "selene_08.line.025"
+  },
+  "localization": {
+    "selene_08.line.001": {
+      "vi": "Những ký ức đã mở trôi riêng biệt trong không gian. Kho ký ức và chiếc vòng là hai điểm để bắt đầu đối chiếu.",
+      "en": "The recovered memories drift separately through this space. The archive and the pendant offer two places to begin comparing them."
+    },
+    "selene_08.line.002": {
+      "vi": "Mình đã đi xa rồi. Trước khi mở cánh cửa cuối, cùng xem lại những gì chiếc vòng và các ký ức thực sự giữ nhé.",
+      "en": "We have come a long way. Before opening the last door, let us revisit what the pendant and the memories actually hold."
+    },
+    "selene_08.line.003": {
+      "vi": "Bảy ký ức đã mở nằm cách nhau bằng những đường sáng. Bạn có thể đọc lại trong Kho ký ức.",
+      "en": "Seven recovered memories sit apart, separated by lines of light. You can revisit them in the Memory Archive."
+    },
+    "selene_08.line.004": {
+      "vi": "Mình có thể đọc lại những ký ức đã giữ trước khi quyết định. Không cần vội ghép chúng thành một câu chuyện duy nhất.",
+      "en": "We can reread the memories we kept before deciding. There is no need to force them into a single story yet."
+    },
+    "selene_08.line.005": {
+      "vi": "Chiếc vòng giữ một lời hứa chưa bị xóa. Nó không ép Selene trở lại thành người trong lời hứa ấy.",
+      "en": "The pendant keeps a promise that was not erased. It does not force Selene to become the person who made it."
+    },
+    "selene_08.line.006": {
+      "vi": "Chiếc vòng đã đi cùng mình từ đầu. Thử nghĩ xem nó giữ điều gì mà những bản ghi không giữ được.",
+      "en": "The pendant has been with us from the beginning. Think about what it keeps that a written record cannot."
+    },
+    "selene_08.line.007": {
+      "vi": "Căn phòng cuối có ba cơ chế và những đường sáng ngăn các mảnh. Có thể xem xét chúng trước khi đưa ra quyết định.",
+      "en": "The final chamber holds three mechanisms and lines of light separating the fragments. They can be examined before any decision is made."
+    },
+    "selene_08.line.008": {
+      "vi": "Tôi muốn mình hiểu rõ từng lựa chọn. Mình xem cơ chế và đường sáng trước, rồi mới quyết định điều gì sẽ xảy ra nhé.",
+      "en": "I want us to understand each choice. Let us examine the mechanisms and the light first, then decide what happens next."
+    },
+    "selene_08.line.009": {
+      "vi": "Khôi phục trả mảnh cuối về Selene; phá hủy làm nó không thể hoàn chỉnh; chuyển giao đổi người mang phong ấn.",
+      "en": "Restore returns the last fragment to Selene; destroy prevents completion; transfer changes the seal's bearer."
+    },
+    "selene_08.line.010": {
+      "vi": "Ba cơ chế làm những việc khác nhau. Mình cần đọc kỹ tác dụng của từng cái trước khi chạm vào.",
+      "en": "These three mechanisms do different things. Let us read what each one does before touching anything."
+    },
+    "selene_08.line.011": {
+      "vi": "Những đường sáng đang giữ ký ức có thể được nhìn mà không hòa vào nhau. Không có gì tự động quyết định thay bạn.",
+      "en": "The light keeps memories visible without merging them. Nothing here decides on your behalf."
+    },
+    "selene_08.line.012": {
+      "vi": "Đường sáng đang ngăn các mảnh chạm nhau. Có lẽ hiểu ranh giới này cũng quan trọng như hiểu từng mảnh.",
+      "en": "The light keeps the fragments apart. Understanding that boundary may matter as much as understanding the fragments."
+    },
+    "selene_08.line.013": {
+      "vi": "Mình đã đến đây. Nhưng đến cuối đường không có nghĩa là chỉ được chọn điều dễ gọi tên nhất.",
+      "en": "We made it here. Reaching the end does not mean choosing only what is easiest to name."
+    },
+    "selene_08.line.014": {
+      "vi": "Bạn muốn làm gì với ký ức cuối?",
+      "en": "What will you do with the final memory?"
+    },
+    "selene_08.line.015": {
+      "vi": "Khôi phục ký ức",
+      "en": "Restore the Memory"
+    },
+    "selene_08.line.016": {
+      "vi": "Nếu chọn nhớ, tôi cũng phải chọn cách sống với điều trở lại.",
+      "en": "If I choose to remember, I must choose how to live with what returns."
+    },
+    "selene_08.line.017": {
+      "vi": "Phá hủy ký ức",
+      "en": "Destroy the Memory"
+    },
+    "selene_08.line.018": {
+      "vi": "Một mất mát không tự biến thành vô nghĩa chỉ vì mình tự chọn nó.",
+      "en": "A loss does not become meaningless because we chose it."
+    },
+    "selene_08.line.019": {
+      "vi": "Nhận phong ấn",
+      "en": "Take the Seal"
+    },
+    "selene_08.line.020": {
+      "vi": "Đừng chọn thay tôi chỉ vì nghĩ mình phải chịu đựng nhiều hơn.",
+      "en": "Do not choose for me just because you think you must endure more."
+    },
+    "selene_08.line.021": {
+      "vi": "Trên mái nhà Moonbrook, cô gái hỏi: “Nếu một ngày em không nhớ mình từng là ai… em nghĩ mình sẽ trở thành người thế nào?”",
+      "en": "On a Moonbrook rooftop, the girl asks: “If one day you no longer remember who you used to be... what kind of person will you become?”"
+    },
+    "selene_08.line.022": {
+      "vi": "Selene trẻ mỉm cười: “Em nghĩ… em sẽ tự quyết định.” Trở lại hiện tại, ký ức vẫn tách rời, có thể nhìn lại mà không hòa vào cô. Vầng Trăng Nhợt vẫn không hoàn chỉnh.",
+      "en": "Young Selene smiles: “I think… I will decide for myself.” Back in the present, the memories remain separate, available to revisit without merging into her. The Pale Moon remains incomplete."
+    },
+    "selene_08.line.023": {
+      "vi": "Tôi cứ nghĩ phải chọn giữa nhớ và quên. Có lẽ tôi có thể sống cùng điều đã nhớ mà vẫn tự chọn người mình trở thành. Anh vẫn đi cùng tôi chứ?",
+      "en": "I thought I had to choose between remembering and forgetting. Perhaps I can live with what I remember and still choose who I become. Are you still coming with me?"
+    },
+    "selene_08.line.024": {
+      "vi": "Anh vẫn đi cùng tôi chứ?",
+      "en": "Are you still coming with me?"
+    },
+    "selene_08.line.025": {
+      "vi": "Bạn và Selene giữ ký ức tách biệt trong Không gian ký ức: có thể nhìn lại và hiểu mà không để chúng sở hữu hiện tại. Vầng Trăng Nhợt vẫn không hoàn chỉnh.",
+      "en": "You and Selene preserved memories separately in Memory Space: they can be visited and understood without owning her present. The Pale Moon remains incomplete."
+    },
+    "selene_08.line.026": {
+      "vi": "Cánh cửa cuối đặt ra lựa chọn giữa nhớ lại, buông bỏ và gánh thay.",
+      "en": "The final door presents restoration, letting go, and taking the burden."
+    },
+    "selene_08.line.027": {
+      "vi": "Khi lựa chọn đã được gọi tên, Selene vẫn chờ nghe lời tiếp theo của bạn.",
+      "en": "Even after the choice has a name, Selene waits to hear what you will say next."
+    },
+    "selene_08.expanded.pendant_echo": {
+      "vi": "Mặt dây chuyền ấm lên; những ký ức vẫn ở ngoài Selene.",
+      "en": "The pendant warms; the memories remain outside Selene."
+    },
+    "selene_08.expanded.pendant_echo.pendant_message": {
+      "vi": "Bóng cô gái hiện rồi tan, để lại lời: “Nếu còn nhớ được một điều, hãy nhớ vì sao mình đã chọn.”",
+      "en": "The girl appears and fades, leaving a message: “If you remember one thing, remember why you chose.”"
+    },
+    "selene_08.expanded.pendant_echo.present_promise": {
+      "vi": "Lời hứa, bản ghi và góc nhìn đều còn. Không thứ nào tự có quyền chọn Selene phải trở thành ai.",
+      "en": "The promise, record and viewpoint remain. None has the right to choose who Selene must become."
+    },
+    "selene_08.expanded.pendant_echo.present_promise.speech": {
+      "vi": "Tôi muốn hiểu giá của từng lựa chọn trước khi chạm vào chúng.",
+      "en": "I want to understand the price of each choice before touching it."
+    },
+    "selene_08.expanded.decision_threshold": {
+      "vi": "Ba cơ chế còn im. Có thể đọc từng cái trước khi dựng khung ký ức.",
+      "en": "The three mechanisms are still. Read each consequence before building the memory frame."
+    },
+    "selene_08.expanded.decision_threshold.restore_cost": {
+      "vi": "RESTORE trả mảnh cuối về Selene. Những mảnh đã tách có thể hợp nhất; hiểm nguy trong chúng cũng có thể trở lại đầy đủ.",
+      "en": "RESTORE returns the final fragment to Selene. Separated memories may merge; their danger may also become whole."
+    },
+    "selene_08.expanded.decision_threshold.destroy_cost": {
+      "vi": "DESTROY làm mất vĩnh viễn mảnh cuối. Nó chặn sự hoàn chỉnh, đồng thời đóng một phần đời Selene.",
+      "en": "DESTROY permanently removes the final fragment. It prevents completion while closing off part of Selene’s life."
+    },
+    "selene_08.expanded.decision_threshold.transfer_cost": {
+      "vi": "TRANSFER đổi người mang phong ấn. Gánh nặng không biến mất khi rời Selene.",
+      "en": "TRANSFER changes the seal’s bearer. The burden does not disappear when it leaves Selene."
+    }
+  },
+  "required_inspections": [
+    "selene_08_archive",
+    "selene_08_pendant",
+    "selene_08_mechanisms",
+    "selene_08_boundary",
+    "selene_08_pendant_message",
+    "selene_08_present_promise",
+    "selene_08_restore_cost",
+    "selene_08_destroy_cost",
+    "selene_08_transfer_cost"
+  ],
+  "summary_key": "selene_08.line.026",
+  "reflection_key": "selene_08.line.027"
+}

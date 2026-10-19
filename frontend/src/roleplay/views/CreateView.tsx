@@ -355,7 +355,8 @@ export function renderCreateView(props: CreateViewProps) {
           </section>
 
           <section className="formCard">
-            <label className="row switchRow">
+            <p>Nhân vật được lưu riêng tư. Hiện chỉ nhân vật hệ thống được công khai.</p>
+              <label className="row switchRow" style={{display:"none"}} aria-hidden="true">
               <span>
                 <b>Công khai nhân vật</b>
                 <br />

@@ -1,0 +1,16 @@
+export type LocalText=Record<string,string>;
+export type WorldEvent={presentation?:"main"|"archive";auto_voice?:boolean;beat_id?:string;chapter_id?:string;id:string;type:"NARRATION"|"CHARACTER_SPEECH"|"CHARACTER_THOUGHT"|"SYSTEM"|"USER";text:string;text_language:string;visual_event:string;expression:string;voice_role:"NARRATOR"|"CHARACTER"|null;source:string;speaker?:string;speaker_name?:string;action_sound?:string;character_action?:string};
+export type Asset={id:string;type:string;url:string;fallback:string;loop:boolean;duration:number};
+export type Place={id:string;name:string;x:number;y:number;locked:boolean;background:string;ambient:string;cinematic?:string};
+export type ChapterRun={id:string;revision:number;config_revision:number;content_language:string;story_language:string;
+ character:{id:string;name:string;avatar_url?:string};title:string;chapter_title:string;objective:string;location:string;
+ intro_seen:boolean;intro_asset:string;completed:boolean;synced:boolean;access:string;events:WorldEvent[];assets:Record<string,Asset>;
+ visual_events:Record<string,{cinematic?:string;animation:string;audio:string;vfx:string;duration:number;skippable:boolean;reduced_motion:string}>;
+ music_levels?:Record<string,number>;bgm:string;locations:Place[];objects:{id:string;title:string;asset?:string;x:number;y:number;discovered:boolean}[];
+ journal:{id:string;title:string;text:string;kind:string}[];memories:{id:string;title:string;text:string;scope:string}[];
+ choices:{id:string;label:string}[];voice_supported:boolean;hints:{enabled:boolean;cooldown_seconds:number;idle_seconds:number;stalled_turns:number}};
+export type Catalog={title:LocalText;pitch:LocalText;hook:LocalText;intro_narration:LocalText;available:boolean;eligible:boolean;
+ character:{id:string;name:string;avatar_url?:string}|null;runs:{id:string;character_id:string;completed:boolean;synced:boolean;config_revision:number}[];
+ chapters:{id:string;order:number;title:LocalText;available:boolean}[];music:string};
+export type WorldProps={adminPreview?:boolean;previewRunId?:string;active?:boolean;embedded?:boolean;characterId?:string;chapterId?:string;hostTheme?:string;onBack?:()=>void;onChat?:(path:string)=>void};
+export const local=(value:LocalText,lang:string)=>value[lang]||value.en||value.vi||"";

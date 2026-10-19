@@ -33,6 +33,13 @@ def character_content(data):
 def enforce_character_policy(data, previous=None):
     fields=character_content(data)
     if previous is not None and fields==character_content(previous):return
+    from . import jev
+    if jev.enabled("moderation"):
+        try:
+            jev.require_safe(json.dumps(fields, ensure_ascii=False))
+        except ValueError as exc:
+            raise HTTPException(400, detail={"code":"character_policy_blocked","message":str(exc)}) from None
+        return
     model=os.getenv("ADMIN_MODERATION_MODEL","").strip()
     key=os.getenv("ADMIN_MODERATION_API_KEY","").strip()
     base=os.getenv("ADMIN_MODERATION_API_BASE","").strip().rstrip("/")

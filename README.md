@@ -1,3 +1,23 @@
+[Demo Worlds mới: Thị trấn đánh mất bình minh và sửa stream Roleplay](docs/WORLDS_LASTLIGHT_DEMO.md).
+
+[Cập nhật chat thường: recap AI, góc nhìn, chuỗi sự kiện và gợi chuyện](docs/ROLEPLAY_EPISODE_UPDATE.md).
+
+[JEV: cấu hình key qua env/CMS, phạm vi và deploy](docs/JEV_INTEGRATION.md).
+
+[Hướng dẫn prompt, lorebook, CMS và thẻ điều tra](docs/WORLD_AND_CHAT_AUTHORING.md).
+
+# Chat Bot AI — ký ức và cốt truyện trong chat thường
+
+Ghim/bỏ ghim trực tiếp trên tin nhắn. Bảng Ký ức & cốt truyện có ba mục: Ký ức, Bối cảnh, Nhật ký; tùy chọn kỹ thuật thu gọn trong Nâng cao. Xem [báo cáo cải tiến chat thường](docs/ROLEPLAY_CHAT_UPGRADE.md).
+
+# Worlds — demo desktop (experiment/worlds-modal)
+
+[Bản nâng cấp chương truyện: nhiệm vụ liên kết, gặp nhân vật, hướng dẫn và gợi ý](docs/WORLDS_CHAPTER_UPDATE.md).
+
+[Báo cáo cải tiến Roleplay và hướng dẫn chơi Worlds trong AIBox](docs/ROLEPLAY_WORLDS_PROGRESS.md).
+
+Chạy sau khi build frontend: `python scripts/run_worlds_demo.py`, mở http://127.0.0.1:18765/worlds. Trong giao diện chính đã có mục Thế giới dùng chung tài khoản/nhân vật. Deploy modal_app.py để bật trên app Modal chính; modal_worlds.py dành cho demo độc lập. Dữ liệu local demo riêng trong artifacts/worlds-desktop; chưa tự deploy Modal hoặc thay dữ liệu production. Xem [phạm vi demo](docs/WORLDS_DEMO.md) và [nghiên cứu nguồn mở](docs/WORLDS_RESEARCH.md).
+
 # Bản server riêng: selfhost/dev
 
 Để chạy bản CPU không gọi Modal, xem [SELF_HOSTED_DEPLOYMENT.md](docs/SELF_HOSTED_DEPLOYMENT.md). Docker image không cài SDK Modal; entrypoint chặn cấu hình cũ. GPU Chatterbox/Laya giữ nguyên code và chưa chuyển trong đợt này. Các hướng dẫn Modal bên dưới là tài liệu triển khai cũ.
@@ -1365,3 +1385,51 @@ Thử Laya Multilingual qua service riêng: [GROUP_DECISION_ROUTER.md](docs/GROU
 - Chỉ số lưu chung theo user/nhân vật, nên reset cũng áp dụng nếu nhân vật đó xuất hiện ở phòng khác của cùng user.
 - Xoá sự kiện quan hệ và reflection của cặp user/nhân vật để cảm xúc cũ không quay lại từ context. Ký ức thủ công ngoài phòng và tài nguyên voice/ảnh của nhân vật giữ nguyên.
 - Trả lời/phân tích nền hoàn tất sau khi lịch sử đã bị xoá sẽ bỏ kết quả, không tạo lại cảm xúc từ lượt cũ.
+
+## AI World — Moonfall Academy demo
+
+Normal Worlds entry now opens the new academy demo. Start with 2–4 existing characters, follow the glowing Library → Garden → Observatory, and explore relationship choices, gifts and witnessed memories. Old Lastlight saves are archived in storage.
+
+- [Implementation and limits](docs/world/IMPLEMENTATION_STATUS.md)
+- [Architecture / APIs / cost](docs/world/ARCHITECTURE.md)
+- [Research](docs/world/RESEARCH.md)
+- [Setup and provider configuration](docs/world/USER_ACTION_REQUIRED.md)
+- [UX and play guide](docs/world/UX.md)
+
+World has a dedicated CMS at /worlds/admin (World-only model selection, direction and public lore). [World/chat isolation boundaries](docs/world/ISOLATION.md). No automatic memory synchronization between ordinary chat and Academy.
+
+## Lorebook CMS for ordinary Roleplay
+
+CMS → Lorebook · Chat thường, or Nhân vật → Lorebook. Admin-only authoring at /roleplay/lorebook/admin, effective on the next prepared chat turn. [Authoring guide](docs/ROLEPLAY_LOREBOOK_CMS.md). [Moonfall World CMS copy/paste examples](docs/world/MOONFALL_CMS_COPY.md).
+
+[Best demo setup checklist](docs/world/SETUP_FOR_BEST_DEMO.md): World reuses the existing CMS background music playlist, with separate volume and explicit playback controls.
+
+[Nâng cấp recall/lore và hướng dẫn chat đơn](docs/ROLEPLAY_RESEARCH_UPGRADE.md) · [Audit hệ thống và so sánh nguồn chính thức](docs/world/WORLD_SYSTEM_AUDIT.md).
+
+
+## Bộ nội dung 11 nhân vật và cleanup (17/10/2026)
+
+- [Prompt và lorebook đúng tên backup](docs/roleplay/CHARACTER_CMS_COPY.md).
+- [Thuật toán, lợi ích và giới hạn trong code](docs/ROLEPLAY_TECHNIQUES_EXPLAINED.md).
+- [Bằng chứng cleanup và kiểm thử](docs/CLEANUP_20261017.md).
+
+## Kết nối nhân vật trong chat thường
+
+User chỉ chọn ai kết nối với ai; gặp nhau khi user tự tạo phòng nhóm và các nhân vật thực sự trò chuyện. Không sửa điểm/quan hệ, không chia sẻ chat hay memory riêng.
+
+- [Cách thử và kết quả kiểm chứng](docs/character-social/ACCEPTANCE.md).
+- [Kiến trúc, API và giới hạn](docs/character-social/ARCHITECTURE.md).
+
+## Echoes of Moonfall · Selene (17/10/2026)
+
+World mới thay giao diện Academy; chỉ Chương 1 được triển khai. CMS riêng tại /worlds/admin. Dùng chung playlist nhạc nền, reaction elf và giọng Selene với chat thường; narrator có Voice ID riêng VI/EN trong CMS World. Chỉ ký ức đã mở và được user đồng ý mới chuyển về chat.
+
+- [Đặc tả và giới hạn](docs/world/selene/PRODUCT_SPEC.md)
+- [CMS World](docs/world/selene/ADMIN_CMS.md)
+- [Bạn cần chuẩn bị gì](docs/world/selene/USER_ACTION_REQUIRED.md)
+- [Nơi đặt media](docs/world/selene/ASSET_REQUIREMENTS.md)
+
+## Cập nhật bản phát triển 19/10/2026
+
+Xem [thay đổi so với mốc code/backup cũ](docs/UPDATES_SINCE_BACKUP_20261019.md)
+để biết JEV, nâng cấp chat, World tám chương, CMS, media và cách bàn giao.

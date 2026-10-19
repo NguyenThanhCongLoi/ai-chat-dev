@@ -2,23 +2,29 @@ import {API,authHeaders,responseError} from "./api";
 export type ReactionClip={id:string;target:string;emotion:string;volume:number;url:string;voice_id?:string};
 export type PreparedReaction=ReactionClip&{objectUrl:string;player:HTMLAudioElement};
 type Entry={clips:PreparedReaction[];checkedAt:number};
-const entries=new Map<string,Entry>();
-const pending=new Map<string,Promise<PreparedReaction[]>>();
-const controllers=new Set<AbortController>();
-let owner:string|undefined;
-let epoch=0;
+type SharedCache={entries:Map<string,Entry>;pending:Map<string,Promise<PreparedReaction[]>>;controllers:Set<AbortController>;owner?:string;epoch:number};
+const fresh=():SharedCache=>({entries:new Map(),pending:new Map(),controllers:new Set(),epoch:0});
+// Platform and same-origin chat frames reuse the actual prepared audio players.
+// Nothing is persisted to disk; selecting another account clears the whole pool.
+const shared=(()=>{
+ try{
+  const host=(window.top||window) as Window&{__companionReactions?:SharedCache};
+  return host.__companionReactions??(host.__companionReactions=fresh());
+ }catch{return fresh();}
+})();
+const {entries,pending,controllers}=shared;
 function dispose(clip:PreparedReaction){
   clip.player.pause();clip.player.onended=clip.player.onerror=clip.player.oncanplay=null;
   clip.player.removeAttribute("src");clip.player.load();URL.revokeObjectURL(clip.objectUrl);
 }
 export function clearReactionCache(){
-  ++epoch;for(const controller of controllers)controller.abort(new DOMException("Reaction preparation cancelled","AbortError"));controllers.clear();
+  ++shared.epoch;for(const controller of controllers)controller.abort(new DOMException("Reaction preparation cancelled","AbortError"));controllers.clear();
   for(const entry of entries.values())entry.clips.forEach(dispose);
-  entries.clear();pending.clear();owner=undefined;
+  entries.clear();pending.clear();shared.owner=undefined;
 }
-function selectOwner(userId:string){if(owner!==userId){clearReactionCache();owner=userId;}}
+function selectOwner(userId:string){if(shared.owner!==userId){clearReactionCache();shared.owner=userId;}}
 export function cachedReactions(userId:string,characterId:string){
-  return owner===userId?entries.get(characterId)?.clips:undefined;
+  return shared.owner===userId?entries.get(characterId)?.clips:undefined;
 }
 export function isReactionPreparationCancelled(error:unknown){
   return Boolean(error&&typeof error==="object"&&"name" in error&&error.name==="AbortError");
@@ -44,7 +50,7 @@ export function prepareCharacterReactions(userId:string,characterId:string,refre
   const cached=entries.get(characterId);
   if(!refresh&&cached&&Date.now()-cached.checkedAt<30000)return Promise.resolve(cached.clips);
   const inFlight=pending.get(characterId);if(inFlight)return inFlight;
-  const generation=epoch;
+  const generation=shared.epoch;
   const controller=new AbortController();controllers.add(controller);
   const headers=authHeaders();
   const work=(async()=>{
@@ -85,7 +91,7 @@ export function prepareCharacterReactions(userId:string,characterId:string,refre
       }
       await Promise.all(Array.from({length:Math.min(2,ordered.length)},()=>worker()));
       if(failure)throw failure;
-      if(generation!==epoch||controller.signal.aborted)throw controller.signal.reason||new DOMException("Reaction preparation cancelled","AbortError");
+      if(generation!==shared.epoch||controller.signal.aborted)throw controller.signal.reason||new DOMException("Reaction preparation cancelled","AbortError");
       const ids=new Set(prepared.map(clip=>clip.id));
       for(const clip of cached?.clips||[])if(!ids.has(clip.id))dispose(clip);
       entries.delete(characterId);entries.set(characterId,{clips:prepared,checkedAt:Date.now()});
@@ -96,7 +102,7 @@ export function prepareCharacterReactions(userId:string,characterId:string,refre
       }
       return prepared;
     }catch(error){created.forEach(dispose);throw error;}
-    finally{controllers.delete(controller);if(generation===epoch)pending.delete(characterId);}
+    finally{controllers.delete(controller);if(generation===shared.epoch)pending.delete(characterId);}
   })();
   pending.set(characterId,work);return work;
 }

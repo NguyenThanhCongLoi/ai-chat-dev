@@ -308,7 +308,7 @@ def bind_public_rooms(runtime: ModuleType) -> None:
         user: str = runtime.Depends(runtime.current_user),
     ):
         room = runtime.owned(db, runtime.Room, room_id, user)
-        runtime.purge_room_record(db, room)
+        runtime.purge_room_record(db, room, reset_all=True)
         db.commit()
         return {"deleted": True}
 

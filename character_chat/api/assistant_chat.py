@@ -9,6 +9,7 @@ existing worker/test integration points. Each binder preserves registration orde
 """
 
 from types import ModuleType
+from ..jev import affect_hint
 
 
 def bind_send_assistant_message(runtime: ModuleType) -> None:
@@ -116,6 +117,7 @@ def bind_send_assistant_message(runtime: ModuleType) -> None:
             divination_prompt +
             "\n\nTask pipeline rules:\n"
             + runtime.task_guardrail(mode, text)
+            + affect_hint(text, allow_crisis_support=mode == "assistant_psychology")
             + (
                 ("\n\nRetrieved file context:\n" + context)
                 if context and not valid_requested
@@ -387,6 +389,7 @@ def bind_send_assistant_message(runtime: ModuleType) -> None:
             divination_prompt +
             "\n\nTask pipeline rules:\n"
             + runtime.task_guardrail(mode, text)
+            + affect_hint(text, allow_crisis_support=mode == "assistant_psychology")
             + (
                 ("\n\nRetrieved file context:\n" + context)
                 if context and not valid_requested

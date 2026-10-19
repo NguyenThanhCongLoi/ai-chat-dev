@@ -744,6 +744,8 @@ def test_background_turn_analysis_is_persisted(monkeypatch):
     message_id=uid();room_id=uid();character_id=uid()
     with Session() as db:
         db.add(User(id="background-user"))
+        # Room-scoped memory consent requires a real room, as in the production chat flow.
+        db.add(Room(id=room_id,user_id="background-user",name="Background test"))
         db.add(Message(id=message_id,room_id=room_id,sender_type="user",text="Mình xin lỗi, đừng giận nhé"));db.commit()
     monkeypatch.setattr(background,"Session",Session)
     monkeypatch.setattr(background.llm,"json",lambda *args,**kwargs:TurnAnalysis(user_emotion="apologetic",valence=.3,confidence=.9,directed_at_character=True,relationship_event="repair",event_valence=.7,significance=.8,reflection="The user made a sincere effort to repair the tension.",memory_worthy=True,memory_summary="User values repairing conflict sincerely."))

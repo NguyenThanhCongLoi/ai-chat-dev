@@ -76,6 +76,7 @@ export function createModelsController(runtime: AdminRuntime) {
     if (runtime.modelsTab === "conns") {
       body = `${brokenConns ? `<div class="note-info" style="background:var(--bad-soft)">${runtime.ico("info")}<span><b>${brokenConns} kết nối chưa có API key.</b> Các model dùng kết nối này sẽ lỗi hoặc phải chuyển sang dự phòng.</span></div>` : ""}
 
+      <div class="note-info"><span><b>JEV · TypeSafe</b> — Kiểm duyệt Assistant/Roleplay/Worlds, cảm xúc Roleplay và chọn người nói trong nhóm. Thêm key với API base <code>https://api.typesafe.ai</code>; không cần tạo model chat. Key trong env được ưu tiên.</span><button class="btn" data-conn-edit="https://api.typesafe.ai">Cấu hình JEV</button></div>
       <div class="mdlBar"><p class="muted" style="font-size:13px;margin:0">Model dùng key riêng nếu có; nếu không thì dùng key của API base tương ứng. Gateway AVIBI là kết nối mặc định.</p><button class="btn pri" id="conn-add">${runtime.ico("plus")}Thêm kết nối</button></div>
 
       <div class="conn-grid">${conns

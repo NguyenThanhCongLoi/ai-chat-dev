@@ -1,0 +1,676 @@
+{
+  "id": "selene_05",
+  "order": 5,
+  "enabled": true,
+  "implemented": true,
+  "title": {
+    "vi": "Kẻ bị gọi là phù thủy",
+    "en": "The Witch They Blamed"
+  },
+  "objective": {
+    "vi": "So sánh hồ sơ Hội đồng với thư Elarion để nhận ra chỗ lịch sử bị sửa.",
+    "en": "Compare Council records with Elarion's letter to find where history was altered."
+  },
+  "scenes": [
+    {
+      "id": "records",
+      "title": {
+        "vi": "Kho lưu trữ cổ",
+        "en": "Ancient Archive"
+      },
+      "background": "ancient_archive",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_05.line.001"
+        },
+        {
+          "type": "dialogue",
+          "text_key": "selene_05.line.002",
+          "speaker": "selene",
+          "expression": "thinking"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_05_ink",
+          "title": {
+            "vi": "Lớp mực",
+            "en": "Ink layer"
+          },
+          "item": "council_record",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_05.line.003"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_05.line.004",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_05_seal",
+          "title": {
+            "vi": "Dấu niêm",
+            "en": "Seal"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.4,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_05.line.005"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_05.line.006",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_05_timestamp",
+          "title": {
+            "vi": "Ngày chỉnh sửa",
+            "en": "Revision date"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.68,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_05.line.007"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_05.line.008",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "archive_defense",
+      "title": {
+        "vi": "Hệ thống bảo vệ kho",
+        "en": "Archive defense"
+      },
+      "background": "ancient_archive",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_05.expanded.archive_defense"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_05_paper_accusation",
+          "title": {
+            "vi": "Những trang giấy bay",
+            "en": "The flying pages"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "visual_effect",
+              "visual_event": "ARCHIVE_AWAKENS"
+            },
+            {
+              "type": "narration",
+              "text_key": "selene_05.expanded.archive_defense.paper_accusation"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_05.expanded.archive_defense.paper_accusation.speech",
+              "speaker": "selene",
+              "expression": "serious"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_05_security_seal",
+          "title": {
+            "vi": "Tìm dấu niêm thư viện",
+            "en": "Find the archive seal"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.39,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_05.expanded.archive_defense.security_seal"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "forest_threshold",
+      "title": {
+        "vi": "Lối tới nhà bên rừng",
+        "en": "Path to the forest house"
+      },
+      "background": "replacement_ch05_witch_house",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_05.expanded.forest_threshold"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_05_sender_mark",
+          "title": {
+            "vi": "So dấu người gửi",
+            "en": "Compare the sender mark"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_05.expanded.forest_threshold.sender_mark"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_05_letter_context",
+          "title": {
+            "vi": "Kiểm tra bản nháp thư",
+            "en": "Examine the letter draft"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.39,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_05.expanded.forest_threshold.letter_context"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_05.expanded.forest_threshold.letter_context.speech",
+              "speaker": "selene",
+              "expression": "serious"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "witch_house",
+      "title": {
+        "vi": "Ngôi nhà bên rừng",
+        "en": "The Witch House"
+      },
+      "background": "replacement_ch05_witch_house",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_05.line.009"
+        },
+        {
+          "type": "dialogue",
+          "text_key": "selene_05.line.010",
+          "speaker": "selene",
+          "expression": "thinking"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_05_letter",
+          "title": {
+            "vi": "Thư Elarion",
+            "en": "Elarion Letter"
+          },
+          "item": "elarion_letter",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_05.line.011"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_05.line.012",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_05_signature",
+          "title": {
+            "vi": "Chữ ký và vết cháy",
+            "en": "Signature and burns"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.4,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_05.line.013"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_05.line.014",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        }
+      ]
+    }
+  ],
+  "puzzles": [
+    {
+      "id": "selene_05_puzzle",
+      "type": "evidence_deduction",
+      "title": {
+        "vi": "Điều gì được bằng chứng xác nhận?",
+        "en": "What do the records establish?"
+      },
+      "scene": "witch_house",
+      "requires_inspections": [
+        "selene_05_ink",
+        "selene_05_seal",
+        "selene_05_timestamp",
+        "selene_05_letter",
+        "selene_05_signature",
+        "selene_05_paper_accusation",
+        "selene_05_security_seal",
+        "selene_05_sender_mark",
+        "selene_05_letter_context"
+      ],
+      "required_items": [],
+      "options": [
+        {
+          "id": "altered",
+          "label": {
+            "vi": "Hồ sơ bị sửa sau sự kiện",
+            "en": "The record was altered afterward"
+          }
+        },
+        {
+          "id": "guilty",
+          "label": {
+            "vi": "Selene chắc chắn có tội",
+            "en": "Selene is certainly guilty"
+          }
+        },
+        {
+          "id": "all_false",
+          "label": {
+            "vi": "Mọi tài liệu đều vô giá trị",
+            "en": "Every document is worthless"
+          }
+        }
+      ],
+      "solution": "altered",
+      "hints": [
+        {
+          "vi": "So sánh ngày tháng trước khi phán xét người.",
+          "en": "Compare dates before judging a person."
+        },
+        {
+          "vi": "Mực tên mới hơn lời tường thuật.",
+          "en": "The name's ink is newer than the account."
+        },
+        {
+          "vi": "Bằng chứng xác nhận việc sửa hồ sơ, chưa xác nhận toàn bộ động cơ.",
+          "en": "The evidence proves revision, not the entire motive."
+        }
+      ],
+      "events": [
+        {
+          "type": "dialogue",
+          "text_key": "selene_05.line.015",
+          "speaker": "selene",
+          "expression": "determined"
+        },
+        {
+          "type": "visual_effect",
+          "effect": "RUNE_GLOW"
+        }
+      ],
+      "flags": {}
+    }
+  ],
+  "choice": {
+    "id": "selene_05_choice",
+    "prompt_key": "selene_05.line.016",
+    "options": [
+      {
+        "id": "selene_05_choice_0",
+        "label_key": "selene_05.line.017",
+        "effects": {
+          "trust": 2
+        },
+        "flags": {},
+        "tags": [],
+        "events": [
+          {
+            "type": "dialogue",
+            "text_key": "selene_05.line.018",
+            "speaker": "selene",
+            "expression": "serious"
+          }
+        ]
+      },
+      {
+        "id": "selene_05_choice_1",
+        "label_key": "selene_05.line.019",
+        "effects": {
+          "sacrifice": 1,
+          "understanding": 1
+        },
+        "flags": {},
+        "tags": [],
+        "events": [
+          {
+            "type": "dialogue",
+            "text_key": "selene_05.line.020",
+            "speaker": "selene",
+            "expression": "serious"
+          }
+        ]
+      },
+      {
+        "id": "selene_05_choice_2",
+        "label_key": "selene_05.line.021",
+        "effects": {
+          "understanding": 2
+        },
+        "flags": {
+          "questioned_memory_reliability": true
+        },
+        "tags": [],
+        "events": [
+          {
+            "type": "dialogue",
+            "text_key": "selene_05.line.022",
+            "speaker": "selene",
+            "expression": "serious"
+          }
+        ]
+      }
+    ]
+  },
+  "memory": {
+    "id": "M05",
+    "title": {
+      "vi": "M05 · Kẻ họ đổ tội",
+      "en": "M05 · The Witch They Blamed"
+    },
+    "video": "memory_video_05",
+    "events": [
+      {
+        "type": "narration",
+        "text_key": "selene_05.line.023",
+        "speaker": "narrator",
+        "expression": "thinking"
+      },
+      {
+        "type": "narration",
+        "text_key": "selene_05.line.024",
+        "speaker": "narrator",
+        "expression": "thinking"
+      },
+      {
+        "type": "dialogue",
+        "text_key": "selene_05.line.025",
+        "speaker": "selene",
+        "expression": "thinking"
+      }
+    ],
+    "fact_key": "selene_05.line.026"
+  },
+  "localization": {
+    "selene_05.line.001": {
+      "vi": "Hồ sơ Hội đồng nằm trên bàn, nhưng mực, sáp và ngày tháng không nhất thiết thuộc cùng một thời điểm.",
+      "en": "The Council record lies on the desk, but its ink, wax, and dates may not all belong to the same moment."
+    },
+    "selene_05.line.002": {
+      "vi": "Tên tôi ở ngay đây... Nhưng mình hãy xem cách hồ sơ được viết trước. Mực và ngày tháng có thể nói nhiều hơn tiêu đề.",
+      "en": "My name is right here... But let us check how the record was written first. The ink and dates may tell us more than its heading."
+    },
+    "selene_05.line.003": {
+      "vi": "Mực quanh tên Selene mới hơn dòng mô tả sự kiện. Chữ được thêm sau.",
+      "en": "Ink around Selene's name is newer than the account of events. It was added later."
+    },
+    "selene_05.line.004": {
+      "vi": "Màu mực quanh cái tên có vẻ khác phần còn lại. Mình nên xem các dòng có được viết cùng lúc không.",
+      "en": "The ink around the name looks different from the rest. Let us check whether the lines were written at the same time."
+    },
+    "selene_05.line.005": {
+      "vi": "Dấu sáp khớp Hội đồng, nhưng chồng lên một chữ ký đã bị gạch.",
+      "en": "The Council seal is genuine, but overlays a crossed-out signature."
+    },
+    "selene_05.line.006": {
+      "vi": "Dấu niêm không nói được toàn bộ câu chuyện. Thử xem bên dưới lớp sáp còn dấu vết nào không.",
+      "en": "A seal cannot tell the whole story. See whether anything remains beneath the wax."
+    },
+    "selene_05.line.007": {
+      "vi": "Ghi chú lề xác nhận hồ sơ bị sửa ba ngày sau Moonfall.",
+      "en": "A margin note confirms revision three days after Moonfall."
+    },
+    "selene_05.line.008": {
+      "vi": "Ngày tháng có thể giúp mình kiểm tra bản hồ sơ. Tìm xem người ta đã ghi lại lần chỉnh sửa ở đâu nhé.",
+      "en": "The dates may help us check this record. Look for a note of when it was revised."
+    },
+    "selene_05.line.009": {
+      "vi": "Trong ngôi nhà bên rừng còn thư từ và nét chữ để đối chiếu với hồ sơ Hội đồng.",
+      "en": "Letters and handwriting survive in the house by the woods, offering another way to check the Council record."
+    },
+    "selene_05.line.010": {
+      "vi": "Ở đây vẫn còn thư. Mình so nét chữ và ngày viết với hồ sơ nhé; biết đâu hai bản kể không khớp nhau.",
+      "en": "There are still letters here. Let us compare the handwriting and dates with the record; the two accounts may not agree."
+    },
+    "selene_05.line.011": {
+      "vi": "Thư viết: “Nếu lịch sử cần một con quái vật, họ đã chọn cô.” Ngày thư sớm hơn bản sửa hồ sơ.",
+      "en": "The letter reads: “If history requires a monster, they have chosen you.” It predates the revised record."
+    },
+    "selene_05.line.012": {
+      "vi": "Thư của Elarion có thể là một nguồn đối chiếu. Mình so ngày viết với hồ sơ, thay vì tin ngay một bên nhé.",
+      "en": "Elarion's letter gives us another source. Let us compare its date with the record rather than take either account on trust."
+    },
+    "selene_05.line.013": {
+      "vi": "Một chữ ký trùng nét trong nhật ký. Những vết cháy che tên người làm chứng, không che ngày.",
+      "en": "The signature matches the journal's strokes. Burns conceal a witness's name, but not the date."
+    },
+    "selene_05.line.014": {
+      "vi": "Chữ ký này đáng đối chiếu với nét chữ mình đã thấy. Những phần không cháy cũng có thể giúp xác định thời điểm.",
+      "en": "This signature is worth comparing with the writing we have seen. The unburned parts may help us place it in time."
+    },
+    "selene_05.line.015": {
+      "vi": "Họ không chỉ xóa ký ức của tôi. Họ sửa cả cách lịch sử nhớ về tôi.",
+      "en": "They did not just erase my memory. They changed history's memory of me."
+    },
+    "selene_05.line.016": {
+      "vi": "Bạn hiểu hành động ấy theo hướng nào?",
+      "en": "How do you interpret what was done?"
+    },
+    "selene_05.line.017": {
+      "vi": "Ai đó đã ép cô quên đi.",
+      "en": "Someone forced you to forget."
+    },
+    "selene_05.line.018": {
+      "vi": "Có thể. Nhưng tôi cần thêm bằng chứng trước khi dùng từ ép buộc.",
+      "en": "Perhaps. But I need more evidence before calling it force."
+    },
+    "selene_05.line.019": {
+      "vi": "Có lẽ cô đang bảo vệ một người.",
+      "en": "Maybe you were protecting someone."
+    },
+    "selene_05.line.020": {
+      "vi": "Tôi muốn biết người đó là ai. Và tôi đã có quyền chọn đến đâu.",
+      "en": "I want to know who. And how much of that choice was mine."
+    },
+    "selene_05.line.021": {
+      "vi": "Có thể cô bảo vệ mọi người khỏi chính ký ức ấy.",
+      "en": "Maybe you protected everyone from the memory itself."
+    },
+    "selene_05.line.022": {
+      "vi": "Một ký ức có thể nguy hiểm đến thế sao? …Mình nên hỏi trước khi ghép hết chúng.",
+      "en": "Can a memory be that dangerous? ...We should ask before joining them all."
+    },
+    "selene_05.line.023": {
+      "vi": "Bản gốc ghi một phong ấn do Hội đồng giám sát. Ba ngày sau, một bàn tay thêm tên Selene vào phần tội trạng.",
+      "en": "The original records a Council-supervised seal. Three days later, a hand adds Selene's name under culpability."
+    },
+    "selene_05.line.024": {
+      "vi": "Elarion niêm lá thư: “Nếu lịch sử cần một con quái vật, họ đã chọn cô.”",
+      "en": "Elarion seals his letter: “If history requires a monster, they have chosen you.”"
+    },
+    "selene_05.line.025": {
+      "vi": "Một dòng mực đã quyết định người khác sợ tôi thế nào. Nhưng nó không được quyết định tôi là ai.",
+      "en": "One line of ink decided how others feared me. It does not get to decide who I am."
+    },
+    "selene_05.line.026": {
+      "vi": "M05 cùng hồ sơ và thư Elarion cho thấy bản cáo buộc Selene bị chỉnh sửa ba ngày sau Moonfall; lời buộc tội không phải toàn bộ sự thật.",
+      "en": "M05, the records, and Elarion's letter showed that the accusation against Selene was revised three days after Moonfall; the accusation was not the whole truth."
+    },
+    "selene_05.line.027": {
+      "vi": "Hồ sơ chính thức bị sửa sau Moonfall. Điều đó chưa đủ để kết luận Selene hoàn toàn vô tội hoặc mọi lời Hội đồng đều sai.",
+      "en": "The official record was revised after Moonfall. This alone cannot prove complete innocence or that every Council statement was false."
+    },
+    "selene_05.line.028": {
+      "vi": "Họ che giấu điều Selene đã làm — hay điều cô đã ngăn lại?",
+      "en": "Were they hiding what Selene did, or what she prevented?"
+    },
+    "selene_05.expanded.archive_defense": {
+      "vi": "Khi hồ sơ rời bàn, rune trên kệ sáng. Giấy tự lật về cùng một dòng buộc tội.",
+      "en": "As the record leaves the desk, shelf runes glow. Pages turn themselves to the same accusation."
+    },
+    "selene_05.expanded.archive_defense.paper_accusation": {
+      "vi": "Giấy xoáy quanh Selene thành bóng phù thủy; các chữ PHÙ THỦY, PHẢN BỘI, QUÁI VẬT bám theo cô.",
+      "en": "Pages whirl around Selene into a witchlike figure; WITCH, TRAITOR and MONSTER follow her."
+    },
+    "selene_05.expanded.archive_defense.paper_accusation.speech": {
+      "vi": "Một từ được viết đủ nhiều lần không tự biến thành sự thật.",
+      "en": "Writing a word over and over does not make it true."
+    },
+    "selene_05.expanded.archive_defense.security_seal": {
+      "vi": "Bạn đặt dấu niêm trùng đường khắc trên bàn. Giấy rơi; chữ QUÁI VẬT nấn ná rồi tắt.",
+      "en": "You align the seal with the desk engraving. The pages fall; MONSTER lingers, then fades."
+    },
+    "selene_05.expanded.forest_threshold": {
+      "vi": "Một dấu người gửi trên phong bì dẫn tới ngôi nhà sát rừng.",
+      "en": "A sender mark on an envelope points to the house at the forest edge."
+    },
+    "selene_05.expanded.forest_threshold.sender_mark": {
+      "vi": "Ký hiệu hộp thư khớp phong bì. Nó nối thư với ngôi nhà, chưa xác nhận mọi điều người viết kể.",
+      "en": "The mailbox mark matches the envelope. It links the letter to the house, without proving every claim in it."
+    },
+    "selene_05.expanded.forest_threshold.letter_context": {
+      "vi": "Bản nháp chừa chỗ ghi ngày sửa hồ sơ. Người viết cũng tìm bằng chứng, không chỉ gửi lời minh oan.",
+      "en": "The draft leaves a blank for the record revision date. The writer sought evidence too, not merely reassurance."
+    },
+    "selene_05.expanded.forest_threshold.letter_context.speech": {
+      "vi": "Tôi muốn sự thật, không phải một lời minh oan dễ chịu.",
+      "en": "I want the truth, not an easy acquittal."
+    }
+  },
+  "required_inspections": [
+    "selene_05_ink",
+    "selene_05_seal",
+    "selene_05_timestamp",
+    "selene_05_letter",
+    "selene_05_signature",
+    "selene_05_paper_accusation",
+    "selene_05_security_seal",
+    "selene_05_sender_mark",
+    "selene_05_letter_context"
+  ],
+  "summary_key": "selene_05.line.027",
+  "reflection_key": "selene_05.line.028"
+}

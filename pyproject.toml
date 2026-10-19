@@ -18,4 +18,4 @@ where = ["."]
 include = ["character_chat*"]
 
 [tool.setuptools.package-data]
-character_chat = ["tarot_deck.json"]
+character_chat = ["tarot_deck.json", "story_data/*.json", "story_data/moonfall_arc/*.json"]

@@ -12,6 +12,8 @@ def bind_extract_memory(runtime: ModuleType) -> None:
     """Register these implementations against the supplied application runtime."""
 
     def extract_memory(db, user, room_id, message_id, text, character_ids):
+        from ..roleplay_continuity import auto_memory_enabled
+        if not auto_memory_enabled(db,user,room_id):return
         if len(text) < 20 or not runtime.re.search(
             r"\b(tôi|mình|tao|tớ|my|i)\b", text, runtime.re.I
         ):

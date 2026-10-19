@@ -1592,6 +1592,7 @@ async function load(): Promise<void> {
 async function loadDeferredView(view?: string): Promise<void> {
   return controllers.loadDeferredView(view);
 }
+void fetch("/v1/worlds/config").then(r=>r.json()).then(c=>{if(c.enabled){const nav=document.querySelector(".adminNav");if(nav){const link=document.createElement("a");link.href="/worlds/admin";link.className="btn";link.textContent="✧ Worlds · CMS";nav.appendChild(link);}}}).catch(()=>{});
 document.querySelectorAll<HTMLButtonElement>("[data-view]").forEach((button) =>
   button.addEventListener("click", () => {
     document
@@ -1694,3 +1695,6 @@ refreshButton.addEventListener("click", async () => {
   }
 });
 load();
+
+// Ordinary chat lorebook is independent of the Worlds feature flag.
+{const nav=document.querySelector(".adminNav");if(nav){const link=document.createElement("a");link.href="/roleplay/lorebook/admin";link.className="btn";link.textContent="Lorebook · Chat thường";nav.appendChild(link);}}

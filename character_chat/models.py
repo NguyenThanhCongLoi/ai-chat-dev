@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from sqlalchemy import String, Text, Float, Integer, ForeignKey, LargeBinary
+from sqlalchemy import String, Text, Float, Integer, ForeignKey, LargeBinary, UniqueConstraint
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 def now(): return datetime.now(timezone.utc).isoformat()
@@ -183,6 +183,7 @@ class Message(Base):
     id: Mapped[str]=mapped_column(String,primary_key=True)
     room_id: Mapped[str]=mapped_column(ForeignKey("rooms.id"),index=True)
     sender_type: Mapped[str]=mapped_column(String)
+    reply_to_message_id: Mapped[str|None]=mapped_column(String,nullable=True,index=True)
     character_id: Mapped[str|None]=mapped_column(String,nullable=True)
     text: Mapped[str]=mapped_column(Text)
     speech_segments: Mapped[str]=mapped_column(Text,default="[]")
@@ -526,3 +527,68 @@ class ActionSoundAsset(Base):
     title: Mapped[str] = mapped_column(String)
     mime_type: Mapped[str] = mapped_column(String)
     content: Mapped[bytes] = mapped_column(LargeBinary)
+
+# Ordinary Roleplay social graph; separate from user-character Relationship.
+class CharacterSocialState(Base):
+    __tablename__="character_social_state"
+    __table_args__=(UniqueConstraint("user_id","scope","character_a_id","character_b_id"),)
+    id: Mapped[str]=mapped_column(String,primary_key=True)
+    user_id: Mapped[str]=mapped_column(ForeignKey("users.id"),index=True)
+    scope: Mapped[str]=mapped_column(String,default="roleplay",index=True)
+    character_a_id: Mapped[str]=mapped_column(ForeignKey("characters.id"),index=True)
+    character_b_id: Mapped[str]=mapped_column(ForeignKey("characters.id"),index=True)
+    active: Mapped[int]=mapped_column(Integer,default=1)
+    interaction_count: Mapped[int]=mapped_column(Integer,default=0)
+    affinity: Mapped[float]=mapped_column(Float,default=0)
+    trust: Mapped[float]=mapped_column(Float,default=0)
+    respect: Mapped[float]=mapped_column(Float,default=0)
+    jealousy: Mapped[float]=mapped_column(Float,default=0)
+    rivalry: Mapped[float]=mapped_column(Float,default=0)
+    fear: Mapped[float]=mapped_column(Float,default=0)
+    romantic_interest: Mapped[float]=mapped_column(Float,default=0)
+    first_met_at: Mapped[str|None]=mapped_column(String,nullable=True)
+    last_interaction_at: Mapped[str|None]=mapped_column(String,nullable=True)
+    created_at: Mapped[str]=mapped_column(String,default=now)
+    updated_at: Mapped[str]=mapped_column(String,default=now)
+
+class CharacterSocialKnowledge(Base):
+    __tablename__="character_social_knowledge"
+    id: Mapped[str]=mapped_column(String,primary_key=True)
+    user_id: Mapped[str]=mapped_column(ForeignKey("users.id"),index=True)
+    scope: Mapped[str]=mapped_column(String,default="roleplay",index=True)
+    character_id: Mapped[str]=mapped_column(ForeignKey("characters.id"),index=True)
+    subject_character_id: Mapped[str]=mapped_column(ForeignKey("characters.id"),index=True)
+    fact_key: Mapped[str]=mapped_column(String)
+    fact_value: Mapped[str]=mapped_column(Text)
+    knowledge_type: Mapped[str]=mapped_column(String,default="TOLD")
+    source: Mapped[str]=mapped_column(String)
+    confidence: Mapped[float]=mapped_column(Float,default=1)
+    visibility: Mapped[str]=mapped_column(String,default="PRIVATE")
+    learned_at: Mapped[str]=mapped_column(String,default=now)
+
+class CharacterSocialCanon(Base):
+    __tablename__="character_social_canon"
+    id: Mapped[str]=mapped_column(String,primary_key=True)
+    user_id: Mapped[str]=mapped_column(ForeignKey("users.id"),index=True)
+    scope: Mapped[str]=mapped_column(String,default="roleplay")
+    character_a_id: Mapped[str]=mapped_column(ForeignKey("characters.id"),index=True)
+    character_b_id: Mapped[str]=mapped_column(ForeignKey("characters.id"),index=True)
+    text: Mapped[str]=mapped_column(Text)
+    revision: Mapped[int]=mapped_column(Integer,default=1)
+    created_at: Mapped[str]=mapped_column(String,default=now)
+
+class CharacterSharedInteraction(Base):
+    __tablename__="character_shared_interaction"
+    id: Mapped[str]=mapped_column(String,primary_key=True)
+    user_id: Mapped[str]=mapped_column(ForeignKey("users.id"),index=True)
+    scope: Mapped[str]=mapped_column(String,default="roleplay",index=True)
+    character_a_id: Mapped[str]=mapped_column(ForeignKey("characters.id"),index=True)
+    character_b_id: Mapped[str]=mapped_column(ForeignKey("characters.id"),index=True)
+    conversation_id: Mapped[str]=mapped_column(String,index=True)
+    source_message_id: Mapped[str]=mapped_column(String,index=True)
+    interaction_type: Mapped[str]=mapped_column(String,default="GROUP_CHAT")
+    summary: Mapped[str]=mapped_column(Text)
+    source_ids: Mapped[str]=mapped_column(Text)
+    source_fingerprint: Mapped[str]=mapped_column(String)
+    deltas: Mapped[str]=mapped_column(Text,default="{}")
+    created_at: Mapped[str]=mapped_column(String,default=now)

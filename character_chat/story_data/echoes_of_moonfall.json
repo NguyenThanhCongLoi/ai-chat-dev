@@ -1,0 +1,2136 @@
+{
+  "schema_version": 1,
+  "revision": 0,
+  "id": "echoes_of_moonfall",
+  "enabled": true,
+  "character_source_id": "",
+  "title": {
+    "vi": "Tiếng vọng Moonfall",
+    "en": "Echoes of Moonfall"
+  },
+  "arc_title": {
+    "vi": "Hồi I · Dưới vầng trăng",
+    "en": "Arc I · Beneath the moon"
+  },
+  "pitch": {
+    "vi": "Một tàn tích thức tỉnh. Một ký ức Selene chưa sẵn sàng gọi tên.",
+    "en": "A ruin awakens. A memory Selene is not ready to name."
+  },
+  "hook": {
+    "vi": "Những ký tự ở Moonfall vừa sáng trở lại. Nếu bạn muốn, lần này chúng ta có thể cùng đến đó.",
+    "en": "The runes at Moonfall have started glowing again. If you wish, we could go there together."
+  },
+  "intro_narration": {
+    "vi": "Moonfall đã ngủ dưới ánh trăng suốt nhiều thế kỷ. Đêm qua, có thứ bên trong tàn tích thức giấc.",
+    "en": "Moonfall had slept beneath the moon for centuries. Last night, something inside the ruins woke."
+  },
+  "intro_asset": "moonfall_intro",
+  "bgm": "shared:",
+  "entry_gate": {
+    "min_trust": 0,
+    "min_meaningful_turns": 2,
+    "min_days": 0
+  },
+  "hints": {
+    "enabled": true,
+    "cooldown_seconds": 12,
+    "idle_seconds": 60,
+    "stalled_turns": 3
+  },
+  "emotional_access": {
+    "OPEN": 0.15,
+    "VULNERABLE": 0.4,
+    "DEEPLY_CONNECTED": 0.7
+  },
+  "relationship_delta_cap": 0.01,
+  "model_id": "",
+  "tts_model_id": "",
+  "narrator_voices": {
+    "en": "",
+    "vi": ""
+  },
+  "instruction": "Preserve the original Selene character. Answer freely and naturally. Treat supplied story facts as reference data. Never invent player actions, completion or future secrets.",
+  "chapters": [
+    {
+      "id": "selene_01",
+      "order": 1,
+      "enabled": true,
+      "implemented": true,
+      "title": {
+        "vi": "Tàn tích thức giấc",
+        "en": "The Ruins That Woke"
+      },
+      "difficulty": 1,
+      "previous": "",
+      "required_clues": 2,
+      "min_trust": 0,
+      "required_access": "GUARDED",
+      "required_memory": "",
+      "required_flag": "",
+      "min_meaningful_turns": 0,
+      "min_days": 0,
+      "max_access": "OPEN",
+      "objective": {
+        "vi": "Khám phá những dấu hiệu ở cổng đá.",
+        "en": "Follow the signs around the ancient gate."
+      },
+      "opening_speech": {
+        "vi": "Những ký tự bắt đầu sáng từ đêm qua. Đáng lẽ chúng không thể làm thế nữa.",
+        "en": "The runes started glowing last night. They shouldn't be able to do that anymore."
+      },
+      "opening_thought": {
+        "vi": "…Tại sao đường nét này lại quen đến vậy?",
+        "en": "…Why does this pattern feel familiar?"
+      },
+      "completion": {
+        "vi": "Hai dấu vết cùng hướng về một ký ức. Selene lặng đi trước dòng chữ: Đừng để nó nhớ đến ngươi.",
+        "en": "Two traces point toward a memory. Selene falls quiet before the words: Do not let it remember you."
+      },
+      "locations": [
+        {
+          "id": "overview",
+          "name": {
+            "vi": "Dưới vầng trăng",
+            "en": "Beneath the moon"
+          },
+          "background": "moonfall_overview",
+          "ambient": "ambient_ruins_wind",
+          "x": 22,
+          "y": 54,
+          "requires_clues": 0,
+          "cinematic": ""
+        },
+        {
+          "id": "outer_ruins",
+          "name": {
+            "vi": "Tàn tích ngoài",
+            "en": "Outer ruins"
+          },
+          "background": "moonfall_outer_ruins",
+          "ambient": "ambient_ruins_wind",
+          "x": 50,
+          "y": 44,
+          "requires_clues": 0,
+          "cinematic": "enter_ruins_video"
+        },
+        {
+          "id": "gate",
+          "name": {
+            "vi": "Cổng cổ",
+            "en": "Ancient gate"
+          },
+          "background": "ancient_gate",
+          "ambient": "ambient_underground_hum",
+          "x": 79,
+          "y": 57,
+          "requires_clues": 1,
+          "cinematic": ""
+        }
+      ],
+      "clues": [
+        {
+          "id": "rune",
+          "location": "outer_ruins",
+          "title": {
+            "vi": "Ký tự đang sáng",
+            "en": "The waking rune"
+          },
+          "fact": {
+            "vi": "Ánh sáng trên ký tự nhịp nhàng như hơi thở. Những vết bụi cho thấy chỉ đêm qua nó mới thức tỉnh.",
+            "en": "The rune pulses like a breath. Undisturbed dust shows that its light returned only last night."
+          },
+          "keywords": [
+            "rune",
+            "runes",
+            "ký tự",
+            "ky tu",
+            "ấn chú",
+            "符文",
+            "ルーン",
+            "룬",
+            "အက္ခရာ",
+            "អក្សរ"
+          ],
+          "hints": [
+            {
+              "vi": "Ánh sáng dường như lặp lại một nhịp.",
+              "en": "The light seems to repeat a rhythm."
+            },
+            {
+              "vi": "Nhìn gần ký tự trên khối đá.",
+              "en": "Look closely at the rune on the stone."
+            },
+            {
+              "vi": "Chạm vào điểm Ký tự đang sáng tại tàn tích ngoài.",
+              "en": "Inspect The waking rune in the outer ruins."
+            }
+          ],
+          "x": 30,
+          "y": 64,
+          "type": "MAIN",
+          "required": true,
+          "unlock_condition": "",
+          "related_entity": "selene",
+          "related_memory": "SELENE_KNOWS_MORE_ABOUT_MOONFALL",
+          "expression": "thinking",
+          "thought": {
+            "vi": "…Nhịp sáng này… tại sao lại quen đến thế?",
+            "en": "…That rhythm of light… why does it feel so familiar?"
+          },
+          "asset": "moon_rune",
+          "reaction": {
+            "en": "That light... I recognize its rhythm, but not what awakened it. Let us look carefully before touching it again.",
+            "vi": "Ánh sáng đó... tôi nhận ra nhịp của nó, nhưng chưa biết điều gì đã đánh thức nó. Mình hãy quan sát kỹ trước khi chạm thêm nhé."
+          }
+        },
+        {
+          "id": "statue",
+          "location": "outer_ruins",
+          "title": {
+            "vi": "Pho tượng nứt",
+            "en": "The cracked statue"
+          },
+          "fact": {
+            "vi": "Mặt sau pho tượng mang cùng đường cong với mặt dây chuyền của Selene. Sự tương đồng có thật; nguồn gốc của nó vẫn chưa rõ.",
+            "en": "The statue's reverse bears the same curve as Selene's pendant. The resemblance is real; its origin remains unknown."
+          },
+          "keywords": [
+            "statue",
+            "carving",
+            "tượng",
+            "tuong",
+            "khắc",
+            "彫像",
+            "雕像",
+            "조각상",
+            "ရုပ်တု",
+            "រូបចម្លាក់"
+          ],
+          "hints": [
+            {
+              "vi": "Đường cong này… có gì đó quen thuộc.",
+              "en": "That curve… something about it is familiar."
+            },
+            {
+              "vi": "Một dấu khắc nằm sau pho tượng.",
+              "en": "There is an engraving behind the statue."
+            },
+            {
+              "vi": "Kiểm tra Pho tượng nứt ở tàn tích ngoài.",
+              "en": "Inspect The cracked statue in the outer ruins."
+            }
+          ],
+          "x": 65,
+          "y": 49,
+          "type": "MAIN",
+          "required": true,
+          "unlock_condition": "",
+          "related_entity": "selene",
+          "related_memory": "SELENE_KNOWS_MORE_ABOUT_MOONFALL",
+          "expression": "surprised",
+          "thought": {
+            "vi": "…Đường cong ấy, trên mặt dây chuyền của mình.",
+            "en": "…That curve. The one on my pendant."
+          },
+          "asset": "moonstone",
+          "reaction": {
+            "en": "Look at the wear on the stone. Someone returned here often. I wonder what they were hoping to find.",
+            "vi": "Nhìn những vết mòn trên đá xem. Có người đã thường xuyên quay lại đây. Tôi tự hỏi họ mong tìm thấy điều gì."
+          }
+        },
+        {
+          "id": "inscription",
+          "location": "gate",
+          "title": {
+            "vi": "Lời cảnh báo",
+            "en": "The warning"
+          },
+          "fact": {
+            "vi": "Dòng chữ trên cổng ghi: Đừng để nó nhớ đến ngươi. Selene bỗng im lặng; chưa rõ ký ức nào đã chạm đến nàng.",
+            "en": "The gate reads: Do not let it remember you. Selene suddenly falls silent; what memory stirred her remains unknown."
+          },
+          "keywords": [
+            "inscription",
+            "gate",
+            "warning",
+            "cổng",
+            "cong",
+            "cảnh báo",
+            "dòng chữ",
+            "門",
+            "铭文",
+            "문",
+            "တံခါး",
+            "ទ្វារ"
+          ],
+          "hints": [
+            {
+              "vi": "Dường như cánh cổng không chỉ ngăn người bước vào.",
+              "en": "Perhaps the gate does more than keep visitors out."
+            },
+            {
+              "vi": "Quan sát dòng chữ quanh cổng cổ.",
+              "en": "Look at the words around the ancient gate."
+            },
+            {
+              "vi": "Kiểm tra Lời cảnh báo tại Cổng cổ.",
+              "en": "Inspect The warning at the ancient gate."
+            }
+          ],
+          "x": 48,
+          "y": 52,
+          "type": "MAIN",
+          "required": true,
+          "unlock_condition": "",
+          "related_entity": "selene",
+          "related_memory": "SELENE_KNOWS_MORE_ABOUT_MOONFALL",
+          "expression": "sad",
+          "thought": {
+            "vi": "…Có những điều không nên thức giấc.",
+            "en": "…Some things should not wake."
+          },
+          "asset": "broken_tablet",
+          "reaction": {
+            "en": "Some of these marks have survived. We should separate what we can read from what we are only guessing.",
+            "vi": "Một vài nét khắc vẫn còn. Mình nên tách điều đọc được khỏi những điều chỉ đang phỏng đoán."
+          }
+        }
+      ],
+      "choices": [
+        {
+          "id": "listen",
+          "label": {
+            "vi": "Ở bên Selene một lát",
+            "en": "Stay beside Selene for a moment"
+          },
+          "text": {
+            "vi": "Bạn để khoảng lặng ở lại. Ánh sáng trên đá dịu xuống.",
+            "en": "You allow the silence to remain. The light on the stone softens."
+          },
+          "requires_complete": true,
+          "flag": "patient_companion"
+        }
+      ],
+      "canon": [
+        {
+          "id": "warning",
+          "kind": "HARD_CANON",
+          "text": {
+            "vi": "Dòng chữ cảnh báo: Đừng để nó nhớ đến ngươi.",
+            "en": "The inscription warns: Do not let it remember you."
+          },
+          "requires_clue": "inscription"
+        }
+      ],
+      "reward": {
+        "id": "SELENE_KNOWS_MORE_ABOUT_MOONFALL",
+        "scope": "NORMAL_CHAT_SHARED",
+        "title": {
+          "vi": "Selene và bí mật Moonfall",
+          "en": "Selene and Moonfall's secret"
+        },
+        "fact": {
+          "vi": "Bạn cùng Selene khám phá tàn tích quanh những ký tự vừa thức tỉnh tại Moonfall và đối chiếu các dấu vết thực sự tìm được. Sự ngập ngừng khác thường khiến bạn nhận ra nàng biết nhiều hơn những gì đã kể, nhưng nguyên nhân vẫn chưa rõ.",
+          "en": "You and Selene explored the ruins around the newly awakened runes at Moonfall, comparing the traces you actually found. Her unusual hesitation suggested she knows more than she has shared; the reason remains unknown."
+        }
+      }
+    },
+    {
+      "id": "selene_02",
+      "order": 2,
+      "enabled": false,
+      "implemented": false,
+      "title": {
+        "vi": "Mặt dây chuyền bạc",
+        "en": "The Silver Pendant"
+      },
+      "difficulty": 2,
+      "previous": "selene_01",
+      "required_clues": 2,
+      "min_trust": 0,
+      "required_access": "OPEN",
+      "required_memory": "SELENE_KNOWS_MORE_ABOUT_MOONFALL",
+      "required_flag": "",
+      "min_meaningful_turns": 0,
+      "min_days": 0,
+      "max_access": "OPEN",
+      "objective": {
+        "vi": "Mặt dây chuyền bạc",
+        "en": "The Silver Pendant"
+      },
+      "opening_speech": {
+        "vi": "Những ký tự bắt đầu sáng từ đêm qua. Đáng lẽ chúng không thể làm thế nữa.",
+        "en": "The runes started glowing last night. They shouldn't be able to do that anymore."
+      },
+      "opening_thought": {
+        "vi": "…Tại sao đường nét này lại quen đến vậy?",
+        "en": "…Why does this pattern feel familiar?"
+      },
+      "completion": {
+        "vi": "Hai dấu vết cùng hướng về một ký ức. Selene lặng đi trước dòng chữ: Đừng để nó nhớ đến ngươi.",
+        "en": "Two traces point toward a memory. Selene falls quiet before the words: Do not let it remember you."
+      },
+      "locations": [],
+      "clues": [],
+      "choices": [],
+      "canon": [],
+      "reward": {
+        "id": "ELARION_GAVE_SELENE_THE_PENDANT",
+        "scope": "WORLD_ONLY",
+        "title": {
+          "vi": "Mặt dây chuyền bạc",
+          "en": "The Silver Pendant"
+        },
+        "fact": {
+          "vi": "Selene kể rằng Elarion đã tặng nàng mặt dây chuyền bạc; mối quan hệ thầy trò chỉ được xác nhận khi nàng sẵn sàng chia sẻ.",
+          "en": "Selene said Elarion gave her the silver pendant; their mentor relationship is disclosed only when she is ready."
+        }
+      }
+    },
+    {
+      "id": "selene_03",
+      "order": 3,
+      "enabled": false,
+      "implemented": false,
+      "title": {
+        "vi": "Tiếng vọng dưới đá",
+        "en": "Voices Beneath the Stone"
+      },
+      "difficulty": 3,
+      "previous": "selene_02",
+      "required_clues": 2,
+      "min_trust": 0,
+      "required_access": "OPEN",
+      "required_memory": "ELARION_GAVE_SELENE_THE_PENDANT",
+      "required_flag": "",
+      "min_meaningful_turns": 0,
+      "min_days": 0,
+      "max_access": "OPEN",
+      "objective": {
+        "vi": "Tiếng vọng dưới đá",
+        "en": "Voices Beneath the Stone"
+      },
+      "opening_speech": {
+        "vi": "Những ký tự bắt đầu sáng từ đêm qua. Đáng lẽ chúng không thể làm thế nữa.",
+        "en": "The runes started glowing last night. They shouldn't be able to do that anymore."
+      },
+      "opening_thought": {
+        "vi": "…Tại sao đường nét này lại quen đến vậy?",
+        "en": "…Why does this pattern feel familiar?"
+      },
+      "completion": {
+        "vi": "Hai dấu vết cùng hướng về một ký ức. Selene lặng đi trước dòng chữ: Đừng để nó nhớ đến ngươi.",
+        "en": "Two traces point toward a memory. Selene falls quiet before the words: Do not let it remember you."
+      },
+      "locations": [],
+      "clues": [],
+      "choices": [],
+      "canon": [],
+      "reward": {
+        "id": "SELENE_PREVIOUSLY_VISITED_MOONFALL",
+        "scope": "WORLD_ONLY",
+        "title": {
+          "vi": "Tiếng vọng dưới đá",
+          "en": "Voices Beneath the Stone"
+        },
+        "fact": {
+          "vi": "Bạn và Selene đối chiếu các tiếng vọng và biết nàng đã từng bước vào Moonfall.",
+          "en": "You and Selene compared the echoes and learned she had entered Moonfall before."
+        }
+      }
+    },
+    {
+      "id": "selene_04",
+      "order": 4,
+      "enabled": false,
+      "implemented": false,
+      "title": {
+        "vi": "Đêm Moonfall sụp đổ",
+        "en": "The Night Moonfall Fell"
+      },
+      "difficulty": 3,
+      "previous": "selene_03",
+      "required_clues": 2,
+      "min_trust": 0,
+      "required_access": "VULNERABLE",
+      "required_memory": "SELENE_PREVIOUSLY_VISITED_MOONFALL",
+      "required_flag": "",
+      "min_meaningful_turns": 0,
+      "min_days": 0,
+      "max_access": "VULNERABLE",
+      "objective": {
+        "vi": "Đêm Moonfall sụp đổ",
+        "en": "The Night Moonfall Fell"
+      },
+      "opening_speech": {
+        "vi": "Những ký tự bắt đầu sáng từ đêm qua. Đáng lẽ chúng không thể làm thế nữa.",
+        "en": "The runes started glowing last night. They shouldn't be able to do that anymore."
+      },
+      "opening_thought": {
+        "vi": "…Tại sao đường nét này lại quen đến vậy?",
+        "en": "…Why does this pattern feel familiar?"
+      },
+      "completion": {
+        "vi": "Hai dấu vết cùng hướng về một ký ức. Selene lặng đi trước dòng chữ: Đừng để nó nhớ đến ngươi.",
+        "en": "Two traces point toward a memory. Selene falls quiet before the words: Do not let it remember you."
+      },
+      "locations": [],
+      "clues": [],
+      "choices": [],
+      "canon": [],
+      "reward": {
+        "id": "SELENE_WAS_PRESENT_WHEN_MOONFALL_FELL",
+        "scope": "WORLD_ONLY",
+        "title": {
+          "vi": "Đêm Moonfall sụp đổ",
+          "en": "The Night Moonfall Fell"
+        },
+        "fact": {
+          "vi": "Bạn chứng kiến tái dựng một phần đêm nghi lễ phá hủy Moonfall; Selene đã ở đó.",
+          "en": "You witnessed a partial reconstruction of the ritual that destroyed Moonfall; Selene was there."
+        }
+      }
+    },
+    {
+      "id": "selene_05",
+      "order": 5,
+      "enabled": false,
+      "implemented": false,
+      "title": {
+        "vi": "Phù thủy bị kết tội",
+        "en": "The Witch They Blamed"
+      },
+      "difficulty": 4,
+      "previous": "selene_04",
+      "required_clues": 2,
+      "min_trust": 0,
+      "required_access": "VULNERABLE",
+      "required_memory": "SELENE_WAS_PRESENT_WHEN_MOONFALL_FELL",
+      "required_flag": "",
+      "min_meaningful_turns": 0,
+      "min_days": 0,
+      "max_access": "VULNERABLE",
+      "objective": {
+        "vi": "Phù thủy bị kết tội",
+        "en": "The Witch They Blamed"
+      },
+      "opening_speech": {
+        "vi": "Những ký tự bắt đầu sáng từ đêm qua. Đáng lẽ chúng không thể làm thế nữa.",
+        "en": "The runes started glowing last night. They shouldn't be able to do that anymore."
+      },
+      "opening_thought": {
+        "vi": "…Tại sao đường nét này lại quen đến vậy?",
+        "en": "…Why does this pattern feel familiar?"
+      },
+      "completion": {
+        "vi": "Hai dấu vết cùng hướng về một ký ức. Selene lặng đi trước dòng chữ: Đừng để nó nhớ đến ngươi.",
+        "en": "Two traces point toward a memory. Selene falls quiet before the words: Do not let it remember you."
+      },
+      "locations": [],
+      "clues": [],
+      "choices": [],
+      "canon": [],
+      "reward": {
+        "id": "THE_WITCH_DID_NOT_CAUSE_MOONFALL",
+        "scope": "WORLD_ONLY",
+        "title": {
+          "vi": "Phù thủy bị kết tội",
+          "en": "The Witch They Blamed"
+        },
+        "fact": {
+          "vi": "Bạn đối chiếu chứng cứ với lời đồn và biết phù thủy đã cố ngăn nghi lễ, không gây ra tai họa.",
+          "en": "You compared evidence against rumor and learned the witch tried to stop the ritual, rather than causing the disaster."
+        }
+      }
+    },
+    {
+      "id": "selene_06",
+      "order": 6,
+      "enabled": false,
+      "implemented": false,
+      "title": {
+        "vi": "Ký ức còn thiếu",
+        "en": "The Missing Memory"
+      },
+      "difficulty": 4,
+      "previous": "selene_05",
+      "required_clues": 2,
+      "min_trust": 0,
+      "required_access": "VULNERABLE",
+      "required_memory": "THE_WITCH_DID_NOT_CAUSE_MOONFALL",
+      "required_flag": "",
+      "min_meaningful_turns": 0,
+      "min_days": 0,
+      "max_access": "VULNERABLE",
+      "objective": {
+        "vi": "Ký ức còn thiếu",
+        "en": "The Missing Memory"
+      },
+      "opening_speech": {
+        "vi": "Những ký tự bắt đầu sáng từ đêm qua. Đáng lẽ chúng không thể làm thế nữa.",
+        "en": "The runes started glowing last night. They shouldn't be able to do that anymore."
+      },
+      "opening_thought": {
+        "vi": "…Tại sao đường nét này lại quen đến vậy?",
+        "en": "…Why does this pattern feel familiar?"
+      },
+      "completion": {
+        "vi": "Hai dấu vết cùng hướng về một ký ức. Selene lặng đi trước dòng chữ: Đừng để nó nhớ đến ngươi.",
+        "en": "Two traces point toward a memory. Selene falls quiet before the words: Do not let it remember you."
+      },
+      "locations": [],
+      "clues": [],
+      "choices": [],
+      "canon": [],
+      "reward": {
+        "id": "SELENE_PARTICIPATED_IN_MOONFALL_RITUAL",
+        "scope": "WORLD_ONLY",
+        "title": {
+          "vi": "Ký ức còn thiếu",
+          "en": "The Missing Memory"
+        },
+        "fact": {
+          "vi": "Ba neo ký ức giúp Selene nhớ rằng nàng từng tham gia nghi lễ; phần còn thiếu vẫn chưa được xác minh.",
+          "en": "Three memory anchors helped Selene recall taking part in the ritual; the missing details remain unverified."
+        }
+      }
+    },
+    {
+      "id": "selene_07",
+      "order": 7,
+      "enabled": false,
+      "implemented": false,
+      "title": {
+        "vi": "Lựa chọn của Elarion",
+        "en": "What Elarion Chose"
+      },
+      "difficulty": 5,
+      "previous": "selene_06",
+      "required_clues": 2,
+      "min_trust": 0,
+      "required_access": "VULNERABLE",
+      "required_memory": "SELENE_PARTICIPATED_IN_MOONFALL_RITUAL",
+      "required_flag": "",
+      "min_meaningful_turns": 0,
+      "min_days": 0,
+      "max_access": "VULNERABLE",
+      "objective": {
+        "vi": "Lựa chọn của Elarion",
+        "en": "What Elarion Chose"
+      },
+      "opening_speech": {
+        "vi": "Những ký tự bắt đầu sáng từ đêm qua. Đáng lẽ chúng không thể làm thế nữa.",
+        "en": "The runes started glowing last night. They shouldn't be able to do that anymore."
+      },
+      "opening_thought": {
+        "vi": "…Tại sao đường nét này lại quen đến vậy?",
+        "en": "…Why does this pattern feel familiar?"
+      },
+      "completion": {
+        "vi": "Hai dấu vết cùng hướng về một ký ức. Selene lặng đi trước dòng chữ: Đừng để nó nhớ đến ngươi.",
+        "en": "Two traces point toward a memory. Selene falls quiet before the words: Do not let it remember you."
+      },
+      "locations": [],
+      "clues": [],
+      "choices": [],
+      "canon": [],
+      "reward": {
+        "id": "ELARION_DIED_PROTECTING_SELENE",
+        "scope": "WORLD_ONLY",
+        "title": {
+          "vi": "Lựa chọn của Elarion",
+          "en": "What Elarion Chose"
+        },
+        "fact": {
+          "vi": "Bạn biết Elarion hy sinh để hoàn tất phong ấn và bảo vệ Selene. Cảm giác tội lỗi của nàng chưa chứng minh ai gây ra thất bại.",
+          "en": "You learned Elarion sacrificed himself to complete the seal and protect Selene. Her guilt does not prove who caused the failure."
+        }
+      }
+    },
+    {
+      "id": "selene_08",
+      "order": 8,
+      "enabled": false,
+      "implemented": false,
+      "title": {
+        "vi": "Cánh cửa biết tên nàng",
+        "en": "The Door That Knows Her Name"
+      },
+      "difficulty": 5,
+      "previous": "selene_07",
+      "required_clues": 2,
+      "min_trust": 0,
+      "required_access": "VULNERABLE",
+      "required_memory": "ELARION_DIED_PROTECTING_SELENE",
+      "required_flag": "",
+      "min_meaningful_turns": 0,
+      "min_days": 0,
+      "max_access": "VULNERABLE",
+      "objective": {
+        "vi": "Cánh cửa biết tên nàng",
+        "en": "The Door That Knows Her Name"
+      },
+      "opening_speech": {
+        "vi": "Những ký tự bắt đầu sáng từ đêm qua. Đáng lẽ chúng không thể làm thế nữa.",
+        "en": "The runes started glowing last night. They shouldn't be able to do that anymore."
+      },
+      "opening_thought": {
+        "vi": "…Tại sao đường nét này lại quen đến vậy?",
+        "en": "…Why does this pattern feel familiar?"
+      },
+      "completion": {
+        "vi": "Hai dấu vết cùng hướng về một ký ức. Selene lặng đi trước dòng chữ: Đừng để nó nhớ đến ngươi.",
+        "en": "Two traces point toward a memory. Selene falls quiet before the words: Do not let it remember you."
+      },
+      "locations": [],
+      "clues": [],
+      "choices": [],
+      "canon": [],
+      "reward": {
+        "id": "MOONFALL_ARC_I_COMPLETE",
+        "scope": "WORLD_ONLY",
+        "title": {
+          "vi": "Cánh cửa biết tên nàng",
+          "en": "The Door That Knows Her Name"
+        },
+        "fact": {
+          "vi": "Bạn và Selene đã đứng trước Deep Vault và lựa chọn bước vào, phong ấn hoặc chờ. Nguồn gốc của nàng và tên lạ vẫn là bí ẩn.",
+          "en": "You and Selene faced the Deep Vault and chose to enter, seal it or wait. Her origin and the unknown name remain mysteries."
+        }
+      }
+    }
+  ],
+  "assets": [
+    {
+      "id": "moonfall_overview",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "backgrounds/moonfall_overview.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "moonfall_outer_ruins",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "backgrounds/moonfall_outer_ruins.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "ancient_gate",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "backgrounds/ancient_gate.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "inner_ruins",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "backgrounds/inner_ruins.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "ancient_archive",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "backgrounds/ancient_archive.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "moonfall_past",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "backgrounds/moonfall_past.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "blackwood_forest",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "backgrounds/blackwood_forest.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "witch_area",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "backgrounds/witch_area_witch_house.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "underground_chamber",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "backgrounds/underground_chamber.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "deep_vault",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "backgrounds/deep_vault.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "moon_temple",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "backgrounds/moon_temple.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "memory_space",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "backgrounds/memory_space.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "silver_pendant",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "props/silver_pendant.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "ancient_journal",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "props/ancient_journal.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "moon_rune",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "props/moon_rune.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "broken_tablet",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "props/broken_tablet.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "crystal_fragment",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "props/crystal_fragment.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "seal_stone",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "props/seal_stone.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "ancient_key",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "props/ancient_key.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "elarion_letter",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "props/elarion_letter.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "witch_symbol",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "props/witch_symbol.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "moonstone",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "props/moonstone.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "moonfall_intro",
+      "type": "VIDEO",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "video/intro/moonfall_intro.webm",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "moonfall_overview",
+      "duration": 7,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "ambient_ruins_wind",
+      "type": "AUDIO",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "audio/ambient/ruins_wind.ogg",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": true,
+      "audio_category": "AMBIENT",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "ambient_underground_hum",
+      "type": "AUDIO",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "audio/ambient/underground_hum.ogg",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": true,
+      "audio_category": "AMBIENT",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "ambient_forest_night",
+      "type": "AUDIO",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "audio/ambient/forest_night.ogg",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": true,
+      "audio_category": "AMBIENT",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "ambient_archive_room",
+      "type": "AUDIO",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "audio/ambient/archive_room.ogg",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": true,
+      "audio_category": "AMBIENT",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "ambient_memory_space",
+      "type": "AUDIO",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "audio/ambient/memory_space.ogg",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": true,
+      "audio_category": "AMBIENT",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "ambient_moon_temple",
+      "type": "AUDIO",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "audio/ambient/moon_temple.ogg",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": true,
+      "audio_category": "AMBIENT",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "sfx_rune_activate",
+      "type": "AUDIO",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "audio/sfx/rune_activate.ogg",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "SFX",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "sfx_magic_pulse",
+      "type": "AUDIO",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "audio/sfx/magic_pulse.ogg",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "SFX",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "sfx_stone_move",
+      "type": "AUDIO",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "audio/sfx/stone_move.ogg",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "SFX",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "sfx_stone_door",
+      "type": "AUDIO",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "audio/sfx/stone_door.ogg",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "SFX",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "sfx_clue_found",
+      "type": "AUDIO",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "audio/sfx/clue_found.ogg",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "SFX",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "sfx_memory_trigger",
+      "type": "AUDIO",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "audio/sfx/memory_trigger.ogg",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "SFX",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "sfx_memory_reveal",
+      "type": "AUDIO",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "audio/sfx/memory_reveal.ogg",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "SFX",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "sfx_secret_reveal",
+      "type": "AUDIO",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "audio/sfx/secret_reveal.ogg",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "SFX",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "sfx_location_unlock",
+      "type": "AUDIO",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "audio/sfx/location_unlock.ogg",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "SFX",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "sfx_chapter_complete",
+      "type": "AUDIO",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "audio/sfx/chapter_complete.ogg",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "SFX",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "sfx_seal_break",
+      "type": "AUDIO",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "audio/sfx/seal_break.ogg",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "SFX",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "map_world_select",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "backgrounds/map_background_world_select.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "chapter_complete_background",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "backgrounds/chapter_complete_background.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "enter_ruins_video",
+      "type": "VIDEO",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "video/locations/enter_ruins.webm",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 3,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "memory_space_video",
+      "type": "VIDEO",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "video/memories/memory_space.webm",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 5,
+      "loop": true,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "memory_transition",
+      "type": "VIDEO",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "video/memories/memory_transition.webm",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 4,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "memory_exit",
+      "type": "VIDEO",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "video/memories/memory_exit.webm",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 4,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "chapter_complete_video",
+      "type": "VIDEO",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "video/reveals/chapter_complete.webm",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 5,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "seal_activation",
+      "type": "VIDEO",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "video/reveals/seal_activation.webm",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 5,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "deep_vault_awaken",
+      "type": "VIDEO",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "video/reveals/deep_vault_awaken.webm",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 5,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "user-supplied",
+        "creator": "",
+        "license": "",
+        "original_url": "",
+        "date_acquired": "",
+        "attribution_required": false
+      }
+    },
+    {
+      "id": "selene_happy",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "characters/selene_happy.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "User-supplied image/react/elf.webp; imagegen background cutout derivative",
+        "status": "Confirm rights for distribution"
+      }
+    },
+    {
+      "id": "selene_sad",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "characters/selene_sad.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "User-supplied image/react/elf.webp; imagegen background cutout derivative",
+        "status": "Confirm rights for distribution"
+      }
+    },
+    {
+      "id": "selene_angry",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "characters/selene_angry.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "User-supplied image/react/elf.webp; imagegen background cutout derivative",
+        "status": "Confirm rights for distribution"
+      }
+    },
+    {
+      "id": "selene_surprised",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "characters/selene_surprised.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "User-supplied image/react/elf.webp; imagegen background cutout derivative",
+        "status": "Confirm rights for distribution"
+      }
+    },
+    {
+      "id": "selene_laughing",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "characters/selene_laughing.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "User-supplied image/react/elf.webp; imagegen background cutout derivative",
+        "status": "Confirm rights for distribution"
+      }
+    },
+    {
+      "id": "selene_crying",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "characters/selene_crying.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "User-supplied image/react/elf.webp; imagegen background cutout derivative",
+        "status": "Confirm rights for distribution"
+      }
+    },
+    {
+      "id": "selene_winking",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "characters/selene_winking.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "User-supplied image/react/elf.webp; imagegen background cutout derivative",
+        "status": "Confirm rights for distribution"
+      }
+    },
+    {
+      "id": "selene_playful",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "characters/selene_playful.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "User-supplied image/react/elf.webp; imagegen background cutout derivative",
+        "status": "Confirm rights for distribution"
+      }
+    },
+    {
+      "id": "selene_thinking",
+      "type": "IMAGE",
+      "world": "echoes_of_moonfall",
+      "chapter": "",
+      "location": "",
+      "path": "characters/selene_thinking.webp",
+      "locale_if_any": "",
+      "mobile_variant": "",
+      "fallback": "",
+      "duration": 0,
+      "loop": false,
+      "audio_category": "",
+      "license_metadata": {
+        "source": "User-supplied image/react/elf.webp; imagegen background cutout derivative",
+        "status": "Confirm rights for distribution"
+      }
+    }
+  ],
+  "visual_events": {
+    "WORLD_INTRO": {
+      "animation": "fade",
+      "audio": "",
+      "vfx": "",
+      "duration": 7,
+      "skippable": true,
+      "reduced_motion": "static",
+      "cinematic": "moonfall_intro"
+    },
+    "LOCATION_ENTER": {
+      "animation": "fade",
+      "audio": "",
+      "vfx": "",
+      "duration": 1.2,
+      "skippable": true,
+      "reduced_motion": "static",
+      "cinematic": ""
+    },
+    "CHARACTER_ENTER": {
+      "animation": "fade",
+      "audio": "",
+      "vfx": "",
+      "duration": 1.2,
+      "skippable": true,
+      "reduced_motion": "static",
+      "cinematic": ""
+    },
+    "CHARACTER_THOUGHT": {
+      "animation": "fade",
+      "audio": "",
+      "vfx": "",
+      "duration": 1.2,
+      "skippable": true,
+      "reduced_motion": "static",
+      "cinematic": ""
+    },
+    "CHARACTER_REALIZATION": {
+      "animation": "fade",
+      "audio": "",
+      "vfx": "",
+      "duration": 1.2,
+      "skippable": true,
+      "reduced_motion": "static",
+      "cinematic": ""
+    },
+    "CLUE_DISCOVERED": {
+      "animation": "fade",
+      "audio": "sfx_clue_found",
+      "vfx": "",
+      "duration": 1.2,
+      "skippable": true,
+      "reduced_motion": "static",
+      "cinematic": ""
+    },
+    "MAGIC_ACTIVATED": {
+      "animation": "pulse",
+      "audio": "",
+      "vfx": "",
+      "duration": 1.2,
+      "skippable": true,
+      "reduced_motion": "static",
+      "cinematic": ""
+    },
+    "MEMORY_TRIGGER": {
+      "animation": "fade",
+      "audio": "",
+      "vfx": "",
+      "duration": 1.2,
+      "skippable": true,
+      "reduced_motion": "static",
+      "cinematic": ""
+    },
+    "MEMORY_RECONSTRUCTION": {
+      "animation": "fade",
+      "audio": "",
+      "vfx": "",
+      "duration": 1.2,
+      "skippable": true,
+      "reduced_motion": "static",
+      "cinematic": "memory_space_video"
+    },
+    "MEMORY_UNLOCKED": {
+      "animation": "pulse",
+      "audio": "",
+      "vfx": "",
+      "duration": 1.2,
+      "skippable": true,
+      "reduced_motion": "static",
+      "cinematic": ""
+    },
+    "SECRET_REVEALED": {
+      "animation": "fade",
+      "audio": "",
+      "vfx": "",
+      "duration": 1.2,
+      "skippable": true,
+      "reduced_motion": "static",
+      "cinematic": ""
+    },
+    "LOCATION_UNLOCKED": {
+      "animation": "fade",
+      "audio": "",
+      "vfx": "",
+      "duration": 1.2,
+      "skippable": true,
+      "reduced_motion": "static",
+      "cinematic": ""
+    },
+    "CHAPTER_STARTED": {
+      "animation": "fade",
+      "audio": "",
+      "vfx": "",
+      "duration": 1.2,
+      "skippable": true,
+      "reduced_motion": "static",
+      "cinematic": ""
+    },
+    "CHAPTER_COMPLETE": {
+      "animation": "fade",
+      "audio": "",
+      "vfx": "",
+      "duration": 1.2,
+      "skippable": true,
+      "reduced_motion": "static",
+      "cinematic": "chapter_complete_video"
+    },
+    "ARC_COMPLETE": {
+      "animation": "fade",
+      "audio": "",
+      "vfx": "",
+      "duration": 1.2,
+      "skippable": true,
+      "reduced_motion": "static",
+      "cinematic": ""
+    },
+    "MEMORY_RECONSTRUCTION_START": {
+      "animation": "fade",
+      "audio": "",
+      "vfx": "MEMORY_GLOW",
+      "duration": 1.2,
+      "skippable": true,
+      "reduced_motion": "static",
+      "cinematic": "memory_transition"
+    },
+    "MEMORY_SPACE_BACKGROUND": {
+      "animation": "fade",
+      "audio": "",
+      "vfx": "MEMORY_GLOW",
+      "duration": 1.2,
+      "skippable": true,
+      "reduced_motion": "static",
+      "cinematic": "memory_space_video"
+    },
+    "MEMORY_RECONSTRUCTION_END": {
+      "animation": "fade",
+      "audio": "",
+      "vfx": "MEMORY_GLOW",
+      "duration": 1.2,
+      "skippable": true,
+      "reduced_motion": "static",
+      "cinematic": "memory_exit"
+    },
+    "MAGIC_SEAL_ACTIVATE": {
+      "animation": "fade",
+      "audio": "",
+      "vfx": "MAGIC_PULSE",
+      "duration": 1.2,
+      "skippable": true,
+      "reduced_motion": "static",
+      "cinematic": "seal_activation"
+    },
+    "MAJOR_REVEAL": {
+      "animation": "fade",
+      "audio": "",
+      "vfx": "MAGIC_PULSE",
+      "duration": 1.2,
+      "skippable": true,
+      "reduced_motion": "static",
+      "cinematic": "deep_vault_awaken"
+    },
+    "VAULT_AWAKEN": {
+      "animation": "fade",
+      "audio": "",
+      "vfx": "MAGIC_PULSE",
+      "duration": 1.2,
+      "skippable": true,
+      "reduced_motion": "static",
+      "cinematic": "deep_vault_awaken"
+    }
+  }
+}

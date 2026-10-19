@@ -1,0 +1,644 @@
+{
+  "id": "selene_04",
+  "order": 4,
+  "enabled": true,
+  "implemented": true,
+  "title": {
+    "vi": "Đêm Moonfall",
+    "en": "The Night of Moonfall"
+  },
+  "objective": {
+    "vi": "Bước vào ký ức tái dựng, tìm các mảnh vỡ và theo dấu Selene trẻ.",
+    "en": "Enter the reconstructed night and follow young Selene through its fragments."
+  },
+  "scenes": [
+    {
+      "id": "reconstruction",
+      "title": {
+        "vi": "Moonbrook được tái dựng",
+        "en": "Reconstructed Moonbrook"
+      },
+      "background": "replacement_ch04_academy_intact",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_04.expanded.reconstruction"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_04_flicker",
+          "title": {
+            "vi": "Vòm cửa lặp lại",
+            "en": "The repeating arch"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_04.expanded.reconstruction.flicker"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_04_viewpoints",
+          "title": {
+            "vi": "Đánh dấu các góc nhìn",
+            "en": "Mark the viewpoints"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.39,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_04.expanded.reconstruction.viewpoints"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_04.expanded.reconstruction.viewpoints.speech",
+              "speaker": "selene",
+              "expression": "serious"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "past",
+      "title": {
+        "vi": "Moonbrook trong ký ức",
+        "en": "Moonbrook, remembered"
+      },
+      "background": "moonfall_past",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_04.line.001"
+        },
+        {
+          "type": "dialogue",
+          "text_key": "selene_04.line.002",
+          "speaker": "selene",
+          "expression": "thinking"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_04_crystal",
+          "title": {
+            "vi": "Mảnh tinh thể",
+            "en": "Crystal Fragment"
+          },
+          "item": "crystal_fragment",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_04.line.003"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_04.line.004",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_04_echo",
+          "title": {
+            "vi": "Tiếng vọng đang vỡ",
+            "en": "A fading Memory Echo"
+          },
+          "item": "",
+          "optional": true,
+          "x": 0.4,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_04.line.005"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_04.line.006",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {
+            "sacrifice": 1,
+            "understanding": 1
+          },
+          "flags": {
+            "saved_memory_echo": true
+          },
+          "echo": "saved_echo",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_04_tablet",
+          "title": {
+            "vi": "Phiến đá gãy",
+            "en": "Broken Tablet"
+          },
+          "item": "broken_tablet",
+          "optional": false,
+          "x": 0.68,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_04.line.007"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_04.line.008",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_04_corridor",
+          "title": {
+            "vi": "Hành lang đổ nát",
+            "en": "Falling corridor"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.5800000000000001,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_04.line.009"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_04.line.010",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "collapse_passage",
+      "title": {
+        "vi": "Hành lang sụp đổ",
+        "en": "Collapsing passage"
+      },
+      "background": "replacement_ch04_collapsing_corridor",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_04.expanded.collapse_passage"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_04_falling_ceiling",
+          "title": {
+            "vi": "Băng qua đoạn trần nứt",
+            "en": "Cross beneath the cracked ceiling"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "dialogue",
+              "text_key": "selene_04.expanded.collapse_passage.falling_ceiling.speech",
+              "speaker": "selene",
+              "expression": "serious"
+            },
+            {
+              "type": "visual_effect",
+              "visual_event": "ACADEMY_COLLAPSE"
+            },
+            {
+              "type": "narration",
+              "text_key": "selene_04.expanded.collapse_passage.falling_ceiling"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_04_opposite_direction",
+          "title": {
+            "vi": "Nhìn theo đám đông",
+            "en": "Look toward the crowd"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.39,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_04.expanded.collapse_passage.opposite_direction"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "quiet_landing",
+      "title": {
+        "vi": "Khoảng lặng sau biến cố",
+        "en": "After the disturbance"
+      },
+      "background": "replacement_ch04_collapsing_corridor",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_04.expanded.quiet_landing"
+        }
+      ],
+      "hotspots": []
+    }
+  ],
+  "puzzles": [
+    {
+      "id": "selene_04_puzzle",
+      "type": "symbol_match",
+      "title": {
+        "vi": "Một ký ức nói được điều gì?",
+        "en": "What can a memory prove?"
+      },
+      "scene": "past",
+      "requires_inspections": [
+        "selene_04_crystal",
+        "selene_04_tablet",
+        "selene_04_corridor",
+        "selene_04_flicker",
+        "selene_04_viewpoints",
+        "selene_04_falling_ceiling",
+        "selene_04_opposite_direction"
+      ],
+      "required_items": [],
+      "options": [
+        {
+          "id": "viewpoint",
+          "label": {
+            "vi": "Một góc nhìn, cần đối chiếu",
+            "en": "A viewpoint to compare"
+          }
+        },
+        {
+          "id": "absolute",
+          "label": {
+            "vi": "Toàn bộ sự thật",
+            "en": "The complete truth"
+          }
+        },
+        {
+          "id": "fiction",
+          "label": {
+            "vi": "Hoàn toàn không có giá trị",
+            "en": "Nothing worth knowing"
+          }
+        }
+      ],
+      "solution": "viewpoint",
+      "hints": [
+        {
+          "vi": "Mảnh tinh thể không quay được phía sau nó.",
+          "en": "The crystal cannot show what was behind it."
+        },
+        {
+          "vi": "Giữ bằng chứng, nhưng đừng xóa các khoảng mù.",
+          "en": "Keep its evidence without erasing its blind spots."
+        },
+        {
+          "vi": "Chọn một góc nhìn cần đối chiếu.",
+          "en": "Choose a viewpoint that needs comparison."
+        }
+      ],
+      "events": [
+        {
+          "type": "dialogue",
+          "text_key": "selene_04.line.011",
+          "speaker": "selene",
+          "expression": "determined"
+        },
+        {
+          "type": "visual_effect",
+          "effect": "RUNE_GLOW"
+        }
+      ],
+      "flags": {
+        "understood_fragment_purpose": true
+      }
+    }
+  ],
+  "choice": {
+    "id": "selene_04_choice",
+    "prompt_key": "selene_04.line.012",
+    "options": [
+      {
+        "id": "selene_04_choice_0",
+        "label_key": "selene_04.line.013",
+        "effects": {
+          "understanding": 2
+        },
+        "flags": {
+          "questioned_memory_reliability": true
+        },
+        "tags": [],
+        "events": [
+          {
+            "type": "dialogue",
+            "text_key": "selene_04.line.014",
+            "speaker": "selene",
+            "expression": "serious"
+          }
+        ]
+      },
+      {
+        "id": "selene_04_choice_1",
+        "label_key": "selene_04.line.015",
+        "effects": {
+          "trust": 2
+        },
+        "flags": {},
+        "tags": [],
+        "events": [
+          {
+            "type": "dialogue",
+            "text_key": "selene_04.line.016",
+            "speaker": "selene",
+            "expression": "serious"
+          }
+        ]
+      },
+      {
+        "id": "selene_04_choice_2",
+        "label_key": "selene_04.line.017",
+        "effects": {
+          "truth": 2
+        },
+        "flags": {},
+        "tags": [],
+        "events": [
+          {
+            "type": "dialogue",
+            "text_key": "selene_04.line.018",
+            "speaker": "selene",
+            "expression": "serious"
+          }
+        ]
+      }
+    ]
+  },
+  "memory": {
+    "id": "M04",
+    "title": {
+      "vi": "M04 · Đêm Moonfall",
+      "en": "M04 · The Night of Moonfall"
+    },
+    "video": "memory_video_04",
+    "events": [
+      {
+        "type": "narration",
+        "text_key": "selene_04.line.019",
+        "speaker": "narrator",
+        "expression": "thinking"
+      },
+      {
+        "type": "narration",
+        "text_key": "selene_04.line.020",
+        "speaker": "narrator",
+        "expression": "thinking"
+      },
+      {
+        "type": "narration",
+        "text_key": "selene_04.line.021",
+        "speaker": "narrator",
+        "expression": "thinking"
+      },
+      {
+        "type": "dialogue",
+        "text_key": "selene_04.line.022",
+        "speaker": "selene",
+        "expression": "thinking"
+      }
+    ],
+    "fact_key": "selene_04.line.023"
+  },
+  "localization": {
+    "selene_04.line.001": {
+      "vi": "Ký ức dựng lại một đêm hỗn loạn. Mỗi dấu vết chỉ giữ một phần cảnh tượng; hãy tìm những góc nhìn có thể đối chiếu.",
+      "en": "Memory reconstructs a night of chaos. Each trace holds only part of the scene; look for viewpoints that can be compared."
+    },
+    "selene_04.line.002": {
+      "vi": "Mình chỉ đang nhìn lại đêm ấy. Thử xem tinh thể, phiến đá và hành lang có kể cùng một chuyện không nhé.",
+      "en": "We are looking back at that night. Let us see whether the crystal, the tablet, and the corridor tell the same story."
+    },
+    "selene_04.line.003": {
+      "vi": "Tinh thể lưu một cảnh từ góc nhìn bên ngoài Selene. Mỗi mảnh có một góc nhìn riêng, không phải sự thật toàn cảnh.",
+      "en": "The crystal keeps a viewpoint outside Selene. A fragment holds a perspective, not the whole truth."
+    },
+    "selene_04.line.004": {
+      "vi": "Thử nhìn xem tinh thể ghi lại cảnh này từ đâu. Có thể nó đã bỏ sót điều ở ngoài tầm nhìn.",
+      "en": "Try to work out where the crystal is viewing this scene from. Something may lie outside its field of view."
+    },
+    "selene_04.line.005": {
+      "vi": "Bạn dừng lại giữ tiếng vọng ổn định thay vì đuổi theo ngay. Một đứa trẻ trong ký ức kịp tìm được cửa trú.",
+      "en": "You pause to stabilize an echo instead of immediately following. Within it, a child reaches shelter."
+    },
+    "selene_04.line.006": {
+      "vi": "Tiếng vọng này mong manh quá. Mình có thể lắng nghe một chút, không cần đuổi theo mọi ánh sáng.",
+      "en": "This echo is fragile. We can listen for a moment; we need not chase every light."
+    },
+    "selene_04.line.007": {
+      "vi": "Một câu được khắc như lời nhắn cho người sẽ xem: các mảnh nhớ giữ khoảng cách giữa người mang và điều được mang.",
+      "en": "A message seems intended for a future viewer: fragments preserve a distance between the bearer and what is borne."
+    },
+    "selene_04.line.008": {
+      "vi": "Phiến đá vẫn còn một lời nhắn. Có lẽ nó giải thích cách đọc những mảnh ký ức quanh mình.",
+      "en": "There is still a message on the tablet. It may explain how to read the memories around us."
+    },
+    "selene_04.line.009": {
+      "vi": "Những đốm sáng dẫn vào nguy hiểm. Selene trẻ chạy theo chúng, ngược với đám đông.",
+      "en": "Lights lead toward danger. Young Selene follows them against the fleeing crowd."
+    },
+    "selene_04.line.010": {
+      "vi": "Hành lang cho mình một góc nhìn khác. Thử đối chiếu hướng chạy ở đây với cảnh trong tinh thể nhé.",
+      "en": "The corridor gives us another angle. Let us compare the movement here with what the crystal shows."
+    },
+    "selene_04.line.011": {
+      "vi": "Vậy mình giữ lấy điều đã thấy, mà không ép nó trả lời điều chưa thấy.",
+      "en": "Then we keep what we saw, without forcing it to answer what we did not."
+    },
+    "selene_04.line.012": {
+      "vi": "Bạn muốn làm gì với lời cảnh báo trong ký ức?",
+      "en": "How will you treat the warning?"
+    },
+    "selene_04.line.013": {
+      "vi": "Mình sẽ so sánh các mảnh, không tin riêng một mảnh.",
+      "en": "We will compare fragments, not trust one alone."
+    },
+    "selene_04.line.014": {
+      "vi": "Tôi muốn học được cách đó.",
+      "en": "I want to learn how to do that."
+    },
+    "selene_04.line.015": {
+      "vi": "Tôi sẽ ở bên cô khi mình tìm tiếp.",
+      "en": "I will stay beside you as we look."
+    },
+    "selene_04.line.016": {
+      "vi": "Vậy cứ đi chậm thôi. Mình còn thời gian.",
+      "en": "Then slowly. We still have time."
+    },
+    "selene_04.line.017": {
+      "vi": "Mình phải giữ bằng chứng về đêm ấy.",
+      "en": "We should preserve evidence of that night."
+    },
+    "selene_04.line.018": {
+      "vi": "Giữ nó nguyên vẹn. Kể cả phần khiến tôi không dễ chịu.",
+      "en": "Keep it intact. Even the parts that trouble me."
+    },
+    "selene_04.line.019": {
+      "vi": "Trong hành lang học viện dưới ánh trăng, Selene trẻ dừng trước một elf lớn tuổi. Người đó đặt tay lên vai cô, như đang gửi một lời cảnh báo.",
+      "en": "In the moonlit academy corridor, young Selene stops before an older elf. The elf rests a hand on her shoulder, as though offering a warning.",
+      "ja": "月明かりが差す学院の廊下で、若いセレーネは年配のエルフの前で足を止める。そのエルフは、何かを警告するように彼女の肩に手を置く。",
+      "zh": "月光洒落在学院的走廊里，年轻的塞琳在一位年长的精灵面前停下脚步。那位精灵将手搭在她肩上，仿佛在向她发出警告。",
+      "ko": "달빛이 비치는 학원 복도에서 어린 셀레네가 나이 든 엘프 앞에 멈춰 선다. 그 엘프는 무언가를 경고하듯 그녀의 어깨에 손을 얹는다.",
+      "my": "လရောင်ဖြာကျနေတဲ့ ကျောင်းစင်္ကြံမှာ ငယ်ရွယ်တဲ့ ဆယ်လင်းက အသက်ကြီးတဲ့ အဲလ်ဖ်တစ်ဦးရှေ့မှာ ရပ်လိုက်တယ်။ အဲလ်ဖ်က တစ်ခုခု သတိပေးလိုဟန်နဲ့ သူမရဲ့ပခုံးပေါ် လက်တင်လိုက်တယ်။",
+      "km": "ក្នុងច្រករបៀងសាលាដែលមានពន្លឺចន្ទចាំងចូល សេលែនកាលនៅក្មេងឈប់នៅមុខអេលហ្វវ័យចំណាស់ម្នាក់។ អេលហ្វនោះដាក់ដៃលើស្មានាង ហាក់ដូចជាចង់ព្រមាននាងអំពីអ្វីមួយ។"
+    },
+    "selene_04.line.020": {
+      "vi": "Trong tiếng vọng ngoài khung hình, một giọng hỏi: “Nếu họ phát hiện cô thực sự là gì—” Selene trẻ đáp: “Vậy đừng để họ phát hiện.” Lời nhắn còn lại: “Đừng tin tất cả những gì tôi để lại.”",
+      "en": "In an echo outside the frame, a voice asks, “If they discover what you really are—” Young Selene replies, “Then do not let them.” The remaining message is: “Do not trust everything I left behind.”"
+    },
+    "selene_04.line.021": {
+      "vi": "Lời cảnh báo thuộc tiếng vọng còn lại; hình ảnh không xác nhận Selene trẻ đang nhìn thấy người xem.",
+      "en": "The warning belongs to the surviving echo; the image does not establish that young Selene sees the viewer."
+    },
+    "selene_04.line.022": {
+      "vi": "Hình ảnh chỉ giữ một góc nhìn. Tôi sẽ nghe lời cảnh báo ấy, nhưng không coi nó là cả sự thật.",
+      "en": "The image keeps only one viewpoint. I will heed that warning without treating it as the whole truth."
+    },
+    "selene_04.line.023": {
+      "vi": "M04 cho thấy Selene trẻ chạy về phía nguy hiểm và để lại cảnh báo đừng tin mọi mảnh ký ức; không thể xác nhận cô thật sự thấy người xem.",
+      "en": "M04 showed young Selene running toward danger and warning against trusting every memory fragment; whether she saw the viewer remains unconfirmed."
+    },
+    "selene_04.line.024": {
+      "vi": "Các góc nhìn không bao quát cả đêm Moonfall. Selene trẻ đi ngược đám đông; tiếng vọng để lại lời cảnh báo đừng tin mọi điều cô lưu lại.",
+      "en": "No viewpoint covers the whole night. Young Selene moved against the crowd; her echo warned against trusting everything she left behind."
+    },
+    "selene_04.line.025": {
+      "vi": "Nếu chính quá khứ cảnh báo về ký ức, điều gì đang bị che giấu?",
+      "en": "What is hidden when the past itself warns against its memories?"
+    },
+    "selene_04.expanded.reconstruction": {
+      "vi": "Học viện trở lại nguyên vẹn rồi thoáng nhòe. Đây là cảnh tái dựng, không phải đường quay về quá khứ.",
+      "en": "The academy appears whole, then flickers. This is a reconstruction, not a passage back in time."
+    },
+    "selene_04.expanded.reconstruction.flicker": {
+      "vi": "Một học viên qua cùng vòm cửa hai lần với đúng một động tác. Cảnh nhớ đang lặp lại phần nó còn giữ.",
+      "en": "A student crosses the arch twice with the same movement. The memory repeats the portion it still holds."
+    },
+    "selene_04.expanded.reconstruction.viewpoints": {
+      "vi": "Tinh thể nhìn ra sân; phiến đá quay vào phòng; hành lang chỉ giữ hướng chạy. Không điểm nào nhìn hết học viện.",
+      "en": "The crystal faces the courtyard; the tablet faces indoors; the corridor keeps only the direction of flight. None sees the whole academy."
+    },
+    "selene_04.expanded.reconstruction.viewpoints.speech": {
+      "vi": "Đừng để vẻ hoàn chỉnh của nơi này đánh lừa mình.",
+      "en": "Do not let this place look more complete than it is."
+    },
+    "selene_04.expanded.collapse_passage": {
+      "vi": "Chuông học viện vang. Những bóng người chạy qua khi ánh sáng trên cao đứt thành từng vệt.",
+      "en": "The academy bell rings. Figures flee as the light overhead breaks into streaks."
+    },
+    "selene_04.expanded.collapse_passage.falling_ceiling": {
+      "vi": "Đá rơi chắn lối. Selene dựng màn chắn, giữ đủ khoảng trống để hai người vượt qua trước khi trần sập.",
+      "en": "Falling stone blocks the path. Selene raises a ward, leaving room for you both to cross before the ceiling falls."
+    },
+    "selene_04.expanded.collapse_passage.falling_ceiling.speech": {
+      "vi": "Đi sát tôi!",
+      "en": "Stay close!"
+    },
+    "selene_04.expanded.collapse_passage.opposite_direction": {
+      "vi": "Selene trẻ chạy ngược dòng người. Lối tới tiếng vọng mắc kẹt vẫn ở bên kia; bạn có thể dừng giúp nó hoặc tiếp tục lần dấu.",
+      "en": "Young Selene runs against the crowd. The trapped echo remains across the passage; you can help it or keep following the trail."
+    },
+    "selene_04.expanded.quiet_landing": {
+      "vi": "Lối vừa qua đã yên. Hãy đối chiếu các dấu vết trước khi kết luận điều cảnh nhớ chưa nói hết.",
+      "en": "The passage is quiet again. Compare the evidence before deciding what the incomplete memory means."
+    }
+  },
+  "required_inspections": [
+    "selene_04_crystal",
+    "selene_04_tablet",
+    "selene_04_corridor",
+    "selene_04_flicker",
+    "selene_04_viewpoints",
+    "selene_04_falling_ceiling",
+    "selene_04_opposite_direction"
+  ],
+  "summary_key": "selene_04.line.024",
+  "reflection_key": "selene_04.line.025"
+}

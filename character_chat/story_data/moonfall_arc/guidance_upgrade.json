@@ -1,0 +1,882 @@
+[
+  {
+    "chapter": "selene_01",
+    "key": "selene_01.line.001",
+    "old": {
+      "vi": "Moonbrook đã biến mất khỏi bản đồ mới. Cánh cổng trước mặt vẫn nhớ hình trăng trên chiếc vòng bạc của Selene.",
+      "en": "Moonbrook has vanished from modern maps. The gate still bears the curve of the moon on Selene's pendant."
+    },
+    "new": {
+      "vi": "Nơi này có vẻ quen với Selene. Cổng vẫn đóng; quanh những bậc đá có thể còn dấu vết của lối vào.",
+      "en": "This place seems familiar to Selene. The gate is shut, but the steps around it may still hold traces of a way inside."
+    }
+  },
+  {
+    "chapter": "selene_01",
+    "key": "selene_01.line.002",
+    "old": {
+      "vi": "Moonbrook… tôi từng nghĩ mình sẽ không bao giờ trở lại đây.",
+      "en": "Moonbrook... I once thought I would never return here."
+    },
+    "new": {
+      "vi": "Nơi này quen quá... Có lẽ mình nên đi quanh một chút, xem cánh cổng còn giữ lại dấu vết gì.",
+      "en": "This feels so familiar... Perhaps we should look around and see what traces the gate has kept."
+    }
+  },
+  {
+    "chapter": "selene_01",
+    "key": "selene_01.line.004",
+    "old": {
+      "vi": "Moonbrook… tôi từng nghĩ mình sẽ không bao giờ trở lại đây.",
+      "en": "Moonbrook... I once thought I would never return here."
+    },
+    "new": {
+      "vi": "Ổ khóa này có những rãnh khắc lạ. Thử xem hình dạng của chúng có gợi ra cách mở cổng không.",
+      "en": "There are unusual grooves in this lock. Shall we see whether their shapes suggest how to open it?"
+    }
+  },
+  {
+    "chapter": "selene_01",
+    "key": "selene_01.line.006",
+    "old": {
+      "vi": "Moonbrook… tôi từng nghĩ mình sẽ không bao giờ trở lại đây.",
+      "en": "Moonbrook... I once thought I would never return here."
+    },
+    "new": {
+      "vi": "Bậc đá kia lệch khỏi hàng. Có lẽ mình nên xem kỹ chỗ đó trước khi bỏ đi.",
+      "en": "That step is out of line. We should take a closer look before moving on."
+    }
+  },
+  {
+    "chapter": "selene_01",
+    "key": "selene_01.line.007",
+    "old": {
+      "vi": "Bụi còn nguyên trên những bậc đá. Chỉ những nét rune vừa sáng trở lại tối qua là sạch như mới.",
+      "en": "Dust lies undisturbed on the steps. Only the runes that woke last night look freshly traced."
+    },
+    "new": {
+      "vi": "Giữa tàn tích ngoài, những nét khắc còn sót lại trên đá. Pho tượng và bức tường có vẻ cùng kể một câu chuyện.",
+      "en": "Among the outer ruins, markings survive in the stone. The statue and the wall seem to belong to the same story."
+    }
+  },
+  {
+    "chapter": "selene_01",
+    "key": "selene_01.line.008",
+    "old": {
+      "vi": "Đừng gọi đây là câu trả lời. Mình mới tìm được cách đặt câu hỏi thôi.",
+      "en": "Let us not call this an answer. We have only found a way to ask."
+    },
+    "new": {
+      "vi": "Hoang tàn đến thế mà những văn tự cổ vẫn còn... Mình thử đọc quanh pho tượng rồi so với bức tường kia nhé.",
+      "en": "So much has fallen, yet the old inscriptions are still here... Let us look around the statue, then compare them with that wall."
+    }
+  },
+  {
+    "chapter": "selene_01",
+    "key": "selene_01.line.010",
+    "old": {
+      "vi": "Đừng gọi đây là câu trả lời. Mình mới tìm được cách đặt câu hỏi thôi.",
+      "en": "Let us not call this an answer. We have only found a way to ask."
+    },
+    "new": {
+      "vi": "Pho tượng vỡ vẫn còn những nét chữ. Có lẽ chúng sẽ giúp mình hiểu các ký hiệu trên tường.",
+      "en": "There is still writing on the broken statue. It might help us make sense of the symbols on the wall."
+    }
+  },
+  {
+    "chapter": "selene_01",
+    "key": "selene_01.line.012",
+    "old": {
+      "vi": "Đừng gọi đây là câu trả lời. Mình mới tìm được cách đặt câu hỏi thôi.",
+      "en": "Let us not call this an answer. We have only found a way to ask."
+    },
+    "new": {
+      "vi": "Những ký hiệu này có thể xoay được. Mình thử đối chiếu chúng với dòng chữ bên pho tượng nhé.",
+      "en": "These symbols can turn. Let us compare them with the inscription by the statue."
+    }
+  },
+  {
+    "chapter": "selene_02",
+    "key": "selene_02.line.001",
+    "old": {
+      "vi": "Bên trong cổng, dây thường xuân phủ những căn phòng có tên đã bị cạo đi.",
+      "en": "Beyond the gate, ivy covers rooms whose nameplates have been scraped clean."
+    },
+    "new": {
+      "vi": "Phía trong cổng còn những đồ vật nhỏ giữa đống đổ nát. Chúng có thể nối chiếc vòng bạc với một người từng ở đây.",
+      "en": "Small belongings remain amid the rubble beyond the gate. They may connect the pendant to someone who once lived here."
+    }
+  },
+  {
+    "chapter": "selene_02",
+    "key": "selene_02.line.002",
+    "old": {
+      "vi": "Có người đã muốn xóa cả cách mình gọi nơi này.",
+      "en": "Someone wanted even its names erased."
+    },
+    "new": {
+      "vi": "Mình bắt đầu từ những thứ gần gũi nhé. Chiếc vòng và cánh hoa có thể kể chuyện khác với những bức tường này.",
+      "en": "Let us begin with the small things. The pendant and the petal may tell us something these walls cannot."
+    }
+  },
+  {
+    "chapter": "selene_02",
+    "key": "selene_02.line.004",
+    "old": {
+      "vi": "Có người đã muốn xóa cả cách mình gọi nơi này.",
+      "en": "Someone wanted even its names erased."
+    },
+    "new": {
+      "vi": "Chiếc vòng này có gì đó khiến tôi bận tâm. Mình thử xem mặt trong, nơi ít bị thời gian làm mòn hơn nhé.",
+      "en": "Something about this pendant is bothering me. Let us look inside, where time may have left the markings intact."
+    }
+  },
+  {
+    "chapter": "selene_02",
+    "key": "selene_02.line.006",
+    "old": {
+      "vi": "Có người đã muốn xóa cả cách mình gọi nơi này.",
+      "en": "Someone wanted even its names erased."
+    },
+    "new": {
+      "vi": "Một cánh hoa nằm giữa đá vụn... Mình nên xem nó có liên quan đến những đồ vật còn lại không.",
+      "en": "A flower petal among all this rubble... Let us see whether it belongs with anything else here."
+    }
+  },
+  {
+    "chapter": "selene_02",
+    "key": "selene_02.line.007",
+    "old": {
+      "vi": "Những giá sách đã sập. Một cuốn nhật ký vẫn nằm trong hộp chống ẩm.",
+      "en": "The shelves have fallen. One journal survives in a weatherproof case."
+    },
+    "new": {
+      "vi": "Trong kho lưu trữ, một cuốn nhật ký còn được bảo vệ. Những trang rời có thể thuộc về nó.",
+      "en": "A journal survives in the archive, still protected. The loose pages may belong to it."
+    }
+  },
+  {
+    "chapter": "selene_02",
+    "key": "selene_02.line.008",
+    "old": {
+      "vi": "Người viết gấp những góc trang cần tìm. Như thể biết ai đó sẽ quay lại.",
+      "en": "The writer folded the corners worth finding. As if they knew someone would return."
+    },
+    "new": {
+      "vi": "Nếu còn một lời hứa ở đây, có lẽ nó nằm trong những trang này. Mình thử tìm đoạn bị thiếu nhé.",
+      "en": "If a promise survives here, it may be in these pages. Let us look for the missing passage."
+    }
+  },
+  {
+    "chapter": "selene_02",
+    "key": "selene_02.line.010",
+    "old": {
+      "vi": "Người viết gấp những góc trang cần tìm. Như thể biết ai đó sẽ quay lại.",
+      "en": "The writer folded the corners worth finding. As if they knew someone would return."
+    },
+    "new": {
+      "vi": "Cuốn nhật ký có thể giúp mình lần lại câu chuyện của chiếc vòng. Thử tìm những đoạn nhắc đến một món quà nhé.",
+      "en": "The journal might help us trace the pendant's story. Look for any mention of a gift."
+    }
+  },
+  {
+    "chapter": "selene_02",
+    "key": "selene_02.line.012",
+    "old": {
+      "vi": "Người viết gấp những góc trang cần tìm. Như thể biết ai đó sẽ quay lại.",
+      "en": "The writer folded the corners worth finding. As if they knew someone would return."
+    },
+    "new": {
+      "vi": "Mảnh giấy này có vẻ thuộc cuốn nhật ký. Thử đặt cạnh mép trang bị thiếu rồi đọc nối lại xem sao.",
+      "en": "This scrap may belong to the journal. Try it against the torn edge, then read the passage across the gap."
+    }
+  },
+  {
+    "chapter": "selene_03",
+    "key": "selene_03.line.001",
+    "old": {
+      "vi": "Bậc thang xuống hầm không có dấu phá khóa. Dưới tro, một vòng tròn vẫn nguyên vẹn.",
+      "en": "The stairway shows no forced entry. Beneath the ash, a circle remains intact."
+    },
+    "new": {
+      "vi": "Dấu vết trong căn phòng ngầm còn đủ để đối chiếu: vòng nghi lễ, rune, thư cháy và niêm phong.",
+      "en": "Enough remains in the underground chamber to compare the circle, the rune, the burned letter, and the seal."
+    }
+  },
+  {
+    "chapter": "selene_03",
+    "key": "selene_03.line.002",
+    "old": {
+      "vi": "Tôi biết căn phòng này. Tôi không biết vì sao mình biết.",
+      "en": "I know this room. I do not know why I know it."
+    },
+    "new": {
+      "vi": "Tôi thấy nơi này quen một cách khó chịu. Mình xem từng dấu vết trước nhé, đừng để cảm giác quyết định thay bằng chứng.",
+      "en": "This room feels uncomfortably familiar. Let us examine the traces one by one, rather than let that feeling decide for us."
+    }
+  },
+  {
+    "chapter": "selene_03",
+    "key": "selene_03.line.004",
+    "old": {
+      "vi": "Tôi biết căn phòng này. Tôi không biết vì sao mình biết.",
+      "en": "I know this room. I do not know why I know it."
+    },
+    "new": {
+      "vi": "Đừng chạm vào tâm vòng vội. Dấu vết quanh nó có thể cho biết người ta đã bước vào đây như thế nào.",
+      "en": "Do not touch the center just yet. The marks around it may tell us how someone entered the circle."
+    }
+  },
+  {
+    "chapter": "selene_03",
+    "key": "selene_03.line.006",
+    "old": {
+      "vi": "Tôi biết căn phòng này. Tôi không biết vì sao mình biết.",
+      "en": "I know this room. I do not know why I know it."
+    },
+    "new": {
+      "vi": "Nét cong trên rune trông quen quá. Có lẽ nên so nó với thứ tôi đang mang.",
+      "en": "That curve in the rune looks familiar. Perhaps we should compare it with something I am wearing."
+    }
+  },
+  {
+    "chapter": "selene_03",
+    "key": "selene_03.line.008",
+    "old": {
+      "vi": "Tôi biết căn phòng này. Tôi không biết vì sao mình biết.",
+      "en": "I know this room. I do not know why I know it."
+    },
+    "new": {
+      "vi": "Lá thư còn lại rất ít chữ. Mình đọc kỹ điều kiện của nghi lễ trước khi đoán ai đã tham gia nhé.",
+      "en": "Very little of this letter survives. Let us read the ritual's conditions carefully before guessing who took part."
+    }
+  },
+  {
+    "chapter": "selene_03",
+    "key": "selene_03.line.010",
+    "old": {
+      "vi": "Tôi biết căn phòng này. Tôi không biết vì sao mình biết.",
+      "en": "I know this room. I do not know why I know it."
+    },
+    "new": {
+      "vi": "Dấu niêm này có thể cho biết ai đã xác nhận nghi lễ. Nhưng người đóng dấu chưa chắc là người đứng trong vòng.",
+      "en": "This seal may tell us who authorized the ritual. That need not be the person who stood inside the circle."
+    }
+  },
+  {
+    "chapter": "selene_04",
+    "key": "selene_04.line.001",
+    "old": {
+      "vi": "Ký ức dựng lại một thành phố đang sụp đổ. Bạn là người quan sát: không thể thay đổi những người đã sống trong đêm ấy.",
+      "en": "Memory rebuilds a collapsing city. You are an observer; you cannot rewrite the lives lived that night."
+    },
+    "new": {
+      "vi": "Ký ức dựng lại một đêm hỗn loạn. Mỗi dấu vết chỉ giữ một phần cảnh tượng; hãy tìm những góc nhìn có thể đối chiếu.",
+      "en": "Memory reconstructs a night of chaos. Each trace holds only part of the scene; look for viewpoints that can be compared."
+    }
+  },
+  {
+    "chapter": "selene_04",
+    "key": "selene_04.line.002",
+    "old": {
+      "vi": "Nếu có thứ gì nhìn thấy anh trong này… hãy nhớ rằng mình đang xem một mảnh tái dựng.",
+      "en": "If anything sees you here... remember that we are inside a reconstruction."
+    },
+    "new": {
+      "vi": "Mình chỉ đang nhìn lại đêm ấy. Thử xem tinh thể, phiến đá và hành lang có kể cùng một chuyện không nhé.",
+      "en": "We are looking back at that night. Let us see whether the crystal, the tablet, and the corridor tell the same story."
+    }
+  },
+  {
+    "chapter": "selene_04",
+    "key": "selene_04.line.004",
+    "old": {
+      "vi": "Nếu có thứ gì nhìn thấy anh trong này… hãy nhớ rằng mình đang xem một mảnh tái dựng.",
+      "en": "If anything sees you here... remember that we are inside a reconstruction."
+    },
+    "new": {
+      "vi": "Thử nhìn xem tinh thể ghi lại cảnh này từ đâu. Có thể nó đã bỏ sót điều ở ngoài tầm nhìn.",
+      "en": "Try to work out where the crystal is viewing this scene from. Something may lie outside its field of view."
+    }
+  },
+  {
+    "chapter": "selene_04",
+    "key": "selene_04.line.006",
+    "old": {
+      "vi": "Nếu có thứ gì nhìn thấy anh trong này… hãy nhớ rằng mình đang xem một mảnh tái dựng.",
+      "en": "If anything sees you here... remember that we are inside a reconstruction."
+    },
+    "new": {
+      "vi": "Tiếng vọng này mong manh quá. Mình có thể lắng nghe một chút, không cần đuổi theo mọi ánh sáng.",
+      "en": "This echo is fragile. We can listen for a moment; we need not chase every light."
+    }
+  },
+  {
+    "chapter": "selene_04",
+    "key": "selene_04.line.008",
+    "old": {
+      "vi": "Nếu có thứ gì nhìn thấy anh trong này… hãy nhớ rằng mình đang xem một mảnh tái dựng.",
+      "en": "If anything sees you here... remember that we are inside a reconstruction."
+    },
+    "new": {
+      "vi": "Phiến đá vẫn còn một lời nhắn. Có lẽ nó giải thích cách đọc những mảnh ký ức quanh mình.",
+      "en": "There is still a message on the tablet. It may explain how to read the memories around us."
+    }
+  },
+  {
+    "chapter": "selene_04",
+    "key": "selene_04.line.010",
+    "old": {
+      "vi": "Nếu có thứ gì nhìn thấy anh trong này… hãy nhớ rằng mình đang xem một mảnh tái dựng.",
+      "en": "If anything sees you here... remember that we are inside a reconstruction."
+    },
+    "new": {
+      "vi": "Hành lang cho mình một góc nhìn khác. Thử đối chiếu hướng chạy ở đây với cảnh trong tinh thể nhé.",
+      "en": "The corridor gives us another angle. Let us compare the movement here with what the crystal shows."
+    }
+  },
+  {
+    "chapter": "selene_05",
+    "key": "selene_05.line.001",
+    "old": {
+      "vi": "Một hồ sơ được đặt riêng trên bàn: tên Selene đứng dưới tiêu đề Kẻ chịu trách nhiệm.",
+      "en": "A file lies alone on the desk: Selene's name sits beneath the heading Responsible Party."
+    },
+    "new": {
+      "vi": "Hồ sơ Hội đồng nằm trên bàn, nhưng mực, sáp và ngày tháng không nhất thiết thuộc cùng một thời điểm.",
+      "en": "The Council record lies on the desk, but its ink, wax, and dates may not all belong to the same moment."
+    }
+  },
+  {
+    "chapter": "selene_05",
+    "key": "selene_05.line.002",
+    "old": {
+      "vi": "Chữ viết thì rõ. Điều đó không khiến nó thành thật.",
+      "en": "The handwriting is clear. That does not make it true."
+    },
+    "new": {
+      "vi": "Tên tôi ở ngay đây... Nhưng mình hãy xem cách hồ sơ được viết trước. Mực và ngày tháng có thể nói nhiều hơn tiêu đề.",
+      "en": "My name is right here... But let us check how the record was written first. The ink and dates may tell us more than its heading."
+    }
+  },
+  {
+    "chapter": "selene_05",
+    "key": "selene_05.line.004",
+    "old": {
+      "vi": "Chữ viết thì rõ. Điều đó không khiến nó thành thật.",
+      "en": "The handwriting is clear. That does not make it true."
+    },
+    "new": {
+      "vi": "Màu mực quanh cái tên có vẻ khác phần còn lại. Mình nên xem các dòng có được viết cùng lúc không.",
+      "en": "The ink around the name looks different from the rest. Let us check whether the lines were written at the same time."
+    }
+  },
+  {
+    "chapter": "selene_05",
+    "key": "selene_05.line.006",
+    "old": {
+      "vi": "Chữ viết thì rõ. Điều đó không khiến nó thành thật.",
+      "en": "The handwriting is clear. That does not make it true."
+    },
+    "new": {
+      "vi": "Dấu niêm không nói được toàn bộ câu chuyện. Thử xem bên dưới lớp sáp còn dấu vết nào không.",
+      "en": "A seal cannot tell the whole story. See whether anything remains beneath the wax."
+    }
+  },
+  {
+    "chapter": "selene_05",
+    "key": "selene_05.line.008",
+    "old": {
+      "vi": "Chữ viết thì rõ. Điều đó không khiến nó thành thật.",
+      "en": "The handwriting is clear. That does not make it true."
+    },
+    "new": {
+      "vi": "Ngày tháng có thể giúp mình kiểm tra bản hồ sơ. Tìm xem người ta đã ghi lại lần chỉnh sửa ở đâu nhé.",
+      "en": "The dates may help us check this record. Look for a note of when it was revised."
+    }
+  },
+  {
+    "chapter": "selene_05",
+    "key": "selene_05.line.009",
+    "old": {
+      "vi": "Trong căn nhà bị gọi là nơi trú của phù thủy, thư từ được cất theo ngày, không theo người gửi.",
+      "en": "In the house branded a witch's refuge, letters are sorted by date rather than sender."
+    },
+    "new": {
+      "vi": "Trong ngôi nhà bên rừng còn thư từ và nét chữ để đối chiếu với hồ sơ Hội đồng.",
+      "en": "Letters and handwriting survive in the house by the woods, offering another way to check the Council record."
+    }
+  },
+  {
+    "chapter": "selene_05",
+    "key": "selene_05.line.010",
+    "old": {
+      "vi": "Một lời buộc tội đi xa hơn một người. Nó có thể dạy cả thành phố cách nhìn mình.",
+      "en": "An accusation can outlive a person. It can teach a city how to see someone."
+    },
+    "new": {
+      "vi": "Ở đây vẫn còn thư. Mình so nét chữ và ngày viết với hồ sơ nhé; biết đâu hai bản kể không khớp nhau.",
+      "en": "There are still letters here. Let us compare the handwriting and dates with the record; the two accounts may not agree."
+    }
+  },
+  {
+    "chapter": "selene_05",
+    "key": "selene_05.line.012",
+    "old": {
+      "vi": "Một lời buộc tội đi xa hơn một người. Nó có thể dạy cả thành phố cách nhìn mình.",
+      "en": "An accusation can outlive a person. It can teach a city how to see someone."
+    },
+    "new": {
+      "vi": "Thư của Elarion có thể là một nguồn đối chiếu. Mình so ngày viết với hồ sơ, thay vì tin ngay một bên nhé.",
+      "en": "Elarion's letter gives us another source. Let us compare its date with the record rather than take either account on trust."
+    }
+  },
+  {
+    "chapter": "selene_05",
+    "key": "selene_05.line.014",
+    "old": {
+      "vi": "Một lời buộc tội đi xa hơn một người. Nó có thể dạy cả thành phố cách nhìn mình.",
+      "en": "An accusation can outlive a person. It can teach a city how to see someone."
+    },
+    "new": {
+      "vi": "Chữ ký này đáng đối chiếu với nét chữ mình đã thấy. Những phần không cháy cũng có thể giúp xác định thời điểm.",
+      "en": "This signature is worth comparing with the writing we have seen. The unburned parts may help us place it in time."
+    }
+  },
+  {
+    "chapter": "selene_06",
+    "key": "selene_06.line.001",
+    "old": {
+      "vi": "Chiếc đồng hồ hầm dừng ở 00:16. Dòng đầu tiên trên bia ghi 23:47; hai mốc cách nhau hai mươi chín phút.",
+      "en": "The vault clock stopped at 00:16. The first entry reads 23:47: twenty-nine minutes apart."
+    },
+    "new": {
+      "vi": "Trong hầm, đồng hồ và dấu vết nghi lễ giữ lại những mốc rời. Cần tìm điểm bắt đầu trước khi sắp lại đêm ấy.",
+      "en": "The vault's clock and ritual traces preserve scattered times. Find a starting point before reconstructing that night."
+    }
+  },
+  {
+    "chapter": "selene_06",
+    "key": "selene_06.line.002",
+    "old": {
+      "vi": "Tôi đã để lại đường đi. Nhưng tôi cũng đặt cửa khóa ở cuối nó.",
+      "en": "I left a path. But I also locked its final door."
+    },
+    "new": {
+      "vi": "Tôi muốn hiểu đêm ấy đã diễn ra thế nào, nhưng mình cứ chậm thôi. Bắt đầu từ những mốc còn kiểm tra được nhé.",
+      "en": "I want to understand how that night unfolded, but let us take it slowly. Start with the times we can still verify."
+    }
+  },
+  {
+    "chapter": "selene_06",
+    "key": "selene_06.line.004",
+    "old": {
+      "vi": "Tôi đã để lại đường đi. Nhưng tôi cũng đặt cửa khóa ở cuối nó.",
+      "en": "I left a path. But I also locked its final door."
+    },
+    "new": {
+      "vi": "Mình cần một mốc bắt đầu chắc chắn. Thử xem đồng hồ và bản ghi có cùng chỉ về một thời điểm không.",
+      "en": "We need a reliable starting point. Check whether the clock and the written record agree."
+    }
+  },
+  {
+    "chapter": "selene_06",
+    "key": "selene_06.line.006",
+    "old": {
+      "vi": "Tôi đã để lại đường đi. Nhưng tôi cũng đặt cửa khóa ở cuối nó.",
+      "en": "I left a path. But I also locked its final door."
+    },
+    "new": {
+      "vi": "Hàng rào đổ là một sự kiện riêng. Mình đừng nhầm nó với lúc mọi chuyện kết thúc nhé.",
+      "en": "The barrier falling is an event of its own. Let us not mistake it for the moment everything ended."
+    }
+  },
+  {
+    "chapter": "selene_06",
+    "key": "selene_06.line.008",
+    "old": {
+      "vi": "Tôi đã để lại đường đi. Nhưng tôi cũng đặt cửa khóa ở cuối nó.",
+      "en": "I left a path. But I also locked its final door."
+    },
+    "new": {
+      "vi": "Hình trong gương không hoàn toàn theo kịp tôi. Mình quan sát nó như một dấu vết, đừng vội coi đó là hiện tại.",
+      "en": "The reflection does not quite keep pace with me. Let us treat it as a trace, rather than assume it shows the present."
+    }
+  },
+  {
+    "chapter": "selene_06",
+    "key": "selene_06.line.009",
+    "old": {
+      "vi": "Những mốc thời gian trôi như các cánh cửa rời. Có một chỗ trống giữa sụp đổ và bình yên.",
+      "en": "Time marks drift like disconnected doors. A gap lies between collapse and stillness."
+    },
+    "new": {
+      "vi": "Hành lang ký ức giữ những mốc sau nửa đêm. Chúng có thể nối tiếp các dấu vết trong hầm.",
+      "en": "The memory corridor holds times from after midnight. They may continue the sequence begun in the vault."
+    }
+  },
+  {
+    "chapter": "selene_06",
+    "key": "selene_06.line.010",
+    "old": {
+      "vi": "Đừng mở nó. …Xin đừng biến lời đó thành một phép thử xem tôi tin anh đến đâu.",
+      "en": "Do not open it. ...Please do not turn that into a test of how much I trust you."
+    },
+    "new": {
+      "vi": "Mình còn thiếu đoạn nối giữa lúc hàng rào đổ và lúc Moonfall dừng. Thử tìm các dấu mốc ở hành lang này nhé.",
+      "en": "We are missing the stretch between the barrier's collapse and Moonfall stopping. Let us look for time marks along this corridor."
+    }
+  },
+  {
+    "chapter": "selene_06",
+    "key": "selene_06.line.012",
+    "old": {
+      "vi": "Đừng mở nó. …Xin đừng biến lời đó thành một phép thử xem tôi tin anh đến đâu.",
+      "en": "Do not open it. ...Please do not turn that into a test of how much I trust you."
+    },
+    "new": {
+      "vi": "Có một dấu mốc bị lớp phủ che đi. Nó có thể nối khoảng trống giữa hai sự kiện mình đã tìm được.",
+      "en": "A time mark is hidden beneath the overlay. It may connect the gap between the events we have found."
+    }
+  },
+  {
+    "chapter": "selene_06",
+    "key": "selene_06.line.014",
+    "old": {
+      "vi": "Đừng mở nó. …Xin đừng biến lời đó thành một phép thử xem tôi tin anh đến đâu.",
+      "en": "Do not open it. ...Please do not turn that into a test of how much I trust you."
+    },
+    "new": {
+      "vi": "Mốc cuối này cần đặt cạnh các mốc khác. Nhớ là đêm ấy đã đi qua nửa đêm nhé.",
+      "en": "This last time mark needs the others beside it. Remember, that night crossed midnight."
+    }
+  },
+  {
+    "chapter": "selene_07",
+    "key": "selene_07.line.001",
+    "old": {
+      "vi": "Bốn hõm trên bàn thờ có hình những vật bạn đã mang từ đầu cuộc hành trình.",
+      "en": "Four sockets match objects you have carried since the journey began."
+    },
+    "new": {
+      "vi": "Bốn hõm trong Đền Trăng chờ những vật đã được mang qua hành trình. Hình dạng và dấu khắc có thể giúp đối chiếu.",
+      "en": "Four sockets in the Moon Temple await objects carried through the journey. Their shapes and markings may help match them."
+    }
+  },
+  {
+    "chapter": "selene_07",
+    "key": "selene_07.line.002",
+    "old": {
+      "vi": "Đừng ghép chúng chỉ vì chúng khớp. Hãy nhớ vì sao mình đã mang từng thứ.",
+      "en": "Do not join them merely because they fit. Remember why we carried each one."
+    },
+    "new": {
+      "vi": "Những vật mình giữ lại có lẽ không tình cờ cùng đến đây. Thử xem chúng hợp với các hõm thế nào nhé.",
+      "en": "Perhaps it is no coincidence that these objects came here with us. Let us see how they fit the sockets."
+    }
+  },
+  {
+    "chapter": "selene_07",
+    "key": "selene_07.line.004",
+    "old": {
+      "vi": "Đừng ghép chúng chỉ vì chúng khớp. Hãy nhớ vì sao mình đã mang từng thứ.",
+      "en": "Do not join them merely because they fit. Remember why we carried each one."
+    },
+    "new": {
+      "vi": "Các hõm có hình dạng khác nhau. Mình thử đối chiếu chúng với những vật đã giữ lại, đừng đặt bừa nhé.",
+      "en": "The sockets have different shapes. Let us compare them with the things we kept, rather than place them at random."
+    }
+  },
+  {
+    "chapter": "selene_07",
+    "key": "selene_07.line.006",
+    "old": {
+      "vi": "Đừng ghép chúng chỉ vì chúng khớp. Hãy nhớ vì sao mình đã mang từng thứ.",
+      "en": "Do not join them merely because they fit. Remember why we carried each one."
+    },
+    "new": {
+      "vi": "Dòng chữ này khó đọc dưới ánh sáng thường. Có lẽ những vật mình mang theo sẽ giúp nhìn rõ hơn.",
+      "en": "This inscription is difficult to read in ordinary light. Something we brought may help us see it more clearly."
+    }
+  },
+  {
+    "chapter": "selene_07",
+    "key": "selene_07.line.007",
+    "old": {
+      "vi": "Không có thân thể trong phòng này. Chỉ có những hình ảnh cố được gọi đúng tên.",
+      "en": "There is no body in this chamber. Only images trying to be recognized."
+    },
+    "new": {
+      "vi": "Trong Phòng Trăng Nhợt, các mảnh vẫn cách nhau bằng những khoảng sáng. Dấu vật dẫn có thể giải thích cách giữ chúng tách biệt.",
+      "en": "In the Pale Moon Chamber, spaces of light still separate the fragments. The vessel mark may help explain how that separation is maintained."
+    }
+  },
+  {
+    "chapter": "selene_07",
+    "key": "selene_07.line.008",
+    "old": {
+      "vi": "Đừng gọi nó lớn hơn điều mình thực sự biết.",
+      "en": "Do not name it more completely than our evidence allows."
+    },
+    "new": {
+      "vi": "Mình đừng ghép mọi thứ ngay. Tôi muốn hiểu những ranh giới này đang giữ điều gì trước đã.",
+      "en": "Let us not join everything just yet. I want to understand what these boundaries are keeping apart first."
+    }
+  },
+  {
+    "chapter": "selene_07",
+    "key": "selene_07.line.010",
+    "old": {
+      "vi": "Đừng gọi nó lớn hơn điều mình thực sự biết.",
+      "en": "Do not name it more completely than our evidence allows."
+    },
+    "new": {
+      "vi": "Dấu vật dẫn có liên quan đến điều mình đã thấy trong phòng nghi lễ. Mình đối chiếu hai nơi trước nhé.",
+      "en": "The vessel mark may connect to what we saw in the ritual chamber. Let us compare them first."
+    }
+  },
+  {
+    "chapter": "selene_07",
+    "key": "selene_07.line.012",
+    "old": {
+      "vi": "Đừng gọi nó lớn hơn điều mình thực sự biết.",
+      "en": "Do not name it more completely than our evidence allows."
+    },
+    "new": {
+      "vi": "Khoảng cách giữa các mảnh có vẻ được giữ rất cẩn thận. Thử tìm hiểu vì sao chúng chưa hòa vào nhau.",
+      "en": "The spaces between these fragments seem carefully maintained. Let us find out why they have not merged."
+    }
+  },
+  {
+    "chapter": "selene_08",
+    "key": "selene_08.line.001",
+    "old": {
+      "vi": "Những mảnh đã thu thập trôi quanh hai người. Không có bản tường thuật áp sẵn: mỗi vật đáp lại một hành động bạn từng làm.",
+      "en": "The fragments you collected drift around you. No fixed recap is imposed: each responds to something you actually did."
+    },
+    "new": {
+      "vi": "Những ký ức đã mở trôi riêng biệt trong không gian. Kho ký ức và chiếc vòng là hai điểm để bắt đầu đối chiếu.",
+      "en": "The recovered memories drift separately through this space. The archive and the pendant offer two places to begin comparing them."
+    }
+  },
+  {
+    "chapter": "selene_08",
+    "key": "selene_08.line.002",
+    "old": {
+      "vi": "Tôi nhớ cách anh cầm chúng, chứ không chỉ nhớ chúng là gì.",
+      "en": "I remember how you carried them, not just what they are."
+    },
+    "new": {
+      "vi": "Mình đã đi xa rồi. Trước khi mở cánh cửa cuối, cùng xem lại những gì chiếc vòng và các ký ức thực sự giữ nhé.",
+      "en": "We have come a long way. Before opening the last door, let us revisit what the pendant and the memories actually hold."
+    }
+  },
+  {
+    "chapter": "selene_08",
+    "key": "selene_08.line.004",
+    "old": {
+      "vi": "Tôi nhớ cách anh cầm chúng, chứ không chỉ nhớ chúng là gì.",
+      "en": "I remember how you carried them, not just what they are."
+    },
+    "new": {
+      "vi": "Mình có thể đọc lại những ký ức đã giữ trước khi quyết định. Không cần vội ghép chúng thành một câu chuyện duy nhất.",
+      "en": "We can reread the memories we kept before deciding. There is no need to force them into a single story yet."
+    }
+  },
+  {
+    "chapter": "selene_08",
+    "key": "selene_08.line.006",
+    "old": {
+      "vi": "Tôi nhớ cách anh cầm chúng, chứ không chỉ nhớ chúng là gì.",
+      "en": "I remember how you carried them, not just what they are."
+    },
+    "new": {
+      "vi": "Chiếc vòng đã đi cùng mình từ đầu. Thử nghĩ xem nó giữ điều gì mà những bản ghi không giữ được.",
+      "en": "The pendant has been with us from the beginning. Think about what it keeps that a written record cannot."
+    }
+  },
+  {
+    "chapter": "selene_08",
+    "key": "selene_08.line.007",
+    "old": {
+      "vi": "Ba cơ chế hiện ra: KHÔI PHỤC, PHÁ HỦY, CHUYỂN GIAO. Cánh cửa vẫn chờ một quyết định có thể được cân nhắc.",
+      "en": "Three mechanisms appear: RESTORE, DESTROY, TRANSFER. The door waits for a decision that can still be considered."
+    },
+    "new": {
+      "vi": "Căn phòng cuối có ba cơ chế và những đường sáng ngăn các mảnh. Có thể xem xét chúng trước khi đưa ra quyết định.",
+      "en": "The final chamber holds three mechanisms and lines of light separating the fragments. They can be examined before any decision is made."
+    }
+  },
+  {
+    "chapter": "selene_08",
+    "key": "selene_08.line.008",
+    "old": {
+      "vi": "Sau cánh cửa đó… tôi sẽ nhớ lại tất cả. Và nó cũng vậy.",
+      "en": "Behind that door... I will remember everything. And so will it."
+    },
+    "new": {
+      "vi": "Tôi muốn mình hiểu rõ từng lựa chọn. Mình xem cơ chế và đường sáng trước, rồi mới quyết định điều gì sẽ xảy ra nhé.",
+      "en": "I want us to understand each choice. Let us examine the mechanisms and the light first, then decide what happens next."
+    }
+  },
+  {
+    "chapter": "selene_08",
+    "key": "selene_08.line.010",
+    "old": {
+      "vi": "Sau cánh cửa đó… tôi sẽ nhớ lại tất cả. Và nó cũng vậy.",
+      "en": "Behind that door... I will remember everything. And so will it."
+    },
+    "new": {
+      "vi": "Ba cơ chế làm những việc khác nhau. Mình cần đọc kỹ tác dụng của từng cái trước khi chạm vào.",
+      "en": "These three mechanisms do different things. Let us read what each one does before touching anything."
+    }
+  },
+  {
+    "chapter": "selene_08",
+    "key": "selene_08.line.012",
+    "old": {
+      "vi": "Sau cánh cửa đó… tôi sẽ nhớ lại tất cả. Và nó cũng vậy.",
+      "en": "Behind that door... I will remember everything. And so will it."
+    },
+    "new": {
+      "vi": "Đường sáng đang ngăn các mảnh chạm nhau. Có lẽ hiểu ranh giới này cũng quan trọng như hiểu từng mảnh.",
+      "en": "The light keeps the fragments apart. Understanding that boundary may matter as much as understanding the fragments."
+    }
+  },
+  {
+    "chapter": "selene_01",
+    "key": "selene_01.line.001",
+    "old": {
+      "vi": "Nơi này có vẻ quen với Selene. Cổng vẫn đóng; quanh những bậc đá có thể còn dấu vết của lối vào.",
+      "en": "This place seems familiar to Selene. The gate is shut, but the steps around it may still hold traces of a way inside."
+    },
+    "new": {
+      "vi": "Cánh cổng cổ đứng im dưới ánh trăng. Selene dừng lại trước những nét khắc đã bạc màu.",
+      "en": "The ancient gate stands silent in the moonlight. Selene pauses before its weathered carvings.",
+      "ja": "月明かりの下、古びた門が静かにそびえている。セレーネは、かすれた彫刻の前で足を止めた。",
+      "zh": "月光下，古老的大门寂然伫立。塞琳在斑驳的刻痕前停下脚步。",
+      "ko": "달빛 아래 고대의 문이 고요히 서 있다. 셀레네는 희미해진 문양 앞에서 걸음을 멈춘다.",
+      "my": "လရောင်အောက်မှာ ရှေးဟောင်းတံခါးကြီးက တိတ်ဆိတ်နေတယ်။ ဆယ်လင်းက မှေးမှိန်နေတဲ့ ထွင်းထားသောအမှတ်တွေရှေ့မှာ ရပ်လိုက်တယ်။",
+      "km": "ទ្វារបុរាណឈរស្ងៀមក្រោមពន្លឺចន្ទ។ សេលែនឈប់នៅមុខក្បាច់ឆ្លាក់ដែលស្រអាប់ទៅតាមកាលវេលា។"
+    }
+  },
+  {
+    "chapter": "selene_01",
+    "key": "selene_01.line.002",
+    "old": {
+      "vi": "Nơi này quen quá... Có lẽ mình nên đi quanh một chút, xem cánh cổng còn giữ lại dấu vết gì.",
+      "en": "This feels so familiar... Perhaps we should look around and see what traces the gate has kept."
+    },
+    "new": {
+      "vi": "Tôi có cảm giác đã từng đến đây... Mình xem cánh cổng trước nhé.",
+      "en": "I feel as though I've been here before... Let's take a look at the gate first.",
+      "ja": "ここに来たことがある気がする……まずは、あの門を調べてみよう。",
+      "zh": "总觉得我以前来过这里……先看看那扇门吧。",
+      "ko": "여기 와 본 적이 있는 것 같아요… 우선 저 문부터 살펴봐요.",
+      "my": "ဒီနေရာကို အရင်က ရောက်ဖူးသလိုပဲ… တံခါးကို အရင်ကြည့်ကြရအောင်။",
+      "km": "ខ្ញុំមានអារម្មណ៍ថាធ្លាប់មកទីនេះហើយ… យើងមើលទ្វារជាមុនសិនទៅ។"
+    }
+  },
+  {
+    "chapter": "selene_01",
+    "key": "selene_01.line.003",
+    "old": {
+      "vi": "Ba rãnh khắc nối từ vành trăng tới một chỗ trống hình giọt. Ổ khóa không hề bị phá.",
+      "en": "Three grooves run from a crescent to a teardrop socket. The lock has never been forced."
+    },
+    "new": {
+      "vi": "Cánh cổng không nhúc nhích. Ổ khóa hình trăng vẫn nguyên vẹn; bên bậc đá có thứ ánh bạc ló ra.",
+      "en": "The gate won't budge. Its moon-shaped lock is intact; a silver glint peeks out beside a stone step.",
+      "ja": "門はびくともしない。月形の鍵穴は壊れておらず、石段の脇で銀色の何かが光っている。",
+      "zh": "门纹丝不动，月形锁孔仍完好无损。石阶旁，隐约闪过一点银光。",
+      "ko": "문은 꿈쩍도 하지 않는다. 달 모양 자물쇠는 멀쩡하고, 돌계단 옆에서 은빛이 살짝 비친다.",
+      "my": "တံခါးက လုံးဝမလှုပ်ဘူး။ လပုံစံသော့ခလောက်က မပျက်စီးသေးဘဲ ကျောက်လှေကားဘေးမှာ ငွေရောင်လေးတစ်ချက် လက်နေတယ်။",
+      "km": "ទ្វារមិនកម្រើកសោះ។ សោរាងព្រះចន្ទនៅល្អនៅឡើយ ហើយមានពន្លឺប្រាក់បន្តិចចាំងចេញពីក្បែរជំហានថ្ម។"
+    }
+  },
+  {
+    "chapter": "selene_01",
+    "key": "selene_01.line.004",
+    "old": {
+      "vi": "Ổ khóa này có những rãnh khắc lạ. Thử xem hình dạng của chúng có gợi ra cách mở cổng không.",
+      "en": "There are unusual grooves in this lock. Shall we see whether their shapes suggest how to open it?"
+    },
+    "new": {
+      "vi": "Nó bị khóa rồi... Khoan đã, dưới bậc đá kia có gì lấp lánh. Mình thử nhìn kỹ nhé.",
+      "en": "It's locked... Wait, something's glinting beneath that step. Let's take a closer look.",
+      "ja": "鍵がかかってる……待って、あの石段の下で何か光ってる。よく見てみよう。",
+      "zh": "锁住了……等等，那块石阶下面好像有什么在发光。我们仔细看看。",
+      "ko": "잠겨 있네요… 잠깐, 저 돌계단 밑에서 뭔가 반짝여요. 자세히 살펴봐요.",
+      "my": "သော့ခတ်ထားတာပဲ… ခဏ၊ ဟိုကျောက်လှေကားအောက်မှာ တစ်ခုခု လက်နေတယ်။ သေချာကြည့်ကြရအောင်။",
+      "km": "វាជាប់សោហើយ… ចាំបន្តិច មានអ្វីមួយភ្លឺនៅក្រោមជំហានថ្មនោះ។ យើងមើលឱ្យច្បាស់បន្តិចទៅ។"
+    }
+  },
+  {
+    "chapter": "selene_01",
+    "key": "selene_01.line.005",
+    "old": {
+      "vi": "Dưới bậc đá lệch có chìa khóa quấn vải. Người giấu đã để nó trong tầm với, không ném đi.",
+      "en": "A cloth-wrapped key rests beneath a loose step. Someone left it within reach, rather than throwing it away."
+    },
+    "new": {
+      "vi": "Bạn tìm được chiếc chìa khóa cổ dưới bậc đá. Những nét rune trên thân chìa giống với nét khắc ở ổ khóa.",
+      "en": "You find an ancient key beneath the step. The runes along its shaft resemble the markings on the lock.",
+      "ja": "石段の下から古い鍵が見つかった。軸に刻まれたルーンは、鍵穴の模様とよく似ている。",
+      "zh": "你在石阶下找到一把古老的钥匙。钥匙上的符文，与锁孔周围的刻痕十分相似。",
+      "ko": "돌계단 아래에서 오래된 열쇠를 찾았다. 열쇠에 새겨진 룬이 자물쇠의 문양과 닮아 있다.",
+      "my": "ကျောက်လှေကားအောက်မှာ ရှေးဟောင်းသော့တစ်ချောင်း တွေ့ရတယ်။ သော့ပေါ်က ရူန်းအမှတ်တွေဟာ သော့ခလောက်ပေါ်က အမှတ်တွေနဲ့ ဆင်တူနေတယ်။",
+      "km": "អ្នករកឃើញកូនសោបុរាណនៅក្រោមជំហានថ្ម។ អក្សររុនលើកូនសោស្រដៀងនឹងស្នាមឆ្លាក់នៅលើសោទ្វារ។"
+    }
+  },
+  {
+    "chapter": "selene_01",
+    "key": "selene_01.line.006",
+    "old": {
+      "vi": "Bậc đá kia lệch khỏi hàng. Có lẽ mình nên xem kỹ chỗ đó trước khi bỏ đi.",
+      "en": "That step is out of line. We should take a closer look before moving on."
+    },
+    "new": {
+      "vi": "Một chiếc chìa khóa... Nhưng hình như vẫn thiếu điều gì đó. Mình tìm thêm những dấu khắc quanh đây nhé.",
+      "en": "A key... But I think we're still missing something. Let's look for more markings around here.",
+      "ja": "鍵だ……でも、まだ何か足りない気がする。この辺りの刻印も探してみよう。",
+      "zh": "是一把钥匙……但好像还缺了什么。再找找附近有没有别的刻痕吧。",
+      "ko": "열쇠였네요… 그런데 아직 뭔가 부족한 것 같아요. 주변의 다른 문양도 찾아봐요.",
+      "my": "သော့တစ်ချောင်းပဲ… ဒါပေမဲ့ တစ်ခုခု လိုနေသေးသလိုပဲ။ ဒီအနားက ထွင်းထားတဲ့ အမှတ်တွေကို ထပ်ရှာကြည့်ရအောင်။",
+      "km": "កូនសោមួយ… តែខ្ញុំគិតថាយើងនៅខ្វះអ្វីមួយទៀត។ យើងរកមើលស្នាមឆ្លាក់ផ្សេងទៀតនៅជុំវិញនេះទៅ។"
+    }
+  },
+  {
+    "chapter": "selene_04",
+    "key": "selene_04.line.019",
+    "old": {
+      "vi": "Trong hành lang học viện dưới ánh trăng, Selene trẻ dừng trước một người đàn ông lớn tuổi. Ông đặt tay lên vai cô, như đang gửi một lời cảnh báo.",
+      "en": "In the moonlit academy corridor, young Selene stops before an older man. He rests a hand on her shoulder, as if delivering a warning."
+    },
+    "new": {
+      "vi": "Trong hành lang học viện dưới ánh trăng, Selene trẻ dừng trước một elf lớn tuổi. Người đó đặt tay lên vai cô, như đang gửi một lời cảnh báo.",
+      "en": "In the moonlit academy corridor, young Selene stops before an older elf. The elf rests a hand on her shoulder, as though offering a warning.",
+      "ja": "月明かりが差す学院の廊下で、若いセレーネは年配のエルフの前で足を止める。そのエルフは、何かを警告するように彼女の肩に手を置く。",
+      "zh": "月光洒落在学院的走廊里，年轻的塞琳在一位年长的精灵面前停下脚步。那位精灵将手搭在她肩上，仿佛在向她发出警告。",
+      "ko": "달빛이 비치는 학원 복도에서 어린 셀레네가 나이 든 엘프 앞에 멈춰 선다. 그 엘프는 무언가를 경고하듯 그녀의 어깨에 손을 얹는다.",
+      "my": "လရောင်ဖြာကျနေတဲ့ ကျောင်းစင်္ကြံမှာ ငယ်ရွယ်တဲ့ ဆယ်လင်းက အသက်ကြီးတဲ့ အဲလ်ဖ်တစ်ဦးရှေ့မှာ ရပ်လိုက်တယ်။ အဲလ်ဖ်က တစ်ခုခု သတိပေးလိုဟန်နဲ့ သူမရဲ့ပခုံးပေါ် လက်တင်လိုက်တယ်။",
+      "km": "ក្នុងច្រករបៀងសាលាដែលមានពន្លឺចន្ទចាំងចូល សេលែនកាលនៅក្មេងឈប់នៅមុខអេលហ្វវ័យចំណាស់ម្នាក់។ អេលហ្វនោះដាក់ដៃលើស្មានាង ហាក់ដូចជាចង់ព្រមាននាងអំពីអ្វីមួយ។"
+    }
+  },
+  {
+    "chapter": "selene_03",
+    "key": "selene_03.line.009",
+    "old": {
+      "vi": "Sáp niêm phong của Hội đồng đè lên tro cũ. Những người chủ trì đã xác nhận việc này sau khi bắt đầu.",
+      "en": "Council wax rests over older ash. The officiants confirmed this after the ritual began."
+    },
+    "new": {
+      "vi": "Dấu Hội đồng chồng lên những nét khắc nghi lễ cũ hơn. Sự chuẩn thuận này được ghi lại sau khi nghi lễ đã bắt đầu.",
+      "en": "The Council seal overlies older ritual markings. Their approval was recorded after the ritual had already begun.",
+      "ja": "評議会の印は、それより古い儀式の刻印に重なっている。承認が記されたのは、儀式が始まった後だった。",
+      "zh": "议会的印记叠在更早的仪式刻痕上。这份批准是在仪式开始后才留下的。",
+      "ko": "의회의 인장은 더 오래된 의식의 각인 위에 새겨져 있다. 승인이 기록된 건 의식이 이미 시작된 뒤였다.",
+      "my": "ကောင်စီရဲ့ တံဆိပ်က ပိုရှေးကျတဲ့ ထုံးတမ်းအမှတ်အသားတွေပေါ် ထပ်တင်ထားတယ်။ ခွင့်ပြုချက်ကို မှတ်တမ်းတင်ခဲ့တာက ထုံးတမ်းစပြီးနောက်မှပဲ။",
+      "km": "ស្នាមត្រាក្រុមប្រឹក្សាស្ថិតពីលើស្នាមចម្លាក់ពិធីចាស់ជាងនេះ។ ការយល់ព្រមនេះត្រូវបានកត់ត្រាក្រោយពេលពិធីបានចាប់ផ្តើមរួចហើយ។"
+    }
+  }
+]

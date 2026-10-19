@@ -32,7 +32,9 @@ def detect_speech_language(text,hint=None):
     if not text:return "none"
     for pattern,language in [(r"[\u1780-\u17ff]","km"),(r"[\u3040-\u30ff]","ja"),(r"[\uac00-\ud7af]","ko"),(r"[\u4e00-\u9fff]","zh"),(r"[\u1000-\u109f\uaa60-\uaa7f]","my"),(r"[\u0600-\u06ff]","ar"),(r"[\u0590-\u05ff]","he"),(r"[\u0900-\u097f]","hi"),(r"[\u0e00-\u0e7f]","th"),(r"[\u0400-\u04ff]","ru")]:
         if re.search(pattern,text):return language
-    detected=detect_message_language(text,"unknown")
+    # Called for every accumulated output chunk. This must stay CPU-only:
+    # a network detector here blocks SSE repeatedly as the answer grows.
+    detected=detect_message_language(text,"unknown",use_jev=False)
     if detected not in {"unknown","vi","en"}:return detected
     if detected=="vi" and re.search(r"[ăâđêôơư]",text.casefold()):return "vi"
     if hint and re.fullmatch(r"[a-z]{2}",hint):return hint

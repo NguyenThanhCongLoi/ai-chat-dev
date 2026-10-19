@@ -7,6 +7,7 @@ import {
 import type { HomeSection, Room } from "../types";
 
 export type HomeViewProps = {
+  onCreateCharacter:()=>void;
   openRoomWizard: (preselected?: string[]) => void;
   systemHomeCharacters: {
     creator: { id: string; name: string };
@@ -190,6 +191,7 @@ export type HomeViewProps = {
 export function renderHomeView(props: HomeViewProps) {
   const {
     openRoomWizard,
+    onCreateCharacter,
     systemHomeCharacters,
     introText,
     addPreset,
@@ -241,14 +243,15 @@ export function renderHomeView(props: HomeViewProps) {
         </section>
       )}
 
-      {!!customHomeCharacters.length && (
+      {(
         <section className="largeCharacterSection">
           <div className="laneHeading">
             <h2>Nhân vật của bạn</h2>
 
-            <span> </span>
+            <button onClick={onCreateCharacter}>＋ Tạo nhân vật riêng</button>
           </div>
 
+          {!customHomeCharacters.length&&<p>Nhân vật bạn tạo được lưu riêng tư tại đây.</p>}
           <div className="grid showcaseGrid">
             {customHomeCharacters.map((character) => (
               <button

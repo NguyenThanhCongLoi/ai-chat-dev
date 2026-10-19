@@ -1,3 +1,7 @@
+import {RememberMessage} from "../RememberMessage";
+import {MoonfallHook} from "../../worlds/MoonfallHook";
+import {CharacterSocial} from "../CharacterSocial";
+import {RoleplayContinuity} from "../RoleplayContinuity";
 import { ElfCompanion } from "../ElfCompanion";
 import { hasElfCompanion } from "../companionState";
 /** chat view. Hooks, requests and playback remain owned by RolePlayApp. */
@@ -13,6 +17,7 @@ import type { Room } from "../types";
 import { canSpeak } from "../voicePreferences";
 
 export type ChatViewProps = {
+  resolveSocialCharacter: (c: import("../types").Character) => Promise<import("../types").Character>;
   companionVisible: boolean;
   setCompanionVisible: React.Dispatch<React.SetStateAction<boolean>>;
   companionIsTalking: boolean;
@@ -101,6 +106,7 @@ export type ChatViewProps = {
 
 export function renderChatView(props: ChatViewProps) {
   const {
+    resolveSocialCharacter,
     companionVisible,
     setCompanionVisible,
     companionIsTalking,
@@ -162,6 +168,8 @@ export function renderChatView(props: ChatViewProps) {
           </p>
         </header>
 
+
+        <RoleplayContinuity key={room.id} roomId={room.id} characters={roomChars} revision={messages[messages.length-1]?.id||""} busy={busy}/>
         <div className="roleplayAmbient">
           <div className="messages" ref={messagesBox}>
             {messages.map((m, messageIndex) => {
@@ -274,6 +282,8 @@ export function renderChatView(props: ChatViewProps) {
                             <Icon n="rotate-right" /> Trả lời khác
                           </button>
                         )}
+
+                      {!m.id.startsWith("local-") && !!m.text.trim() && <RememberMessage roomId={room.id} messageId={m.id} busy={busy}/>}
 
                       {!!m.sources?.length && (
                         <details>
@@ -467,6 +477,9 @@ export function renderChatView(props: ChatViewProps) {
                   </button>
                 ))}
             </div>
+
+            {roomChars.length === 1 && <CharacterSocial key={room.id + roomChars[0].id} actor={roomChars[0]} candidates={[...chars, ...presets]} roomId={room.id} messages={messages} busy={busy} resolveCharacter={resolveSocialCharacter}/>}
+            {roomChars.length === 1 && <MoonfallHook characterName={roomChars[0].name} characterId={roomChars[0].id} revision={messages[messages.length-1]?.id||""} busy={busy}/>}
 
             <div className="toolMenu">
               <button

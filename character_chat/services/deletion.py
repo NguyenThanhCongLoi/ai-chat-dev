@@ -31,6 +31,16 @@ def bind_purge_message_dependents(runtime: ModuleType) -> None:
         db.query(runtime.MessageSuggestion).filter(
             runtime.MessageSuggestion.message_id.in_(message_ids)
         ).delete(synchronize_session=False)
+        from ..roleplay_episode import PREFIX as EPISODE_PREFIX
+        # Recaps quote source dialogue; remove derived notes with deleted sources.
+        removed_ids=set(message_ids)
+        for note in db.query(runtime.AppSetting).filter(
+                runtime.AppSetting.key.startswith(EPISODE_PREFIX,autoescape=True)).all():
+            try:
+                linked=set(runtime.json.loads(note.value).get("source_ids",[]))
+            except (ValueError,TypeError):
+                linked=removed_ids
+            if linked & removed_ids:db.delete(note)
         db.query(runtime.Memory).filter(
             runtime.Memory.source_message_id.in_(message_ids)
         ).delete(synchronize_session=False)
@@ -83,14 +93,17 @@ def bind_purge_message_dependents(runtime: ModuleType) -> None:
 
     runtime.reset_room_character_feelings = reset_room_character_feelings
 
-    # Preserve the existing archive-before-delete and per-user feeling reset order.
-    def purge_room_record(db, room):
+    # Explicit room deletion can reset owner experience; internal archival deletes retain their existing behavior.
+    def purge_room_record(db, room, reset_all=False):
         room_id = room.id
         character_ids = [
             item.character_id
             for item in db.query(runtime.RoomMember).filter_by(room_id=room_id).all()
         ]
         runtime.reset_room_character_feelings(db, room.user_id, character_ids)
+        if reset_all:
+            from ..conversation_reset import reset_character_experience
+            reset_character_experience(db, room.user_id, character_ids)
         attached_ids = [
             item.document_id
             for item in db.query(runtime.RoomDocument).filter_by(room_id=room_id).all()
@@ -99,7 +112,13 @@ def bind_purge_message_dependents(runtime: ModuleType) -> None:
             item.id
             for item in db.query(runtime.Message).filter_by(room_id=room_id).all()
         ]
-        runtime.archive_chat_before_delete(db, room_id)
+        if reset_all:
+            # Do not retain/materialize a duplicate transcript in CMS logs on full reset.
+            db.query(runtime.AIRequestLog).filter_by(user_id=room.user_id,room_id=room_id).delete(synchronize_session=False)
+            db.query(runtime.VoiceEvent).filter(runtime.VoiceEvent.user_id==room.user_id,
+                runtime.VoiceEvent.message_id.in_(message_ids)).delete(synchronize_session=False)
+        else:
+            runtime.archive_chat_before_delete(db, room_id)
         runtime.purge_message_dependents(db, message_ids)
         db.query(runtime.Message).filter_by(room_id=room_id).delete()
         db.query(runtime.Memory).filter_by(room_id=room_id).delete()
@@ -109,9 +128,13 @@ def bind_purge_message_dependents(runtime: ModuleType) -> None:
         db.query(runtime.PromptTrace).filter_by(room_id=room_id).delete()
         db.query(runtime.RoomStoryState).filter_by(room_id=room_id).delete()
         db.query(runtime.RoomDocument).filter_by(room_id=room_id).delete()
+        from ..roleplay_episode import PREFIX as EPISODE_PREFIX
+        # Exact keys avoid SQL LIKE wildcards in externally supplied identifiers.
+        for member_id in character_ids:
+            db.query(runtime.AppSetting).filter_by(key=EPISODE_PREFIX+room_id+":"+member_id).delete()
         db.query(runtime.RoomMember).filter_by(room_id=room_id).delete()
         db.query(runtime.AppSetting).filter(
-            runtime.AppSetting.key.in_(["room_topic:" + room_id, "tarot_session:" + room_id])
+            runtime.AppSetting.key.in_(["room_topic:" + room_id, "tarot_session:" + room_id, "roleplay_continuity:" + room_id])
         ).delete()
         db.delete(room)
         db.flush()
@@ -127,6 +150,8 @@ def bind_purge_character_record(runtime: ModuleType) -> None:
     def purge_character_record(db, row):
         character_id = row.id
         user = row.user_id
+        from ..character_social import purge_actor
+        purge_actor(db,user,character_id)
         db.query(runtime.CharacterReactionReference).filter_by(
             character_id=character_id
         ).delete()
@@ -215,6 +240,8 @@ def bind_purge_character_record(runtime: ModuleType) -> None:
                     room_id=room.id, character_id=character_id
                 ).delete()
                 db.delete(membership)
+                from ..roleplay_continuity import remove_character
+                remove_character(db,room.id,character_id)
         db.query(runtime.CharacterKnowledge).filter_by(
             character_id=character_id
         ).delete()

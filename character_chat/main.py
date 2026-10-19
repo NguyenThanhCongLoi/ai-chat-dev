@@ -514,6 +514,9 @@ _reaction_router, queue_reaction_generation = build_reaction_router(
 app.include_router(_reaction_router)
 
 
+from .api.character_social import bind as bind_character_social
+bind_character_social(_runtime)
+
 from .memory_routes import build_memory_router
 
 _memory_router, (
@@ -612,6 +615,18 @@ _admin_router, (
 )
 app.include_router(_admin_router)
 
+
+from .api.roleplay_continuity import bind_roleplay_continuity
+bind_roleplay_continuity(_runtime)
+
+from .publication_review import bind_publication_review
+bind_publication_review(_runtime)
+
+from .api.roleplay_lorebook import bind_roleplay_lorebook
+bind_roleplay_lorebook(_runtime)
+
+from .api.worlds import bind_worlds
+bind_worlds(_runtime)
 
 frontend_api.bind_admin_app(_runtime)
 

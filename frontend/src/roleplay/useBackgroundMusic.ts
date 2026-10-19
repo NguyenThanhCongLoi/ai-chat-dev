@@ -14,6 +14,10 @@ function shuffled(tracks: Track[], previous?: string): Track[] {
   }
   if (result.length > 1 && result[0].id === previous)
     [result[0], result[1]] = [result[1], result[0]];
+  if(!previous)try{
+    const ready=new Set<string>(JSON.parse(sessionStorage.getItem("prepared_music_ids")||"[]"));
+    result.sort((a,b)=>Number(ready.has(b.id))-Number(ready.has(a.id)));
+  }catch{}
   return result;
 }
 

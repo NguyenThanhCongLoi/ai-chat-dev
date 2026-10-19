@@ -39,6 +39,23 @@ def matches_name(message, character, require_at=False):
             return True
     return False
 
+def mentioned_characters(message, characters, require_at=False):
+    full = [c for c in characters if matches_name(message, c, require_at)]
+    # A unique name component is enough; ambiguous shared names never force a bot.
+    aliases = {}
+    for character in characters:
+        for name in (character.name, character.display_name):
+            for part in normalize(name or "").split():
+                if len(part) >= 3:
+                    aliases.setdefault(part, set()).add(character.id)
+    found = {c.id for c in full}
+    text = normalize(message)
+    for alias, owners in aliases.items():
+        if len(owners) == 1 and re.search(r"(?<!\w)" + ("@" if require_at else "@?") + re.escape(alias) + r"(?!\w)", text):
+            found.update(owners)
+    return [c for c in characters if c.id in found]
+
+
 EVERYONE=("everyone","all of you","each of you","ca nhom","moi nguoi","tat ca cac ban","大家","所有人","みんな","여러분","모두","ទាំងអស់គ្នា","အားလုံး")
 PAIR=("both","two of you","compare","different opinions","ca hai","hai ban","so sanh","hai goc nhin","两位","两个人","二人","둘 다","ទាំងពីរ","နှစ်ယောက်")
 EXCHANGE=("discuss","debate","ask each other","ask for","trao doi","thao luan","hoi y kien","tranh luan","讨论","商量","相談","토론","ពិភាក្សា","ဆွေးနွေး")
@@ -82,8 +99,8 @@ def plan_group(message, characters, mode="auto", history=()):
     if not chars:raise ValueError("Room has no characters")
     if len(chars)==1:return result(chars)
     text=normalize(message)
-    explicit=[c for c in chars if matches_name(message,c,True)]
-    mentioned=explicit or [c for c in chars if matches_name(message,c)]
+    explicit=mentioned_characters(message,chars,True)
+    mentioned=explicit or mentioned_characters(message,chars)
     if len(mentioned)==1:return result(mentioned,reason="addressed_character")
     if mode.startswith("character:"):
         selected=[c for c in chars if c.id==mode.split(":",1)[1]]
@@ -144,11 +161,14 @@ def plan_room(db, room_id, message, characters, mode="auto", exclude_message_id=
 def plan_selected_group(message,characters,mode="auto",history=(),db=None,room_id=None):
     """Opt-in selector. Explicit requests and local fallback always remain available."""
     local=plan_group(message,characters,mode,history)
-    enabled=os.getenv("GROUP_ROUTER_MODE","local").strip().lower()
+    from . import jev
+    use_jev=jev.enabled("routing")
+    enabled="decision" if use_jev else os.getenv("GROUP_ROUTER_MODE","local").strip().lower()
     if enabled!="decision" or len(characters)<2:return local
     if local.reason in {"addressed_character","selected_character","user_requested_everyone","addressed_pair","followup","requested_pair"}:
         return local
     from .group_decision import select_speakers
+    if use_jev:select_speakers=jev.select_speakers
     topic="";title=""
     if db is not None and room_id:
         from .group_topic import group_context
@@ -160,6 +180,17 @@ def plan_selected_group(message,characters,mode="auto",history=(),db=None,room_i
         local.decision={**meta,"decision_fallback":error}
         local.latency_ms=round((time.perf_counter()-started)*1000,3)
         return local
+    # A decision provider can activate every candidate. Keep automatic turns
+    # bounded; explicit "everyone" requests returned above remain authoritative.
+    allowed = {c.id:c for c in list(characters)[:6]}
+    unique = {c.id:allowed[c.id] for c in selected if c.id in allowed}
+    if not unique:
+        local.decision={**meta,"decision_fallback":"no_valid_speaker"}
+        return local
+    scores = meta.get("decision_scores", {})
+    selected = sorted(unique.values(), key=lambda c:(
+        -scores.get(c.id,0), -local.scores.get(c.id,0), list(allowed).index(c.id)))[:2]
+    meta={**meta,"automatic_speaker_limit":2,"suppressed_speakers":len(unique)-len(selected)}
     interaction="single" if len(selected)==1 else ("exchange" if len(selected)==2 and local.interaction=="exchange" else "complement")
     return GroupPlan(selected,interaction,"decision_selected",meta.get("decision_scores",{}),
-        round((time.perf_counter()-started)*1000,3),"jev_compatible",meta)
+        round((time.perf_counter()-started)*1000,3),"typesafe_jev" if use_jev else "jev_compatible",meta)

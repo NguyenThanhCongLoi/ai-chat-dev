@@ -1,0 +1,649 @@
+{
+  "id": "selene_03",
+  "order": 3,
+  "enabled": true,
+  "implemented": true,
+  "title": {
+    "vi": "Nghi lễ cấm",
+    "en": "The Forbidden Ritual"
+  },
+  "objective": {
+    "vi": "Đối chiếu dấu vết trong hầm và suy luận ai đứng giữa vòng nghi lễ.",
+    "en": "Compare the chamber evidence and deduce who stood at the ritual's center."
+  },
+  "scenes": [
+    {
+      "id": "descent",
+      "title": {
+        "vi": "Cầu thang dưới học viện",
+        "en": "Stair beneath the academy"
+      },
+      "background": "replacement_ch03_spiral_staircase",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_03.expanded.descent"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_03_barrier",
+          "title": {
+            "vi": "Chạm phong ấn lối xuống",
+            "en": "Touch the stair seal"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_03.expanded.descent.barrier"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_03.expanded.descent.barrier.speech",
+              "speaker": "selene",
+              "expression": "serious"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_03_approach",
+          "title": {
+            "vi": "Dấu chân trước cửa",
+            "en": "Footprints at the threshold"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.39,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_03.expanded.descent.approach"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "chamber",
+      "title": {
+        "vi": "Căn phòng ngầm",
+        "en": "Underground Chamber"
+      },
+      "background": "replacement_ch03_ritual_chamber",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_03.line.001"
+        },
+        {
+          "type": "dialogue",
+          "text_key": "selene_03.line.002",
+          "speaker": "selene",
+          "expression": "worried"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_03_ritual_circle",
+          "title": {
+            "vi": "Vòng nghi lễ",
+            "en": "Ritual circle"
+          },
+          "item": "witch_symbol",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_03.line.003"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_03.line.004",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_03_blood_rune",
+          "title": {
+            "vi": "Rune màu đỏ",
+            "en": "Red rune"
+          },
+          "item": "seal_stone",
+          "optional": false,
+          "x": 0.4,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_03.line.005"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_03.line.006",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_03_burned_letter",
+          "title": {
+            "vi": "Lá thư cháy",
+            "en": "Burned letter"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.68,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_03.line.007"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_03.line.008",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_03_council_seal",
+          "title": {
+            "vi": "Dấu Hội đồng",
+            "en": "Council seal"
+          },
+          "item": "council_record",
+          "optional": false,
+          "x": 0.62,
+          "y": 0.74,
+          "width": 0.09,
+          "height": 0.12,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_03.line.009"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_03.line.010",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": [],
+          "scene_asset": "prop_council_seal",
+          "presentation_mode": "floor"
+        }
+      ]
+    },
+    {
+      "id": "seal_trap",
+      "title": {
+        "vi": "Bẫy phong ấn",
+        "en": "Seal trap"
+      },
+      "background": "replacement_ch03_ritual_chamber",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_03.expanded.seal_trap"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_03_seal_contact",
+          "title": {
+            "vi": "Kiểm tra phiến điều khiển",
+            "en": "Examine the control stone"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "dialogue",
+              "text_key": "selene_03.expanded.seal_trap.seal_contact.speech",
+              "speaker": "selene",
+              "expression": "serious"
+            },
+            {
+              "type": "visual_effect",
+              "visual_event": "SEAL_TRAP"
+            },
+            {
+              "type": "narration",
+              "text_key": "selene_03.expanded.seal_trap.seal_contact"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_03_seal_release",
+          "title": {
+            "vi": "Tách phiến điều khiển",
+            "en": "Disconnect the control stone"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.39,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_03.expanded.seal_trap.seal_release"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_03.expanded.seal_trap.seal_release.speech",
+              "speaker": "selene",
+              "expression": "serious"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "quiet_landing",
+      "title": {
+        "vi": "Khoảng lặng sau biến cố",
+        "en": "After the disturbance"
+      },
+      "background": "replacement_ch03_spiral_staircase",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_03.expanded.quiet_landing"
+        }
+      ],
+      "hotspots": []
+    }
+  ],
+  "puzzles": [
+    {
+      "id": "selene_03_puzzle",
+      "type": "evidence_deduction",
+      "title": {
+        "vi": "Ai đứng giữa vòng nghi lễ?",
+        "en": "Who stood at the ritual's center?"
+      },
+      "scene": "chamber",
+      "requires_inspections": [
+        "selene_03_ritual_circle",
+        "selene_03_blood_rune",
+        "selene_03_burned_letter",
+        "selene_03_council_seal",
+        "selene_03_barrier",
+        "selene_03_approach",
+        "selene_03_seal_contact",
+        "selene_03_seal_release"
+      ],
+      "required_items": [],
+      "options": [
+        {
+          "id": "selene",
+          "label": {
+            "vi": "Selene",
+            "en": "Selene"
+          }
+        },
+        {
+          "id": "council",
+          "label": {
+            "vi": "Một pháp sư Hội đồng",
+            "en": "A Council mage"
+          }
+        },
+        {
+          "id": "girl",
+          "label": {
+            "vi": "Cô gái trong ký ức",
+            "en": "The girl from the memory"
+          }
+        }
+      ],
+      "solution": "selene",
+      "hints": [
+        {
+          "vi": "Ai có dấu tay và biểu tượng phù hợp?",
+          "en": "Whose hand and symbol match?"
+        },
+        {
+          "vi": "Đối chiếu vòng bạc với rune ở tâm.",
+          "en": "Compare the pendant with the central rune."
+        },
+        {
+          "vi": "Dấu vết chỉ về Selene, nhưng chưa chứng minh động cơ.",
+          "en": "The evidence points to Selene, but not yet to a motive."
+        }
+      ],
+      "events": [
+        {
+          "type": "dialogue",
+          "text_key": "selene_03.line.011",
+          "speaker": "selene",
+          "expression": "determined"
+        },
+        {
+          "type": "visual_effect",
+          "effect": "RUNE_GLOW"
+        }
+      ],
+      "flags": {}
+    }
+  ],
+  "choice": {
+    "id": "selene_03_choice",
+    "prompt_key": "selene_03.line.012",
+    "options": [
+      {
+        "id": "selene_03_choice_0",
+        "label_key": "selene_03.line.013",
+        "effects": {
+          "trust": 2
+        },
+        "flags": {},
+        "tags": [],
+        "events": [
+          {
+            "type": "dialogue",
+            "text_key": "selene_03.line.014",
+            "speaker": "selene",
+            "expression": "serious"
+          }
+        ]
+      },
+      {
+        "id": "selene_03_choice_1",
+        "label_key": "selene_03.line.015",
+        "effects": {
+          "truth": 2
+        },
+        "flags": {},
+        "tags": [],
+        "events": [
+          {
+            "type": "dialogue",
+            "text_key": "selene_03.line.016",
+            "speaker": "selene",
+            "expression": "serious"
+          }
+        ]
+      },
+      {
+        "id": "selene_03_choice_2",
+        "label_key": "selene_03.line.017",
+        "effects": {
+          "understanding": 2
+        },
+        "flags": {},
+        "tags": [],
+        "events": [
+          {
+            "type": "dialogue",
+            "text_key": "selene_03.line.018",
+            "speaker": "selene",
+            "expression": "serious"
+          }
+        ]
+      }
+    ]
+  },
+  "memory": {
+    "id": "M03",
+    "title": {
+      "vi": "M03 · Nghi lễ cấm",
+      "en": "M03 · The Forbidden Ritual"
+    },
+    "video": "memory_video_03",
+    "events": [
+      {
+        "type": "narration",
+        "text_key": "selene_03.line.019",
+        "speaker": "narrator",
+        "expression": "thinking"
+      },
+      {
+        "type": "narration",
+        "text_key": "selene_03.line.020",
+        "speaker": "narrator",
+        "expression": "thinking"
+      },
+      {
+        "type": "narration",
+        "text_key": "selene_03.line.021",
+        "speaker": "narrator",
+        "expression": "thinking"
+      },
+      {
+        "type": "dialogue",
+        "text_key": "selene_03.line.022",
+        "speaker": "selene",
+        "expression": "thinking"
+      }
+    ],
+    "fact_key": "selene_03.line.023"
+  },
+  "localization": {
+    "selene_03.line.001": {
+      "vi": "Dấu vết trong căn phòng ngầm còn đủ để đối chiếu: vòng nghi lễ, rune, thư cháy và niêm phong.",
+      "en": "Enough remains in the underground chamber to compare the circle, the rune, the burned letter, and the seal."
+    },
+    "selene_03.line.002": {
+      "vi": "Tôi thấy nơi này quen một cách khó chịu. Mình xem từng dấu vết trước nhé, đừng để cảm giác quyết định thay bằng chứng.",
+      "en": "This room feels uncomfortably familiar. Let us examine the traces one by one, rather than let that feeling decide for us."
+    },
+    "selene_03.line.003": {
+      "vi": "Dấu chân đi vào tâm vòng, không có vết kéo lê. Người bước vào đã tự đi.",
+      "en": "Footprints lead into the circle without drag marks. The person entered on their own."
+    },
+    "selene_03.line.004": {
+      "vi": "Đừng chạm vào tâm vòng vội. Dấu vết quanh nó có thể cho biết người ta đã bước vào đây như thế nào.",
+      "en": "Do not touch the center just yet. The marks around it may tell us how someone entered the circle."
+    },
+    "selene_03.line.005": {
+      "vi": "Màu đỏ đã khô từ lâu. Dấu tay nhỏ và một nét cong giống vòng của Selene nằm ở tâm.",
+      "en": "The red has long dried. A small handprint and a curve like Selene's pendant mark the center."
+    },
+    "selene_03.line.006": {
+      "vi": "Nét cong trên rune trông quen quá. Có lẽ nên so nó với thứ tôi đang mang.",
+      "en": "That curve in the rune looks familiar. Perhaps we should compare it with something I am wearing."
+    },
+    "selene_03.line.007": {
+      "vi": "Một phần thư còn đọc được: “Người mang vật dẫn phải tự nguyện.” Không có tên người mang.",
+      "en": "A surviving line reads: “The vessel must enter willingly.” Its bearer is not named."
+    },
+    "selene_03.line.008": {
+      "vi": "Lá thư còn lại rất ít chữ. Mình đọc kỹ điều kiện của nghi lễ trước khi đoán ai đã tham gia nhé.",
+      "en": "Very little of this letter survives. Let us read the ritual's conditions carefully before guessing who took part."
+    },
+    "selene_03.line.009": {
+      "vi": "Dấu Hội đồng chồng lên những nét khắc nghi lễ cũ hơn. Sự chuẩn thuận này được ghi lại sau khi nghi lễ đã bắt đầu.",
+      "en": "The Council seal overlies older ritual markings. Their approval was recorded after the ritual had already begun.",
+      "ja": "評議会の印は、それより古い儀式の刻印に重なっている。承認が記されたのは、儀式が始まった後だった。",
+      "zh": "议会的印记叠在更早的仪式刻痕上。这份批准是在仪式开始后才留下的。",
+      "ko": "의회의 인장은 더 오래된 의식의 각인 위에 새겨져 있다. 승인이 기록된 건 의식이 이미 시작된 뒤였다.",
+      "my": "ကောင်စီရဲ့ တံဆိပ်က ပိုရှေးကျတဲ့ ထုံးတမ်းအမှတ်အသားတွေပေါ် ထပ်တင်ထားတယ်။ ခွင့်ပြုချက်ကို မှတ်တမ်းတင်ခဲ့တာက ထုံးတမ်းစပြီးနောက်မှပဲ။",
+      "km": "ស្នាមត្រាក្រុមប្រឹក្សាស្ថិតពីលើស្នាមចម្លាក់ពិធីចាស់ជាងនេះ។ ការយល់ព្រមនេះត្រូវបានកត់ត្រាក្រោយពេលពិធីបានចាប់ផ្តើមរួចហើយ។"
+    },
+    "selene_03.line.010": {
+      "vi": "Dấu niêm này có thể cho biết ai đã xác nhận nghi lễ. Nhưng người đóng dấu chưa chắc là người đứng trong vòng.",
+      "en": "This seal may tell us who authorized the ritual. That need not be the person who stood inside the circle."
+    },
+    "selene_03.line.011": {
+      "vi": "Là tôi. Nhưng đừng để một đáp án trở thành cả bản án.",
+      "en": "It was me. But do not let one answer become the whole verdict."
+    },
+    "selene_03.line.012": {
+      "vi": "Bạn nói gì trước điều vừa suy ra?",
+      "en": "What do you say about the deduction?"
+    },
+    "selene_03.line.013": {
+      "vi": "Điều đó không có nghĩa cô có tội.",
+      "en": "This doesn't mean you were guilty."
+    },
+    "selene_03.line.014": {
+      "vi": "Cảm ơn. Tôi vẫn muốn biết mình đã làm gì.",
+      "en": "Thank you. I still want to know what I did."
+    },
+    "selene_03.line.015": {
+      "vi": "Cô biết nhiều hơn điều đang kể.",
+      "en": "You knew more than you are telling me."
+    },
+    "selene_03.line.016": {
+      "vi": "Có thể. Nhưng một khoảng trống trong trí nhớ không phải một lời thú nhận.",
+      "en": "Perhaps. But a gap in memory is not a confession."
+    },
+    "selene_03.line.017": {
+      "vi": "Mình vẫn chưa biết tại sao cô chọn làm vậy.",
+      "en": "We still don't know why you chose to do it."
+    },
+    "selene_03.line.018": {
+      "vi": "Đúng. Đó mới là điều tôi cần đối mặt.",
+      "en": "Yes. That is what I need to face."
+    },
+    "selene_03.line.019": {
+      "vi": "Selene trẻ tự bước vào vòng nghi lễ. Một pháp sư Hội đồng giữ tay trên ấn.",
+      "en": "Young Selene steps into the ritual circle willingly. A Council mage holds a hand above the seal."
+    },
+    "selene_03.line.020": {
+      "vi": "Pháp sư cảnh báo cô không thể rời đi khi phong ấn bắt đầu. Selene đáp: “Tôi biết.” Câu hỏi về hậu quả còn dang dở khi mảnh nhớ đứt.",
+      "en": "The mage warns that she cannot leave once the seal begins. Selene replies, “I know.” His question about the consequences is cut off as the fragment breaks."
+    },
+    "selene_03.line.021": {
+      "vi": "Pháp sư hỏi cô có hiểu hậu quả không. Mảnh nhớ đứt trước câu trả lời.",
+      "en": "The mage asks whether she understands the consequences. The fragment breaks before her answer."
+    },
+    "selene_03.line.022": {
+      "vi": "Tôi đã bước vào. Điều đó có thật. Nhưng tại sao… vẫn nằm bên kia mảnh nhớ.",
+      "en": "I stepped inside. That is real. But why... remains beyond this fragment."
+    },
+    "selene_03.line.023": {
+      "vi": "M03 xác nhận Selene tự nguyện đứng trong nghi lễ, biết không thể rời đi sau khi phong ấn bắt đầu; mục đích vẫn chưa rõ.",
+      "en": "M03 confirmed Selene willingly entered the ritual knowing she could not leave once sealing began; its purpose remained unknown."
+    },
+    "selene_03.line.024": {
+      "vi": "Selene tự bước vào vòng và biết mình không thể rời đi khi phong ấn bắt đầu. Chưa biết cô đã được nói toàn bộ hậu quả hay chưa.",
+      "en": "Selene willingly entered the circle and knew she could not leave once the seal began. Whether she knew all the consequences remains uncertain."
+    },
+    "selene_03.line.025": {
+      "vi": "Cô đã chọn điều gì — và đã biết bao nhiêu khi lựa chọn?",
+      "en": "What did she choose, and how much did she know?"
+    },
+    "selene_03.expanded.descent": {
+      "vi": "Cầu thang xoắn dẫn xuống tầng ngầm. Rune đỏ dừng trước một lớp màng sáng.",
+      "en": "A spiral stair descends below the academy. Red runes end at a luminous barrier."
+    },
+    "selene_03.expanded.descent.barrier": {
+      "vi": "Selene đưa tay; lớp màng mở ở chỗ ngón tay chạm. Phong ấn không coi cô là người lạ.",
+      "en": "Selene raises her hand; the barrier opens at her touch. The seal does not treat her as a stranger."
+    },
+    "selene_03.expanded.descent.barrier.speech": {
+      "vi": "Nơi này từng cho tôi đi qua. Điều đó chưa nói tôi đã làm gì.",
+      "en": "This place once let me through. That does not tell us what I did."
+    },
+    "selene_03.expanded.descent.approach": {
+      "vi": "Bụi giữ một lối đi thẳng vào phòng. Không có vệt kéo lê trên các bậc cuối.",
+      "en": "Dust preserves a trail into the chamber. There are no drag marks on the final steps."
+    },
+    "selene_03.expanded.seal_trap": {
+      "vi": "Ở mép vòng nghi lễ, những đường rune nối vào một phiến điều khiển.",
+      "en": "At the circle edge, runes converge on a control stone."
+    },
+    "selene_03.expanded.seal_trap.seal_contact": {
+      "vi": "Phiến đá sáng đỏ khi chạm; xiềng phép vọt khỏi sàn. Selene phá một vòng xiềng, vòng khác sượt cổ tay.",
+      "en": "The stone glows red at a touch; magical chains spring from the floor. Selene breaks one loop; another brushes her wrist."
+    },
+    "selene_03.expanded.seal_trap.seal_contact.speech": {
+      "vi": "Lùi lại, ra ngoài đường rune!",
+      "en": "Back, beyond the rune line!"
+    },
+    "selene_03.expanded.seal_trap.seal_release": {
+      "vi": "Bạn kéo phiến đá khỏi rãnh tiếp xúc. Xiềng tắt, để lại thoáng hình người đứng giữa vòng, chưa thể nhận diện.",
+      "en": "You pull the stone clear of its contact groove. The chains fade, leaving a flash of someone inside the circle, not yet identifiable."
+    },
+    "selene_03.expanded.seal_trap.seal_release.speech": {
+      "vi": "Mình cần đối chiếu dấu tay và chiếc vòng trước khi gọi tên người đó.",
+      "en": "We need to compare the handprint and pendant before naming that person."
+    },
+    "selene_03.expanded.quiet_landing": {
+      "vi": "Lối vừa qua đã yên. Hãy đối chiếu các dấu vết trước khi kết luận điều cảnh nhớ chưa nói hết.",
+      "en": "The passage is quiet again. Compare the evidence before deciding what the incomplete memory means."
+    }
+  },
+  "required_inspections": [
+    "selene_03_ritual_circle",
+    "selene_03_blood_rune",
+    "selene_03_burned_letter",
+    "selene_03_council_seal",
+    "selene_03_barrier",
+    "selene_03_approach",
+    "selene_03_seal_contact",
+    "selene_03_seal_release"
+  ],
+  "summary_key": "selene_03.line.024",
+  "reflection_key": "selene_03.line.025"
+}

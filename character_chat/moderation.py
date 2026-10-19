@@ -81,6 +81,10 @@ def contextual_safety(text: str,categories: list[str]) -> tuple[str,str]:
 
 def ensure_safe_content(*values: object,allow_crisis_support:bool=False) -> None:
     text="\n".join(str(value) for value in values if value is not None)
+    from . import jev
+    if jev.enabled("moderation"):
+        jev.require_safe(text, allow_crisis_support)
+        return
     categories=sensitive_categories(text)
     # A help-seeking disclosure should reach the psychology assistant's crisis
     # response guardrail instead of being blocked as self-harm instructions.

@@ -88,6 +88,8 @@ def bind_character_expression(runtime: ModuleType) -> None:
         db: runtime.DBSession = runtime.Depends(runtime.db_session),
         user: str = runtime.Depends(runtime.current_user),
     ):
+        if runtime.os.getenv("COMMUNITY_CHARACTER_PUBLICATION_ENABLED","false").lower()!="true":
+            return []
         query = db.query(runtime.CharacterPublication).filter_by(is_public=1)
         if character_type:
             query = query.filter_by(character_type=character_type)
@@ -181,6 +183,8 @@ def bind_character_expression(runtime: ModuleType) -> None:
         db: runtime.DBSession = runtime.Depends(runtime.db_session),
         user: str = runtime.Depends(runtime.current_user),
     ):
+        if runtime.os.getenv("COMMUNITY_CHARACTER_PUBLICATION_ENABLED","false").lower()!="true":
+            raise runtime.HTTPException(403,"Community characters are temporarily unavailable")
         publication = db.get(runtime.CharacterPublication, character_id)
         source = db.get(runtime.Character, character_id)
         if not publication or not publication.is_public or not source:

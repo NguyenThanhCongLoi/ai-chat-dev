@@ -1,0 +1,664 @@
+{
+  "id": "selene_07",
+  "order": 7,
+  "enabled": true,
+  "implemented": true,
+  "title": {
+    "vi": "Vầng Trăng Nhợt",
+    "en": "The Pale Moon"
+  },
+  "objective": {
+    "vi": "Đặt các vật phẩm lên bàn thờ, nối những gì đã biết và chọn cách nhìn Selene.",
+    "en": "Set the artifacts on the altar and decide how you see Selene."
+  },
+  "scenes": [
+    {
+      "id": "temple",
+      "title": {
+        "vi": "Đền Trăng",
+        "en": "Moon Temple"
+      },
+      "background": "replacement_ch07_moon_temple",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_07.line.001"
+        },
+        {
+          "type": "dialogue",
+          "text_key": "selene_07.line.002",
+          "speaker": "selene",
+          "expression": "thinking"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_07_altar",
+          "title": {
+            "vi": "Bàn thờ bốn vật",
+            "en": "Four-artifact altar"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_07.line.003"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_07.line.004",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_07_inscription",
+          "title": {
+            "vi": "Dòng khắc dưới ánh trăng",
+            "en": "Moonlit inscription"
+          },
+          "item": "",
+          "optional": true,
+          "x": 0.4,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_07.line.005"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_07.line.006",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {
+            "understanding": 2
+          },
+          "flags": {
+            "found_hidden_inscription": true
+          },
+          "echo": "",
+          "lore": "remember_not_become",
+          "tags": [],
+          "requires": {
+            "all": [
+              {
+                "inventory": "moonflower_petal"
+              },
+              {
+                "inventory": "mirror_shard"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "temple_boundary",
+      "title": {
+        "vi": "Ranh giới trong Đền Trăng",
+        "en": "Temple boundary"
+      },
+      "background": "replacement_ch07_moon_temple",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_07.expanded.temple_boundary"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_07_socket_traces",
+          "title": {
+            "vi": "Vết trên bốn hõm",
+            "en": "The four socket marks"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_07.expanded.temple_boundary.socket_traces"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_07_boundary_warning",
+          "title": {
+            "vi": "Đọc vành ngoài bàn thờ",
+            "en": "Read the altar rim"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.39,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_07.expanded.temple_boundary.boundary_warning"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_07.expanded.temple_boundary.boundary_warning.speech",
+              "speaker": "selene",
+              "expression": "serious"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "manifestation",
+      "title": {
+        "vi": "Bóng hình chưa hoàn chỉnh",
+        "en": "An incomplete form"
+      },
+      "background": "replacement_ch07_pale_moon_chamber",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_07.expanded.manifestation"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_07_gathering_fragments",
+          "title": {
+            "vi": "Các mảnh hội tụ",
+            "en": "The gathering fragments"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "visual_effect",
+              "visual_event": "PALE_MOON_MANIFESTATION"
+            },
+            {
+              "type": "narration",
+              "text_key": "selene_07.expanded.manifestation.gathering_fragments"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_07.expanded.manifestation.separate_fragments.speech",
+              "speaker": "selene",
+              "expression": "serious"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_07_separate_fragments",
+          "title": {
+            "vi": "Giữ khoảng cách các mảnh",
+            "en": "Keep the fragments apart"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.39,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_07.expanded.manifestation.separate_fragments"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "pale_chamber",
+      "title": {
+        "vi": "Phòng Trăng Nhợt",
+        "en": "Pale Moon Chamber"
+      },
+      "background": "replacement_ch07_pale_moon_chamber",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_07.line.007"
+        },
+        {
+          "type": "dialogue",
+          "text_key": "selene_07.line.008",
+          "speaker": "selene",
+          "expression": "thinking"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_07_vessel",
+          "title": {
+            "vi": "Dấu vật dẫn",
+            "en": "Vessel marks"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_07.line.009"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_07.line.010",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_07_split",
+          "title": {
+            "vi": "Ranh giới giữa các mảnh",
+            "en": "Boundaries between fragments"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.4,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_07.line.011"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_07.line.012",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        }
+      ]
+    }
+  ],
+  "puzzles": [
+    {
+      "id": "selene_07_puzzle",
+      "type": "artifact_slot",
+      "title": {
+        "vi": "Bốn vật, một ranh giới",
+        "en": "Four artifacts, one boundary"
+      },
+      "scene": "pale_chamber",
+      "requires_inspections": [
+        "selene_07_altar",
+        "selene_07_vessel",
+        "selene_07_split",
+        "selene_07_socket_traces",
+        "selene_07_boundary_warning",
+        "selene_07_gathering_fragments",
+        "selene_07_separate_fragments"
+      ],
+      "required_items": [
+        "moonstone",
+        "seal_stone",
+        "moon_rune",
+        "crystal_fragment"
+      ],
+      "options": [
+        {
+          "id": "moonstone",
+          "label": {
+            "vi": "Nguyệt thạch",
+            "en": "Moonstone"
+          }
+        },
+        {
+          "id": "seal_stone",
+          "label": {
+            "vi": "Đá phong ấn",
+            "en": "Seal Stone"
+          }
+        },
+        {
+          "id": "moon_rune",
+          "label": {
+            "vi": "Rune Trăng",
+            "en": "Moon Rune"
+          }
+        },
+        {
+          "id": "crystal_fragment",
+          "label": {
+            "vi": "Mảnh tinh thể",
+            "en": "Crystal Fragment"
+          }
+        }
+      ],
+      "solution": [
+        "moonstone",
+        "seal_stone",
+        "moon_rune",
+        "crystal_fragment"
+      ],
+      "hints": [
+        {
+          "vi": "Mỗi hõm là một vật đã được mang theo.",
+          "en": "Each socket matches something already carried."
+        },
+        {
+          "vi": "Nơi chốn, ranh giới, thứ tự và góc nhìn.",
+          "en": "Place, boundary, order, and viewpoint."
+        },
+        {
+          "vi": "Đặt nguyệt thạch, đá phong ấn, rune trăng và tinh thể.",
+          "en": "Place Moonstone, Seal Stone, Moon Rune, and Crystal Fragment."
+        }
+      ],
+      "events": [
+        {
+          "type": "dialogue",
+          "text_key": "selene_07.line.013",
+          "speaker": "selene",
+          "expression": "determined"
+        },
+        {
+          "type": "visual_effect",
+          "effect": "RUNE_GLOW"
+        }
+      ],
+      "flags": {}
+    }
+  ],
+  "choice": {
+    "id": "selene_07_choice",
+    "prompt_key": "selene_07.line.014",
+    "options": [
+      {
+        "id": "selene_07_choice_0",
+        "label_key": "selene_07.line.015",
+        "effects": {
+          "trust": 2
+        },
+        "flags": {},
+        "tags": [],
+        "events": [
+          {
+            "type": "dialogue",
+            "text_key": "selene_07.line.016",
+            "speaker": "selene",
+            "expression": "serious"
+          }
+        ]
+      },
+      {
+        "id": "selene_07_choice_1",
+        "label_key": "selene_07.line.017",
+        "effects": {
+          "truth": 2
+        },
+        "flags": {},
+        "tags": [],
+        "events": [
+          {
+            "type": "dialogue",
+            "text_key": "selene_07.line.018",
+            "speaker": "selene",
+            "expression": "serious"
+          }
+        ]
+      },
+      {
+        "id": "selene_07_choice_2",
+        "label_key": "selene_07.line.019",
+        "effects": {
+          "understanding": 3
+        },
+        "flags": {
+          "accepted_past_and_present": true
+        },
+        "tags": [],
+        "events": [
+          {
+            "type": "dialogue",
+            "text_key": "selene_07.line.020",
+            "speaker": "selene",
+            "expression": "serious"
+          }
+        ]
+      }
+    ]
+  },
+  "memory": {
+    "id": "M07",
+    "title": {
+      "vi": "M07 · Vầng Trăng Nhợt",
+      "en": "M07 · The Pale Moon"
+    },
+    "video": "memory_video_07",
+    "events": [
+      {
+        "type": "narration",
+        "text_key": "selene_07.line.021",
+        "speaker": "narrator",
+        "expression": "thinking"
+      },
+      {
+        "type": "narration",
+        "text_key": "selene_07.line.022",
+        "speaker": "narrator",
+        "expression": "thinking"
+      },
+      {
+        "type": "dialogue",
+        "text_key": "selene_07.line.023",
+        "speaker": "selene",
+        "expression": "thinking"
+      }
+    ],
+    "fact_key": "selene_07.line.024"
+  },
+  "localization": {
+    "selene_07.line.001": {
+      "vi": "Bốn hõm trong Đền Trăng chờ những vật đã được mang qua hành trình. Hình dạng và dấu khắc có thể giúp đối chiếu.",
+      "en": "Four sockets in the Moon Temple await objects carried through the journey. Their shapes and markings may help match them."
+    },
+    "selene_07.line.002": {
+      "vi": "Những vật mình giữ lại có lẽ không tình cờ cùng đến đây. Thử xem chúng hợp với các hõm thế nào nhé.",
+      "en": "Perhaps it is no coincidence that these objects came here with us. Let us see how they fit the sockets."
+    },
+    "selene_07.line.003": {
+      "vi": "Nguyệt thạch giữ dấu nơi chốn. Rune giữ thứ tự. Đá phong ấn giữ ranh giới. Tinh thể giữ góc nhìn.",
+      "en": "Moonstone keeps a place. Rune keeps an order. Seal stone keeps a boundary. Crystal keeps a viewpoint."
+    },
+    "selene_07.line.004": {
+      "vi": "Các hõm có hình dạng khác nhau. Mình thử đối chiếu chúng với những vật đã giữ lại, đừng đặt bừa nhé.",
+      "en": "The sockets have different shapes. Let us compare them with the things we kept, rather than place them at random."
+    },
+    "selene_07.line.005": {
+      "vi": "Qua cánh hoa và mảnh gương, câu khắc hiện rõ: NHỚ LẠI KHÔNG CÓ NGHĨA LÀ TRỞ THÀNH.",
+      "en": "Through the petal and mirror shard, the inscription resolves: TO REMEMBER IS NOT TO BECOME."
+    },
+    "selene_07.line.006": {
+      "vi": "Dòng chữ này khó đọc dưới ánh sáng thường. Có lẽ những vật mình mang theo sẽ giúp nhìn rõ hơn.",
+      "en": "This inscription is difficult to read in ordinary light. Something we brought may help us see it more clearly."
+    },
+    "selene_07.line.007": {
+      "vi": "Trong Phòng Trăng Nhợt, các mảnh vẫn cách nhau bằng những khoảng sáng. Dấu vật dẫn có thể giải thích cách giữ chúng tách biệt.",
+      "en": "In the Pale Moon Chamber, spaces of light still separate the fragments. The vessel mark may help explain how that separation is maintained."
+    },
+    "selene_07.line.008": {
+      "vi": "Mình đừng ghép mọi thứ ngay. Tôi muốn hiểu những ranh giới này đang giữ điều gì trước đã.",
+      "en": "Let us not join everything just yet. I want to understand what these boundaries are keeping apart first."
+    },
+    "selene_07.line.009": {
+      "vi": "Các dấu vết cho thấy Selene từng là vật dẫn. Nhận diện làm thực thể mạnh lên; nhớ hoàn chỉnh có thể dựng lại nó.",
+      "en": "The marks show Selene became a vessel. Recognition strengthens the entity; complete remembrance can reconstruct it."
+    },
+    "selene_07.line.010": {
+      "vi": "Dấu vật dẫn có liên quan đến điều mình đã thấy trong phòng nghi lễ. Mình đối chiếu hai nơi trước nhé.",
+      "en": "The vessel mark may connect to what we saw in the ritual chamber. Let us compare them first."
+    },
+    "selene_07.line.011": {
+      "vi": "Selene cố ý chia ký ức thành những mảnh chưa thể hợp nhất, giữ thực thể ở trạng thái không hoàn chỉnh.",
+      "en": "Selene deliberately split her memories into fragments that could not merge, keeping the entity incomplete."
+    },
+    "selene_07.line.012": {
+      "vi": "Khoảng cách giữa các mảnh có vẻ được giữ rất cẩn thận. Thử tìm hiểu vì sao chúng chưa hòa vào nhau.",
+      "en": "The spaces between these fragments seem carefully maintained. Let us find out why they have not merged."
+    },
+    "selene_07.line.013": {
+      "vi": "Tôi không đánh bại nó bằng cách mạnh hơn. Tôi đã không để nó có đủ một hình hài.",
+      "en": "I did not defeat it by being stronger. I kept it from becoming whole."
+    },
+    "selene_07.line.014": {
+      "vi": "Theo bạn, quá khứ có quyền định nghĩa Selene đến đâu?",
+      "en": "How much of Selene should her past define?"
+    },
+    "selene_07.line.015": {
+      "vi": "Cô là những lựa chọn mình đang làm.",
+      "en": "You are the choices you make now."
+    },
+    "selene_07.line.016": {
+      "vi": "Vậy lựa chọn tiếp theo của tôi vẫn còn ý nghĩa.",
+      "en": "Then my next choice still matters."
+    },
+    "selene_07.line.017": {
+      "vi": "Quá khứ vẫn là một phần của cô.",
+      "en": "The past is still part of you."
+    },
+    "selene_07.line.018": {
+      "vi": "Tôi sẽ không giả vờ nó chưa từng có.",
+      "en": "I will not pretend it never existed."
+    },
+    "selene_07.line.019": {
+      "vi": "Cả hai đều là cô, nhưng không điều nào sở hữu toàn bộ cô.",
+      "en": "Both are you, but neither owns all of you."
+    },
+    "selene_07.line.020": {
+      "vi": "Một phần của tôi… không phải toàn bộ tôi. Tôi muốn giữ lấy điều đó.",
+      "en": "A part of me... not all of me. I want to hold on to that."
+    },
+    "selene_07.line.021": {
+      "vi": "Selene đứng trước vòng trăng lớn với rune xanh; cảnh nhớ tiến gần đôi mắt cô.",
+      "en": "Selene stands before an immense lunar seal with blue runes; the memory draws closer to her eyes."
+    },
+    "selene_07.line.022": {
+      "vi": "Tiếng vọng Elarion cảnh báo: “Nếu nó tồn tại hoàn chỉnh bên trong cô, chúng ta sẽ không tách được hai người.” Selene trẻ đáp: “Vậy tôi sẽ không để nó tồn tại hoàn chỉnh trong tôi.” Lời ấy giải thích ranh giới giữa các mảnh, không phải thao tác tách mảnh nhìn rõ trong phim.",
+      "en": "Elarion’s echo warns, “If it exists fully inside you, we will not be able to separate you.” Young Selene replies, “Then I will not let it exist fully inside me.” The words explain the boundaries between fragments; the film does not clearly show the splitting itself."
+    },
+    "selene_07.line.023": {
+      "vi": "Tôi đã chia ký ức để nó không thành hình. Không phải để phủ nhận mình đã sống.",
+      "en": "I split the memories so it could not take shape. Not to deny that I had lived."
+    },
+    "selene_07.line.024": {
+      "vi": "M07 xác nhận Vầng Trăng Nhợt tồn tại qua ký ức; Selene chia ký ức để nó không hoàn chỉnh. Nhớ lại và hợp nhất không nhất thiết là cùng một việc.",
+      "en": "M07 confirmed the Pale Moon exists through memory; Selene split memories to keep it incomplete. Remembering and merging need not be the same."
+    },
+    "selene_07.line.025": {
+      "vi": "Ký ức không chỉ giữ quá khứ: chúng còn mang Vầng Trăng Nhợt. Selene giữ các mảnh tách rời để thực thể không hoàn chỉnh.",
+      "en": "Memories carry the Pale Moon as well as the past. Selene kept them separate to prevent the entity becoming complete."
+    },
+    "selene_07.line.026": {
+      "vi": "Mảnh cuối sẽ trả lại toàn bộ Selene, hay trả lại cả hiểm nguy trong cô?",
+      "en": "Will the last fragment restore Selene, or also restore the danger within her?"
+    },
+    "selene_07.expanded.temple_boundary": {
+      "vi": "Bốn rãnh từ bàn thờ nối tới các vòng không chạm nhau. Mỗi vật có một vị trí riêng.",
+      "en": "Four grooves lead from the altar to circles that never touch. Each object has its own place."
+    },
+    "selene_07.expanded.temple_boundary.socket_traces": {
+      "vi": "Bụi ngắt ở từng hõm; không có lối tắt qua tâm. Cơ chế từng giữ các vật tách rời.",
+      "en": "Dust breaks at each socket; no shortcut crosses the center. The mechanism kept its objects separate."
+    },
+    "selene_07.expanded.temple_boundary.boundary_warning": {
+      "vi": "Dấu đóng nằm ngoài vành. Mở lối không nhất thiết là mở thứ đang được giữ bên trong.",
+      "en": "The closure mark lies on the rim. Opening a passage need not release what is held within."
+    },
+    "selene_07.expanded.temple_boundary.boundary_warning.speech": {
+      "vi": "Có lẽ mình mang chúng tới để giữ thứ gì đó đóng lại.",
+      "en": "Perhaps we brought them here to keep something closed."
+    },
+    "selene_07.expanded.manifestation": {
+      "vi": "Không gian trắng xanh mở ra. Các mảnh nhớ bắt đầu trôi về cùng một điểm.",
+      "en": "A blue-white space opens. The fragments begin drifting toward one point."
+    },
+    "selene_07.expanded.manifestation.gathering_fragments": {
+      "vi": "Một hình nữ trắng chưa rõ mặt tụ giữa các mảnh. Selene ôm đầu khi những cảnh đã biết chớp quanh cô.",
+      "en": "A pale female form without a complete face gathers among the fragments. Selene holds her head as familiar scenes flicker around her."
+    },
+    "selene_07.expanded.manifestation.separate_fragments": {
+      "vi": "Selene đẩy các mảnh tách ra bằng phép. Bóng hình tan khi đường sáng lại hiện giữa chúng.",
+      "en": "Selene pushes the fragments apart with magic. The form fades as lines of light reappear between them."
+    },
+    "selene_07.expanded.manifestation.separate_fragments.speech": {
+      "vi": "Nó không muốn tôi nhớ. Nó muốn được hoàn chỉnh.",
+      "en": "It does not want me to remember. It wants to become whole."
+    }
+  },
+  "required_inspections": [
+    "selene_07_altar",
+    "selene_07_vessel",
+    "selene_07_split",
+    "selene_07_socket_traces",
+    "selene_07_boundary_warning",
+    "selene_07_gathering_fragments",
+    "selene_07_separate_fragments"
+  ],
+  "summary_key": "selene_07.line.025",
+  "reflection_key": "selene_07.line.026"
+}

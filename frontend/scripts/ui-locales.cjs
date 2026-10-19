@@ -56,6 +56,7 @@ scan(path.join(root, "src/assistant/config.ts"));
 walk(path.join(root, "src/assistant"));
 walk(path.join(root, "src/roleplay"));
 scan(path.join(root, "src/EmojiPicker.tsx"));
+for(const [source,row] of Object.entries(JSON.parse(fs.readFileSync(path.join(root,"src/worlds/worldUiCopy.json"),"utf8")))) add(source,row.en);
 for (const [source, english] of Object.entries({
   "Trò chuyện với {name}": "Chat with {name}",
   "{name} đang nhập...": "{name} is typing...",
@@ -104,6 +105,7 @@ function save() {
 async function main() {
   if (!rewrite) save();
   const missing = pending();
+  if(args.has("--list-missing")){console.log(JSON.stringify(missing,null,2));return;}
   if (!missing.length) { console.log("UI translations complete: " + targets.length + " strings × "+languages.length+" languages."); return; }
   const key = process.env.UI_I18N_API_KEY || process.env.AIMP_API_KEY || process.env.LLM_API_KEY;
   const update = rewrite || args.has("--update") || (args.has("--build") && process.env.UI_I18N_API_KEY);

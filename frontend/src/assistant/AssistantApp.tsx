@@ -1,7 +1,9 @@
+import { WorldEntry } from "../worlds/entry";
 import {DivinationChooser,TarotSpread} from "./DivinationExperience";
 import { afterUiLanguagePaint, loadCompleteUiTranslations, setUiLanguageGate, uiLanguageErrorMessage } from "../uiLocales";
 import { reportFirstChunk } from "../chatTiming";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState } from "react";
+const EmbeddedWorlds = lazy(() => import("../worlds/WorldApp"));
 import {
   localizeInterface,
   setRuntimeTranslations,
@@ -15,6 +17,8 @@ import {
 import { AutoGrowTextarea, Icon, ModeAvatar, ModeIllustration } from "../ui";
 import { EmojiPicker } from "../EmojiPicker";
 import { AssistantMarkdown } from "./AssistantMarkdown";
+import "./home-preparation.css";
+import {prepareCompanionHome,prepareWorldInBackground} from "./prepareCompanionHome";
 import { RolePlayLoadingCat } from "../roleplay/RolePlayLoadingCat";
 import type { Account, Chat, WorkspaceRoom, WorkspaceCharacter, ChatMessage, UploadedFile, AssistantModel, SavedMemory, AssistantReminder, Mode } from "./types";
 import { MODES as BASE_MODES, STARTERS as BASE_STARTERS, EN } from "./config";
@@ -60,6 +64,13 @@ export default function AssistantApp({ landingOnly = false, }: {
     landingOnly?: boolean;
 }) {
     const [account, setAccount] = useState<Account | null>(null), [ready, setReady] = useState(false), [authMode, setAuthMode] = useState<"login" | "register">("login"), [username, setUsername] = useState(""), [password, setPassword] = useState(""), [lampOn, setLampOn] = useState(false), [owlAway, setOwlAway] = useState(false), [loginTheme, setLoginTheme] = useState<"light" | "dark">(() => localStorage.getItem("preferred_theme") === "dark" ? "dark" : "light"), [displayName, setDisplayName] = useState(""), [language, setLanguage] = useState<UiLanguage>(storedLanguage), [translations, setTranslations] = useState<Record<string, string>>({}), [error, setError] = useState("");
+    useEffect(()=>{
+        if(!landingOnly||!account)return;
+        let live=true;
+        // Restore the original entry behaviour: authentication is the only home gate.
+        void prepareCompanionHome(account.id).catch(()=>{}).finally(()=>{if(live)prepareWorldInBackground();});
+        return()=>{live=false;};
+    },[landingOnly,account?.id]);
     type Presentation = { title?: string; slogan?: string; description?: string; greeting?: string; starters?: string[]; visible?: boolean };
     const [cmsProfiles, setCmsProfiles] = useState<Record<string, Presentation>>({});
     // Refresh public CMS presentation without exposing private model configuration.
@@ -94,6 +105,23 @@ export default function AssistantApp({ landingOnly = false, }: {
         const requested = new URLSearchParams(window.location.search).get("mode");
         return MODES.some((item) => item.id === requested) ? requested as Mode : "assistant_general";
     }), [chats, setChats] = useState<Chat[]>([]), [chat, setChat] = useState<Chat | null>(null), [messages, setMessages] = useState<ChatMessage[]>([]), [roomFiles, setRoomFiles] = useState<UploadedFile[]>([]), [text, setText] = useState(""), [file, setFile] = useState<File | null>(null), [availableModels, setAvailableModels] = useState<AssistantModel[]>([]), [selectedModel, setSelectedModel] = useState(""), [busy, setBusy] = useState(false), [sidebarOpen, setSidebarOpen] = useState(false);
+    const [worldsOpen,setWorldsOpen]=useState(false),[worldsVisited,setWorldsVisited]=useState(false),[worldCharacter,setWorldCharacter]=useState<string>(),[worldChapter,setWorldChapter]=useState<string>();
+    const sidebarBeforeWorlds=useRef<boolean|null>(null);
+    function closeWorlds(){
+        setWorldsOpen(false);
+        if(sidebarBeforeWorlds.current!==null){setWorkspaceCollapsed(sidebarBeforeWorlds.current);sidebarBeforeWorlds.current=null;}
+    }
+    function changeWorkspaceSidebar(collapsed:boolean){
+        setWorkspaceCollapsed(collapsed);
+        // Worlds changes are temporary; the regular AIBox preference is retained.
+        if(!worldsOpen)localStorage.setItem("avibi_workspace_collapsed",String(collapsed));
+        setWorkspaceAccountMenuOpen(false);
+    }
+    function openWorlds(characterId?:string,chapterId?:string){
+        if(!worldsOpen){sidebarBeforeWorlds.current=workspaceCollapsed;setWorkspaceCollapsed(true);}
+        setWorldChapter(chapterId);setWorldCharacter(characterId);setWorldsVisited(true);setWorldsOpen(true);setWorkspaceAccountMenuOpen(false);
+        workspaceFrameRefs.current.forEach(frame=>frame?.contentWindow?.postMessage({type:"avibi-workspace-pause"},window.location.origin));
+    }
     const [workspacePath, setWorkspacePath] = useState("/ai-assistant?workspace=1");
     useEffect(() => {
         if (landingOnly)
@@ -199,6 +227,7 @@ export default function AssistantApp({ landingOnly = false, }: {
         }, remaining);
     }
     function navigateWorkspace(path: string) {
+        closeWorlds();
         setWorkspaceAccountMenuOpen(false);
         setWorkspacePath(path);
         desiredWorkspacePath.current = path;
@@ -313,6 +342,10 @@ export default function AssistantApp({ landingOnly = false, }: {
         const onFrameReady = (event: MessageEvent) => {
             if (event.origin !== window.location.origin)
                 return;
+            if(event.data?.type==="avibi-worlds-open"){
+                if(!workspaceFrameRefs.current.some(frame=>frame?.contentWindow===event.source))return;
+                const id=event.data.characterId;openWorlds(typeof id==="string"?id:undefined,typeof event.data.chapterId==="string"?event.data.chapterId:undefined);return;
+            }
             if (event.data?.type === "avibi-workspace-history-updated") {
                 const sourceIndex = workspaceFrameRefs.current.findIndex(frame => frame?.contentWindow === event.source);
                 if (sourceIndex < 0) return;
@@ -714,6 +747,7 @@ export default function AssistantApp({ landingOnly = false, }: {
         if (landingOnly || window.parent === window)
             return;
         const onWorkspaceNavigation = (event: MessageEvent) => {
+            if(event.origin===window.location.origin&&event.source===window.parent&&event.data?.type==="avibi-workspace-pause"){cancelAssistantStream();window.speechSynthesis?.cancel();return;}
             if (event.origin !== window.location.origin || event.data?.type !== "avibi-workspace-navigate")
                 return;
             setDivinationChooser(false);
@@ -1143,7 +1177,9 @@ export default function AssistantApp({ landingOnly = false, }: {
 
         <RolePlayLoadingCat />
 
-        <b>{tr("Đang tải…")}</b>
+        <b>{tr("Chờ chút nhé, mình đang chuẩn bị đây!")}</b>
+
+
 
       </div>);
     if (!account)
@@ -1350,12 +1386,13 @@ export default function AssistantApp({ landingOnly = false, }: {
           <section className="platformWorkspaceGroup">
 
             <small>{tr("Không gian")}</small>
+            <WorldEntry onOpen={openWorlds} active={worldsOpen}/>
 
-            <button className={assistantSpaceActive ? "active" : ""} onClick={() => navigateWorkspace("/ai-assistant?workspace=1")} title={tr("Trợ lý AI")}><span className="platformWorkspaceNavIcon" aria-hidden="true"><span className="wsDot as"/></span><span className="platformWorkspaceNavLabel">{tr("Trợ lý AI")}</span></button>
+            <button className={!worldsOpen && assistantSpaceActive ? "active" : ""} onClick={() => navigateWorkspace("/ai-assistant?workspace=1")} title={tr("Trợ lý AI")}><span className="platformWorkspaceNavIcon" aria-hidden="true"><span className="wsDot as"/></span><span className="platformWorkspaceNavLabel">{tr("Trợ lý AI")}</span></button>
 
-            <button className={chatBotSpaceActive ? "active" : ""} onClick={() => navigateWorkspace("/role-play-ai?workspace=1&view=characters")} title={tr("Chat Bot AI")}><span className="platformWorkspaceNavIcon" aria-hidden="true"><span className="wsDot rp"/></span><span className="platformWorkspaceNavLabel">{tr("Chat Bot AI")}</span></button>
+            <button className={!worldsOpen && chatBotSpaceActive ? "active" : ""} onClick={() => navigateWorkspace("/role-play-ai?workspace=1&view=characters")} title={tr("Chat Bot AI")}><span className="platformWorkspaceNavIcon" aria-hidden="true"><span className="wsDot rp"/></span><span className="platformWorkspaceNavLabel">{tr("Chat Bot AI")}</span></button>
 
-            <button className={inCreate ? "active" : ""} onClick={() => navigateWorkspace("/role-play-ai?workspace=1&view=create&createMode=custom")} title={tr("Sáng tạo nhân vật")}><span className="platformWorkspaceNavIcon" aria-hidden="true"><span className="wsDot warn"/></span><span className="platformWorkspaceNavLabel">{tr("Sáng tạo nhân vật")}</span></button>
+            <button className={!worldsOpen && inCreate ? "active" : ""} onClick={() => navigateWorkspace("/role-play-ai?workspace=1&view=create&createMode=custom")} title={tr("Sáng tạo nhân vật")}><span className="platformWorkspaceNavIcon" aria-hidden="true"><span className="wsDot warn"/></span><span className="platformWorkspaceNavLabel">{tr("Sáng tạo nhân vật")}</span></button>
 
           </section>
 
@@ -1412,13 +1449,13 @@ export default function AssistantApp({ landingOnly = false, }: {
 
             </button>
 
-            <button className="platformWorkspaceCollapse" onClick={() => { const next = !workspaceCollapsed; setWorkspaceCollapsed(next); localStorage.setItem("avibi_workspace_collapsed", String(next)); setWorkspaceAccountMenuOpen(false); }} aria-label={tr(workspaceCollapsed ? "Mở rộng thanh công cụ" : "Thu gọn thanh công cụ")} title={tr(workspaceCollapsed ? "Mở rộng thanh công cụ" : "Thu gọn thanh công cụ")}><Icon n={workspaceCollapsed ? "angle-small-right" : "angle-small-left"}/></button>
+            <button className="platformWorkspaceCollapse" onClick={() => { changeWorkspaceSidebar(!workspaceCollapsed); }} aria-label={tr(workspaceCollapsed ? "Mở rộng thanh công cụ" : "Thu gọn thanh công cụ")} title={tr(workspaceCollapsed ? "Mở rộng thanh công cụ" : "Thu gọn thanh công cụ")}><Icon n={workspaceCollapsed ? "angle-small-right" : "angle-small-left"}/></button>
 
           </section>
 
         </aside>
 
-        {workspaceCollapsed && <button className="platformWorkspaceRestore" onClick={() => { setWorkspaceCollapsed(false); localStorage.setItem("avibi_workspace_collapsed", "false"); }} aria-label={tr("Mở rộng thanh công cụ")} title={tr("Mở rộng thanh công cụ")}><Icon n="angle-small-right"/></button>}
+        {workspaceCollapsed && <button className="platformWorkspaceRestore" onClick={() => { changeWorkspaceSidebar(false); }} aria-label={tr("Mở rộng thanh công cụ")} title={tr("Mở rộng thanh công cụ")}><Icon n="angle-small-right"/></button>}
 
         {workspaceAccountMenuOpen && <>
 
@@ -1447,8 +1484,9 @@ export default function AssistantApp({ landingOnly = false, }: {
         </>}
 
         <section className="platformWorkspaceContent">
+          {worldsVisited&&<div className="platformWorldsPanel" hidden={!worldsOpen}><Suspense fallback={<div role="status">✧</div>}><EmbeddedWorlds key={account.id} active={worldsOpen} embedded characterId={worldCharacter} chapterId={worldChapter} hostTheme={account.theme} onBack={closeWorlds} onChat={path=>{closeWorlds();navigateWorkspace(path);}}/></Suspense></div>}
 
-          {workspaceFramePaths.map((framePath, frameIndex) => framePath !== "about:blank" && (<iframe key={frameIndex} ref={(node) => { workspaceFrameRefs.current[frameIndex] = node; }} title={framePath.includes("role-play-ai") ? "Chat Bot AI" : "Trợ lý AI"} allow="autoplay" src={framePath} className={activeWorkspaceFrame === frameIndex ? "active" : "inactive"} aria-hidden={activeWorkspaceFrame !== frameIndex} onLoad={(event) => {
+          {workspaceFramePaths.map((framePath, frameIndex) => framePath !== "about:blank" && (<iframe key={frameIndex} ref={(node) => { workspaceFrameRefs.current[frameIndex] = node; }} style={worldsOpen?{display:"none"}:undefined} title={framePath.includes("role-play-ai") ? "Chat Bot AI" : "Trợ lý AI"} allow="autoplay" src={framePath} className={activeWorkspaceFrame === frameIndex ? "active" : "inactive"} aria-hidden={worldsOpen || activeWorkspaceFrame !== frameIndex} onLoad={(event) => {
                     try {
                         const doc = event.currentTarget.contentDocument;
                         if (doc?.documentElement.dataset.workspaceReady === "true" && pendingWorkspaceFrame.current === frameIndex) {
@@ -1467,7 +1505,7 @@ export default function AssistantApp({ landingOnly = false, }: {
                     catch { }
                 }}/>))}
 
-          {!workspaceFrameReady && <div className="platformWorkspaceLoading withCat" role={workspaceLoadError ? "alert" : "status"} aria-live="polite">
+          {!worldsOpen && !workspaceFrameReady && <div className="platformWorkspaceLoading withCat" role={workspaceLoadError ? "alert" : "status"} aria-live="polite">
             {workspaceLoadError ? <div className="workspaceLoadFailure">
               <b data-no-translate="true" translate="no">{"Could not open workspace. Please retry."}</b>
               <button type="button" onClick={() => window.location.reload()}>{tr("Thử lại")}</button>

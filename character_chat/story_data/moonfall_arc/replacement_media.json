@@ -1,0 +1,683 @@
+{
+  "assets": [
+    {
+      "id": "replacement_ch01_ancient_gate",
+      "path": "backgrounds/echoes_bg_16x9/ch01_ancient_gate.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "replacement_ch01_ruined_path",
+      "path": "backgrounds/echoes_bg_16x9/ch01_ruined_path.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "replacement_ch01_outer_ruins",
+      "path": "backgrounds/echoes_bg_16x9/ch01_outer_ruins.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "replacement_ch02_inner_corridor",
+      "path": "backgrounds/echoes_bg_16x9/ch02_inner_corridor.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "replacement_ch02_moonflower_courtyard",
+      "path": "backgrounds/echoes_bg_16x9/ch02_moonflower_courtyard.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "replacement_ch02_archive",
+      "path": "backgrounds/echoes_bg_16x9/ch02_archive.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "replacement_ch03_spiral_staircase",
+      "path": "backgrounds/echoes_bg_16x9/ch03_spiral_staircase.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "replacement_ch03_ritual_chamber",
+      "path": "backgrounds/echoes_bg_16x9/ch03_ritual_chamber.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "replacement_ch04_academy_intact",
+      "path": "backgrounds/echoes_bg_16x9/ch04_academy_intact.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "replacement_ch04_collapsing_corridor",
+      "path": "backgrounds/echoes_bg_16x9/ch04_collapsing_corridor.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "replacement_ch05_witch_house",
+      "path": "backgrounds/echoes_bg_16x9/ch05_witch_house.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "replacement_ch06_deep_vault",
+      "path": "backgrounds/echoes_bg_16x9/ch06_deep_vault.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "replacement_ch06_mirror_room",
+      "path": "backgrounds/echoes_bg_16x9/ch06_mirror_room.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "replacement_ch07_moon_temple",
+      "path": "backgrounds/echoes_bg_16x9/ch07_moon_temple.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "replacement_ch07_pale_moon_chamber",
+      "path": "backgrounds/echoes_bg_16x9/ch07_pale_moon_chamber.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "replacement_ch08_memory_space",
+      "path": "backgrounds/echoes_bg_16x9/ch08_memory_space.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "replacement_ch02_rooftop",
+      "path": "backgrounds/echoes_bg_16x9/ch02_rooftop.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "replacement_ch08_final_chamber",
+      "path": "backgrounds/echoes_bg_16x9/ch08_final_chamber.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "story_ev_ch1_arrow_trap_v6",
+      "path": "backgrounds/echoes_videos/videos/final/events/ev_ch1_arrow_trap_v6.webm",
+      "type": "VIDEO",
+      "duration": 4.87,
+      "fallback": "official_bg_ch01_trap_passage"
+    },
+    {
+      "id": "story_ev_ch2_echo_girl",
+      "path": "backgrounds/echoes_videos/videos/final/events/echo_girl.webm",
+      "type": "VIDEO",
+      "duration": 10,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "story_ev_ch4_collapse",
+      "path": "backgrounds/echoes_videos/videos/final/events/academy_collapse_selene.webm",
+      "type": "VIDEO",
+      "duration": 10,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "memory_video_01",
+      "path": "backgrounds/echoes_videos/videos/final/memories/memory_01.webm",
+      "type": "VIDEO",
+      "duration": 10.03,
+      "fallback": "memory_location_01"
+    },
+    {
+      "id": "memory_video_02",
+      "path": "backgrounds/echoes_videos/videos/final/memories/memory_02.webm",
+      "type": "VIDEO",
+      "duration": 10.03,
+      "fallback": "memory_location_02"
+    },
+    {
+      "id": "memory_video_03",
+      "path": "backgrounds/echoes_videos/videos/final/memories/memory_03.webm",
+      "type": "VIDEO",
+      "duration": 10.03,
+      "fallback": "memory_location_03"
+    },
+    {
+      "id": "memory_video_04",
+      "path": "backgrounds/echoes_videos/videos/final/memories/memory_04.webm",
+      "type": "VIDEO",
+      "duration": 10.03,
+      "fallback": "memory_location_04"
+    },
+    {
+      "id": "memory_video_05",
+      "path": "backgrounds/echoes_videos/videos/final/memories/memory_05.webm",
+      "type": "VIDEO",
+      "duration": 10.03,
+      "fallback": "memory_location_05"
+    },
+    {
+      "id": "memory_video_06",
+      "path": "backgrounds/echoes_videos/videos/final/memories/memory_06.webm",
+      "type": "VIDEO",
+      "duration": 10.03,
+      "fallback": "memory_location_06"
+    },
+    {
+      "id": "memory_video_07",
+      "path": "backgrounds/echoes_videos/videos/final/memories/memory_07.webm",
+      "type": "VIDEO",
+      "duration": 10.03,
+      "fallback": "memory_location_07"
+    },
+    {
+      "id": "memory_video_08",
+      "path": "backgrounds/echoes_videos/videos/final/memories/memory_08.webm",
+      "type": "VIDEO",
+      "duration": 10.03,
+      "fallback": "memory_location_08"
+    },
+    {
+      "id": "story_echo_girl",
+      "path": "backgrounds/echoes_videos/videos/final/events/echo_girl.webm",
+      "type": "VIDEO",
+      "duration": 6.02,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "story_seal_trap",
+      "path": "backgrounds/echoes_videos/videos/final/events/seal_trap.webm",
+      "type": "VIDEO",
+      "duration": 10.03,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "story_academy_collapse",
+      "path": "backgrounds/echoes_videos/videos/final/events/academy_collapse_selene.webm",
+      "type": "VIDEO",
+      "duration": 10,
+      "fallback": "official_bg_ch04_collapsing_corridor"
+    },
+    {
+      "id": "story_archive_awakens",
+      "path": "backgrounds/echoes_videos/videos/final/events/archive_awakens.webm",
+      "type": "VIDEO",
+      "duration": 6.02,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "story_mirror_desync",
+      "path": "backgrounds/echoes_videos/videos/final/events/mirror_desync.webm",
+      "type": "VIDEO",
+      "duration": 6.02,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "story_pale_moon_manifestation",
+      "path": "backgrounds/echoes_videos/videos/final/events/pale_moon_manifestation.webm",
+      "type": "VIDEO",
+      "duration": 7.05,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "enter_ruins_video",
+      "path": "backgrounds/echoes_videos/videos/final/transitions/gate_opens.webm",
+      "type": "VIDEO",
+      "duration": 5.04,
+      "fallback": "ancient_gate"
+    },
+    {
+      "id": "ending_video_restore",
+      "path": "backgrounds/echoes_videos/videos/final/endings/restore.webm",
+      "type": "VIDEO",
+      "duration": 10.03,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "ending_video_transfer",
+      "path": "backgrounds/echoes_videos/videos/final/endings/transfer.webm",
+      "type": "VIDEO",
+      "duration": 10.03,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "ending_video_hidden",
+      "path": "backgrounds/echoes_videos/videos/final/endings/hidden.webm",
+      "type": "VIDEO",
+      "duration": 10.03,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "ending_video_release",
+      "path": "backgrounds/echoes_videos/videos/final/endings/release.webm",
+      "type": "VIDEO",
+      "duration": 6.02,
+      "fallback": "memory_space"
+    },
+    {
+      "id": "moonfall_overview",
+      "path": "backgrounds/echoes_bg_16x9/ch01_outer_ruins.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "moonfall_outer_ruins",
+      "path": "backgrounds/echoes_bg_16x9/ch01_outer_ruins.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "ancient_gate",
+      "path": "backgrounds/echoes_bg_16x9/ch01_ancient_gate.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "inner_ruins",
+      "path": "backgrounds/echoes_bg_16x9/ch02_inner_corridor.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "ancient_archive",
+      "path": "backgrounds/echoes_bg_16x9/ch05_archive_records.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "moonfall_past",
+      "path": "backgrounds/echoes_bg_16x9/ch04_academy_intact.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "blackwood_forest",
+      "path": "backgrounds/echoes_bg_16x9/ch05_witch_house.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "witch_area",
+      "path": "backgrounds/echoes_bg_16x9/ch05_witch_house.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "underground_chamber",
+      "path": "backgrounds/echoes_bg_16x9/ch03_ritual_chamber.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "deep_vault",
+      "path": "backgrounds/echoes_bg_16x9/ch06_deep_vault.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "moon_temple",
+      "path": "backgrounds/echoes_bg_16x9/ch07_moon_temple.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "memory_space",
+      "path": "backgrounds/echoes_bg_16x9/ch08_memory_space.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "map_world_select",
+      "path": "backgrounds/echoes_bg_16x9/ch07_between_memories.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "chapter_complete_background",
+      "path": "backgrounds/echoes_bg_16x9/ch08_memory_space.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "moonbrook_rooftop",
+      "path": "backgrounds/echoes_bg_16x9/ch02_rooftop.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "council_chamber",
+      "path": "backgrounds/echoes_bg_16x9/ch03_ritual_chamber.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "memory_corridor",
+      "path": "backgrounds/echoes_bg_16x9/ch06_hall_of_mirrors.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "pale_moon_chamber",
+      "path": "backgrounds/echoes_bg_16x9/ch07_pale_moon_chamber.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "memory_location_01",
+      "path": "backgrounds/echoes_bg_16x9/ch04_corridor_aged.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "memory_location_02",
+      "path": "backgrounds/echoes_bg_16x9/ch02_rooftop.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "memory_location_03",
+      "path": "backgrounds/echoes_bg_16x9/ch03_ritual_chamber.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "memory_location_04",
+      "path": "backgrounds/echoes_bg_16x9/ch04_collapsed_aftermath.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "memory_location_05",
+      "path": "backgrounds/echoes_bg_16x9/ch05_archive_records.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "memory_location_06",
+      "path": "backgrounds/echoes_bg_16x9/ch06_deep_vault.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "memory_location_07",
+      "path": "backgrounds/echoes_bg_16x9/ch07_pale_moon_space.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "memory_location_08",
+      "path": "backgrounds/echoes_bg_16x9/ch02_rooftop.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "official_bg_ch01_ancient_gate",
+      "path": "backgrounds/echoes_bg_16x9/ch01_ancient_gate.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "official_bg_ch01_outer_ruins",
+      "path": "backgrounds/echoes_bg_16x9/ch01_outer_ruins.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "official_bg_ch01_ruined_path",
+      "path": "backgrounds/echoes_bg_16x9/ch01_ruined_path.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "official_bg_ch01_trap_passage",
+      "path": "backgrounds/echoes_bg_16x9/ch01_trap_passage.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "official_bg_ch02_archive",
+      "path": "backgrounds/echoes_bg_16x9/ch02_archive.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "official_bg_ch02_inner_corridor",
+      "path": "backgrounds/echoes_bg_16x9/ch02_inner_corridor.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "official_bg_ch02_moonflower_courtyard",
+      "path": "backgrounds/echoes_bg_16x9/ch02_moonflower_courtyard.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "official_bg_ch02_rooftop",
+      "path": "backgrounds/echoes_bg_16x9/ch02_rooftop.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "official_bg_ch03_ritual_chamber",
+      "path": "backgrounds/echoes_bg_16x9/ch03_ritual_chamber.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "official_bg_ch03_spiral_staircase",
+      "path": "backgrounds/echoes_bg_16x9/ch03_spiral_staircase.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "official_bg_ch04_academy_intact",
+      "path": "backgrounds/echoes_bg_16x9/ch04_academy_intact.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "official_bg_ch04_collapsed_aftermath",
+      "path": "backgrounds/echoes_bg_16x9/ch04_collapsed_aftermath.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "official_bg_ch04_collapsing_corridor",
+      "path": "backgrounds/echoes_bg_16x9/ch04_collapsing_corridor.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "official_bg_ch04_corridor_aged",
+      "path": "backgrounds/echoes_bg_16x9/ch04_corridor_aged.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "official_bg_ch05_archive_records",
+      "path": "backgrounds/echoes_bg_16x9/ch05_archive_records.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "official_bg_ch05_archive_security",
+      "path": "backgrounds/echoes_bg_16x9/ch05_archive_security.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "official_bg_ch05_witch_house",
+      "path": "backgrounds/echoes_bg_16x9/ch05_witch_house.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "official_bg_ch06_deep_vault",
+      "path": "backgrounds/echoes_bg_16x9/ch06_deep_vault.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "official_bg_ch06_hall_of_mirrors",
+      "path": "backgrounds/echoes_bg_16x9/ch06_hall_of_mirrors.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "official_bg_ch06_mirror_room",
+      "path": "backgrounds/echoes_bg_16x9/ch06_mirror_room.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "official_bg_ch07_between_memories",
+      "path": "backgrounds/echoes_bg_16x9/ch07_between_memories.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "official_bg_ch07_moon_temple",
+      "path": "backgrounds/echoes_bg_16x9/ch07_moon_temple.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "official_bg_ch07_pale_moon_chamber",
+      "path": "backgrounds/echoes_bg_16x9/ch07_pale_moon_chamber.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "official_bg_ch07_pale_moon_space",
+      "path": "backgrounds/echoes_bg_16x9/ch07_pale_moon_space.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "official_bg_ch08_final_chamber",
+      "path": "backgrounds/echoes_bg_16x9/ch08_final_chamber.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "official_bg_ch08_final_chamber_secret",
+      "path": "backgrounds/echoes_bg_16x9/ch08_final_chamber_secret.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    },
+    {
+      "id": "official_bg_ch08_memory_space",
+      "path": "backgrounds/echoes_bg_16x9/ch08_memory_space.webp",
+      "type": "IMAGE",
+      "duration": 0,
+      "fallback": ""
+    }
+  ],
+  "visual_events": {
+    "ARROW_TRAP": {
+      "cinematic": "story_ev_ch1_arrow_trap_v6"
+    },
+    "ECHO_GIRL": {
+      "cinematic": "story_echo_girl"
+    },
+    "ACADEMY_COLLAPSE": {
+      "cinematic": "story_academy_collapse"
+    },
+    "SEAL_TRAP": {
+      "cinematic": "story_seal_trap"
+    },
+    "ARCHIVE_AWAKENS": {
+      "cinematic": "story_archive_awakens"
+    },
+    "MIRROR_DESYNC": {
+      "cinematic": "story_mirror_desync"
+    },
+    "PALE_MOON_MANIFESTATION": {
+      "cinematic": "story_pale_moon_manifestation"
+    }
+  },
+  "ending_videos": {
+    "remember_me": "ending_video_restore",
+    "new_keeper": "ending_video_transfer",
+    "let_me_forget": "ending_video_release"
+  }
+}

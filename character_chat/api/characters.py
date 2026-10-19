@@ -453,6 +453,8 @@ def bind_mirror_character(runtime: ModuleType) -> None:
         data["id"] = character_id
         c = runtime.CharacterSpec.model_validate(data)
         runtime.enforce_character_policy(c, previous=runtime.spec(row))
+        from ..publication_review import withdraw_on_edit
+        withdraw_on_edit(db, character_id)
         row.name = c.name
         row.spec = c.model_dump_json()
         row.updated_at = runtime.now()
@@ -473,6 +475,8 @@ def bind_mirror_character(runtime: ModuleType) -> None:
         db: runtime.DBSession = runtime.Depends(runtime.db_session),
         user: str = runtime.Depends(runtime.current_user),
     ):
+        if data.get("is_public") and runtime.os.getenv("COMMUNITY_CHARACTER_PUBLICATION_ENABLED","false").lower()!="true":
+            raise runtime.HTTPException(403, "Hiện chỉ nhân vật hệ thống được công khai. Nhân vật của bạn được lưu riêng tư.")
         character = runtime.owned(db, runtime.Character, character_id, user)
         row = db.get(runtime.CharacterPublication, character_id)
         tags = runtime.json.loads(row.tags) if row else []
@@ -496,8 +500,19 @@ def bind_mirror_character(runtime: ModuleType) -> None:
                 character_id=character_id, creator_user_id=user
             )
             db.add(row)
+        from ..publication_review import record, review
+        if "is_public" in data and type(data["is_public"]) is not bool:
+            raise runtime.HTTPException(422, "Expected boolean is_public")
         if "is_public" in data:
-            row.is_public = int(bool(data["is_public"]))
+            if data["is_public"] and runtime.spec(character).creation_type == "preset":
+                raise runtime.HTTPException(422, "System characters cannot be republished")
+            if data["is_public"] and db.get(runtime.AppSetting, "character_clone_source:" + character_id):
+                raise runtime.HTTPException(422, "Publish your own characters, not library copies")
+            row.is_public = 0
+            record(db, character_id, "pending" if data["is_public"] else "private")
+        elif "tags" in data or "character_type" in data:
+            row.is_public = 0
+            record(db, character_id, "private")
         row.character_type = character_type
         row.tags = runtime.json.dumps(tags, ensure_ascii=False)
         row.updated_at = runtime.now()
@@ -505,6 +520,7 @@ def bind_mirror_character(runtime: ModuleType) -> None:
         return {
             "character_id": character_id,
             "is_public": bool(row.is_public),
+            "publication_status": review(db, character_id)["status"],
             "character_type": row.character_type,
             "tags": tags,
         }
@@ -546,6 +562,8 @@ def bind_mirror_character(runtime: ModuleType) -> None:
         item.avatar_url = (
             f"/v1/public/characters/{character_id}/avatar?v={card_version}"
         )
+        from ..publication_review import withdraw_on_edit
+        withdraw_on_edit(db, character_id)
         character.spec = item.model_dump_json()
         character.updated_at = runtime.now()
         db.commit()

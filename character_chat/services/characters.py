@@ -215,10 +215,14 @@ def bind_owned(runtime: ModuleType) -> None:
     def character_out(row, db=None):
         result = runtime.spec(row).model_dump()
         if db:
+            from ..publication_review import review
             publication = db.get(runtime.CharacterPublication, row.id)
+            source = db.get(runtime.AppSetting, "character_clone_source:" + row.id)
+            result["source_character_id"] = source.value if source else None
+            result["publication_status"] = review(db, row.id)["status"] if publication else "private"
             result.update(
                 {
-                    "is_public": bool(publication and publication.is_public),
+                    "is_public": bool(publication and publication.is_public and runtime.os.getenv("COMMUNITY_CHARACTER_PUBLICATION_ENABLED","false").lower()=="true"),
                     "character_type": (
                         publication.character_type
                         if publication

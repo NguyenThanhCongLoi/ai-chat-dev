@@ -1,0 +1,1651 @@
+{
+  "version": "official-bg-20261019-ch04-ch06",
+  "reference_width": 1056,
+  "reference_height": 584,
+  "scenes": {
+    "selene_01:ancient_gate": {
+      "asset": "replacement_ch01_ancient_gate",
+      "path": "backgrounds/echoes_bg_16x9/ch01_ancient_gate.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "replacement_ch01_ancient_gate"
+    },
+    "selene_01:outer_ruins": {
+      "asset": "replacement_ch01_outer_ruins",
+      "path": "backgrounds/echoes_bg_16x9/ch01_outer_ruins.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "replacement_ch01_outer_ruins"
+    },
+    "selene_02:inner_ruins": {
+      "asset": "replacement_ch02_inner_corridor",
+      "path": "backgrounds/echoes_bg_16x9/ch02_inner_corridor.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "replacement_ch02_inner_corridor"
+    },
+    "selene_02:archive": {
+      "asset": "replacement_ch02_archive",
+      "path": "backgrounds/echoes_bg_16x9/ch02_archive.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "replacement_ch02_archive"
+    },
+    "selene_03:chamber": {
+      "asset": "replacement_ch03_ritual_chamber",
+      "path": "backgrounds/echoes_bg_16x9/ch03_ritual_chamber.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "replacement_ch03_ritual_chamber"
+    },
+    "selene_04:past": {
+      "asset": "embedded_ch04_past",
+      "path": "backgrounds/echoes_bg_16x9/ch04_corridor_aged.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "moonfall_past",
+      "physical_map": "ch04_corridor",
+      "after_inspection": {
+        "id": "selene_04_falling_ceiling",
+        "asset": "official_bg_ch04_collapsed_aftermath"
+      }
+    },
+    "selene_05:records": {
+      "asset": "embedded_ch05_records",
+      "path": "backgrounds/echoes_bg_16x9/ch05_archive_records.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "ancient_archive"
+    },
+    "selene_05:witch_house": {
+      "asset": "replacement_ch05_witch_house",
+      "path": "backgrounds/echoes_bg_16x9/ch05_witch_house.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "replacement_ch05_witch_house"
+    },
+    "selene_06:vault": {
+      "asset": "replacement_ch06_deep_vault",
+      "path": "backgrounds/echoes_bg_16x9/ch06_deep_vault.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "replacement_ch06_deep_vault"
+    },
+    "selene_06:corridor": {
+      "asset": "embedded_ch06_corridor",
+      "path": "backgrounds/echoes_bg_16x9/ch06_hall_of_mirrors.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "memory_corridor"
+    },
+    "selene_07:temple": {
+      "asset": "replacement_ch07_moon_temple",
+      "path": "backgrounds/echoes_bg_16x9/ch07_moon_temple.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "replacement_ch07_moon_temple"
+    },
+    "selene_07:pale_chamber": {
+      "asset": "official_bg_ch07_pale_moon_space",
+      "path": "backgrounds/echoes_bg_16x9/ch07_pale_moon_space.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "replacement_ch07_pale_moon_chamber"
+    },
+    "selene_08:memory_space": {
+      "asset": "replacement_ch08_memory_space",
+      "path": "backgrounds/echoes_bg_16x9/ch08_memory_space.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "replacement_ch08_memory_space"
+    },
+    "selene_08:final_chamber": {
+      "asset": "replacement_ch08_final_chamber",
+      "path": "backgrounds/echoes_bg_16x9/ch08_final_chamber.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "replacement_ch08_final_chamber"
+    },
+    "selene_01:side_path": {
+      "asset": "replacement_ch01_ruined_path",
+      "path": "backgrounds/echoes_bg_16x9/ch01_ruined_path.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "replacement_ch01_ruined_path"
+    },
+    "selene_01:ward_aftermath": {
+      "asset": "replacement_ch01_ruined_path",
+      "path": "backgrounds/echoes_bg_16x9/ch01_ruined_path.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "replacement_ch01_ruined_path"
+    },
+    "selene_02:moonflower_garden": {
+      "asset": "replacement_ch02_moonflower_courtyard",
+      "path": "backgrounds/echoes_bg_16x9/ch02_moonflower_courtyard.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "replacement_ch02_moonflower_courtyard"
+    },
+    "selene_02:echo_archway": {
+      "asset": "replacement_ch02_moonflower_courtyard",
+      "path": "backgrounds/echoes_bg_16x9/ch02_moonflower_courtyard.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "replacement_ch02_moonflower_courtyard"
+    },
+    "selene_03:descent": {
+      "asset": "replacement_ch03_spiral_staircase",
+      "path": "backgrounds/echoes_bg_16x9/ch03_spiral_staircase.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "replacement_ch03_spiral_staircase"
+    },
+    "selene_03:seal_trap": {
+      "asset": "replacement_ch03_ritual_chamber",
+      "path": "backgrounds/echoes_bg_16x9/ch03_ritual_chamber.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "replacement_ch03_ritual_chamber"
+    },
+    "selene_03:quiet_landing": {
+      "asset": "replacement_ch03_spiral_staircase",
+      "path": "backgrounds/echoes_bg_16x9/ch03_spiral_staircase.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "replacement_ch03_spiral_staircase"
+    },
+    "selene_04:reconstruction": {
+      "asset": "replacement_ch04_academy_intact",
+      "path": "backgrounds/echoes_bg_16x9/ch04_academy_intact.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "replacement_ch04_academy_intact"
+    },
+    "selene_04:collapse_passage": {
+      "asset": "official_bg_ch04_corridor_aged",
+      "path": "backgrounds/echoes_bg_16x9/ch04_corridor_aged.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "replacement_ch04_collapsing_corridor",
+      "physical_map": "ch04_corridor",
+      "after_inspection": {
+        "id": "selene_04_falling_ceiling",
+        "asset": "official_bg_ch04_collapsed_aftermath"
+      }
+    },
+    "selene_04:quiet_landing": {
+      "asset": "official_bg_ch04_collapsed_aftermath",
+      "path": "backgrounds/echoes_bg_16x9/ch04_collapsed_aftermath.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "replacement_ch04_collapsing_corridor",
+      "physical_map": "ch04_corridor"
+    },
+    "selene_05:forest_threshold": {
+      "asset": "replacement_ch05_witch_house",
+      "path": "backgrounds/echoes_bg_16x9/ch05_witch_house.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "replacement_ch05_witch_house"
+    },
+    "selene_06:mirror_hall": {
+      "asset": "replacement_ch06_mirror_room",
+      "path": "backgrounds/echoes_bg_16x9/ch06_mirror_room.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "replacement_ch06_mirror_room"
+    },
+    "selene_07:temple_boundary": {
+      "asset": "replacement_ch07_moon_temple",
+      "path": "backgrounds/echoes_bg_16x9/ch07_moon_temple.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "replacement_ch07_moon_temple"
+    },
+    "selene_07:manifestation": {
+      "asset": "replacement_ch07_pale_moon_chamber",
+      "path": "backgrounds/echoes_bg_16x9/ch07_pale_moon_chamber.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "replacement_ch07_pale_moon_chamber"
+    },
+    "selene_08:pendant_echo": {
+      "asset": "replacement_ch02_rooftop",
+      "path": "backgrounds/echoes_bg_16x9/ch02_rooftop.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "replacement_ch02_rooftop"
+    },
+    "selene_08:decision_threshold": {
+      "asset": "replacement_ch08_final_chamber",
+      "path": "backgrounds/echoes_bg_16x9/ch08_final_chamber.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "replacement_ch08_final_chamber"
+    },
+    "selene_06:clock_landing": {
+      "asset": "replacement_ch06_deep_vault",
+      "path": "backgrounds/echoes_bg_16x9/ch06_deep_vault.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "memory_corridor"
+    },
+    "selene_05:archive_defense": {
+      "asset": "official_bg_ch05_archive_security",
+      "path": "backgrounds/echoes_bg_16x9/ch05_archive_security.webp",
+      "width": 1920,
+      "height": 1080,
+      "background": "ancient_archive"
+    }
+  },
+  "hotspots": {
+    "selene_04_crystal": {
+      "mode": "prop",
+      "presentation": {
+        "asset": "prop_ch04_crystal_fragment",
+        "x": 0.33,
+        "y": 0.79,
+        "width": 0.085,
+        "height": 0.105,
+        "mode": "floor"
+      }
+    },
+    "selene_04_echo": {
+      "polygon": [
+        [
+          0.19,
+          0.43
+        ],
+        [
+          0.29000000000000004,
+          0.43
+        ],
+        [
+          0.29000000000000004,
+          0.66
+        ],
+        [
+          0.19,
+          0.66
+        ]
+      ]
+    },
+    "selene_04_tablet": {
+      "mode": "prop",
+      "presentation": {
+        "asset": "prop_ch04_broken_tablet",
+        "x": 0.57,
+        "y": 0.77,
+        "width": 0.08,
+        "height": 0.14,
+        "mode": "floor"
+      }
+    },
+    "selene_04_corridor": {
+      "polygon": [
+        [
+          0.455,
+          0.51
+        ],
+        [
+          0.555,
+          0.51
+        ],
+        [
+          0.555,
+          0.76
+        ],
+        [
+          0.455,
+          0.76
+        ]
+      ]
+    },
+    "selene_05_ink": {
+      "polygon": [
+        [
+          0.199811,
+          0.77911
+        ],
+        [
+          0.229167,
+          0.758562
+        ],
+        [
+          0.246212,
+          0.726027
+        ],
+        [
+          0.291667,
+          0.710616
+        ],
+        [
+          0.335227,
+          0.700342
+        ],
+        [
+          0.388258,
+          0.703767
+        ],
+        [
+          0.399621,
+          0.717466
+        ],
+        [
+          0.373106,
+          0.739726
+        ],
+        [
+          0.359848,
+          0.758562
+        ],
+        [
+          0.33428,
+          0.808219
+        ],
+        [
+          0.294508,
+          0.828767
+        ],
+        [
+          0.239583,
+          0.816781
+        ]
+      ]
+    },
+    "selene_05_seal": {
+      "polygon": [
+        [
+          0.29072,
+          0.722603
+        ],
+        [
+          0.297348,
+          0.714041
+        ],
+        [
+          0.309659,
+          0.712329
+        ],
+        [
+          0.320076,
+          0.722603
+        ],
+        [
+          0.316288,
+          0.732877
+        ],
+        [
+          0.302083,
+          0.738014
+        ],
+        [
+          0.291667,
+          0.731164
+        ]
+      ]
+    },
+    "selene_05_timestamp": {
+      "polygon": [
+        [
+          0.249053,
+          0.768836
+        ],
+        [
+          0.268939,
+          0.763699
+        ],
+        [
+          0.295455,
+          0.773973
+        ],
+        [
+          0.329545,
+          0.782534
+        ],
+        [
+          0.314394,
+          0.803082
+        ],
+        [
+          0.273674,
+          0.796233
+        ],
+        [
+          0.251894,
+          0.787671
+        ]
+      ]
+    },
+    "selene_06_separation": {
+      "polygon": [
+        [
+          0.037,
+          0.33
+        ],
+        [
+          0.085,
+          0.33
+        ],
+        [
+          0.087,
+          0.6
+        ],
+        [
+          0.037,
+          0.62
+        ]
+      ]
+    },
+    "selene_06_stops": {
+      "polygon": [
+        [
+          0.08,
+          0.925
+        ],
+        [
+          0.24,
+          0.84
+        ],
+        [
+          0.45,
+          0.835
+        ],
+        [
+          0.465,
+          0.87
+        ],
+        [
+          0.26,
+          0.975
+        ],
+        [
+          0.12,
+          0.97
+        ]
+      ]
+    },
+    "selene_01_old_gate": {
+      "polygon": [
+        [
+          0.38,
+          0.27
+        ],
+        [
+          0.61,
+          0.27
+        ],
+        [
+          0.61,
+          0.5800000000000001
+        ],
+        [
+          0.38,
+          0.5800000000000001
+        ]
+      ]
+    },
+    "selene_01_collapsed_path": {
+      "polygon": [
+        [
+          0.58,
+          0.77
+        ],
+        [
+          0.6699999999999999,
+          0.77
+        ],
+        [
+          0.6699999999999999,
+          0.92
+        ],
+        [
+          0.58,
+          0.92
+        ]
+      ]
+    },
+    "selene_01_clear_stones": {
+      "polygon": [
+        [
+          0.15,
+          0.61
+        ],
+        [
+          0.35,
+          0.61
+        ],
+        [
+          0.35,
+          0.82
+        ],
+        [
+          0.15,
+          0.82
+        ]
+      ]
+    },
+    "selene_01_footprints": {
+      "polygon": [
+        [
+          0.4,
+          0.82
+        ],
+        [
+          0.56,
+          0.82
+        ],
+        [
+          0.56,
+          0.99
+        ],
+        [
+          0.4,
+          0.99
+        ]
+      ]
+    },
+    "selene_01_arrow_trap": {
+      "polygon": [
+        [
+          0.075,
+          0.27
+        ],
+        [
+          0.28,
+          0.27
+        ],
+        [
+          0.28,
+          0.4
+        ],
+        [
+          0.075,
+          0.4
+        ]
+      ]
+    },
+    "selene_01_fallen_arrow": {
+      "polygon": [
+        [
+          0.57,
+          0.62
+        ],
+        [
+          0.7,
+          0.62
+        ],
+        [
+          0.7,
+          0.78
+        ],
+        [
+          0.57,
+          0.78
+        ]
+      ]
+    },
+    "selene_01_oath_mark": {
+      "polygon": [
+        [
+          0.35,
+          0.33
+        ],
+        [
+          0.4,
+          0.33
+        ],
+        [
+          0.4,
+          0.54
+        ],
+        [
+          0.35,
+          0.54
+        ]
+      ]
+    },
+    "selene_01_broken_statue": {
+      "polygon": [
+        [
+          0.13,
+          0.29
+        ],
+        [
+          0.28,
+          0.29
+        ],
+        [
+          0.28,
+          0.8799999999999999
+        ],
+        [
+          0.13,
+          0.8799999999999999
+        ]
+      ]
+    },
+    "selene_01_rune_wall": {
+      "polygon": [
+        [
+          0.64,
+          0.08
+        ],
+        [
+          0.8300000000000001,
+          0.08
+        ],
+        [
+          0.8300000000000001,
+          0.74
+        ],
+        [
+          0.64,
+          0.74
+        ]
+      ]
+    },
+    "selene_02_pendant": {
+      "polygon": [
+        [
+          0.43,
+          0.83
+        ],
+        [
+          0.54,
+          0.83
+        ],
+        [
+          0.54,
+          0.95
+        ],
+        [
+          0.43,
+          0.95
+        ]
+      ]
+    },
+    "selene_02_stone_bench": {
+      "polygon": [
+        [
+          0.36,
+          0.65
+        ],
+        [
+          0.6699999999999999,
+          0.65
+        ],
+        [
+          0.6699999999999999,
+          0.78
+        ],
+        [
+          0.36,
+          0.78
+        ]
+      ]
+    },
+    "selene_02_erased_names": {
+      "polygon": [
+        [
+          0.41,
+          0.72
+        ],
+        [
+          0.62,
+          0.72
+        ],
+        [
+          0.62,
+          0.8099999999999999
+        ],
+        [
+          0.41,
+          0.8099999999999999
+        ]
+      ]
+    },
+    "selene_02_follow_silhouette": {
+      "polygon": [
+        [
+          0.45,
+          0.3
+        ],
+        [
+          0.56,
+          0.3
+        ],
+        [
+          0.56,
+          0.56
+        ],
+        [
+          0.45,
+          0.56
+        ]
+      ]
+    },
+    "selene_02_echo_trace": {
+      "polygon": [
+        [
+          0.479,
+          0.586
+        ],
+        [
+          0.536,
+          0.59
+        ],
+        [
+          0.557,
+          0.647
+        ],
+        [
+          0.526,
+          0.673
+        ],
+        [
+          0.476,
+          0.66
+        ]
+      ]
+    },
+    "selene_02_journal": {
+      "polygon": [
+        [
+          0.27,
+          0.71
+        ],
+        [
+          0.56,
+          0.71
+        ],
+        [
+          0.56,
+          0.8899999999999999
+        ],
+        [
+          0.27,
+          0.8899999999999999
+        ]
+      ]
+    },
+    "selene_02_torn_page": {
+      "polygon": [
+        [
+          0.57,
+          0.75
+        ],
+        [
+          0.7799999999999999,
+          0.75
+        ],
+        [
+          0.7799999999999999,
+          0.92
+        ],
+        [
+          0.57,
+          0.92
+        ]
+      ]
+    },
+    "selene_03_barrier": {
+      "polygon": [
+        [
+          0.34,
+          0.35
+        ],
+        [
+          0.74,
+          0.35
+        ],
+        [
+          0.74,
+          0.58
+        ],
+        [
+          0.34,
+          0.58
+        ]
+      ]
+    },
+    "selene_03_approach": {
+      "polygon": [
+        [
+          0.66,
+          0.64
+        ],
+        [
+          0.79,
+          0.64
+        ],
+        [
+          0.79,
+          0.82
+        ],
+        [
+          0.66,
+          0.82
+        ]
+      ]
+    },
+    "selene_03_ritual_circle": {
+      "polygon": [
+        [
+          0.35,
+          0.59
+        ],
+        [
+          0.62,
+          0.59
+        ],
+        [
+          0.62,
+          0.82
+        ],
+        [
+          0.35,
+          0.82
+        ]
+      ]
+    },
+    "selene_03_blood_rune": {
+      "polygon": [
+        [
+          0.63,
+          0.15
+        ],
+        [
+          0.76,
+          0.15
+        ],
+        [
+          0.76,
+          0.44999999999999996
+        ],
+        [
+          0.63,
+          0.44999999999999996
+        ]
+      ]
+    },
+    "selene_03_burned_letter": {
+      "polygon": [
+        [
+          0.13,
+          0.75
+        ],
+        [
+          0.33,
+          0.75
+        ],
+        [
+          0.33,
+          0.9
+        ],
+        [
+          0.13,
+          0.9
+        ]
+      ]
+    },
+    "selene_03_seal_contact": {
+      "polygon": [
+        [
+          0.42,
+          0.12
+        ],
+        [
+          0.58,
+          0.12
+        ],
+        [
+          0.58,
+          0.37
+        ],
+        [
+          0.42,
+          0.37
+        ]
+      ]
+    },
+    "selene_03_seal_release": {
+      "polygon": [
+        [
+          0.63,
+          0.55
+        ],
+        [
+          0.81,
+          0.55
+        ],
+        [
+          0.81,
+          0.72
+        ],
+        [
+          0.63,
+          0.72
+        ]
+      ]
+    },
+    "selene_04_flicker": {
+      "polygon": [
+        [
+          0.81,
+          0.23
+        ],
+        [
+          0.89,
+          0.23
+        ],
+        [
+          0.89,
+          0.56
+        ],
+        [
+          0.81,
+          0.56
+        ]
+      ]
+    },
+    "selene_04_viewpoints": {
+      "polygon": [
+        [
+          0.29,
+          0.78
+        ],
+        [
+          0.44,
+          0.78
+        ],
+        [
+          0.44,
+          0.94
+        ],
+        [
+          0.29,
+          0.94
+        ]
+      ]
+    },
+    "selene_04_falling_ceiling": {
+      "polygon": [
+        [
+          0.31,
+          0.02
+        ],
+        [
+          0.69,
+          0.02
+        ],
+        [
+          0.69,
+          0.32
+        ],
+        [
+          0.31,
+          0.32
+        ]
+      ]
+    },
+    "selene_04_opposite_direction": {
+      "polygon": [
+        [
+          0.43,
+          0.38
+        ],
+        [
+          0.61,
+          0.38
+        ],
+        [
+          0.61,
+          0.75
+        ],
+        [
+          0.43,
+          0.75
+        ]
+      ]
+    },
+    "selene_05_sender_mark": {
+      "polygon": [
+        [
+          0.62,
+          0.835
+        ],
+        [
+          0.65,
+          0.835
+        ],
+        [
+          0.65,
+          0.87
+        ],
+        [
+          0.62,
+          0.87
+        ]
+      ]
+    },
+    "selene_05_letter_context": {
+      "polygon": [
+        [
+          0.58,
+          0.87
+        ],
+        [
+          0.68,
+          0.87
+        ],
+        [
+          0.68,
+          0.91
+        ],
+        [
+          0.58,
+          0.91
+        ]
+      ]
+    },
+    "selene_05_letter": {
+      "polygon": [
+        [
+          0.58,
+          0.81
+        ],
+        [
+          0.68,
+          0.81
+        ],
+        [
+          0.68,
+          0.87
+        ],
+        [
+          0.58,
+          0.87
+        ]
+      ]
+    },
+    "selene_05_signature": {
+      "polygon": [
+        [
+          0.63,
+          0.87
+        ],
+        [
+          0.69,
+          0.87
+        ],
+        [
+          0.69,
+          0.91
+        ],
+        [
+          0.63,
+          0.91
+        ]
+      ]
+    },
+    "selene_06_activation": {
+      "polygon": [
+        [
+          0.08,
+          0.32
+        ],
+        [
+          0.23,
+          0.32
+        ],
+        [
+          0.23,
+          0.49
+        ],
+        [
+          0.08,
+          0.49
+        ]
+      ]
+    },
+    "selene_06_barrier": {
+      "polygon": [
+        [
+          0.78,
+          0.33
+        ],
+        [
+          0.92,
+          0.33
+        ],
+        [
+          0.92,
+          0.5
+        ],
+        [
+          0.78,
+          0.5
+        ]
+      ]
+    },
+    "selene_06_mirror_desync": {
+      "polygon": [
+        [
+          0.55,
+          0.44
+        ],
+        [
+          0.62,
+          0.44
+        ],
+        [
+          0.62,
+          0.69
+        ],
+        [
+          0.55,
+          0.69
+        ]
+      ]
+    },
+    "selene_06_mirror_boundary": {
+      "polygon": [
+        [
+          0.635,
+          0.41
+        ],
+        [
+          0.66,
+          0.41
+        ],
+        [
+          0.66,
+          0.74
+        ],
+        [
+          0.635,
+          0.74
+        ]
+      ]
+    },
+    "selene_07_altar": {
+      "polygon": [
+        [
+          0.3,
+          0.66
+        ],
+        [
+          0.68,
+          0.66
+        ],
+        [
+          0.68,
+          0.89
+        ],
+        [
+          0.3,
+          0.89
+        ]
+      ]
+    },
+    "selene_07_inscription": {
+      "polygon": [
+        [
+          0.28,
+          0.38
+        ],
+        [
+          0.71,
+          0.38
+        ],
+        [
+          0.71,
+          0.58
+        ],
+        [
+          0.28,
+          0.58
+        ]
+      ]
+    },
+    "selene_07_socket_traces": {
+      "polygon": [
+        [
+          0.3,
+          0.66
+        ],
+        [
+          0.68,
+          0.66
+        ],
+        [
+          0.68,
+          0.84
+        ],
+        [
+          0.3,
+          0.84
+        ]
+      ]
+    },
+    "selene_07_boundary_warning": {
+      "polygon": [
+        [
+          0.29,
+          0.44
+        ],
+        [
+          0.71,
+          0.44
+        ],
+        [
+          0.71,
+          0.6
+        ],
+        [
+          0.29,
+          0.6
+        ]
+      ]
+    },
+    "selene_07_gathering_fragments": {
+      "polygon": [
+        [
+          0.39,
+          0.1
+        ],
+        [
+          0.59,
+          0.1
+        ],
+        [
+          0.59,
+          0.45
+        ],
+        [
+          0.39,
+          0.45
+        ]
+      ]
+    },
+    "selene_07_separate_fragments": {
+      "polygon": [
+        [
+          0.28,
+          0.48
+        ],
+        [
+          0.42,
+          0.48
+        ],
+        [
+          0.42,
+          0.75
+        ],
+        [
+          0.28,
+          0.75
+        ]
+      ]
+    },
+    "selene_07_vessel": {
+      "polygon": [
+        [
+          0.47,
+          0.25
+        ],
+        [
+          0.6499999999999999,
+          0.25
+        ],
+        [
+          0.6499999999999999,
+          0.6
+        ],
+        [
+          0.47,
+          0.6
+        ]
+      ]
+    },
+    "selene_07_split": {
+      "polygon": [
+        [
+          0.24,
+          0.47
+        ],
+        [
+          0.44,
+          0.47
+        ],
+        [
+          0.44,
+          0.86
+        ],
+        [
+          0.24,
+          0.86
+        ]
+      ]
+    },
+    "selene_08_archive": {
+      "polygon": [
+        [
+          0.51,
+          0.43
+        ],
+        [
+          0.7,
+          0.43
+        ],
+        [
+          0.7,
+          0.74
+        ],
+        [
+          0.51,
+          0.74
+        ]
+      ]
+    },
+    "selene_08_pendant_message": {
+      "polygon": [
+        [
+          0.395,
+          0.8
+        ],
+        [
+          0.47,
+          0.8
+        ],
+        [
+          0.47,
+          0.86
+        ],
+        [
+          0.395,
+          0.86
+        ]
+      ]
+    },
+    "selene_08_present_promise": {
+      "polygon": [
+        [
+          0.47,
+          0.81
+        ],
+        [
+          0.53,
+          0.81
+        ],
+        [
+          0.53,
+          0.86
+        ],
+        [
+          0.47,
+          0.86
+        ]
+      ]
+    },
+    "selene_08_restore_cost": {
+      "polygon": [
+        [
+          0.4,
+          0.39
+        ],
+        [
+          0.6,
+          0.39
+        ],
+        [
+          0.6,
+          0.53
+        ],
+        [
+          0.4,
+          0.53
+        ]
+      ]
+    },
+    "selene_08_destroy_cost": {
+      "polygon": [
+        [
+          0.13,
+          0.6
+        ],
+        [
+          0.4,
+          0.6
+        ],
+        [
+          0.4,
+          0.8
+        ],
+        [
+          0.13,
+          0.8
+        ]
+      ]
+    },
+    "selene_08_transfer_cost": {
+      "polygon": [
+        [
+          0.6,
+          0.6
+        ],
+        [
+          0.86,
+          0.6
+        ],
+        [
+          0.86,
+          0.8
+        ],
+        [
+          0.6,
+          0.8
+        ]
+      ]
+    },
+    "selene_08_mechanisms": {
+      "polygon": [
+        [
+          0.4,
+          0.38
+        ],
+        [
+          0.6,
+          0.38
+        ],
+        [
+          0.6,
+          0.54
+        ],
+        [
+          0.4,
+          0.54
+        ]
+      ]
+    },
+    "selene_08_boundary": {
+      "polygon": [
+        [
+          0.41,
+          0.58
+        ],
+        [
+          0.59,
+          0.58
+        ],
+        [
+          0.59,
+          0.79
+        ],
+        [
+          0.41,
+          0.79
+        ]
+      ]
+    },
+    "selene_02_moonflower": {
+      "polygon": [
+        [
+          0.7,
+          0.78
+        ],
+        [
+          0.82,
+          0.78
+        ],
+        [
+          0.82,
+          0.9
+        ],
+        [
+          0.7,
+          0.9
+        ]
+      ],
+      "mode": "prop",
+      "presentation": {
+        "asset": "prop_ch02_petal_under_stone",
+        "mode": "floor",
+        "x": 0.7,
+        "y": 0.79,
+        "width": 0.12,
+        "height": 0.16
+      }
+    },
+    "selene_06_mirror": {
+      "polygon": [
+        [
+          0.31,
+          0.815
+        ],
+        [
+          0.479,
+          0.813
+        ],
+        [
+          0.557,
+          0.858
+        ],
+        [
+          0.48,
+          0.927
+        ],
+        [
+          0.351,
+          0.95
+        ],
+        [
+          0.291,
+          0.891
+        ]
+      ]
+    },
+    "selene_03_council_seal": {
+      "polygon": [
+        [
+          0.42,
+          0.09
+        ],
+        [
+          0.59,
+          0.09
+        ],
+        [
+          0.59,
+          0.38
+        ],
+        [
+          0.42,
+          0.38
+        ]
+      ]
+    },
+    "selene_05_paper_accusation": {
+      "polygon": [
+        [
+          0.3,
+          0.55
+        ],
+        [
+          0.61,
+          0.55
+        ],
+        [
+          0.61,
+          0.8400000000000001
+        ],
+        [
+          0.3,
+          0.8400000000000001
+        ]
+      ]
+    },
+    "selene_05_security_seal": {
+      "polygon": [
+        [
+          0.44,
+          0.64
+        ],
+        [
+          0.54,
+          0.64
+        ],
+        [
+          0.54,
+          0.76
+        ],
+        [
+          0.44,
+          0.76
+        ]
+      ]
+    },
+    "selene_06_midnight": {
+      "polygon": [
+        [
+          0.07,
+          0.3
+        ],
+        [
+          0.29000000000000004,
+          0.3
+        ],
+        [
+          0.29000000000000004,
+          0.55
+        ],
+        [
+          0.07,
+          0.55
+        ]
+      ]
+    },
+    "selene_06_elapsed_time": {
+      "polygon": [
+        [
+          0.73,
+          0.29
+        ],
+        [
+          0.96,
+          0.29
+        ],
+        [
+          0.96,
+          0.56
+        ],
+        [
+          0.73,
+          0.56
+        ]
+      ]
+    }
+  }
+}

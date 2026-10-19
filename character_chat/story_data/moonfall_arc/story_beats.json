@@ -1,0 +1,266 @@
+{
+  "version": "moonfall-story-beats-20261018",
+  "enabled": true,
+  "outros": {
+    "selene_01": {
+      "vi": "Có những cánh cửa chỉ mở sau một lời hứa được giữ.",
+      "en": "Some doors open only after a promise is kept."
+    },
+    "selene_02": {
+      "vi": "Mặt dây chuyền đã tìm thấy đường về; ký ức thì vẫn chưa.",
+      "en": "The pendant has found its way home. The memory has not."
+    },
+    "selene_03": {
+      "vi": "Một ký ức có thể kể điều đã xảy ra, nhưng không thể thay ta phán xét.",
+      "en": "A memory can show what happened. It cannot decide what it means."
+    },
+    "selene_04": {
+      "vi": "Giữa những gì sụp đổ, vẫn còn một người đã chọn quay lại.",
+      "en": "Amid everything that fell, someone still chose to turn back."
+    },
+    "selene_05": {
+      "vi": "Trang giấy còn đó; điều bị bỏ trống cũng là một lời nhắn.",
+      "en": "The page remains. What was left unwritten is a message too."
+    },
+    "selene_06": {
+      "vi": "Có những khoảng trống chỉ hiện rõ khi hai người cùng nhìn lại.",
+      "en": "Some missing pieces become visible only when you look back together."
+    },
+    "selene_07": {
+      "vi": "Biết được quá khứ không có nghĩa phải sống lại nó.",
+      "en": "Knowing the past does not mean having to live it again."
+    },
+    "selene_08": {
+      "vi": "Hành trình này khép lại; câu chuyện của hai người vẫn tiếp tục.",
+      "en": "This journey ends. The story between you continues."
+    }
+  },
+  "speakers": {
+    "young_selene": {
+      "vi": "Selene thời trẻ · tiếng vọng",
+      "en": "Young Selene · memory echo"
+    },
+    "elarion": {
+      "vi": "Elarion · tiếng vọng",
+      "en": "Elarion · memory echo"
+    },
+    "unknown_girl": {
+      "vi": "Cô gái xa lạ · tiếng vọng",
+      "en": "Unknown girl · memory echo"
+    }
+  },
+  "beats": {
+    "selene_01_collapsed_path": [
+      {
+        "type": "dialogue",
+        "speaker": "selene",
+        "text": {
+          "vi": "Tôi từng nghĩ quên đi là mất tất cả. Nhưng có lẽ thứ còn lại không phải lúc nào cũng mang hình dáng một ký ức.",
+          "en": "I used to think forgetting meant losing everything. Perhaps what remains does not always look like a memory."
+        },
+        "expression": "thinking"
+      }
+    ],
+    "selene_02_journal": [
+      {
+        "type": "dialogue",
+        "speaker": "unknown_girl",
+        "text": {
+          "vi": "Hãy để nó nhắc cô điều cô đã chọn, không phải điều người khác muốn cô trở thành.",
+          "en": "Let it remind you of what you chose, not what others wanted you to become."
+        },
+        "expression": "thinking"
+      },
+      {
+        "type": "dialogue",
+        "speaker": "selene",
+        "text": {
+          "vi": "Một lời nhắn không chứng minh người viết là ai. Nhưng tôi muốn biết vì sao họ lại chọn những từ dịu dàng như vậy.",
+          "en": "A note does not prove who wrote it. But I want to know why they chose words that gentle."
+        },
+        "expression": "thinking"
+      }
+    ],
+    "selene_04_echo": [
+      {
+        "type": "dialogue",
+        "speaker": "young_selene",
+        "text": {
+          "vi": "Chờ đã! Vẫn còn ánh sáng ở phía hành lang!",
+          "en": "Wait! There is still light down the corridor!"
+        },
+        "expression": "thinking"
+      },
+      {
+        "type": "dialogue",
+        "speaker": "selene",
+        "text": {
+          "vi": "Tôi nghe thấy sự vội vã, nhưng không nghe được toàn bộ chuyện đã xảy ra. Đừng lấp khoảng trống ấy hộ tôi.",
+          "en": "I can hear the urgency, but not the whole of what happened. Please do not fill in that silence for me."
+        },
+        "expression": "thinking"
+      }
+    ],
+    "selene_05_letter": [
+      {
+        "type": "dialogue",
+        "speaker": "elarion",
+        "text": {
+          "vi": "Nếu còn một trang nguyên vẹn, đừng dùng nó để viết lại con người cô ấy. Hãy để cô ấy tự trả lời.",
+          "en": "If one page survives, do not use it to rewrite who she is. Let her answer for herself."
+        },
+        "expression": "thinking"
+      },
+      {
+        "type": "dialogue",
+        "speaker": "selene",
+        "text": {
+          "vi": "Tôi muốn ngồi lại với câu ấy một chút. Không phải mọi manh mối đều cần biến ngay thành một đáp án.",
+          "en": "I would like to sit with that for a moment. Not every clue has to become an answer immediately."
+        },
+        "expression": "thinking"
+      }
+    ],
+    "selene_06_mirror": [
+      {
+        "type": "dialogue",
+        "speaker": "young_selene",
+        "text": {
+          "vi": "Nếu tôi quên giọng nói của mình thì sao?",
+          "en": "What if I forget what my own voice sounds like?"
+        },
+        "expression": "thinking"
+      },
+      {
+        "type": "dialogue",
+        "speaker": "elarion",
+        "text": {
+          "vi": "Một mảnh gương không giữ được tất cả một con người.",
+          "en": "One shard of a mirror cannot hold an entire person."
+        },
+        "expression": "thinking"
+      },
+      {
+        "type": "dialogue",
+        "speaker": "selene",
+        "text": {
+          "vi": "Tôi không muốn biến những lời vọng này thành sự thật chỉ vì mình cần một câu trả lời. Mình cứ đối chiếu tiếp nhé.",
+          "en": "I do not want to call these echoes true simply because I need an answer. Let us keep comparing what we find."
+        },
+        "expression": "thinking"
+      }
+    ],
+    "selene_07_vessel": [
+      {
+        "type": "dialogue",
+        "speaker": "unknown_girl",
+        "text": {
+          "vi": "Đừng vội gọi tên thứ đang nhìn lại bạn.",
+          "en": "Do not be so quick to name what is looking back at you."
+        },
+        "expression": "thinking"
+      },
+      {
+        "type": "dialogue",
+        "speaker": "selene",
+        "text": {
+          "vi": "Chúng ta thấy một bóng hình, không phải toàn bộ một người. Tôi sẽ nhớ sự khác biệt đó.",
+          "en": "We are seeing a shape, not a whole person. I will remember the difference."
+        },
+        "expression": "thinking"
+      }
+    ],
+    "selene_08_pendant": [
+      {
+        "type": "dialogue",
+        "speaker": "young_selene",
+        "text": {
+          "vi": "Nếu còn nhớ được một điều, tôi muốn nhớ vì sao mình đã chọn.",
+          "en": "If I can remember one thing, I want it to be why I chose."
+        },
+        "expression": "thinking"
+      },
+      {
+        "type": "dialogue",
+        "speaker": "selene",
+        "text": {
+          "vi": "Lần này, hãy cho tôi thời gian tự lựa chọn. Bạn có thể ở đây mà không cần trả lời thay tôi.",
+          "en": "This time, give me room to choose for myself. You can stay without answering for me."
+        },
+        "expression": "thinking"
+      }
+    ],
+    "selene_03_puzzle": [
+      {
+        "type": "dialogue",
+        "speaker": "young_selene",
+        "text": {
+          "vi": "Tôi sẽ tự bước vào. Nhưng hãy để tôi nói hết trước đã.",
+          "en": "I will step inside myself. But let me finish speaking first."
+        },
+        "expression": "thinking"
+      },
+      {
+        "type": "dialogue",
+        "speaker": "selene",
+        "text": {
+          "vi": "Chỉ một câu nói vọng lại thôi. Chúng ta vẫn chưa biết cô ấy đã được nghe những gì trước đó.",
+          "en": "Only a sentence coming back to us. We still do not know what she had been told before it."
+        },
+        "expression": "thinking"
+      }
+    ]
+  },
+  "stages": {
+    "observe": {
+      "vi": "Khám phá dấu vết",
+      "en": "Explore the traces"
+    },
+    "compare": {
+      "vi": "Đối chiếu manh mối",
+      "en": "Piece the clues together"
+    },
+    "remember": {
+      "vi": "Lắng nghe ký ức",
+      "en": "Listen to the memory"
+    },
+    "return": {
+      "vi": "Mang câu chuyện trở về",
+      "en": "Bring the story back"
+    }
+  },
+  "scene_notes": {
+    "selene_01": {
+      "vi": "Một cánh cổng, một lời gọi bị bỏ dở. Chưa ai biết ai đang chờ phía bên kia.",
+      "en": "A gate, and a voice cut short. Neither of you knows who waits beyond it."
+    },
+    "selene_02": {
+      "vi": "Vật tặng đã trở về, nhưng người trao nó vẫn nằm ngoài tầm nhớ.",
+      "en": "The gift has returned, but the giver remains beyond memory's reach."
+    },
+    "selene_03": {
+      "vi": "Đừng để một dấu tay biến thành bản án: hãy tìm điều nó thật sự chứng minh.",
+      "en": "Do not turn a handprint into a verdict. Find what it actually proves."
+    },
+    "selene_04": {
+      "vi": "Những mảnh vỡ không kể chuyện theo thứ tự. Hãy tìm điều còn đứng vững giữa chúng.",
+      "en": "Fragments do not tell their story in order. Find what remains consistent between them."
+    },
+    "selene_05": {
+      "vi": "Một hồ sơ và một lá thư không nhìn quá khứ bằng cùng một đôi mắt.",
+      "en": "A record and a letter do not look at the past through the same eyes."
+    },
+    "selene_06": {
+      "vi": "Khoảng trống giữa những mốc giờ có thể quan trọng hơn chính những con số.",
+      "en": "The silence between the timestamps may matter more than the numbers themselves."
+    },
+    "selene_07": {
+      "vi": "Ký ức có thể mở một cánh cửa. Hiểu nó không có nghĩa phải bước qua.",
+      "en": "Memory can open a door. Understanding it does not mean having to cross it."
+    },
+    "selene_08": {
+      "vi": "Lần này, không ai được quyết định thay Selene—kể cả quá khứ của cô.",
+      "en": "This time, no one gets to choose for Selene—not even her past."
+    }
+  }
+}

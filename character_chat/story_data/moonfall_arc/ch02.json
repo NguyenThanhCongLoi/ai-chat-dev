@@ -1,0 +1,641 @@
+{
+  "id": "selene_02",
+  "order": 2,
+  "enabled": true,
+  "implemented": true,
+  "title": {
+    "vi": "Mặt dây chuyền bạc",
+    "en": "The Silver Pendant"
+  },
+  "objective": {
+    "vi": "Lần theo dấu chiếc vòng, đối chiếu trang nhật ký và tìm người trong ký ức.",
+    "en": "Follow the pendant's traces and compare the journal fragments."
+  },
+  "scenes": [
+    {
+      "id": "inner_ruins",
+      "title": {
+        "vi": "Tàn tích trong",
+        "en": "Inner Ruins"
+      },
+      "background": "replacement_ch02_inner_corridor",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_02.line.001"
+        },
+        {
+          "type": "dialogue",
+          "text_key": "selene_02.line.002",
+          "speaker": "selene",
+          "expression": "thinking"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_02_pendant",
+          "title": {
+            "vi": "Mặt dây chuyền bạc",
+            "en": "Silver Pendant"
+          },
+          "item": "silver_pendant",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_02.line.003"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_02.line.004",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "moonflower_garden",
+      "title": {
+        "vi": "Vườn nguyệt hoa",
+        "en": "Moonflower garden"
+      },
+      "background": "replacement_ch02_moonflower_courtyard",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_02.expanded.moonflower_garden"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_02_stone_bench",
+          "title": {
+            "vi": "Ghế đá dưới vòm",
+            "en": "Bench beneath the arch"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_02.expanded.moonflower_garden.stone_bench"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_02_erased_names",
+          "title": {
+            "vi": "Nét tên bị xóa",
+            "en": "The erased names"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.39,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_02.expanded.moonflower_garden.erased_names"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_02.expanded.moonflower_garden.erased_names.speech",
+              "speaker": "selene",
+              "expression": "serious"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_02_moonflower",
+          "title": {
+            "vi": "Cánh hoa dưới đá",
+            "en": "Petal beneath stone"
+          },
+          "item": "moonflower_petal",
+          "optional": true,
+          "x": 0.51,
+          "y": 0.76,
+          "width": 0.14,
+          "height": 0.17,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_02.line.005"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_02.line.006",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {
+            "found_moonflower": true
+          },
+          "echo": "moonflower_echo",
+          "lore": "",
+          "tags": [],
+          "scene_asset": "prop_ch02_petal_under_stone",
+          "presentation_mode": "floor"
+        }
+      ]
+    },
+    {
+      "id": "echo_archway",
+      "title": {
+        "vi": "Bóng người qua mái vòm",
+        "en": "Figure beneath the arch"
+      },
+      "background": "replacement_ch02_moonflower_courtyard",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_02.expanded.echo_archway"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_02_follow_silhouette",
+          "title": {
+            "vi": "Lần theo bóng người",
+            "en": "Follow the silhouette"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "dialogue",
+              "text_key": "selene_02.expanded.echo_archway.follow_silhouette.speech",
+              "speaker": "selene",
+              "expression": "serious"
+            },
+            {
+              "type": "visual_effect",
+              "visual_event": "ECHO_GIRL"
+            },
+            {
+              "type": "narration",
+              "text_key": "selene_02.expanded.echo_archway.follow_silhouette"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_02_echo_trace",
+          "title": {
+            "vi": "Nơi bóng người tan",
+            "en": "Where the figure vanished"
+          },
+          "item": "",
+          "optional": false,
+          "x": 0.39,
+          "y": 0.48,
+          "width": 0.18,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_02.expanded.echo_archway.echo_trace"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "archive",
+      "title": {
+        "vi": "Kho lưu trữ cổ",
+        "en": "Ancient Archive"
+      },
+      "background": "replacement_ch02_archive",
+      "events": [
+        {
+          "type": "narration",
+          "text_key": "selene_02.line.007"
+        },
+        {
+          "type": "dialogue",
+          "text_key": "selene_02.line.008",
+          "speaker": "selene",
+          "expression": "thinking"
+        }
+      ],
+      "hotspots": [
+        {
+          "id": "selene_02_journal",
+          "title": {
+            "vi": "Nhật ký cổ",
+            "en": "Ancient Journal"
+          },
+          "item": "ancient_journal",
+          "optional": false,
+          "x": 0.12,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_02.line.009"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_02.line.010",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        },
+        {
+          "id": "selene_02_torn_page",
+          "title": {
+            "vi": "Trang nhật ký rách",
+            "en": "Torn diary page"
+          },
+          "item": "torn_diary_page",
+          "optional": false,
+          "x": 0.4,
+          "y": 0.32,
+          "width": 0.16,
+          "height": 0.18,
+          "events": [
+            {
+              "type": "narration",
+              "text_key": "selene_02.line.011"
+            },
+            {
+              "type": "dialogue",
+              "text_key": "selene_02.line.012",
+              "speaker": "selene",
+              "expression": "thinking"
+            }
+          ],
+          "effects": {},
+          "flags": {},
+          "echo": "",
+          "lore": "",
+          "tags": []
+        }
+      ]
+    }
+  ],
+  "puzzles": [
+    {
+      "id": "selene_02_puzzle",
+      "type": "fragment_assembly",
+      "title": {
+        "vi": "Ghép lời hứa",
+        "en": "Piece together the promise"
+      },
+      "scene": "archive",
+      "requires_inspections": [
+        "selene_02_pendant",
+        "selene_02_journal",
+        "selene_02_torn_page",
+        "selene_02_stone_bench",
+        "selene_02_erased_names",
+        "selene_02_follow_silhouette",
+        "selene_02_echo_trace"
+      ],
+      "required_items": [],
+      "options": [
+        {
+          "id": "gift",
+          "label": {
+            "vi": "Tặng mặt dây chuyền",
+            "en": "The pendant is given"
+          }
+        },
+        {
+          "id": "promise",
+          "label": {
+            "vi": "Selene hứa sẽ nhớ",
+            "en": "Selene promises to remember"
+          }
+        },
+        {
+          "id": "tease",
+          "label": {
+            "vi": "Cô gái trêu lời hứa",
+            "en": "The girl gently teases her"
+          }
+        }
+      ],
+      "solution": [
+        "gift",
+        "promise",
+        "tease"
+      ],
+      "hints": [
+        {
+          "vi": "Lời đáp cần một điều để đáp lại.",
+          "en": "A reply needs something to answer."
+        },
+        {
+          "vi": "Món quà đến trước lời hứa.",
+          "en": "The gift comes before the promise."
+        },
+        {
+          "vi": "TẶNG VẬT → LỜI HỨA → LỜI TRÊU.",
+          "en": "GIFT → PROMISE → TEASING."
+        }
+      ],
+      "events": [
+        {
+          "type": "dialogue",
+          "text_key": "selene_02.line.013",
+          "speaker": "selene",
+          "expression": "determined"
+        },
+        {
+          "type": "visual_effect",
+          "effect": "RUNE_GLOW"
+        }
+      ],
+      "flags": {}
+    }
+  ],
+  "choice": {
+    "id": "selene_02_choice",
+    "prompt_key": "selene_02.line.014",
+    "options": [
+      {
+        "id": "selene_02_choice_0",
+        "label_key": "selene_02.line.015",
+        "effects": {
+          "trust": 2
+        },
+        "flags": {},
+        "tags": [],
+        "events": [
+          {
+            "type": "dialogue",
+            "text_key": "selene_02.line.016",
+            "speaker": "selene",
+            "expression": "serious"
+          }
+        ]
+      },
+      {
+        "id": "selene_02_choice_1",
+        "label_key": "selene_02.line.017",
+        "effects": {
+          "truth": 2
+        },
+        "flags": {},
+        "tags": [],
+        "events": [
+          {
+            "type": "dialogue",
+            "text_key": "selene_02.line.018",
+            "speaker": "selene",
+            "expression": "serious"
+          }
+        ]
+      },
+      {
+        "id": "selene_02_choice_2",
+        "label_key": "selene_02.line.019",
+        "effects": {
+          "understanding": 2
+        },
+        "flags": {
+          "questioned_memory_reliability": true
+        },
+        "tags": [],
+        "events": [
+          {
+            "type": "dialogue",
+            "text_key": "selene_02.line.020",
+            "speaker": "selene",
+            "expression": "serious"
+          }
+        ]
+      }
+    ]
+  },
+  "memory": {
+    "id": "M02",
+    "title": {
+      "vi": "M02 · Lời hứa không gương mặt",
+      "en": "M02 · A Promise Without a Face"
+    },
+    "video": "memory_video_02",
+    "events": [
+      {
+        "type": "narration",
+        "text_key": "selene_02.line.021",
+        "speaker": "narrator",
+        "expression": "thinking"
+      },
+      {
+        "type": "narration",
+        "text_key": "selene_02.line.022",
+        "speaker": "narrator",
+        "expression": "thinking"
+      },
+      {
+        "type": "dialogue",
+        "text_key": "selene_02.line.023",
+        "speaker": "selene",
+        "expression": "thinking"
+      }
+    ],
+    "fact_key": "selene_02.line.024"
+  },
+  "localization": {
+    "selene_02.line.001": {
+      "vi": "Phía trong cổng còn những đồ vật nhỏ giữa đống đổ nát. Chúng có thể nối chiếc vòng bạc với một người từng ở đây.",
+      "en": "Small belongings remain amid the rubble beyond the gate. They may connect the pendant to someone who once lived here."
+    },
+    "selene_02.line.002": {
+      "vi": "Mình bắt đầu từ những thứ gần gũi nhé. Chiếc vòng và cánh hoa có thể kể chuyện khác với những bức tường này.",
+      "en": "Let us begin with the small things. The pendant and the petal may tell us something these walls cannot."
+    },
+    "selene_02.line.003": {
+      "vi": "Ở mặt trong vòng là hai nét khắc đan vào nhau. Selene không nhận ra chữ, nhưng ngón tay cô dừng đúng vị trí.",
+      "en": "Two intertwined strokes mark the pendant's inner face. Selene cannot name them, but her finger stops in exactly the right place."
+    },
+    "selene_02.line.004": {
+      "vi": "Chiếc vòng này có gì đó khiến tôi bận tâm. Mình thử xem mặt trong, nơi ít bị thời gian làm mòn hơn nhé.",
+      "en": "Something about this pendant is bothering me. Let us look inside, where time may have left the markings intact."
+    },
+    "selene_02.line.005": {
+      "vi": "Một cánh nguyệt hoa ép khô còn mùi mưa. Trong tích tắc, có tiếng cười trên mái nhà.",
+      "en": "A pressed moonflower still smells of rain. For an instant, laughter drifts from a rooftop."
+    },
+    "selene_02.line.006": {
+      "vi": "Một cánh hoa nằm giữa đá vụn... Mình nên xem nó có liên quan đến những đồ vật còn lại không.",
+      "en": "A flower petal among all this rubble... Let us see whether it belongs with anything else here."
+    },
+    "selene_02.line.007": {
+      "vi": "Trong kho lưu trữ, một cuốn nhật ký còn được bảo vệ. Những trang rời có thể thuộc về nó.",
+      "en": "A journal survives in the archive, still protected. The loose pages may belong to it."
+    },
+    "selene_02.line.008": {
+      "vi": "Nếu còn một lời hứa ở đây, có lẽ nó nằm trong những trang này. Mình thử tìm đoạn bị thiếu nhé.",
+      "en": "If a promise survives here, it may be in these pages. Let us look for the missing passage."
+    },
+    "selene_02.line.009": {
+      "vi": "Ba dòng còn đọc được: lời hứa, tặng vật, người nhận. Một trang bị xé trước phần tên người tặng.",
+      "en": "Three entries survive: promise, gift, recipient. A page was torn out just before the giver's name."
+    },
+    "selene_02.line.010": {
+      "vi": "Cuốn nhật ký có thể giúp mình lần lại câu chuyện của chiếc vòng. Thử tìm những đoạn nhắc đến một món quà nhé.",
+      "en": "The journal might help us trace the pendant's story. Look for any mention of a gift."
+    },
+    "selene_02.line.011": {
+      "vi": "Mép giấy khớp với trang thiếu. Dòng “để nó nhớ thay em” nằm trước lời đáp “em sẽ không quên”.",
+      "en": "The torn edge fits the missing page. “Let it remember for you” comes before “I won't forget”."
+    },
+    "selene_02.line.012": {
+      "vi": "Mảnh giấy này có vẻ thuộc cuốn nhật ký. Thử đặt cạnh mép trang bị thiếu rồi đọc nối lại xem sao.",
+      "en": "This scrap may belong to the journal. Try it against the torn edge, then read the passage across the gap."
+    },
+    "selene_02.line.013": {
+      "vi": "Tôi nhớ cảm giác lúc nhận nó. Còn tên cô ấy… vẫn chưa.",
+      "en": "I remember how it felt to receive it. Her name... not yet."
+    },
+    "selene_02.line.014": {
+      "vi": "Bạn đáp lại sự im lặng của Selene thế nào?",
+      "en": "How do you meet Selene's silence?"
+    },
+    "selene_02.line.015": {
+      "vi": "Không cần ép mình nhớ ngay.",
+      "en": "You don't have to force it."
+    },
+    "selene_02.line.016": {
+      "vi": "Vậy cho tôi giữ nó thêm một lát.",
+      "en": "Then let me hold it for a moment."
+    },
+    "selene_02.line.017": {
+      "vi": "Mình có thể tìm cô gái ấy là ai.",
+      "en": "We can look for who she was."
+    },
+    "selene_02.line.018": {
+      "vi": "Tìm một cái tên. Không tự lấp khoảng trống bằng điều mình muốn tin.",
+      "en": "A name, then. Without filling the gap with what we wish were true."
+    },
+    "selene_02.line.019": {
+      "vi": "Tại sao ký ức này lại bị xóa?",
+      "en": "Why was this memory erased?"
+    },
+    "selene_02.line.020": {
+      "vi": "Một lời hứa đâu có vẻ nguy hiểm. Trừ khi mình chưa hiểu nó đã giữ điều gì.",
+      "en": "A promise does not seem dangerous. Unless we do not understand what it held."
+    },
+    "selene_02.line.021": {
+      "vi": "Một cô gái elf đặt mặt dây chuyền vào tay Selene trẻ.",
+      "en": "A young elf woman places the pendant in young Selene's hand."
+    },
+    "selene_02.line.022": {
+      "vi": "Cô gái nói: “Nếu một ngày em quên chị… hãy để nó nhớ thay em.”",
+      "en": "The girl says: “If you ever forget me... let this remember for you.”"
+    },
+    "selene_02.line.023": {
+      "vi": "Tôi đã nói: “Em sẽ không quên.” Cô ấy cười: “Em lúc nào cũng nói vậy.”",
+      "en": "I said, “I won't forget.” She smiled: “You always say that.”"
+    },
+    "selene_02.line.024": {
+      "vi": "M02 cho thấy một cô gái elf tặng Selene mặt dây chuyền bạc và nhận lời hứa không quên; danh tính cô ấy vẫn chưa được xác nhận.",
+      "en": "M02 showed an elf woman giving Selene her silver pendant and receiving a promise not to forget; her identity remains unconfirmed."
+    },
+    "selene_02.line.025": {
+      "vi": "Chiếc vòng và lời hứa là thật. Một người quan trọng đã trao nó cho Selene, nhưng tên và gương mặt vẫn chưa trở lại.",
+      "en": "The pendant and promise were real. Someone important gave it to Selene, but her name and face have not returned."
+    },
+    "selene_02.line.026": {
+      "vi": "Nếu ký ức này dịu dàng như vậy, tại sao nó lại cần bị xóa?",
+      "en": "Why did such a gentle memory need to be erased?"
+    },
+    "selene_02.expanded.moonflower_garden": {
+      "vi": "Qua mái vòm là sân vườn cũ. Cây đã khô; một bụi nguyệt hoa vẫn còn bên ghế đá.",
+      "en": "An old courtyard lies beyond the arch. Trees are dead; moonflowers survive beside a stone bench."
+    },
+    "selene_02.expanded.moonflower_garden.stone_bench": {
+      "vi": "Mặt ghế lõm thành hai chỗ ngồi. Giữa chúng, hai cái tên bị cạo đi nhưng đường viền vẫn còn.",
+      "en": "The bench is worn into two seats. Between them, two names were scraped away while their border remains."
+    },
+    "selene_02.expanded.moonflower_garden.erased_names": {
+      "vi": "Những nét xóa tập trung vào tên, giống khoảng trống ở gương mặt trong M01; chưa đủ để khẳng định cùng một người.",
+      "en": "The scraping targets the names, like the missing face in M01; that alone cannot identify the same person."
+    },
+    "selene_02.expanded.moonflower_garden.erased_names.speech": {
+      "vi": "Cùng một khoảng trống… nhưng mình vẫn cần bằng chứng.",
+      "en": "The same kind of gap… but we still need evidence."
+    },
+    "selene_02.expanded.echo_archway": {
+      "vi": "Tiếng cười thoáng qua sân. Một bóng nữ lướt dưới mái vòm dẫn về kho sách.",
+      "en": "Laughter crosses the courtyard. A female silhouette slips beneath an arch toward the archive."
+    },
+    "selene_02.expanded.echo_archway.follow_silhouette": {
+      "vi": "Selene chạy tới mái vòm; bóng người tan trước khi cô nhìn rõ. Không ai đứng sau cột đá.",
+      "en": "Selene reaches the arch; the figure fades before she sees it clearly. No one stands behind the pillar."
+    },
+    "selene_02.expanded.echo_archway.follow_silhouette.speech": {
+      "vi": "Chờ đã!",
+      "en": "Wait!"
+    },
+    "selene_02.expanded.echo_archway.echo_trace": {
+      "vi": "Một cánh hoa rơi rồi tan vào ánh trăng. Đây là dấu vết ký ức, không phải người vừa chạy khỏi sân.",
+      "en": "A petal falls and dissolves in moonlight. This is a memory trace, not someone who just fled the courtyard."
+    }
+  },
+  "required_inspections": [
+    "selene_02_pendant",
+    "selene_02_journal",
+    "selene_02_torn_page",
+    "selene_02_stone_bench",
+    "selene_02_erased_names",
+    "selene_02_follow_silhouette",
+    "selene_02_echo_trace"
+  ],
+  "summary_key": "selene_02.line.025",
+  "reflection_key": "selene_02.line.026"
+}

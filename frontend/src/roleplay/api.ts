@@ -86,5 +86,6 @@ export async function api<T>(
   if (!contentType.includes("application/json")) {
     throw new Error("Máy chủ trả về dữ liệu không hợp lệ. Vui lòng thử lại.");
   }
+  if(method!=="GET" && path.startsWith("/v1/memories/"))window.dispatchEvent(new Event("roleplay-memories-changed"));
   return r.json();
 }

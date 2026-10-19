@@ -48,7 +48,7 @@ def bind_translate_interface_content(runtime: ModuleType) -> None:
                     or not runtime.re.search(r"[A-Za-z]", value)
                     or value.strip() == source.strip()
                     and runtime.character_engine.detect_message_language(
-                        source, "unknown"
+                        source, "unknown", use_jev=False
                     )
                     == "vi"
                 )
@@ -75,7 +75,7 @@ def bind_translate_interface_content(runtime: ModuleType) -> None:
                 and (
                     language in {"my", "km"}
                     or runtime.character_engine.detect_message_language(
-                        value, "unknown"
+                        value, "unknown", use_jev=False
                     )
                     == language
                 )

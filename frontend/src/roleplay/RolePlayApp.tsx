@@ -11,6 +11,7 @@ import {
   restoredLanguage,
   setRuntimeTranslations,
   storedLanguage,
+  translateUiText,
   supportedUiLanguage,
 } from "../i18n";
 import { Icon } from "../ui";
@@ -59,6 +60,7 @@ import {
 } from "./useActionSounds";
 import { useBackgroundMusic } from "./useBackgroundMusic";
 import { useReactionSounds } from "./useReactionSounds";
+import {ExperiencesView} from "./views/ExperiencesView";
 import { renderCharactersView } from "./views/CharactersView";
 import { renderChatView } from "./views/ChatView";
 import { renderCreateView } from "./views/CreateView";
@@ -92,6 +94,7 @@ export default function RolePlayApp() {
     | "rooms"
     | "chat"
     | "memories"
+    | "experiences"
   >(() => {
     const requested = new URLSearchParams(window.location.search).get("view");
     return [
@@ -103,6 +106,7 @@ export default function RolePlayApp() {
       "rooms",
       "chat",
       "memories",
+      "experiences",
     ].includes(requested || "")
       ? (requested as
           | "home"
@@ -112,7 +116,8 @@ export default function RolePlayApp() {
           | "create"
           | "rooms"
           | "chat"
-          | "memories")
+          | "memories"
+    | "experiences")
       : "home";
   });
   const [account, setAccount] = useState<Account | null>(null);
@@ -940,7 +945,7 @@ export default function RolePlayApp() {
   }
   async function finishCreatedCharacter(character: Character) {
     await api(`/v1/characters/${character.id}/publication`, "PATCH", {
-      is_public: makePublic,
+      is_public: false,
       character_type: characterType,
       tags: characterTags
         .split(",")
@@ -1099,7 +1104,7 @@ export default function RolePlayApp() {
     setMemoryDraft("");
     setNotice("Đã lưu ký ức");
   }
-  async function openRoom(r: Room) {
+  async function openRoom(r: Room, fromWorld = false) {
     activateActionSounds();
     actionSounds.stop();
     ++openingGreetingVersion.current;
@@ -1109,6 +1114,7 @@ export default function RolePlayApp() {
     primedSpeechPlayerRef.current.activate();
     reactionSounds.stop();
     setOpeningGreeting(null);
+    greetingSpeechRef.current = null;
     const previousRoomId = room?.id || null;
     activeRoomIdRef.current = r.id;
     setResourcePreparing(true);
@@ -1131,7 +1137,7 @@ export default function RolePlayApp() {
       setMessages(stored);
       setPage("chat");
       {
-        const greetings = openingVoiceMessages(stored).filter(canSpeak);
+        const greetings = openingVoiceMessages(stored, fromWorld).filter(canSpeak);
         if (greetings.length) {
           greetingSpeechRef.current = greetings[0];
           setOpeningGreeting({ roomId: r.id, messages: greetings });
@@ -1224,7 +1230,7 @@ export default function RolePlayApp() {
     const requestedRoom = rooms.find((item) => item.id === roomId);
     if (!requestedRoom) return;
     workspaceInitialRoomRef.current = roomId;
-    void openRoom(requestedRoom).catch(() => {});
+    void openRoom(requestedRoom, new URLSearchParams(window.location.search).get("from_world") === "1").catch(() => {});
   }, [rooms]);
   useEffect(() => {
     if (
@@ -1261,7 +1267,7 @@ export default function RolePlayApp() {
         ? `/role-play-ai?workspace=1&view=chat&room=${room.id}`
         : page === "create"
           ? "/role-play-ai?workspace=1&view=create"
-          : "/role-play-ai?workspace=1&view=characters";
+          : "/role-play-ai?workspace=1&view="+(["characters","system","discover","experiences"].includes(page)?page:"characters");
     window.parent.postMessage(
       { type: "avibi-workspace-location", path },
       window.location.origin,
@@ -1270,6 +1276,7 @@ export default function RolePlayApp() {
   useEffect(() => {
     if (window.parent === window) return;
     const onWorkspaceNavigation = (event: MessageEvent) => {
+      if(event.origin===window.location.origin&&event.source===window.parent&&event.data?.type==="avibi-workspace-pause"){cancelRolePlayStream();stopRoleplayAudio();return;}
       if (
         event.origin !== window.location.origin ||
         event.data?.type !== "avibi-workspace-navigate"
@@ -1283,7 +1290,11 @@ export default function RolePlayApp() {
       if (requestedView === "chat") {
         const roomId = params.get("room");
         const requestedRoom = rooms.find((item) => item.id === roomId);
-        if (requestedRoom) void openRoom(requestedRoom).catch(() => {});
+        if (requestedRoom) void openRoom(requestedRoom, params.get("from_world") === "1").catch(() => {});
+        else if (roomId) void api<Room>("/v1/rooms/"+encodeURIComponent(roomId)).then(fetched=>{
+          setRooms(previous=>previous.some(item=>item.id===fetched.id)?previous:[fetched,...previous]);
+          return openRoom(fetched, params.get("from_world") === "1");
+        }).catch(()=>{});
         return;
       }
       setMemoryPopupOpen(false);
@@ -1313,7 +1324,7 @@ export default function RolePlayApp() {
       setError("");
       setNotice("");
       setPage(
-        requestedView === "system" || requestedView === "discover"
+        requestedView === "system" || requestedView === "discover" || requestedView === "experiences"
           ? requestedView
           : "characters",
       );
@@ -1873,7 +1884,7 @@ export default function RolePlayApp() {
               item.character_ids[0] === roomToDelete.character_ids[0],
           )
         : [roomToDelete];
-    if (!confirm(`Xóa cuộc trò chuyện “${roomToDelete.name}”?`)) return;
+    if (!confirm(`Xóa cuộc trò chuyện “${roomToDelete.name}” và reset ký ức, quan hệ, liên kết nhân vật cùng tiến trình cốt truyện của bạn với các nhân vật trong phòng? Card, prompt và lorebook CMS được giữ nguyên. Trạng thái dùng chung với phòng khác của bạn cũng sẽ reset.`)) return;
     await act(async () => {
       for (const target of targets) {
         try {
@@ -1886,6 +1897,14 @@ export default function RolePlayApp() {
             throw error;
         }
       }
+      try { for (const id of roomToDelete.character_ids) {
+        localStorage.removeItem("moonfall-chapter-access:" + id);
+        for (const key of Object.keys(sessionStorage)) {
+          if (key.startsWith("social-dismiss:" + id + ":") || key.startsWith("social-dismiss:") && key.endsWith(":" + id))
+            sessionStorage.removeItem(key);
+        }
+      }
+      } catch { /* Storage restrictions must not leave deleted rooms in the UI. */ }
       const deletedIds = new Set(targets.map((item) => item.id));
       setError("");
       if (deletedIds.has(workspaceInitialRoomRef.current))
@@ -1956,25 +1975,23 @@ export default function RolePlayApp() {
     character.category ||
     "other";
   const customHomeCharacters = visibleCharacters
-    .filter((character) => character.creation_type !== "preset")
+    .filter((character) => character.creation_type !== "preset" && !character.source_character_id)
     .map((character) => ({
       ...character,
       creator:
         character.creator ||
         (account ? { id: account.id, name: account.display_name } : undefined),
     }));
-  const adminCatalogCharacters = presets.map((character) => ({
+  const adminCatalogCharacters = presets.filter((c,index,all)=>all.findIndex(p=>(p.preset_type||p.id)===(c.preset_type||c.id))===index).map((character) => ({
     ...character,
     creator: { id: "system", name: "Avibi Platform" },
   }));
   const systemHomeCharacters = adminCatalogCharacters.filter(
     (character) =>
-      character.category !== "entertainment" &&
       character.home_section !== "hidden",
   );
   const homeCatalogCharacters = [
-    ...adminCatalogCharacters,
-    ...publicCharacters,
+    ...publicCharacters.filter(c=>!chars.some(own=>own.id===c.id)),
   ];
   const charactersForSection = (section: HomeSection) => {
     const matching = homeCatalogCharacters.filter((character) => {
@@ -2187,7 +2204,7 @@ export default function RolePlayApp() {
       />
     </label>
   );
-  const collectionTabs = (current: "characters" | "system" | "discover") => (
+  const collectionTabs = (current: "characters" | "system" | "discover" | "experiences") => (
     <div className="rpTabbar">
       <div className="tabs" role="tablist">
         {(
@@ -2198,6 +2215,7 @@ export default function RolePlayApp() {
               `Nhân vật hệ thống (${presets.filter((item) => item.home_section !== "hidden").length})`,
             ],
             ["discover", "Cộng đồng"],
+            ["experiences", uiLanguage === "vi" ? "Trải nghiệm" : translateUiText("Trải nghiệm",uiLanguage)],
           ] as const
         ).map(([key, label]) => (
           <button
@@ -2952,7 +2970,7 @@ export default function RolePlayApp() {
 
           <button
             className={
-              page === "characters" || page === "discover" || page === "system"
+              page === "characters" || page === "discover" || page === "system" || page === "experiences"
                 ? "active"
                 : ""
             }
@@ -3085,6 +3103,7 @@ export default function RolePlayApp() {
         {page === "home" &&
           renderHomeView({
             openRoomWizard,
+            onCreateCharacter:()=>{setPage("create");},
             systemHomeCharacters,
             introText,
             addPreset,
@@ -3097,6 +3116,8 @@ export default function RolePlayApp() {
             matchesSearch,
             openRoom,
           })}
+
+        {page === "experiences" && <ExperiencesView tabs={collectionTabs("experiences")} onChat={()=>setPage("characters")}/>}
 
         {page === "discover" &&
           renderDiscoverView({
@@ -3217,6 +3238,7 @@ export default function RolePlayApp() {
         {page === "chat" &&
           room &&
           renderChatView({
+            resolveSocialCharacter: async c => chars.find(owned => owned.id === c.id) || await ensureOwnedPreset(c),
             companionVisible,
             setCompanionVisible,
             companionIsTalking: roomChars.length === 1 && companionTalking(roomChars[0].id, speakingId, [...messages, ...(openingGreeting?.messages || []), ...automaticSpeechMessages.current.values()]),

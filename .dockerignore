@@ -29,3 +29,19 @@ image/tarot_tuvi/tarot/*.zip
 **/*.env
 **/*.pem
 **/*.key
+
+# World originals stay on the workstation; runtime serves optimized derivatives.
+image/worlds/selene/*.mp4
+image/worlds/selene/moonfall/backgrounds/*.png
+image/worlds/selene/moonfall/props/*.png
+
+image/worlds/selene/moonfall/characters/selene_expressions_transparent.png
+
+# Home intro originals; runtime uses optimized WebM.
+image/video/*.mp4
+image/video/*.mov
+image/video/*.m4v
+
+# Current World runtime uses WebM and prepared props.
+image/worlds/selene/moonfall/backgrounds/echoes_videos/videos/final/events/*.mp4
+image/worlds/selene/moonfall/props/*.webp

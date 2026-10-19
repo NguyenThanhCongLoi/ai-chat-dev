@@ -26,9 +26,9 @@ def mock_service(monkeypatch,probabilities):
     return calls
 
 @pytest.mark.parametrize("probabilities,count",[
-    ([.9,.1,.1],1),([.9,.8,.1],2),([.9,.8,.75],3),
+    ([.9,.1,.1],1),([.9,.8,.1],2),([.9,.8,.75],2),
 ])
-def test_decision_selects_one_through_all(monkeypatch,decision_env,probabilities,count):
+def test_decision_bounds_automatic_speakers(monkeypatch,decision_env,probabilities,count):
     calls=mock_service(monkeypatch,probabilities)
     plan=group_routing.plan_selected_group("What do you think of my plans?",cast())
     assert len(plan.speakers)==count

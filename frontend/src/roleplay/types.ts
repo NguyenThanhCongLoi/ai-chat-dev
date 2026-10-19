@@ -16,6 +16,8 @@ export type Character = {
   preset_type?: string;
   category?: "utility" | "entertainment";
   avatar_url?: string;
+  source_character_id?: string | null;
+  publication_status?: string;
   is_public?: boolean;
   character_type?: string;
   tags?: string[];
